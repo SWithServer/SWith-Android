@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:icon="@drawable/ic_notification"
+        android:id="@+id/toolbar_notification"
+        android:title="알림"
+        app:showAsAction="always" />
+    <item
+        android:icon="@drawable/ic_setting"
+        android:id="@+id/toolbar_setting"
+        android:title="설정"
+        app:showAsAction="always" />
+</menu>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/bottom_nav_round"
+        android:icon="@drawable/ic_round"
+        android:title="회차"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/bottom_nav_calendar"
+        android:icon="@drawable/ic_calendar"
+        android:title="캘린더"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/bottom_nav_statistics"
+        android:icon="@drawable/ic_statistics"
+        android:title="통계"
+        app:showAsAction="always" />
+</menu>
