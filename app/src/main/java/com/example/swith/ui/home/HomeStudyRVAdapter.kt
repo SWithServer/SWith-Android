@@ -39,10 +39,12 @@ class HomeStudyRVAdapter : RecyclerView.Adapter<HomeStudyRVAdapter.ViewHolder>()
 
     inner class ViewHolder(val binding: ItemStudyBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(study: Study){
-            binding.studyTitleTv.text = study.title
-            binding.studyRoundTitle.text = study.totalRound.toString() + "회차"
-            binding.studyTotalPeople.text = study.totalPeople.toString() + "명"
-            binding.studyCategory.text = study.category
+            with(binding) {
+                studyTitleTv.text = study.title
+                studyRoundTitle.text = study.totalRound.toString() + "회차"
+                studyTotalPeople.text = study.totalPeople.toString() + "명"
+                studyCategory.text = study.category
+            }
         }
     }
 }

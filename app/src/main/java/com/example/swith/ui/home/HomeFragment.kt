@@ -5,11 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.swith.R
 import com.example.swith.data.Study
 import com.example.swith.databinding.FragmentHomeBinding
@@ -25,14 +27,16 @@ class HomeFragment : Fragment(){
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
 
-        val adapter = HomeStudyRVAdapter()
-        binding.homeStudyRv.adapter = adapter
-        adapter.setMyItemClickListener(object: HomeStudyRVAdapter.myItemClickListener{
-            override fun onItemClick(study: Study) {
-                val intent = Intent(activity, StudyActivity::class.java)
-                startActivity(intent)
+        binding.homeStudyRv.apply {
+            adapter = HomeStudyRVAdapter().apply {
+                setMyItemClickListener(object: HomeStudyRVAdapter.myItemClickListener{
+                    override fun onItemClick(study: Study) {
+                        val intent = Intent(activity, StudyActivity::class.java)
+                        startActivity(intent)
+                    }
+                })
             }
-        })
+        }
 
         // 스터디 존재하면 RecyclerView에 추가
         // StudyList 받아와야 할 부분
