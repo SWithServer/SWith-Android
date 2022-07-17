@@ -15,6 +15,9 @@
             android:name=".ui.study.notice.NoticeActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.SplashActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.MainActivity"
             android:exported="true">
             <intent-filter>
