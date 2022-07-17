@@ -1,13 +1,9 @@
-package com.example.swith.ui.home
+package com.example.swith.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.swith.data.Study
-import com.example.swith.repository.home.HomeRepository
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 
 class HomeViewModel() : ViewModel() {
     // 임시 변수

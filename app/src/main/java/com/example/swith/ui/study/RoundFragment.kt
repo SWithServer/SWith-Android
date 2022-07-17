@@ -12,7 +12,9 @@ import androidx.lifecycle.Observer
 import com.example.swith.R
 import com.example.swith.data.Round
 import com.example.swith.databinding.FragmentRoundBinding
+import com.example.swith.ui.adapter.RoundRVAdapter
 import com.example.swith.ui.study.notice.NoticeActivity
+import com.example.swith.viewmodel.RoundViewModel
 
 class RoundFragment : Fragment() {
     lateinit var binding: FragmentRoundBinding

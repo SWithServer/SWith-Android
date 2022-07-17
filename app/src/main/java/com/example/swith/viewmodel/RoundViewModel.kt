@@ -1,4 +1,4 @@
-package com.example.swith.ui.study
+package com.example.swith.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
