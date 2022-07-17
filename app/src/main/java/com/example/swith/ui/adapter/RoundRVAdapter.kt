@@ -1,8 +1,6 @@
-package com.example.swith.ui.study
+package com.example.swith.ui.adapter
 
-import android.opengl.Visibility
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.swith.data.Round
@@ -12,12 +10,12 @@ class RoundRVAdapter : RecyclerView.Adapter<RoundRVAdapter.ViewHolder>() {
     private var roundList = ArrayList<Round>()
     lateinit var binding: ItemRoundBinding
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoundRVAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         binding = ItemRoundBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: RoundRVAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(roundList[position])
     }
 

@@ -5,17 +5,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.swith.R
 import com.example.swith.data.Study
 import com.example.swith.databinding.FragmentHomeBinding
+import com.example.swith.ui.adapter.HomeStudyRVAdapter
 import com.example.swith.ui.study.StudyActivity
+import com.example.swith.viewmodel.HomeViewModel
 
 class HomeFragment : Fragment(){
     lateinit var binding: FragmentHomeBinding
