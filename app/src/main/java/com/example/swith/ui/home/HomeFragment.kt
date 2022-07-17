@@ -38,16 +38,9 @@ class HomeFragment : Fragment(){
             }
         }
 
-        // 스터디 존재하면 RecyclerView에 추가
-        // StudyList 받아와야 할 부분
-        // ViewModel 내부에서 Repository로부터 받아와야하는 부분?!
-        // 임시로 그냥 만들음
-        val studyList = ArrayList<Study>()
-        studyList.add(Study("영어 스터디", "회화", 8, 5))
-        studyList.add(Study("자격증 뿌시자", "자격증", 7, 3))
-        viewModel.initData(studyList)
-
         viewModel.studyLiveData.observe(viewLifecycleOwner, Observer{
+            // 스터디가 1개 이상 존재하면 스터디 리사이클러 뷰 보여줌
+            setViewVisibility(it.isNotEmpty())
             (binding.homeStudyRv.adapter as HomeStudyRVAdapter).setData(it)
         })
 
@@ -57,5 +50,17 @@ class HomeFragment : Fragment(){
         }
 
         return binding.root
+    }
+
+    private fun setViewVisibility(isStudyExists: Boolean){
+        with(binding) {
+            if (isStudyExists) {
+                homeScrollviewSv.visibility = View.VISIBLE
+                homeNoStudyLayout.visibility = View.GONE
+            } else{
+                homeScrollviewSv.visibility = View.GONE
+                homeNoStudyLayout.visibility = View.VISIBLE
+            }
+        }
     }
 }

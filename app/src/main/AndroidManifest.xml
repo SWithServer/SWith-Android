@@ -3,6 +3,7 @@
     package="com.example.swith">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,6 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SWith">
+        <activity
+            android:name=".ui.study.notice.NoticeActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.MainActivity"
             android:exported="true">
@@ -19,8 +23,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.study.StudyActivity">
-        </activity>
+        <activity android:name=".ui.study.StudyActivity"></activity>
     </application>
 
 </manifest>

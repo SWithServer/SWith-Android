@@ -10,6 +10,9 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class HomeViewModel() : ViewModel() {
+    // 임시 변수
+    private var studyCount = 0
+
     private var studyData = ArrayList<Study>()
     private var _studyLiveData = MutableLiveData<ArrayList<Study>>()
     val studyLiveData: LiveData<ArrayList<Study>>
@@ -24,15 +27,19 @@ class HomeViewModel() : ViewModel() {
 //            }
 //        }
 //    }
-    fun initData(studyList: ArrayList<Study>){
-        studyData.addAll(studyList)
+    init{
+        if (studyCount == 0){
+            // do nothing
+        }
+        else { studyData.apply {
+            add(Study("영어 스터디", "회화", 8, 5))
+            add(Study("자격증 뿌시자", "자격증", 7, 3))
+        }}
         _studyLiveData.value = studyData
-
     }
 
     fun addStudy(study: Study){
         studyData.add(study)
         _studyLiveData.value = studyData
     }
-
 }
