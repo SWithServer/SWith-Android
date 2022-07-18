@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.example.swith.R
 import com.example.swith.databinding.ActivityStudyBinding
+import com.example.swith.utils.ToolBarManager
 
 class StudyActivity : AppCompatActivity() {
     lateinit var binding: ActivityStudyBinding
@@ -16,14 +17,11 @@ class StudyActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_study)
 
-        initToolbar()
+        ToolBarManager(this).initToolBar(binding.studyToolbar,
+            titleVisible = false,
+            backVisible = true
+        )
         initBottomNavigation()
-    }
-
-    private fun initToolbar(){
-        setSupportActionBar(binding.studyToolbar)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

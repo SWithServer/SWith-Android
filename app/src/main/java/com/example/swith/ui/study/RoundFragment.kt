@@ -13,6 +13,7 @@ import com.example.swith.R
 import com.example.swith.data.Round
 import com.example.swith.databinding.FragmentRoundBinding
 import com.example.swith.ui.adapter.RoundRVAdapter
+import com.example.swith.ui.study.create.CreateRoundActivity
 import com.example.swith.ui.study.notice.NoticeActivity
 import com.example.swith.viewmodel.RoundViewModel
 
@@ -30,26 +31,22 @@ class RoundFragment : Fragment() {
             adapter = RoundRVAdapter()
         }
 
-        // Check Box 선택 여부 리스너
-        binding.roundPreviousCb.setOnCheckedChangeListener { view, isChecked ->
-            viewModel.setPastData(view.isChecked)
-        }
-
-        // Add button 리스너
-        var testCount = 7
-        binding.roundAddBtn.setOnClickListener {
-            viewModel.addData(Round(testCount, "22/7/14", "22/7/16", "영어 ${testCount++}회차 스터디", true, null))
-        }
-
-        binding.roundNoticeIv.setOnClickListener {
-            startActivity(Intent(activity, NoticeActivity::class.java))
-        }
+        initListener()
 
         viewModel.roundLiveData.observe(viewLifecycleOwner, Observer {
             (binding.roundListRv.adapter as RoundRVAdapter).setData(it)
         })
 
-
         return binding.root
     }
+    private fun initListener(){
+        var testCount = 7
+        with(binding){
+            roundAddBtn.setOnClickListener { viewModel.addData(Round(testCount, "22/7/14", "22/7/16", "영어 ${testCount++}회차 스터디", true, null)) }
+            roundNoticeIv.setOnClickListener { startActivity(Intent(activity, NoticeActivity::class.java)) }
+            roundAddBtn.setOnClickListener { startActivity(Intent(activity, CreateRoundActivity::class.java)) }
+            roundPreviousCb.setOnCheckedChangeListener { view, isChecked -> viewModel.setPastData(view.isChecked) }
+        }
+    }
+
 }
