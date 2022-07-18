@@ -4,7 +4,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-object RetrofitApi {
+object RetrofitService {
     const val baseUrl = " "
 
     val retrofit : Retrofit by lazy {

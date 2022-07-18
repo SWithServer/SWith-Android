@@ -37,7 +37,7 @@
         android:id="@+id/btn_create_date"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/light_grey"
+        android:background="@color/light_grey"
         android:text="시작 시간, 끝나는 시간"
         android:textSize="16sp"
         android:textColor="@color/black"
@@ -60,7 +60,8 @@
             <CheckBox
                 android:id="@+id/cb_create_online"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/black" />
             <CheckedTextView
                 android:id="@+id/cv_create_online"
                 android:layout_width="wrap_content"
@@ -74,7 +75,8 @@
             <CheckBox
                 android:id="@+id/cb_create_offline"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/black"/>
             <CheckedTextView
                 android:id="@+id/cv_create_offline"
                 android:layout_width="wrap_content"
@@ -86,6 +88,7 @@
         android:id="@+id/et_create_place"
         android:layout_width="0dp"
         android:layout_height="40dp"
+        android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="@id/guideline_create_1"
         app:layout_constraintEnd_toEndOf="@id/guideline_create_2"
         app:layout_constraintTop_toBottomOf="@id/layout_create_checkbox"
@@ -99,7 +102,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="10dp"
         android:hint="@string/create_detail"
         android:gravity="center_horizontal"
         app:layout_constraintStart_toStartOf="@id/guideline_create_1"
@@ -114,8 +117,9 @@
         android:layout_height="wrap_content"
         android:text="완료"
         android:textColor="@color/black"
-        android:backgroundTint="@color/light_grey"
+        android:background="@color/light_grey"
         android:layout_marginBottom="10dp"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="@id/guideline_create_1"
         app:layout_constraintEnd_toEndOf="@id/guideline_create_2"
         app:layout_constraintBottom_toBottomOf="parent"/>
