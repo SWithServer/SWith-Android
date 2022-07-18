@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SWith">
         <activity
+            android:name=".ui.login.LoginActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.study.notice.NoticeActivity"
             android:exported="false" />
         <activity
@@ -26,7 +29,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.study.StudyActivity"></activity>
+        <activity android:name=".ui.study.StudyActivity" />
     </application>
 
 </manifest>
