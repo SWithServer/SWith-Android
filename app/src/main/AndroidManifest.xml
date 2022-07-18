@@ -23,6 +23,10 @@
         <activity
             android:name=".ui.SplashActivity"
             android:exported="false" />
+        <activity android:name=".ui.login.SnsLoginActivity"
+            android:exported="false"/>
+        <activity android:name=".ui.ProfileActivity"
+            android:exported="false"/>
         <activity
             android:name=".ui.MainActivity"
             android:exported="true">
