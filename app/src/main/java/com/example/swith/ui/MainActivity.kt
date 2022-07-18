@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import com.example.swith.R
 import com.example.swith.databinding.ActivityMainBinding
 import com.example.swith.ui.home.HomeFragment
+import com.example.swith.utils.ToolBarManager
 
 
 class MainActivity : AppCompatActivity() {
@@ -19,8 +20,10 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         initBottomNavigation()
 
-        setSupportActionBar(binding.mainToolbar)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
+        ToolBarManager(this).initToolBar(binding.mainToolbar,
+            titleVisible = false,
+            backVisible = false
+        )
     }
     private fun initBottomNavigation(){
         supportFragmentManager.beginTransaction()
