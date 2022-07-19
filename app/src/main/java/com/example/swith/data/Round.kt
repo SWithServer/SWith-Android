@@ -6,5 +6,6 @@ data class Round(
     var endTime: String,
     var detail: String,
     var isOnline: Boolean,
-    var place: String?
+    var place: String?,
+    val attend: Int
 )

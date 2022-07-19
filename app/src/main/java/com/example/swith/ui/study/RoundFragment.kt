@@ -28,7 +28,7 @@ class RoundFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_round, container, false)
 
         binding.roundListRv.apply {
-            adapter = RoundRVAdapter()
+            adapter = RoundRVAdapter(viewModel.curCount)
         }
 
         initListener()
@@ -42,7 +42,7 @@ class RoundFragment : Fragment() {
     private fun initListener(){
         var testCount = 7
         with(binding){
-            roundAddBtn.setOnClickListener { viewModel.addData(Round(testCount, "22/7/14", "22/7/16", "영어 ${testCount++}회차 스터디", true, null)) }
+            roundAddBtn.setOnClickListener { viewModel.addData(Round(testCount, "22/7/14", "22/7/16", "영어 ${testCount++}회차 스터디", true, null, 3)) }
             roundNoticeIv.setOnClickListener { startActivity(Intent(activity, NoticeActivity::class.java)) }
             roundAddBtn.setOnClickListener { startActivity(Intent(activity, CreateRoundActivity::class.java)) }
             roundPreviousCb.setOnCheckedChangeListener { view, isChecked -> viewModel.setPastData(view.isChecked) }

@@ -45,7 +45,7 @@ class HomeFragment : Fragment(){
 
         binding.homeStudyAddIv.setOnClickListener{
             // 기능 확인을 위해 누르면 스터디 하나 추가되게 함
-            viewModel.addStudy(Study("스터디 2", "스터디", 3, 2))
+            viewModel.addStudy(Study("스터디 2", "스터디", 3, 0))
         }
 
         return binding.root

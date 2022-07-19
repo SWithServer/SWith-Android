@@ -1,12 +1,13 @@
 package com.example.swith.ui.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.swith.data.Round
 import com.example.swith.databinding.ItemRoundBinding
 
-class RoundRVAdapter : RecyclerView.Adapter<RoundRVAdapter.ViewHolder>() {
+class RoundRVAdapter(private val curCount: Int) : RecyclerView.Adapter<RoundRVAdapter.ViewHolder>() {
     private var roundList = ArrayList<Round>()
     lateinit var binding: ItemRoundBinding
 
@@ -38,6 +39,7 @@ class RoundRVAdapter : RecyclerView.Adapter<RoundRVAdapter.ViewHolder>() {
                 roundTitleTv.text= round.count.toString() + "회차"
                 roundDetailTv.text = round.detail
                 roundDateTv.text = round.startTime
+                roundAttendTv.text = if (round.attend > 0)"출석 : ${round.attend}명" else ""
             }
         }
     }
