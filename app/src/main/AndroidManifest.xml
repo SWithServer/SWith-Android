@@ -37,6 +37,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.study.StudyActivity" />
+        <activity
+            android:name=".ui.study.create.StudyCreateActivity"
+            android:exported="true"/>
+        <activity android:name=".ui.study.create.SelectPlaceActivity"
+            android:exported="true"/>
     </application>
 
 </manifest>

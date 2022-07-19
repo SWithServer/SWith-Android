@@ -1,7 +1,6 @@
 package com.example.swith.ui.study.create
 
 import android.app.DatePickerDialog
-import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -13,7 +12,6 @@ import java.util.*
 
 class StudyCreateActivity :AppCompatActivity() {
     lateinit var binding: ActivityStudyCreateBinding
-
 
     private lateinit var startTime:Calendar //활동 시작기간
     private var calendar = Calendar.getInstance()
@@ -141,7 +139,6 @@ class StudyCreateActivity :AppCompatActivity() {
     //갤러리에서 이미지 선택
     private fun openGallery(){
         val intent = Intent(Intent.ACTION_PICK)
-
 //        intent.type = MediaStore.Images.Media.CONTENT_TYPE
 //        intent.type="image/*"
 //        startActivityForResult(intent,102)
