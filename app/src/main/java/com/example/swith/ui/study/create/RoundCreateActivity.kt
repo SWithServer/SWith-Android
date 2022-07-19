@@ -17,7 +17,7 @@ import com.example.swith.R
 import com.example.swith.databinding.ActivityCreateRoundBinding
 import com.example.swith.utils.ToolBarManager
 
-class CreateRoundActivity : AppCompatActivity() {
+class RoundCreateActivity : AppCompatActivity() {
     lateinit var binding: ActivityCreateRoundBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

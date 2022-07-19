@@ -13,7 +13,7 @@ import com.example.swith.R
 import com.example.swith.data.Round
 import com.example.swith.databinding.FragmentRoundBinding
 import com.example.swith.ui.adapter.RoundRVAdapter
-import com.example.swith.ui.study.create.CreateRoundActivity
+import com.example.swith.ui.study.create.RoundCreateActivity
 import com.example.swith.ui.study.notice.NoticeActivity
 import com.example.swith.viewmodel.RoundViewModel
 
@@ -44,7 +44,7 @@ class RoundFragment : Fragment() {
         with(binding){
             roundAddBtn.setOnClickListener { viewModel.addData(Round(testCount, "22/7/14", "22/7/16", "영어 ${testCount++}회차 스터디", true, null, 3)) }
             roundNoticeIv.setOnClickListener { startActivity(Intent(activity, NoticeActivity::class.java)) }
-            roundAddBtn.setOnClickListener { startActivity(Intent(activity, CreateRoundActivity::class.java)) }
+            roundAddBtn.setOnClickListener { startActivity(Intent(activity, RoundCreateActivity::class.java)) }
             roundPreviousCb.setOnCheckedChangeListener { view, isChecked -> viewModel.setPastData(view.isChecked) }
         }
     }

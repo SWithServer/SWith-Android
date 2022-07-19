@@ -43,6 +43,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.bottom_nav_profile -> {
                     // TODO: profile
+                    // ProfileActivity -> ProfileFragment 로 전환해야 할듯?!
                 }
             }
             false

@@ -12,8 +12,10 @@ import androidx.lifecycle.Observer
 import com.example.swith.R
 import com.example.swith.data.Study
 import com.example.swith.databinding.FragmentHomeBinding
+import com.example.swith.ui.MainActivity
 import com.example.swith.ui.adapter.HomeStudyRVAdapter
 import com.example.swith.ui.study.StudyActivity
+import com.example.swith.ui.study.create.StudyCreateActivity
 import com.example.swith.viewmodel.HomeViewModel
 
 class HomeFragment : Fragment(){
@@ -44,8 +46,7 @@ class HomeFragment : Fragment(){
         })
 
         binding.homeStudyAddIv.setOnClickListener{
-            // 기능 확인을 위해 누르면 스터디 하나 추가되게 함
-            viewModel.addStudy(Study("스터디 2", "스터디", 3, 0))
+            startActivity(Intent((context as MainActivity), StudyCreateActivity::class.java))
         }
 
         return binding.root

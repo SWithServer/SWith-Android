@@ -24,13 +24,10 @@ class HomeViewModel() : ViewModel() {
 //        }
 //    }
     init{
-        if (studyCount == 0){
-            // do nothing
-        }
-        else { studyData.apply {
+        studyData.apply {
             add(Study("영어 스터디", "회화", 8, 5))
             add(Study("자격증 뿌시자", "자격증", 7, 3))
-        }}
+        }
         _studyLiveData.value = studyData
     }
 
