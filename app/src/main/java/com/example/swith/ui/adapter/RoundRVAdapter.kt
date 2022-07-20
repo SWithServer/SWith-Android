@@ -6,10 +6,21 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.swith.data.Round
 import com.example.swith.databinding.ItemRoundBinding
+import kotlin.math.round
 
 class RoundRVAdapter(private val curCount: Int) : RecyclerView.Adapter<RoundRVAdapter.ViewHolder>() {
     private var roundList = ArrayList<Round>()
     lateinit var binding: ItemRoundBinding
+
+    interface myItemClickListener{
+        fun onItemClick(round: Round)
+    }
+
+    private lateinit var mItemClickListener: myItemClickListener
+
+    fun setItemClickListener(itemClickListener : myItemClickListener){
+        mItemClickListener = itemClickListener
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         binding = ItemRoundBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -18,6 +29,7 @@ class RoundRVAdapter(private val curCount: Int) : RecyclerView.Adapter<RoundRVAd
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(roundList[position])
+        holder.itemView.setOnClickListener{mItemClickListener.onItemClick(roundList[position])}
     }
 
     override fun getItemCount(): Int = roundList.size

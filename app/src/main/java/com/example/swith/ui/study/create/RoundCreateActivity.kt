@@ -1,27 +1,20 @@
 package com.example.swith.ui.study.create
 
-import android.graphics.Color
-import android.graphics.drawable.Drawable
-import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.style.BackgroundColorSpan
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import android.widget.CheckBox
-import android.widget.CompoundButton
 import androidx.core.widget.doAfterTextChanged
 import androidx.databinding.DataBindingUtil
 import com.example.swith.R
-import com.example.swith.databinding.ActivityCreateRoundBinding
+import com.example.swith.databinding.ActivityRoundCreateBinding
 import com.example.swith.utils.ToolBarManager
 
 class RoundCreateActivity : AppCompatActivity() {
-    lateinit var binding: ActivityCreateRoundBinding
+    lateinit var binding: ActivityRoundCreateBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_create_round)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_round_create)
 
         ToolBarManager(this).initToolBar(binding.toolbarCreate,
             titleVisible = false,

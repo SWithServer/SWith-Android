@@ -13,11 +13,14 @@ class RoundViewModel() : ViewModel() {
     val curCount = 3
 
     private var pastVisible = false
+    private var _currentLiveData = MutableLiveData<Round>()
     private var _roundLiveData = MutableLiveData<ArrayList<Round>>()
+
+    val currentLiveData : LiveData<Round>
+        get() = _currentLiveData
 
     val roundLiveData : LiveData<ArrayList<Round>>
         get() = _roundLiveData
-
 
     init{
         // 임시로 여기다 추가
@@ -40,6 +43,10 @@ class RoundViewModel() : ViewModel() {
         allData.add(round)
 
         _roundLiveData.value = if (pastVisible) allData else postData
+    }
+
+    fun setCurrentData(round: Round){
+        _currentLiveData.value = round
     }
 
     fun setPastData(pastVisible: Boolean){

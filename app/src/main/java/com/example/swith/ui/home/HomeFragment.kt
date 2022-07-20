@@ -46,7 +46,7 @@ class HomeFragment : Fragment(){
         })
 
         binding.homeStudyAddIv.setOnClickListener{
-            startActivity(Intent((context as MainActivity), StudyCreateActivity::class.java))
+            startActivity(Intent(requireActivity(), StudyCreateActivity::class.java))
         }
 
         return binding.root
