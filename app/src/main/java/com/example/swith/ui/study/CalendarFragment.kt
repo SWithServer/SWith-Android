@@ -8,15 +8,11 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.example.swith.R
 import com.example.swith.databinding.FragmentCalendarBinding
+import com.example.swith.ui.BaseFragment
 
 
-class CalendarFragment : Fragment() {
-    lateinit var binding: FragmentCalendarBinding
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_calendar, container, false)
-        return binding.root
+class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment_calendar){
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
     }
 }

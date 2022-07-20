@@ -2,34 +2,25 @@ package com.example.swith.ui.study.round
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.swith.R
 import com.example.swith.data.Round
 import com.example.swith.databinding.FragmentRoundBinding
+import com.example.swith.ui.BaseFragment
 import com.example.swith.ui.adapter.RoundRVAdapter
-import com.example.swith.ui.study.StudyActivity
 import com.example.swith.ui.study.create.RoundCreateActivity
 import com.example.swith.ui.study.notice.NoticeActivity
 import com.example.swith.viewmodel.RoundViewModel
 
-class RoundFragment : Fragment() {
-    lateinit var binding: FragmentRoundBinding
+class RoundFragment : BaseFragment<FragmentRoundBinding>(R.layout.fragment_round) {
     private val viewModel: RoundViewModel by activityViewModels()
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_round, container, false)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        initListener()
 
         binding.roundListRv.apply {
             adapter = RoundRVAdapter(viewModel.curCount).apply {
@@ -44,14 +35,11 @@ class RoundFragment : Fragment() {
             }
         }
 
-        initListener()
-
         viewModel.roundLiveData.observe(viewLifecycleOwner, Observer {
             (binding.roundListRv.adapter as RoundRVAdapter).setData(it)
         })
-
-        return binding.root
     }
+
     private fun initListener(){
         var testCount = 7
         with(binding){
