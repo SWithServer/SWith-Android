@@ -16,7 +16,6 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun initView() {
-        //TODO("Not yet implemented")
     }
 
     private fun initData() {

@@ -72,4 +72,8 @@ dependencies {
 
     //circleimageView Library
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    //kakao sdk
+    implementation "com.kakao.sdk:v2-user:2.11.0" // 카카오 로그인
+
 }
