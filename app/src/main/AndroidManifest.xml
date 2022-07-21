@@ -39,9 +39,11 @@
         <activity android:name=".ui.study.StudyActivity" />
         <activity
             android:name=".ui.study.create.StudyCreateActivity"
-            android:exported="true"/>
+            android:exported="true"
+            android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".ui.study.create.SelectPlaceActivity"
-            android:exported="true"/>
+            android:exported="true"
+            android:windowSoftInputMode="stateHidden"/>
     </application>
 
 </manifest>
