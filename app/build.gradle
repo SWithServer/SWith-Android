@@ -37,6 +37,7 @@ android {
     }
 }
 
+
 dependencies {
     def room_version = "2.4.2"
     def lifecycle_version = "2.5.0-rc02"
@@ -54,9 +55,6 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.10'
     // gson
     implementation 'com.google.code.gson:gson:2.8.9'
-
-    // circleimageview
-    implementation 'de.hdodenhof:circleimageview:3.1.0'
 
 
     implementation "androidx.activity:activity-ktx:1.2.0"
@@ -76,4 +74,5 @@ dependencies {
     //kakao sdk
     implementation "com.kakao.sdk:v2-user:2.11.0" // 카카오 로그인
 
+    implementation 'com.akexorcist:snap-time-picker:1.0.3'
 }

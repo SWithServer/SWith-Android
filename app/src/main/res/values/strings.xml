@@ -6,4 +6,6 @@
     <string name="create_info">* 회차는 날짜 순에 따라 조정됩니다.</string>
     <string name="create_place_hint">장소 (텍스트 입력)</string>
     <string name="create_detail">회차 내용\n(텍스트 입력)\nex) 브루트 포스 알고리즘\np177까지 읽기\np178내용 발표</string>
+    <string name="create_round_start_time">시작 시간</string>
+    <string name="create_round_end_time">종료 시간</string>
 </resources>
