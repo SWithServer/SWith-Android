@@ -14,6 +14,8 @@ import com.example.swith.utils.ToolBarManager
 
 
 class MainActivity : AppCompatActivity() {
+    //뒤로가기 눌렀던 시간 저장
+    private var backKeyPressedTime: Long = 0
     lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,4 +70,13 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onBackPressed() {
+        if (System.currentTimeMillis() <= backKeyPressedTime + 2000) {
+            // 뒤로가기 두 번 누르면 종료
+            finish()
+        } else{
+            backKeyPressedTime = System.currentTimeMillis()
+            Toast.makeText(this, "뒤로 가기 한 번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
+        }
+    }
 }
