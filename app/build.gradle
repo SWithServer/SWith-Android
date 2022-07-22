@@ -3,11 +3,14 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
 }
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
 
 android {
     compileSdk 31
 
-    buildFeatures{
+    buildFeatures {
         viewBinding true
         dataBinding true
     }
@@ -18,8 +21,11 @@ android {
         targetSdk 31
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        //key값 가리기
+        def kakao_api_key = properties.getProperty('kakao_api_key')
+        manifestPlaceholders["KAKAO_API_KEY"] = kakao_api_key
     }
 
     buildTypes {
