@@ -25,6 +25,7 @@ android {
 
         //key값 가리기
         def kakao_api_key = properties.getProperty('kakao_api_key')
+        buildConfigField "String", "KAKAO_API_KEY", properties['kakao_api_key']
         manifestPlaceholders["KAKAO_API_KEY"] = kakao_api_key
     }
 
