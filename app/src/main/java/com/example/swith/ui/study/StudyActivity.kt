@@ -100,4 +100,16 @@ class StudyActivity : AppCompatActivity() {
         }
     }
 
+    override fun onBackPressed() {
+        with(supportFragmentManager) {
+            // RoundTabFragment 위에 있으면 이전 키 누르면 RoundFragment로 돌아오기, 아닌 경우 activity 종료
+            if (fragments[0] is RoundTabFragment) {
+                beginTransaction().replace(R.id.study_frm, RoundFragment())
+                    .commitAllowingStateLoss()
+            } else {
+                finish()
+            }
+        }
+    }
+
 }

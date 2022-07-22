@@ -32,6 +32,5 @@ class RoundTabFragment() : BaseFragment<FragmentRoundTabBinding>(R.layout.fragme
         TabLayoutMediator(binding.tbLayoutRoundTab, binding.vpRoundTab){
             tab, position -> tab.text = information[position]
         }.attach()
-
     }
 }
