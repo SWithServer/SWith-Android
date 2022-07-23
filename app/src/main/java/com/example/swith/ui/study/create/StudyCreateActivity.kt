@@ -2,7 +2,10 @@ package com.example.swith.ui.study.create
 
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.graphics.ImageDecoder
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +17,9 @@ import java.util.*
 
 class StudyCreateActivity :AppCompatActivity(),ConfirmDialogInterface{
     lateinit var binding: ActivityStudyCreateBinding
+
+    private val GALLERY=1
+    private var imageView: ImageView? = null
 
     private lateinit var startTime: Calendar //활동 시작기간
     private var calendar = Calendar.getInstance()
@@ -30,6 +36,8 @@ class StudyCreateActivity :AppCompatActivity(),ConfirmDialogInterface{
 
         val imageBtn: Button = binding.btnImage
         imageBtn.setOnClickListener {
+            //스터디 개설 이미지뷰 갤러리 연동
+            imageView =binding.ivStudyCreate
             openGallery()
         }
 
@@ -152,12 +160,45 @@ class StudyCreateActivity :AppCompatActivity(),ConfirmDialogInterface{
 
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == GALLERY)
+        {
+            if(resultCode == RESULT_OK)
+            {
+                var currentImageUri = data?.data
+                try{
+                    currentImageUri?.let{
+                        if(Build.VERSION.SDK_INT < 28) {
+                            val bitmap = MediaStore.Images.Media.getBitmap(
+                                this.contentResolver,
+                                currentImageUri
+                            )
+                            imageView?.setImageBitmap(bitmap)
+                        } else {
+                            val source = ImageDecoder.createSource(this.contentResolver, currentImageUri)
+                            val bitmap = ImageDecoder.decodeBitmap(source)
+                            imageView?.setImageBitmap(bitmap)
+                        }
+                    }
+                }
+                catch (e:Exception)
+                {
+                    e.printStackTrace()
+                }
+            }
+            else if(resultCode == RESULT_CANCELED)
+            {
+                Toast.makeText(this, "사진 선택 취소", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
     //갤러리에서 이미지 선택
-    private fun openGallery() {
-        val intent = Intent(Intent.ACTION_PICK)
-//        intent.type = MediaStore.Images.Media.CONTENT_TYPE
-//        intent.type="image/*"
-//        startActivityForResult(intent,102)
+    private fun openGallery(){
+        val intent: Intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.setType("image/*")
+        startActivityForResult(intent,GALLERY)
     }
 
     //개설버튼 클릭시 dialog

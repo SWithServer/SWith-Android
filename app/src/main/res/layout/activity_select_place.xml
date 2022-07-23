@@ -10,8 +10,8 @@
         app:layout_constraintTop_toTopOf="parent">
         <ImageView
             android:id="@+id/btn_search_iv"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:src="@drawable/ic_search"
             android:layout_marginTop="40dp"
             android:layout_marginStart="10dp"/>
@@ -19,7 +19,7 @@
             android:id="@+id/place_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="25sp"
+            android:textSize="20sp"
             android:layout_marginTop="30dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
