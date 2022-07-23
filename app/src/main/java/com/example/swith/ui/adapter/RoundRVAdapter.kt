@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.swith.data.Round
 import com.example.swith.databinding.ItemRoundBinding
+import java.time.LocalDateTime
 import kotlin.math.round
 
 class RoundRVAdapter(private val curCount: Int) : RecyclerView.Adapter<RoundRVAdapter.ViewHolder>() {
@@ -50,7 +51,12 @@ class RoundRVAdapter(private val curCount: Int) : RecyclerView.Adapter<RoundRVAd
             with(binding){
                 roundTitleTv.text= round.count.toString() + "회차"
                 roundDetailTv.text = round.detail
-                roundDateTv.text = round.startTime
+                roundDateTv.text = with(round.startTime){
+                    if (year == LocalDateTime.now().year)
+                        String.format("%d월 %d일 %d:%02d", month, day, hourOfDay, minute)
+                    else
+                        String.format("%2d년 %d월 %d일 %d:%02d", year % 2000, month, day, hourOfDay, minute)
+                }
                 roundAttendTv.text = if (round.attend > 0)"출석 : ${round.attend}명" else ""
             }
         }

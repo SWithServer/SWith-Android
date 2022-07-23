@@ -6,6 +6,7 @@ import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.swith.R
+import com.example.swith.data.DateTime
 import com.example.swith.data.Round
 import com.example.swith.databinding.FragmentRoundBinding
 import com.example.swith.ui.BaseFragment
@@ -43,7 +44,7 @@ class RoundFragment : BaseFragment<FragmentRoundBinding>(R.layout.fragment_round
     private fun initListener(){
         var testCount = 7
         with(binding){
-            roundAddBtn.setOnClickListener { viewModel.addData(Round(testCount, "22/7/14", "22/7/16", "영어 ${testCount++}회차 스터디", true, null, 3)) }
+            roundAddBtn.setOnClickListener { viewModel.addData(Round(testCount, DateTime(2022, 7, 22, 22, 0), DateTime(2022, 7, 22, 23, 0), "영어 ${testCount++}회차 스터디", true, null, 3)) }
             roundNoticeIv.setOnClickListener { startActivity(Intent(activity, NoticeActivity::class.java)) }
             roundAddBtn.setOnClickListener { startActivity(Intent(activity, RoundCreateActivity::class.java)) }
             roundPreviousCb.setOnCheckedChangeListener { view, isChecked -> viewModel.setPastData(view.isChecked) }

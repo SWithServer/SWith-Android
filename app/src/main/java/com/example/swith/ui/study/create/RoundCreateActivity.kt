@@ -1,5 +1,6 @@
 package com.example.swith.ui.study.create
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.graphics.Rect
 import android.os.Bundle
@@ -7,14 +8,14 @@ import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.NumberPicker
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
 import androidx.databinding.DataBindingUtil
-import com.akexorcist.snaptimepicker.SnapTimePickerDialog
-import com.akexorcist.snaptimepicker.TimeRange
-import com.akexorcist.snaptimepicker.TimeValue
 import com.example.swith.R
+import com.example.swith.data.DateTime
 import com.example.swith.databinding.ActivityRoundCreateBinding
+import com.example.swith.databinding.DialogTimepickerBinding
 import com.example.swith.utils.ToolBarManager
 import java.time.LocalDateTime
 import java.util.*
@@ -25,6 +26,9 @@ class RoundCreateActivity : AppCompatActivity() {
     private val year = calendar.get(Calendar.YEAR)
     private val month = calendar.get(Calendar.MONTH)
     private val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+    private var startTime: DateTime? = null
+    private var endTime: DateTime? = null
 
     lateinit var binding: ActivityRoundCreateBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -111,31 +115,82 @@ class RoundCreateActivity : AppCompatActivity() {
                 // 지금보다 이전 날짜(과거 날짜) 비활성화
                 // start date, end date 나눠서 구현해야 할듯
                 setOnDateSetListener { _, dateYear, monthOfYear, dayOfMonth ->
-                    SnapTimePickerDialog.Builder().apply {
-                        if (isStart) setTitle(R.string.create_round_start_time)
-                        else setTitle(R.string.create_round_end_time)
-                        setTitleColor(R.color.white)
-                        setThemeColor(R.color.teal_700)
-                        setPositiveButtonColor(R.color.black)
-                        setNegativeButtonColor(R.color.black)
-                        setButtonTextAllCaps(false)
-                        with(LocalDateTime.now()){
-                            setPreselectedTime(TimeValue(hour, minute))
-                            if (year == dateYear && monthValue == monthOfYear + 1 && day == dayOfMonth)
-                                setSelectableTimeRange(TimeRange(TimeValue(hour, minute + 1), TimeValue(23, 59)))
-                        }
-                    }.build().apply {
-                        setListener{ hour, minute ->
-                            if (isStart) {
-                                btnCreateStartDate.text =
-                                    String.format("시작 : ${dateYear}.${monthOfYear+1}.${dayOfMonth} ${hour}:%02d", minute)
-                            } else {
-                                btnCreateEndDate.text =
-                                    String.format("종료 : ${dateYear}.${monthOfYear+1}.${dayOfMonth} ${hour}:%02d", minute)
+                    val dialogBinding : DialogTimepickerBinding = DataBindingUtil.inflate(layoutInflater, R.layout.dialog_timepicker, null, false)
+                    dialogBinding.npHourPicker.apply {
+                        wrapSelectorWheel = false
+                        descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
+                        with(LocalDateTime.now()) {
+                            // 오늘인 경우
+                            val minuteIdx = minute / 10
+                            minValue = if (year == dateYear && monthValue == monthOfYear + 1 && day == dayOfMonth) {
+                                if (minuteIdx == 5 && minute % 10 > 0){
+                                    hour + 1 .also {
+                                        value = hour + 1
+                                    }
+                                }
+                                else hour .also {
+                                    value = hour
+                                }
+                            } else 0
+                            maxValue = 23
+
+                            setOnValueChangedListener { _, _, newVal ->
+                                dialogBinding.npMinutePicker.apply{
+                                    value = minValue
+                                    if (year == dateYear && monthValue == monthOfYear + 1 && day == dayOfMonth) {
+                                        maxValue = 5
+                                        if (newVal.toString() == hour.toString()) {
+                                            minValue = minuteIdx + 1
+                                            displayedValues = arrayOf("0", "10", "20", "30", "40", "50").sliceArray(minuteIdx + 1..5)
+                                        } else {
+                                            displayedValues = arrayOf("0", "10", "20", "30", "40", "50")
+                                            value = 0
+                                            minValue = 0
+                                        }
+                                    }
+                                }
                             }
-                            setAddButton()
                         }
-                    }.show(supportFragmentManager, "Snap")
+                    }
+
+                    dialogBinding.npMinutePicker.apply {
+                        wrapSelectorWheel = false
+                        descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
+                        with(LocalDateTime.now()) {
+                            if (year != dateYear || monthValue != monthOfYear + 1 || day != dayOfMonth) {
+                                minValue = 0
+                                displayedValues = arrayOf("0", "10", "20", "30", "40", "50")
+                            } else if (year == dateYear && monthValue == monthOfYear + 1 && day == dayOfMonth && hour.toString() == dialogBinding.npHourPicker.value.toString()){
+                                minValue = (minute / 10) + 1
+                                displayedValues = arrayOf("0", "10", "20", "30", "40", "50").sliceArray(minute / 10 + 1..5)
+                            }
+                            maxValue = 5
+                        }
+                    }
+                    AlertDialog.Builder(this@RoundCreateActivity)
+                        .setTitle(if (isStart) "시작 시간" else "종료 시간")
+                        .setView(dialogBinding.root)
+                        .setPositiveButton("확인") { dialog, which
+                            ->
+                            if (isStart) {
+                                btnCreateStartDate.text = String.format(
+                                    "시작 : ${dateYear}.${monthOfYear + 1}.${dayOfMonth} ${dialogBinding.npHourPicker.value}:%02d",
+                                    (dialogBinding.npMinutePicker.value) * 10
+                                )
+                                startTime = DateTime(dateYear, monthOfYear, dayOfMonth, dialogBinding.npHourPicker.value, dialogBinding.npMinutePicker.value * 10)
+                            }
+                            else {
+                                btnCreateEndDate.text = String.format(
+                                    "종료 : ${dateYear}.${monthOfYear + 1}.${dayOfMonth} ${dialogBinding.npHourPicker.value}:%02d",
+                                    (dialogBinding.npMinutePicker.value) * 10
+                                )
+                                endTime = DateTime(dateYear, monthOfYear, dayOfMonth, dialogBinding.npHourPicker.value, dialogBinding.npMinutePicker.value * 10)
+                            }
+                        }
+                        .setNegativeButton("취소") { _, _
+                            -> this.show() }
+                        .create()
+                        .show()
                 }
                 datePicker.minDate = System.currentTimeMillis() - 1000
                 show()
@@ -147,7 +202,7 @@ class RoundCreateActivity : AppCompatActivity() {
     private fun setAddButton(){
         with(binding) {
             btnCreateAdd.apply {
-                visibility = if (!etCreatePlace.text.isNullOrBlank() && !etCreateDetail.text.isNullOrBlank() && btnCreateStartDate.text != "시작 시간" && btnCreateEndDate.text != "종료 시간") View.VISIBLE else View.INVISIBLE
+                visibility = if (!etCreatePlace.text.isNullOrBlank() && !etCreateDetail.text.isNullOrBlank() && startTime != null && endTime != null) View.VISIBLE else View.INVISIBLE
             }
         }
     }
