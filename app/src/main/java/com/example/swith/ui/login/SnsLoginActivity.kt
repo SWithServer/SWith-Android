@@ -12,6 +12,7 @@ import androidx.databinding.DataBindingUtil
 import com.example.swith.R
 import com.example.swith.databinding.ActivitySnsLoginBinding
 import com.example.swith.ui.MainActivity
+import com.example.swith.ui.ProfileModifyActivity
 import com.example.swith.utils.SharedPrefManager
 import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.auth.model.OAuthToken
@@ -82,7 +83,7 @@ class SnsLoginActivity : AppCompatActivity(), View.OnClickListener {
                                 "\n만료시간: ${tokenInfo?.expiresIn} 초"
                     )
                     getUserInfo()
-                    goMainPage()
+                    goProfileModifyPage()
                 }
             }
         } else {
@@ -100,7 +101,7 @@ class SnsLoginActivity : AppCompatActivity(), View.OnClickListener {
                 //TODO 서버에 사용자 정보 넘겨주기
                 Log.i("doori", "카카오계정으로 로그인 성공 ${token.accessToken}")
                 getUserInfo()
-                goMainPage()
+                goProfileModifyPage()
             }
         }
 
@@ -126,7 +127,7 @@ class SnsLoginActivity : AppCompatActivity(), View.OnClickListener {
                         //TODO 서버에 사용자 정보 넘겨주기
                         Log.e("doori", "카카오톡으로 로그인 성공 ${token.accessToken}")
                         getUserInfo()
-                        goMainPage()
+                        goProfileModifyPage()
                     }
                 }
 
@@ -153,10 +154,10 @@ class SnsLoginActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun goMainPage(){
+    private fun goProfileModifyPage(){
         //TODO 자동로그인 테스트를 위한 임시데이터
         SharedPrefManager(this@SnsLoginActivity).setLoginData("1234","asdasd")
-        Intent(this@SnsLoginActivity,MainActivity::class.java).run {
+        Intent(this@SnsLoginActivity,ProfileModifyActivity::class.java).run {
             startActivity(this)
             finishAffinity()
         }
