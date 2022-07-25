@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.swith.data.DateTime
 import com.example.swith.data.Round
+import java.util.*
+import kotlin.collections.ArrayList
 
 class RoundViewModel() : ViewModel() {
     // 현재 회차 임시 변수
@@ -53,6 +55,18 @@ class RoundViewModel() : ViewModel() {
     fun setPastData(pastVisible: Boolean){
         this.pastVisible = pastVisible
         _roundLiveData.value = if (pastVisible) allData else postData
+    }
+
+    // 해당 날짜에 회차가 있는지 여부 체크
+    fun roundDayExists(year: Int, month: Int, day: Int) : Boolean{
+        val thisTimeToLong = String.format("%4d%02d%02d", year, month, day).toLong()
+        allData.forEach {
+            val startTimeToLong = String.format("%4d%02d%02d", it.startTime.year, it.startTime.month, it.startTime.day).toLong()
+            val endTimeToLong = String.format("%4d%02d%02d", it.endTime.year, it.endTime.month, it.endTime.day).toLong()
+
+            if (thisTimeToLong in startTimeToLong..endTimeToLong) return true
+        }
+        return false
     }
 
 }

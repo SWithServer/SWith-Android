@@ -80,4 +80,7 @@ dependencies {
 
     //kakao sdk
     implementation "com.kakao.sdk:v2-user:2.11.0" // 카카오 로그인
+
+    //material calendar view
+    implementation 'com.github.prolificinteractive:material-calendarview:2.0.0'
 }

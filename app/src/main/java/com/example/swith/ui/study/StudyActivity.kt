@@ -6,8 +6,10 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.findFragment
+import androidx.lifecycle.Observer
 import com.example.swith.R
 import com.example.swith.databinding.ActivityStudyBinding
 import com.example.swith.ui.home.HomeFragment

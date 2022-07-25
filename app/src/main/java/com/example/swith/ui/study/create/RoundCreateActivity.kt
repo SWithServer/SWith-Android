@@ -158,7 +158,7 @@ class RoundCreateActivity : AppCompatActivity() {
                                             value = hour
                                         }
                                 }
-                                else if (minuteIdx == 5 && minute % 10 > 0){
+                                else if (minuteIdx == 5){
                                     hour + 1 .also {
                                         value = hour + 1
                                     }
