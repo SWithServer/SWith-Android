@@ -31,17 +31,20 @@ class StudyCreateActivity :AppCompatActivity(),ConfirmDialogInterface{
         super.onCreate(savedInstanceState)
         binding = ActivityStudyCreateBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         //intent
         val selectPlace_intent = Intent(this, SelectPlaceActivity::class.java)
 
         val imageBtn: Button = binding.btnImage
         imageBtn.setOnClickListener {
             //스터디 개설 이미지뷰 갤러리 연동
-            imageView =binding.ivStudyCreate
+            imageView = binding.ivStudyCreate
             openGallery()
         }
 
         //btn_onClickListener들
+
+        //스터디 개설버튼
         binding.btnStudyCreate.setOnClickListener {
             createStudy()
         }
@@ -125,40 +128,46 @@ class StudyCreateActivity :AppCompatActivity(),ConfirmDialogInterface{
 
         //시간 선택
         val listener = CompoundButton.OnCheckedChangeListener { checkbox, isChecked ->
-            val tv_study_month = binding.tvStudyMonth
-            val tv_study_week = binding.tvStudyWeek
-            val tv_study_free = binding.tvStudyFree
-            if (isChecked)
-                when (checkbox.id) {
+            with(binding) {
+                if (isChecked)
+                    when (checkbox.id) {
 
-                    R.id.check_week -> {
-                        tv_study_month.setText("")
-                        tv_study_free.setText("")
-                        tv_study_week.isEnabled = true
-                        tv_study_month.isEnabled = false
-                        tv_study_free.isEnabled = false
+                        R.id.check_week -> {
+                            tvStudyFree.setText("")
+                            tvStudyMonth.setText("")
+                            checkMonth.isChecked = false
+                            checkFree.isChecked = false
+                            tvStudyWeek.isEnabled = true
+                            tvStudyMonth.isEnabled = false
+                            tvStudyFree.isEnabled = false
+                        }
+                        R.id.check_month -> {
+                            tvStudyWeek.setText("")
+                            tvStudyFree.setText("")
+                            checkWeek.isChecked = false
+                            checkFree.isChecked = false
+                            tvStudyMonth.isEnabled = true
+                            tvStudyWeek.isEnabled = false
+                            tvStudyFree.isEnabled = false
+                        }
+                        R.id.check_free -> {
+                            tvStudyWeek.setText("")
+                            tvStudyMonth.setText("")
+                            checkMonth.isChecked = false
+                            checkWeek.isChecked = false
+                            tvStudyFree.isEnabled = true
+                            tvStudyWeek.isEnabled = false
+                            tvStudyMonth.isEnabled = false
+                        }
                     }
-                    R.id.check_month -> {
-                        tv_study_week.setText("")
-                        tv_study_free.setText("")
-                        tv_study_month.isEnabled = true
-                        tv_study_week.isEnabled = false
-                        tv_study_free.isEnabled = false
-                    }
-                    R.id.check_free -> {
-                        tv_study_week.setText("")
-                        tv_study_month.setText("")
-                        tv_study_free.isEnabled = true
-                        tv_study_month.isEnabled = false
-                        tv_study_week.isEnabled = false
-                    }
-                }
+            }
         }
         binding.checkWeek.setOnCheckedChangeListener(listener)
         binding.checkMonth.setOnCheckedChangeListener(listener)
         binding.checkFree.setOnCheckedChangeListener(listener)
 
     }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
