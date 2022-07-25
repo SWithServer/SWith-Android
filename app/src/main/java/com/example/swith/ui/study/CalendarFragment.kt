@@ -1,29 +1,27 @@
 package com.example.swith.ui.study
 
-import android.content.Context
+import android.content.Intent
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Typeface
-import android.graphics.drawable.Drawable
+import androidx.lifecycle.Observer
 import android.os.Bundle
 import android.text.style.ForegroundColorSpan
 import android.text.style.LineBackgroundSpan
 import android.text.style.StyleSpan
+import android.util.Log
 import android.view.View
-import androidx.core.content.ContextCompat
-import androidx.core.view.children
-import androidx.core.view.get
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.swith.R
 import com.example.swith.databinding.FragmentCalendarBinding
 import com.example.swith.ui.BaseFragment
+import com.example.swith.ui.adapter.CalendarRoundRVAdapter
+import com.example.swith.ui.study.create.RoundCreateActivity
 import com.example.swith.viewmodel.RoundViewModel
 import com.prolificinteractive.materialcalendarview.*
-import com.prolificinteractive.materialcalendarview.format.WeekDayFormatter
-import java.time.DayOfWeek
 import java.time.LocalDateTime
-import java.util.*
 
 class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment_calendar){
     private val viewModel : RoundViewModel by activityViewModels()
@@ -35,10 +33,16 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
 
     private fun initView(){
         with(LocalDateTime.now()){
-            binding.tvTest.text = "${year}년 ${monthValue}월 ${dayOfMonth}일"
+            binding.tvCalendarDate.text = "${year%1000}/${monthValue}/${dayOfMonth}"
+            viewModel.setCalendarData(year, monthValue, dayOfMonth)
         }
 
-        with(binding.calendarView){
+        with(binding.rvCalendarRound){
+            adapter = CalendarRoundRVAdapter()
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        }
+
+        with(binding.calendarView) {
             state().edit()
                 .isCacheCalendarPositionEnabled(false)
                 .setCalendarDisplayMode(CalendarMode.MONTHS)
@@ -51,10 +55,20 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
             setDateSelected(CalendarDay.today(), true)
 
             setOnDateChangedListener { _, date, _ ->
-                binding.tvTest.text = "${date.year}년 ${date.month}월 ${date.day}일"
+                binding.tvCalendarDate.text = "${date.year % 1000}/${date.month}/${date.day}"
+                viewModel.setCalendarData(date.year, date.month, date.day)
             }
-
         }
+        with(viewModel.calendarLiveData){
+            observe(viewLifecycleOwner, Observer {
+                (binding.rvCalendarRound.adapter as CalendarRoundRVAdapter).setData(it)
+                Log.d("CalendarViewModel", value?.toString()!!)
+                value?.isEmpty()?.let { it1 -> setRVVisibility(it1) }
+            })
+        }
+
+        binding.btnCreateCalendar.setOnClickListener { startActivity(Intent(activity, RoundCreateActivity::class.java)) }
+        binding.btnNoCreateCalendar.setOnClickListener { startActivity(Intent(activity, RoundCreateActivity::class.java)) }
     }
 
     inner class TodayDecorator: DayViewDecorator{
@@ -99,6 +113,15 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
             // 글짜 색만 다시 칠하기
             // 현재 진한 하늘색
             paint.color = Color.rgb(72, 180, 224)
+        }
+    }
+
+    private fun setRVVisibility(isEmpty: Boolean){
+        with(binding){
+            rvCalendarRound.visibility = if (isEmpty) View.INVISIBLE else View.VISIBLE
+            btnCreateCalendar.visibility = if(isEmpty) View.INVISIBLE else View.VISIBLE
+            tvNoRound.visibility = if (isEmpty) View.VISIBLE else View.INVISIBLE
+            btnNoCreateCalendar.visibility = if(isEmpty) View.VISIBLE else View.INVISIBLE
         }
     }
 }

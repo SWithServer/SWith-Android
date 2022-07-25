@@ -9,8 +9,6 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class RoundViewModel() : ViewModel() {
-    // 현재 회차 임시 변수
-
     private var allData = ArrayList<Round>()
     private var postData = ArrayList<Round>()
     val curCount = 3
@@ -19,11 +17,19 @@ class RoundViewModel() : ViewModel() {
     private var _currentLiveData = MutableLiveData<Round>()
     private var _roundLiveData = MutableLiveData<ArrayList<Round>>()
 
+    // 캘린더 화면에 관한 것
+    private var _calendarLiveData = MutableLiveData<ArrayList<Round>>()
+
+
     val currentLiveData : LiveData<Round>
         get() = _currentLiveData
 
     val roundLiveData : LiveData<ArrayList<Round>>
         get() = _roundLiveData
+
+    val calendarLiveData : LiveData<ArrayList<Round>>
+        get () = _calendarLiveData
+
 
     init{
         // 임시로 여기다 추가
@@ -67,6 +73,19 @@ class RoundViewModel() : ViewModel() {
             if (thisTimeToLong in startTimeToLong..endTimeToLong) return true
         }
         return false
+    }
+
+    // 캘린더에 보여질 data 설정
+    fun setCalendarData(year: Int, month: Int, day: Int){
+        val tempList = ArrayList<Round>()
+        val thisTimeToLong = String.format("%4d%02d%02d", year, month, day).toLong()
+        allData.forEach {
+            val startTimeToLong = String.format("%4d%02d%02d", it.startTime.year, it.startTime.month, it.startTime.day).toLong()
+            val endTimeToLong = String.format("%4d%02d%02d", it.endTime.year, it.endTime.month, it.endTime.day).toLong()
+
+            if (thisTimeToLong in startTimeToLong..endTimeToLong) tempList.add(it)
+        }
+        _calendarLiveData.value = tempList
     }
 
 }

@@ -23,10 +23,12 @@ class CalendarRoundRVAdapter() : RecyclerView.Adapter<CalendarRoundRVAdapter.Vie
 
     fun setData(roundData : ArrayList<Round>){
         roundList = roundData
+        notifyDataSetChanged()
     }
 
     fun addData(round: Round) {
         roundList.add(round)
+        notifyDataSetChanged()
     }
 
     inner class ViewHolder(val binding: ItemCalendarRoundBinding) : RecyclerView.ViewHolder(binding.root) {
