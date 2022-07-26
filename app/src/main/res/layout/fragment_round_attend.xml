@@ -15,6 +15,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/sv_attend"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="20dp"
@@ -82,6 +83,20 @@
                 app:layout_constraintTop_toBottomOf="@id/tl_attend_top_row"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
+    <TextView
+        android:id="@+id/tv_no_people"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:visibility="invisible"
+        android:text="@string/attend_no_people"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:gravity="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
     <Button
         android:id="@+id/btn_attend"
         android:layout_width="60dp"
