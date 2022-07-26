@@ -2,7 +2,9 @@ package com.example.swith.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.example.swith.R
 import com.example.swith.data.Round
 import com.example.swith.databinding.ItemCalendarRoundBinding
 
@@ -11,7 +13,7 @@ class CalendarRoundRVAdapter() : RecyclerView.Adapter<CalendarRoundRVAdapter.Vie
     lateinit var binding: ItemCalendarRoundBinding
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        binding = ItemCalendarRoundBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        binding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_calendar_round, parent, false)
         return ViewHolder(binding)
     }
 

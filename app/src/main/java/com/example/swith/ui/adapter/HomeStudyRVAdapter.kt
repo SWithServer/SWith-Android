@@ -2,7 +2,9 @@ package com.example.swith.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.example.swith.R
 import com.example.swith.data.Study
 import com.example.swith.databinding.ItemStudyBinding
 import java.util.*
@@ -22,7 +24,7 @@ class HomeStudyRVAdapter : RecyclerView.Adapter<HomeStudyRVAdapter.ViewHolder>()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        binding = ItemStudyBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        binding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_study, parent, false)
         return ViewHolder(binding)
     }
 

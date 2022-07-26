@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 
-class CreateRoundViewModel: ViewModel() {
+class RoundCreateViewModel: ViewModel() {
 
     fun postRound(){
         viewModelScope.launch {

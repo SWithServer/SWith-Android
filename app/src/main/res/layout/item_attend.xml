@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TableRow>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/black"/>
+        <TextView
+            android:id="@+id/tv_item_name"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:textSize="16dp"
+            android:padding="3dp"
+            android:textColor="@color/black"
+            android:text="이름"
+            android:gravity="center"
+            android:layout_column="1"/>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/black"/>
+        <TextView
+            android:id="@+id/tv_item_attend"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="출석"
+            android:textSize="16dp"
+            android:padding="3dp"
+            android:layout_weight="4"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:layout_column="1"/>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/black"/>
+    </TableRow>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black"/>
+</TableLayout>
+</layout>

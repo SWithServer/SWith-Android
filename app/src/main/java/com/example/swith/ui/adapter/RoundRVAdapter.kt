@@ -3,7 +3,9 @@ package com.example.swith.ui.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.example.swith.R
 import com.example.swith.data.Round
 import com.example.swith.databinding.ItemRoundBinding
 import java.time.LocalDateTime
@@ -24,7 +26,7 @@ class RoundRVAdapter(private val curCount: Int) : RecyclerView.Adapter<RoundRVAd
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        binding = ItemRoundBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        binding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_round, parent, false)
         return ViewHolder(binding)
     }
 
