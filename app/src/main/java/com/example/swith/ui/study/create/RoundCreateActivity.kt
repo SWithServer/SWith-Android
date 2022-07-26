@@ -304,15 +304,27 @@ class RoundCreateActivity : AppCompatActivity() {
                     datePicker.minDate = System.currentTimeMillis() - 1000
                 } else {
                     startTime?.let{
-                        calendar.set(startTime?.year!!, startTime?.month!! - 1, startTime?.day!!)
-                        datePicker.minDate = calendar.timeInMillis
+                        // startTime의 시간이 23시 50분이면 다음날로 minDate
+                        if (startTime?.hourOfDay == 23 && startTime?.minute == 50){
+                            calendar.set(startTime?.year!!, startTime?.month!! - 1, startTime?.day!!)
+                            datePicker.minDate = calendar.timeInMillis + 86400000
+                        } else {
+                            calendar.set(startTime?.year!!, startTime?.month!! - 1, startTime?.day!!)
+                            datePicker.minDate = calendar.timeInMillis
+                        }
                     }
                 }
 
                 if(isStart){
                     endTime?.let{
-                        calendar.set(endTime?.year!!, endTime?.month!! - 1, endTime?.day!!)
-                        datePicker.maxDate = calendar.timeInMillis
+                        // endtime의 시간이 0시 0분이면 maxDate하루 전날로
+                        if (endTime?.hourOfDay == 0 && endTime?.minute == 0){
+                            calendar.set(endTime?.year!!, endTime?.month!! - 1, endTime?.day!!)
+                            datePicker.maxDate = calendar.timeInMillis - 86400000
+                        }else {
+                            calendar.set(endTime?.year!!, endTime?.month!! - 1, endTime?.day!!)
+                            datePicker.maxDate = calendar.timeInMillis
+                        }
                     }
                 }
                 show()
