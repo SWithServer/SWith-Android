@@ -31,8 +31,8 @@
             android:exported="false" />
         <activity android:name=".ui.login.SnsLoginActivity"
             android:exported="false"/>
-        <activity android:name=".ui.ProfileActivity"
-            android:exported="false"/>
+        <!-- <activity android:name=".ui.ProfileActivity"
+            android:exported="false"/> -->
         <activity
             android:name=".ui.MainActivity"
             android:exported="true">
@@ -51,6 +51,7 @@
             android:exported="true"
             android:windowSoftInputMode="stateHidden"/>
 
+        <!--
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
             android:exported="true">
@@ -59,11 +60,11 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <!-- Redirect URI: "kakao${NATIVE_APP_KEY}://oauth" -->
+                 Redirect URI: "kakao${NATIVE_APP_KEY}://oauth"
                 <data android:host="oauth"
                     android:scheme="kakao${KAKAO_API_KEY}" />
             </intent-filter>
-        </activity>
+        </activity> -->
     </application>
 
 </manifest>
