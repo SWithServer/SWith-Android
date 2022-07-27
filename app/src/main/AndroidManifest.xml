@@ -3,23 +3,27 @@
     package="com.example.swith">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
-    //갤러리 연동
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
+        android:name=".SwithApplication"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:name=".SwithApplication"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SWith">
         <activity
+            android:name=".ui.region.DongActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.region.GuActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.study.create.RoundCreateActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".ui.login.LoginActivity"
             android:exported="false" />
@@ -28,13 +32,12 @@
             android:exported="false" />
         <activity
             android:name=".ui.SplashActivity"
-            android:exported="false" />
-        <activity android:name=".ui.login.SnsLoginActivity"
-            android:exported="false"/>
-        <!-- <activity android:name=".ui.ProfileActivity"
-            android:exported="false"/> -->
+            android:exported="true" />
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.login.SnsLoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.profile.ProfileModifyActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -42,29 +45,45 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.MainActivity"
+            android:exported="true" />
         <activity android:name=".ui.study.StudyActivity" />
         <activity
             android:name=".ui.study.create.StudyCreateActivity"
             android:exported="true"
-            android:windowSoftInputMode="stateHidden"/>
-        <activity android:name=".ui.study.create.SelectPlaceActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".ui.study.create.SelectPlaceActivity"
             android:exported="true"
-            android:windowSoftInputMode="stateHidden"/>
-
-        <!--
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".ui.region.CityActivity"
+            android:exported="true"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".ui.region.GuActivity"
+            android:exported="true"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".ui.region.DongActivity"
+            android:exported="true"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                 Redirect URI: "kakao${NATIVE_APP_KEY}://oauth"
-                <data android:host="oauth"
+                <!-- Redirect URI: "kakao${NATIVE_APP_KEY}://oauth" -->
+                <data
+                    android:host="oauth"
                     android:scheme="kakao${KAKAO_API_KEY}" />
             </intent-filter>
-        </activity> -->
+        </activity>
     </application>
 
 </manifest>
