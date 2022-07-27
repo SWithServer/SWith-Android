@@ -6,7 +6,6 @@ data class StudyResult(
     @SerializedName("groupIdx") val groupIdx:Int
 )
 //스터디 개설 retrofit post response data
-
 data class StudyResponse(
     @SerializedName("code") val code: Int,
     @SerializedName("isSuccess") val isSuccess: Boolean,

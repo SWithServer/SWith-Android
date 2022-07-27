@@ -53,7 +53,7 @@ class StudyCreateActivity :AppCompatActivity() {
     var group_content:String=""
 
     // spinner 선택되는 값들 매칭
-    var interest_idx:Int =-1
+    var interest_idx:Int = -1
     var memberLimit_content:Int=-1
     var applicationMethod_idx : Int=-1
     var attendanceVaildTime_content : Int=-1
@@ -79,7 +79,6 @@ class StudyCreateActivity :AppCompatActivity() {
             imageView = binding.ivStudyCreate
             openGallery()
         }
-
 
         //btn_onClickListener들
         //장소선택1
@@ -145,12 +144,10 @@ class StudyCreateActivity :AppCompatActivity() {
             datePickerDialog.show()
         }
 
-
         // 활동 끝나는기간 설정
         binding.btnFinishDay.setOnClickListener {
             if (binding.btnStartDay.text.toString() != "+") {
                 val datePickerDialog = DatePickerDialog(this, { _, year, month, day ->
-
                     if (month<10)
                     { binding.btnFinishDay.text =
                         year.toString() + "-0" + (month + 1).toString() + "-" + day.toString()
@@ -297,8 +294,6 @@ class StudyCreateActivity :AppCompatActivity() {
         binding.checkMonth.setOnCheckedChangeListener(listener)
         binding.checkFree.setOnCheckedChangeListener(listener)
 
-        //시범 스터디 개설 데이터들
-
 
         //스터디 개설버튼
         //retrofit 연결을 위해 잠시 개설확인 dialog를 지움.
@@ -321,6 +316,7 @@ class StudyCreateActivity :AppCompatActivity() {
                 2->{periods_content=binding.tvStudyFree.text.toString()}
             }
 
+            //시범 스터디 개설 데이터들
             var studyRequestData=StudyGroup(1,"2",title,meet_idx,frequency_content,periods_content,online_idx,1,33,interest_idx
                 ,topic_content,memberLimit_content,applicationMethod_idx,recruitmentEndDate,groupStart,groupEnd
                 ,attendanceVaildTime_content,group_content)
