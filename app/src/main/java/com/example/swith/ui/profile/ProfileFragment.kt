@@ -5,9 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.example.swith.R
+import com.example.swith.databinding.FragmentProfileBinding
+import com.example.swith.ui.BaseFragment
 
-class ProfileFragment : Fragment() {
+class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_profile),
+    View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initData()
@@ -16,14 +20,6 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false)
     }
 
     companion object {
@@ -35,5 +31,20 @@ class ProfileFragment : Fragment() {
 
     }
     private fun initView() {
+        binding.clickListener=this@ProfileFragment
+    }
+
+    override fun onClick(view: View?) {
+        when(view?.id){
+            R.id.iv_setting->{
+                Toast.makeText(context,"setting",Toast.LENGTH_SHORT).show()
+            }
+            R.id.btn_resume->{
+                Toast.makeText(context,"resume",Toast.LENGTH_SHORT).show()
+            }
+            R.id.tv_logout->{
+                Toast.makeText(context,"logout",Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }

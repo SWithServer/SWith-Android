@@ -21,10 +21,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        initBottomNavigation()
 
         initData()
         initView()
-        initBottomNavigation()
+
 
         ToolBarManager(this).initToolBar(binding.mainToolbar,
             titleVisible = false,
@@ -36,9 +37,10 @@ class MainActivity : AppCompatActivity() {
         intent.getStringExtra("profile")?.let {
             Log.e("doori","main tag = $it")
             if(it==ProfileFragment.TAG){
-                goProfilePage()
+                //특정 프레그먼트로 이동
+                binding.mainBnv.selectedItemId = R.id.bottom_nav_profile
             }else{
-                goMainPage()
+                binding.mainBnv.selectedItemId = R.id.bottom_nav_home
             }
         }
     }
@@ -56,6 +58,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.bottom_nav_search -> {
                     // TODO: goSearchPage()
                     goSearchPage()
+                    return@setOnItemSelectedListener true
                 }
                 R.id.bottom_nav_profile -> {
                     goProfilePage()
