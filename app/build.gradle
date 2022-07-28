@@ -24,9 +24,9 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         //key값 가리기
-       /* def kakao_api_key = properties.getProperty('kakao_api_key')
+        def kakao_api_key = properties.getProperty('kakao_api_key')
         buildConfigField "String", "KAKAO_API_KEY", properties['kakao_api_key']
-        manifestPlaceholders["KAKAO_API_KEY"] = kakao_api_key */
+        manifestPlaceholders["KAKAO_API_KEY"] = kakao_api_key
     }
 
     buildTypes {
@@ -83,4 +83,7 @@ dependencies {
 
     //material calendar view
     implementation 'com.github.prolificinteractive:material-calendarview:2.0.0'
+
+    // SimpleRatingBar
+    implementation 'com.github.ome450901:SimpleRatingBar:1.5.1'
 }

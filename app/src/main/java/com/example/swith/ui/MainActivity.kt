@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import com.example.swith.R
 import com.example.swith.databinding.ActivityMainBinding
 import com.example.swith.ui.home.HomeFragment
+import com.example.swith.ui.profile.ProfileFragment
 import com.example.swith.utils.ToolBarManager
 
 
@@ -45,7 +46,10 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.bottom_nav_profile -> {
                     // TODO: profile
-                    // ProfileActivity -> ProfileFragment 로 전환해야 할듯?!
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.main_frm, ProfileFragment())
+                        .commitAllowingStateLoss()
+                    return@setOnItemSelectedListener true
                 }
             }
             false
