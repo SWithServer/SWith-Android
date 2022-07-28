@@ -27,6 +27,7 @@ class ProfileFragment : Fragment() {
     }
 
     companion object {
+        const val TAG: String = "ProfileFragment"
         @JvmStatic
         fun newInstance() = ProfileFragment()
     }

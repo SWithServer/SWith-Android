@@ -21,6 +21,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+
+        initData()
+        initView()
         initBottomNavigation()
 
         ToolBarManager(this).initToolBar(binding.mainToolbar,
@@ -28,32 +31,43 @@ class MainActivity : AppCompatActivity() {
             backVisible = false
         )
     }
-    private fun initBottomNavigation(){
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.main_frm, HomeFragment())
-            .commitAllowingStateLoss()
 
+    private fun initView() {
+        intent.getStringExtra("profile")?.let {
+            Log.e("doori","main tag = $it")
+            if(it==ProfileFragment.TAG){
+                goProfilePage()
+            }else{
+                goMainPage()
+            }
+        }
+    }
+
+    private fun initData() {
+    }
+
+    private fun initBottomNavigation(){
         binding.mainBnv.setOnItemSelectedListener { item ->
             when (item.itemId){
                 R.id.bottom_nav_home ->{
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.main_frm, HomeFragment())
-                        .commitAllowingStateLoss()
+                    goMainPage()
                     return@setOnItemSelectedListener true
                 }
                 R.id.bottom_nav_search -> {
-                    // TODO: search
+                    // TODO: goSearchPage()
+                    goSearchPage()
                 }
                 R.id.bottom_nav_profile -> {
-                    // TODO: profile
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.main_frm, ProfileFragment())
-                        .commitAllowingStateLoss()
+                    goProfilePage()
                     return@setOnItemSelectedListener true
                 }
             }
             false
         }
+    }
+
+    private fun goSearchPage() {
+        //TODO: search
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -82,5 +96,17 @@ class MainActivity : AppCompatActivity() {
             backKeyPressedTime = System.currentTimeMillis()
             Toast.makeText(this, "뒤로 가기 한 번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun goProfilePage() {
+        Log.e("doori","goProfilePage")
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.main_frm, ProfileFragment())
+            .commitAllowingStateLoss()
+    }
+    private fun goMainPage() {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.main_frm, HomeFragment())
+            .commitAllowingStateLoss()
     }
 }

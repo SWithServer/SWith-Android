@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import com.example.swith.R
 import com.example.swith.databinding.ActivityProfileModifyBinding
+import com.example.swith.ui.MainActivity
 import com.example.swith.ui.region.CityActivity
 
 class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener {
@@ -47,6 +48,12 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener {
         when (view?.id) {
             R.id.tv_location_detail -> {
                 Intent(this@ProfileModifyActivity,CityActivity::class.java).run {
+                    startActivity(this)
+                }
+            }
+            R.id.btn_save->{
+                Intent(this@ProfileModifyActivity,MainActivity::class.java).run {
+                    putExtra("profile","ProfileFragment")
                     startActivity(this)
                 }
             }
