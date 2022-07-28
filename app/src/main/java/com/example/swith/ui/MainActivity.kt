@@ -47,6 +47,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initBottomNavigation(){
+        goMainPage()
         binding.mainBnv.setOnItemSelectedListener { item ->
             when (item.itemId){
                 R.id.bottom_nav_home ->{
