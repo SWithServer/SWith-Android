@@ -19,6 +19,8 @@ import com.example.swith.utils.ToolBarManager
 import com.example.swith.viewmodel.RoundViewModel
 
 class StudyActivity : AppCompatActivity() {
+    // Intent 전달 표시용
+    private var groupId = 0
     lateinit var binding: ActivityStudyBinding
     // BottomNav 중 회차(연필)을 누르는 경우 가장 최근에 닫은 회차 프래그먼트로 이동
     lateinit var prevRoundFragment: String
@@ -32,6 +34,8 @@ class StudyActivity : AppCompatActivity() {
             backVisible = true
         )
         initBottomNavigation()
+        intent.hasExtra("group")?.let { groupId = intent.getIntExtra("group", 0) }
+        Log.e("studyActivity", groupId.toString())
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

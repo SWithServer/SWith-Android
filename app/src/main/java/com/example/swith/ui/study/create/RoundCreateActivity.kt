@@ -23,6 +23,10 @@ import java.util.*
 
 
 class RoundCreateActivity : AppCompatActivity() {
+    // 회차 최소시간(분단위)
+    private val minuteMin = 10
+    // 회차 최대시간(시간단위)
+    private val hourMax = 8
     private val calendar = Calendar.getInstance()
     private val year = calendar.get(Calendar.YEAR)
     private val month = calendar.get(Calendar.MONTH)
@@ -142,7 +146,9 @@ class RoundCreateActivity : AppCompatActivity() {
                             val minuteIdx = minute / 10
                             // 시작 시간보다 종료 시간이 더 뒤에 있어야 함
                             minValue = if (!isStart && startTime != null && startTime?.year == dateYear && startTime?.month == monthOfYear + 1 && startTime?.day == dayOfMonth) {
-                                if (startTime?.minute == 50) startTime?.hourOfDay!! + 1
+
+                                // 종료시간 선택시 시작시간과 동일한 날짜를 골랐을 때
+                                if (startTime?.minute == 60 - minuteMin) startTime?.hourOfDay!! + 1
                                 else startTime?.hourOfDay!!
                             }
                             // 오늘인 경우
@@ -158,7 +164,7 @@ class RoundCreateActivity : AppCompatActivity() {
                                             value = hour
                                         }
                                 }
-                                else if (minuteIdx == 5){
+                                else if (minuteIdx == (6 - minuteMin / 10)){
                                     hour + 1 .also {
                                         value = hour + 1
                                     }
@@ -169,14 +175,19 @@ class RoundCreateActivity : AppCompatActivity() {
                             maxValue = if (isStart && endTime != null && endTime?.year == dateYear && endTime?.month == monthOfYear + 1 && endTime?.day == dayOfMonth){
                                 if (endTime?.minute == 0) endTime?.hourOfDay!! - 1
                                 else endTime?.hourOfDay!!
-                            } else 23
+                            } else if (!isStart && startTime != null && startTime?.year == dateYear && startTime?.month == monthOfYear + 1 && startTime?.day == dayOfMonth){
+                                if (startTime?.hourOfDay!! + hourMax > 23) 23 else startTime?.hourOfDay!! + hourMax
+                            } else if (!isStart && startTime != null && startTime?.hourOfDay!! + hourMax > 23){
+                                (startTime?.hourOfDay !! + hourMax)% 24
+                            }else 23
+                            Log.d("hournp", maxValue.toString())
 
                             setOnValueChangedListener { _, _, newVal ->
                                 dialogBinding.npMinutePicker.apply{
                                     value = minValue
                                     if (!isStart && startTime != null && startTime?.year == dateYear && startTime?.month == monthOfYear + 1 && startTime?.day == dayOfMonth){
                                         if (newVal == startTime?.hourOfDay){
-                                            minValue = (startTime?.minute!! / 10) + 1
+                                            minValue = (startTime?.minute!! / 10) + minuteMin / 10
                                             displayedValues = arrayOf("0", "10", "20", "30", "40", "50").sliceArray(minValue..5)
                                         } else {
                                             displayedValues = arrayOf("0", "10", "20", "30", "40", "50")
@@ -185,7 +196,7 @@ class RoundCreateActivity : AppCompatActivity() {
                                         maxValue = 5
                                     }else if (isStart && endTime != null && dateYear == endTime?.year && monthOfYear + 1 == endTime?.month && dayOfMonth == endTime?.day) {
                                         if (endTime?.hourOfDay == newVal) {
-                                            maxValue = (endTime?.minute!! / 10) - 1
+                                            maxValue = (endTime?.minute!! / 10) - minuteMin / 10
                                             displayedValues =
                                                 arrayOf("0", "10", "20", "30", "40", "50").sliceArray(
                                                     0..maxValue
@@ -305,12 +316,16 @@ class RoundCreateActivity : AppCompatActivity() {
                 } else {
                     startTime?.let{
                         // startTime의 시간이 23시 50분이면 다음날로 minDate
-                        if (startTime?.hourOfDay == 23 && startTime?.minute == 50){
+                        if (startTime?.hourOfDay == 23 && startTime?.minute == 60 - minuteMin){
                             calendar.set(startTime?.year!!, startTime?.month!! - 1, startTime?.day!!)
                             datePicker.minDate = calendar.timeInMillis + 86400000
+                            datePicker.maxDate = datePicker.minDate
                         } else {
                             calendar.set(startTime?.year!!, startTime?.month!! - 1, startTime?.day!!)
-                            datePicker.minDate = calendar.timeInMillis
+                            if (startTime?.hourOfDay!! + hourMax > 23){
+                                datePicker.minDate = calendar.timeInMillis + 86400000
+                            } else datePicker.minDate = calendar.timeInMillis
+                            datePicker.maxDate = datePicker.minDate
                         }
                     }
                 }
@@ -318,7 +333,7 @@ class RoundCreateActivity : AppCompatActivity() {
                 if(isStart){
                     endTime?.let{
                         // endtime의 시간이 0시 0분이면 maxDate하루 전날로
-                        if (endTime?.hourOfDay == 0 && endTime?.minute == 0){
+                        if (endTime?.hourOfDay == 0 && endTime?.minute!! <= minuteMin - 10){
                             calendar.set(endTime?.year!!, endTime?.month!! - 1, endTime?.day!!)
                             datePicker.maxDate = calendar.timeInMillis - 86400000
                         }else {

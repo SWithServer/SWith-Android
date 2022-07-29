@@ -7,7 +7,6 @@ data class GroupItem(
     val title: String,
     val memberLimit: Int,
     val interestContent: String,
-
     val announcementContent: String,
     val sessionNum: Int,
     val sessionContent: String,

@@ -33,7 +33,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home){
             adapter = HomeStudyRVAdapter().apply {
                 setMyItemClickListener(object: HomeStudyRVAdapter.myItemClickListener{
                     override fun onItemClick(group: GroupItem) {
-                        startActivity(Intent(activity, StudyActivity::class.java))
+                        startActivity(Intent(activity, StudyActivity::class.java).apply {
+                            putExtra("group", group.groupIdx)
+                        })
                     }
                 })
             }
