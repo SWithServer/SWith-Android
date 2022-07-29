@@ -1,10 +1,13 @@
 package com.example.swith.data
 
+import com.google.gson.annotations.SerializedName
+
 data class GroupItem(
     val groupIdx: Int,
     val title: String,
     val memberLimit: Int,
     val interestContent: String,
+
     val announcementContent: String,
     val sessionNum: Int,
     val sessionContent: String,
@@ -13,5 +16,5 @@ data class GroupItem(
 )
 
 data class Group(
-    val group: List<GroupItem>
+    @SerializedName("result") val group: List<GroupItem>
 )

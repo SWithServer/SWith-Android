@@ -6,6 +6,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -19,6 +20,8 @@ object RetrofitService {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
+
+    val retrofitApi : RetrofitApi = retrofit.create(RetrofitApi::class.java)
 }
 interface ApiService{
     @GET("regcodes?")

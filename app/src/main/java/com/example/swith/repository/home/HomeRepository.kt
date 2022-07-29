@@ -1,17 +1,10 @@
 package com.example.swith.repository.home
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.swith.data.Group
 import com.example.swith.repository.RetrofitService
 
-class HomeRepository{
-    private val retrofitService: HomeRetrofitInterface =
-        RetrofitService.retrofit.create(HomeRetrofitInterface::class.java)
-
-    suspend fun getAllStudy(userId: Int) : Group? {
-        val response = retrofitService.getAllStudy(userId)
-        if (response.isSuccessful){
-            return response.body()
-        }
-        return null
-    }
+class HomeRepository(private val homeRemoteDataSource: HomeRemoteDataSource){
+    suspend fun getAllStudy(userId: Int) : LiveData<Group> = homeRemoteDataSource.getAllStudy(userId)
 }
