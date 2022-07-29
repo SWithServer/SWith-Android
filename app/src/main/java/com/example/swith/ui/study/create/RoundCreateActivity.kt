@@ -18,13 +18,14 @@ import com.example.swith.data.DateTime
 import com.example.swith.databinding.ActivityRoundCreateBinding
 import com.example.swith.databinding.DialogTimepickerBinding
 import com.example.swith.utils.ToolBarManager
+import java.lang.Integer.max
 import java.time.LocalDateTime
 import java.util.*
 
 
 class RoundCreateActivity : AppCompatActivity() {
     // 회차 최소시간(분단위)
-    private val minuteMin = 10
+    private val minuteMin = 30
     // 회차 최대시간(시간단위)
     private val hourMax = 8
     private val calendar = Calendar.getInstance()
@@ -145,65 +146,137 @@ class RoundCreateActivity : AppCompatActivity() {
                         with(LocalDateTime.now()) {
                             val minuteIdx = minute / 10
                             // 시작 시간보다 종료 시간이 더 뒤에 있어야 함
-                            minValue = if (!isStart && startTime != null && startTime?.year == dateYear && startTime?.month == monthOfYear + 1 && startTime?.day == dayOfMonth) {
-
+                            if (!isStart && startTime != null && startTime?.year == dateYear && startTime?.month == monthOfYear + 1 && startTime?.day == dayOfMonth) {
                                 // 종료시간 선택시 시작시간과 동일한 날짜를 골랐을 때
-                                if (startTime?.minute == 60 - minuteMin) startTime?.hourOfDay!! + 1
+                                minValue = if (startTime?.minute!! > 60 - minuteMin) startTime?.hourOfDay!! + 1
                                 else startTime?.hourOfDay!!
-                            }
-                            // 오늘인 경우
-                            else if (year == dateYear && monthValue == monthOfYear + 1 && day == dayOfMonth) {
+                            }else if (year == dateYear && monthValue == monthOfYear + 1 && day == dayOfMonth) {
                                 if (!isStart && startTime == null){
                                     // 현재 시각이 40분이상인 경우 시작 시간이 50분 이상이기 때문에 회차의 최소시간을 고려하여 다음 시간으로 넘겨야함
-                                    if (minuteIdx >= 4) {
-                                        hour + 1.also {
+                                    if (minuteIdx + minuteMin / 10 > 5) {
+                                        minValue = hour + 1.also {
                                             value = hour + 1
                                         }
                                     }
-                                    else  hour .also {
+                                    else  minValue = hour .also {
                                             value = hour
                                         }
                                 }
-                                else if (minuteIdx == (6 - minuteMin / 10)){
-                                    hour + 1 .also {
+                                else if (isStart && endTime != null){
+                                    minValue = if (dayOfMonth == endTime?.day) {
+                                        max(hour, endTime?.hourOfDay!! - hourMax)
+                                    } else {
+                                        endTime?.hourOfDay!! + 24 - hourMax
+                                    }
+                                }
+                                else if (minuteIdx == 5){
+                                    minValue = hour + 1 .also {
                                         value = hour + 1
                                     }
-                                } else hour .also {
+                                } else minValue = hour .also {
                                     value = hour
                                 }
-                            } else 0
+                            } else {
+                                minValue = if (isStart && endTime != null){
+                                    if (dayOfMonth == endTime?.day) max(0, endTime?.hourOfDay!! - hourMax)
+                                    else endTime?.hourOfDay!! + 24 - hourMax
+                                } else 0
+                            }
+                            if(isStart) Log.e("startTime - min", minValue.toString() + startTime.toString() + endTime.toString())
+                            // maxValue 부분
                             maxValue = if (isStart && endTime != null && endTime?.year == dateYear && endTime?.month == monthOfYear + 1 && endTime?.day == dayOfMonth){
-                                if (endTime?.minute == 0) endTime?.hourOfDay!! - 1
-                                else endTime?.hourOfDay!!
+                                if (endTime?.minute!! < minuteMin) {
+                                    endTime?.hourOfDay!! - 1
+                                }
+                                else {
+                                    endTime?.hourOfDay!!
+                                }
                             } else if (!isStart && startTime != null && startTime?.year == dateYear && startTime?.month == monthOfYear + 1 && startTime?.day == dayOfMonth){
-                                if (startTime?.hourOfDay!! + hourMax > 23) 23 else startTime?.hourOfDay!! + hourMax
+                                if (startTime?.hourOfDay!! + hourMax > 23) 23
+                                else startTime?.hourOfDay!! + hourMax
                             } else if (!isStart && startTime != null && startTime?.hourOfDay!! + hourMax > 23){
                                 (startTime?.hourOfDay !! + hourMax)% 24
                             }else 23
-                            Log.d("hournp", maxValue.toString())
 
                             setOnValueChangedListener { _, _, newVal ->
                                 dialogBinding.npMinutePicker.apply{
                                     value = minValue
-                                    if (!isStart && startTime != null && startTime?.year == dateYear && startTime?.month == monthOfYear + 1 && startTime?.day == dayOfMonth){
-                                        if (newVal == startTime?.hourOfDay){
-                                            minValue = (startTime?.minute!! / 10) + minuteMin / 10
-                                            displayedValues = arrayOf("0", "10", "20", "30", "40", "50").sliceArray(minValue..5)
-                                        } else {
-                                            displayedValues = arrayOf("0", "10", "20", "30", "40", "50")
-                                            minValue = 0
+                                    if (!isStart && startTime != null){
+                                        if(startTime?.day == dayOfMonth) {
+                                            when (newVal) {
+                                                startTime?.hourOfDay -> {
+                                                    minValue = (startTime?.minute!! / 10) + minuteMin / 10
+                                                    displayedValues = arrayOf("0", "10", "20", "30", "40", "50"
+                                                    ).sliceArray(minValue..5)
+                                                    maxValue = 5
+                                                }
+                                                startTime?.hourOfDay!! + 1 -> {
+                                                    minValue = if (startTime?.minute!! + minuteMin >= 60) ((startTime?.minute!! + minuteMin) / 10) % 6
+                                                    else 0
+                                                    displayedValues = arrayOf("0", "10", "20", "30", "40", "50"
+                                                    ).sliceArray(minValue..5)
+                                                    maxValue = 5
+                                                }
+                                                startTime?.hourOfDay!! + hourMax -> {
+                                                    maxValue = startTime?.minute!! / 10
+                                                    displayedValues = arrayOf("0", "10", "20", "30", "40", "50"
+                                                    ).sliceArray(0..maxValue)
+                                                }
+                                                else -> {
+                                                    displayedValues = arrayOf("0", "10", "20", "30", "40", "50")
+                                                    minValue = 0
+                                                    maxValue = 5
+                                                }
+                                            }
+                                        } else{
+                                            when(newVal){
+                                                startTime?.hourOfDay!! + hourMax % 24 -> {
+                                                    maxValue = startTime?.minute!! / 10
+                                                    displayedValues = arrayOf("0", "10", "20", "30", "40", "50"
+                                                    ).sliceArray(0..maxValue)
+                                                }
+                                                else -> {
+                                                    displayedValues = arrayOf("0", "10", "20", "30", "40", "50")
+                                                    minValue = 0
+                                                    maxValue = 5
+                                                }
+                                            }
                                         }
-                                        maxValue = 5
-                                    }else if (isStart && endTime != null && dateYear == endTime?.year && monthOfYear + 1 == endTime?.month && dayOfMonth == endTime?.day) {
-                                        if (endTime?.hourOfDay == newVal) {
-                                            maxValue = (endTime?.minute!! / 10) - minuteMin / 10
-                                            displayedValues =
-                                                arrayOf("0", "10", "20", "30", "40", "50").sliceArray(
-                                                    0..maxValue
-                                                )
-                                        } else {
-                                            maxValue = 5
-                                            displayedValues = arrayOf("0", "10", "20", "30", "40", "50")
+                                    }else if (isStart && endTime != null) {
+                                        if (endTime?.day == dayOfMonth){
+                                            when(newVal){
+                                                endTime?.hourOfDay!! -> {
+                                                    minValue = 0
+                                                    maxValue = (endTime?.minute!! - minuteMin) / 10
+                                                    displayedValues = arrayOf("0", "10", "20", "30", "40", "50"
+                                                    ).sliceArray(0..maxValue)
+                                                }
+                                                endTime?.hourOfDay!! - hourMax -> {
+                                                    minValue = 0
+                                                    maxValue = (endTime?.minute!!) / 10
+                                                    displayedValues = arrayOf("0", "10", "20", "30", "40", "50"
+                                                    ).sliceArray(0..maxValue)
+                                                }
+                                                else -> {
+                                                    minValue = 0
+                                                    maxValue = 5
+                                                    displayedValues = arrayOf("0", "10", "20", "30", "40", "50")
+                                                }
+                                            }
+                                        }
+                                        else {
+                                            when(newVal){
+                                                (endTime?.hourOfDay!! + 24 - hourMax) % 24 ->{
+                                                    minValue = endTime?.minute!! / 10
+                                                    displayedValues = arrayOf("0", "10", "20", "30", "40", "50"
+                                                    ).sliceArray(minValue..5)
+                                                    maxValue = 5
+                                                }
+                                                else -> {
+                                                    maxValue = 5
+                                                    displayedValues = arrayOf("0", "10", "20", "30", "40", "50")
+                                                }
+                                            }
                                         }
                                     }
                                     else if (year == dateYear && monthValue == monthOfYear + 1 && day == dayOfMonth) {
@@ -230,7 +303,14 @@ class RoundCreateActivity : AppCompatActivity() {
                             if (!isStart && startTime != null && dateYear == startTime?.year && monthOfYear + 1 == startTime?.month && dayOfMonth == startTime?.day) {
                                 // 시작 시간의 날짜와 종료 시간의 날짜가 동일한 경우
                                 if (startTime?.hourOfDay.toString() == dialogBinding.npHourPicker.value.toString()) {
-                                    minValue = (startTime?.minute!! / 10) + 1
+                                    minValue = (startTime?.minute!! / 10) + (minuteMin / 10)
+                                    maxValue = 5
+                                    displayedValues =
+                                        arrayOf("0", "10", "20", "30", "40", "50").sliceArray(
+                                            minValue..5
+                                        )
+                                } else if (startTime?.minute!! + minuteMin > 60 && startTime?.hourOfDay!!.plus(1).toString() == dialogBinding.npHourPicker.value.toString()){
+                                    minValue = ((startTime?.minute!! / 10) + (minuteMin / 10)) % 6
                                     maxValue = 5
                                     displayedValues =
                                         arrayOf("0", "10", "20", "30", "40", "50").sliceArray(
@@ -264,7 +344,7 @@ class RoundCreateActivity : AppCompatActivity() {
                                 maxValue = 5
                             } else if (!isStart && year == dateYear && monthValue == monthOfYear + 1 && day == dayOfMonth && (hour+1).toString() == dialogBinding.npHourPicker.value.toString()){
                                 minValue = 1
-                                displayedValues = arrayOf("0", "10", "20", "30", "40", "50").sliceArray(1..5)
+                                displayedValues = arrayOf("0", "10", "20", "30", "40", "50").sliceArray(minValue..5)
                                 maxValue = 5
                             }
                             else {
@@ -312,7 +392,11 @@ class RoundCreateActivity : AppCompatActivity() {
                         .show()
                 }
                 if(isStart || startTime == null){
-                    datePicker.minDate = System.currentTimeMillis() - 1000
+                    with(LocalDateTime.now()) {
+                        if (hour == 23 && minute >= 50)
+                            datePicker.minDate = System.currentTimeMillis() + 86400000
+                        else datePicker.minDate = System.currentTimeMillis() - 1000
+                    }
                 } else {
                     startTime?.let{
                         // startTime의 시간이 23시 50분이면 다음날로 minDate
@@ -323,9 +407,9 @@ class RoundCreateActivity : AppCompatActivity() {
                         } else {
                             calendar.set(startTime?.year!!, startTime?.month!! - 1, startTime?.day!!)
                             if (startTime?.hourOfDay!! + hourMax > 23){
-                                datePicker.minDate = calendar.timeInMillis + 86400000
-                            } else datePicker.minDate = calendar.timeInMillis
-                            datePicker.maxDate = datePicker.minDate
+                                datePicker.maxDate = calendar.timeInMillis + 86400000
+                            } else datePicker.maxDate = calendar.timeInMillis
+                            datePicker.minDate = calendar.timeInMillis
                         }
                     }
                 }
@@ -338,6 +422,9 @@ class RoundCreateActivity : AppCompatActivity() {
                             datePicker.maxDate = calendar.timeInMillis - 86400000
                         }else {
                             calendar.set(endTime?.year!!, endTime?.month!! - 1, endTime?.day!!)
+                            if (endTime?.hourOfDay !! - hourMax < 0){
+                                datePicker.minDate = calendar.timeInMillis - 86400000
+                            } else datePicker.minDate = calendar.timeInMillis
                             datePicker.maxDate = calendar.timeInMillis
                         }
                     }
