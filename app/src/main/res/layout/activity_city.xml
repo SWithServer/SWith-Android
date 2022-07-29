@@ -7,7 +7,6 @@
             name="clickListener"
             type="android.view.View.OnClickListener" />
     </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -29,6 +28,7 @@
         <ImageButton
             android:id="@+id/ib_back"
             android:layout_width="50dp"
+            android:onClick="@{clickListener}"
             android:layout_height="50dp"
             android:src="@mipmap/ic_launcher_round"
             app:layout_constraintStart_toStartOf="parent"

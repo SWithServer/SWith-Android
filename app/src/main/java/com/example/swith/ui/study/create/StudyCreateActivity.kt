@@ -2,6 +2,7 @@ package com.example.swith.ui.study.create
 
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.ImageDecoder
 import android.os.Build
 import android.os.Bundle
@@ -10,7 +11,7 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import com.example.studywith.ConfirmDialog
+import androidx.databinding.DataBindingUtil
 import com.example.swith.R
 import com.example.swith.data.StudyGroup
 import com.example.swith.data.StudyResponse
@@ -20,11 +21,7 @@ import com.example.swith.repository.StudyCreateRetrofitInterface
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.sql.Types.NULL
-import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-
 import java.util.*
 
 
@@ -40,15 +37,20 @@ class StudyCreateActivity :AppCompatActivity() {
     private var month = calendar.get(Calendar.MONTH)
     private var day = calendar.get(Calendar.DAY_OF_MONTH)
 
-
     //입력되는 값들 변수모음
     var title:String=""
 
+//    val userid=SharedPrefManager(this@StudyCreateActivity).getLoginData()
+//    val userIdx = userid?.userIdx
+
     var meet_idx:Int= -1
-    var frequency_content:Int = -1
-    var periods_content:String = ""
+    var frequency_content:Int?=null
+    var periods_content:String?=null
     var online_idx:Int = -1
     var topic_content:String =""
+
+    var regionIdx1:Long?=null
+    var regionIdx2:Long?=null
 
     var group_content:String=""
 
@@ -59,19 +61,19 @@ class StudyCreateActivity :AppCompatActivity() {
     var attendanceVaildTime_content : Int=-1
 
     // 날짜 입력값들
-    lateinit var recruitmentEndDate:LocalDate
-    lateinit var groupStart:LocalDate
-    lateinit var groupEnd:LocalDate
-    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+    lateinit var recruitmentEndDate_ : String
+    lateinit var groupStart_ : String
+    lateinit var groupEnd_ : String
 
+    lateinit var prefs1:SharedPreferences
+    lateinit var prefs2:SharedPreferences
+
+
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityStudyCreateBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        //intent
-        val selectPlace_intent = Intent(this, SelectPlaceActivity::class.java)
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_study_create)
 
         val imageBtn: Button = binding.btnImage
         imageBtn.setOnClickListener {
@@ -81,14 +83,31 @@ class StudyCreateActivity :AppCompatActivity() {
         }
 
         //btn_onClickListener들
-        //장소선택1
-        binding.btnPlusPlace1.setOnClickListener(View.OnClickListener {
-            startActivity(selectPlace_intent)
-        })
-        //장소선택2
-        binding.btnPlusPlace2.setOnClickListener(View.OnClickListener {
-            startActivity(selectPlace_intent)
-        })
+        with(binding)
+        {
+            btnPlusPlace1.setOnClickListener {
+               var intent = Intent(this@StudyCreateActivity, SelectPlaceActivity::class.java)
+            //    intent.putExtra("번호",1)
+                startActivity(intent)
+
+                //미완성
+//                prefs1=getSharedPreferences("result1",0)
+//                val name1 = prefs1.getString("이름"," ")
+//                btnPlusPlace1.setText("${name1}")
+//                regionIdx1 = prefs1.getString("코드","")?.toLong()
+                }
+            btnPlusPlace2.setOnClickListener {
+                var intent_ = Intent(this@StudyCreateActivity, SelectPlaceActivity::class.java)
+           //     intent_.putExtra("번호",2)
+                startActivity(intent_)
+
+                //미완성
+//                prefs2=getSharedPreferences("result2",0)
+//                val name2 = prefs2.getString("이름"," ")
+//                btnPlusPlace2.setText("${name2}")
+//                regionIdx1 = prefs2.getString("코드","")?.toLong()
+            }
+        }
 
         // 모집 마감기간 설정
         binding.btnDeadline.setOnClickListener {
@@ -227,7 +246,7 @@ class StudyCreateActivity :AppCompatActivity() {
             }
             interest_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
-                    interest_idx=position
+                    interest_idx=position+1
                 }
                 override fun onNothingSelected(p0: AdapterView<*>?) {
                 }
@@ -296,16 +315,16 @@ class StudyCreateActivity :AppCompatActivity() {
 
 
         //스터디 개설버튼
-        //retrofit 연결을 위해 잠시 개설확인 dialog를 지움.
+        //retrofit 연결을 위해 잠시 개설확인 dialog를 지운상태.
         binding.btnStudyCreate.setOnClickListener {
             with(binding)
-            { //group_content= etStudyContent.text.toString()
-                val recruitmentEndDate_ = btnDeadline.text.toString()
-                recruitmentEndDate = LocalDate.parse(recruitmentEndDate_, formatter)
-                val groupStart_ = btnStartDay.text.toString()
-                groupStart = LocalDate.parse(groupStart_,formatter)
-                val groupEnd_ = btnFinishDay.text.toString()
-                groupEnd = LocalDate.parse(groupEnd_, formatter)
+            {   group_content= etStudyContent.text.toString()
+                recruitmentEndDate_ = btnDeadline.text.toString()
+            //    recruitmentEndDate = LocalDate.parse(recruitmentEndDate_, formatter)
+                 groupStart_ = btnStartDay.text.toString()
+            //    groupStart = LocalDate.parse(groupStart_,formatter)
+                 groupEnd_ = btnFinishDay.text.toString()
+              //  groupEnd = LocalDate.parse(groupEnd_, formatter)
                 title = etStudyTitle.text.toString()
                 topic_content = etCreateTopic.text.toString()
             }
@@ -315,27 +334,33 @@ class StudyCreateActivity :AppCompatActivity() {
                 1->{frequency_content=binding.tvStudyMonth.text.toString().toInt()}
                 2->{periods_content=binding.tvStudyFree.text.toString()}
             }
-
             //시범 스터디 개설 데이터들
-            var studyRequestData=StudyGroup(1,"2",title,meet_idx,frequency_content,periods_content,online_idx,1,33,interest_idx
-                ,topic_content,memberLimit_content,applicationMethod_idx,recruitmentEndDate,groupStart,groupEnd
+            // userIdx = adminIndex  우선은 기본 숫자값 넣어둠 (SharedPrf 선언은 해둠)
+            var studyRequestData=StudyGroup(1,"2",title,meet_idx,frequency_content,periods_content,online_idx,regionIdx1,regionIdx2,interest_idx
+                ,topic_content,memberLimit_content,applicationMethod_idx,recruitmentEndDate_,groupStart_,groupEnd_
                 ,attendanceVaildTime_content,group_content)
-
+            Log.e("summer", "USER DATA = ${studyRequestData.toString()}")
             //레트로핏 부분
                 val retrofitService = RetrofitService.retrofit.create(StudyCreateRetrofitInterface::class.java)
                 retrofitService.createStudy(studyRequestData).enqueue(object : Callback <StudyResponse> {
                     override fun onResponse(call: Call<StudyResponse>, response: Response<StudyResponse>) {
                         if (response.isSuccessful)
                         {
-                            Log.d("전달완", response.toString())
+                            Log.e("summer", "성공${response.toString()}")
+                            response.body()?.apply {
+                                val studyResp = this as StudyResponse
+                                Log.e("summer","body = $studyResp")
+                            }
                         }
                         else
                         {
-                            Log.d("전달실패-1", "${response.code()}")
+                            Log.e("summer", "전달실패 code = ${response.code()}")
+                            Log.e("summer", "전달실패 msg = ${response.message()}")
                         }
                     }
                     override fun onFailure(call: Call<StudyResponse>, t: Throwable) {
-                        Log.d("전달실패-2",t.toString())
+                        Log.e("summer","onFailure t = ${t.toString()}")
+                        Log.e("summer","onFailure msg = ${t.message}")
                     }
                 })
         }

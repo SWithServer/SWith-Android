@@ -1,18 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+    <ImageView
+        android:id="@+id/ib_back"
+        android:layout_width="50dp"
+        android:onClick="@{clickListener}"
+        android:layout_height="50dp"
+        android:src="@drawable/ic_launcher_background"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tv_select_place_title"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        />
+
     <ImageView
         android:id="@+id/iv_study_search"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:src="@drawable/ic_search"
-        app:layout_constraintEnd_toStartOf="@id/tv_select_place_title"
+        app:layout_constraintStart_toEndOf="@id/tv_select_place_title"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="20dp"
-        app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="20dp"/>
 
     <TextView
@@ -23,7 +42,8 @@
         android:textColor="@color/black"
         android:textSize="25dp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@id/iv_study_search"
+        app:layout_constraintStart_toEndOf="@id/ib_back"
+        app:layout_constraintEnd_toStartOf="@id/iv_study_search"
         android:layout_marginTop="20dp"
         android:layout_marginStart="10dp"
         android:textStyle="bold"/>
@@ -39,28 +59,28 @@
         android:gravity="center"
         app:layout_constraintTop_toBottomOf="@id/tv_select_place_title">
         <TextView
-            android:id="@+id/tv_place_value1"
+            android:id="@+id/tv_place_city"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="시/도"
-            android:layout_marginEnd="50dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="60dp"
             android:textColor="@color/black"
             android:gravity="center"
             android:textSize="20dp"/>
         <TextView
-            android:id="@+id/tv_place_value2"
+            android:id="@+id/tv_place_gu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="50dp"
+            android:layout_marginEnd="60dp"
             android:text="시/구/군"
             android:gravity="center"
             android:textColor="@color/black"
             android:textSize="20dp"/>
         <TextView
-            android:id="@+id/tv_place_value3"
+            android:id="@+id/tv_place_dong"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="50dp"
             android:text="동/읍/면"
             android:textColor="@color/black"
             android:gravity="center"
@@ -69,38 +89,39 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@id/layout_place_values" >
 
-    <androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/layout_place_value1"
-    android:layout_marginTop="20dp"
-    android:layout_marginStart="20dp"
-    android:layout_width="70dp"
-    android:layout_height="500dp"
-    android:layout_marginEnd="20dp"
-    android:orientation="vertical"
-    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-    tools:listitem="@layout/item_location">
-    </androidx.recyclerview.widget.RecyclerView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_city"
+            tools:listitem="@layout/item_location"
+            android:layout_width="100dp"
+            android:layout_height="500dp"
+            android:layout_marginEnd="30dp"
+            >
+        </androidx.recyclerview.widget.RecyclerView>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/layout_place_value2"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="20dp"
-        android:layout_width="70dp"
-        android:layout_height="500dp"
-        android:layout_marginEnd="20dp">
-    </androidx.recyclerview.widget.RecyclerView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_gu"
+            tools:listitem="@layout/item_location"
+            android:visibility="invisible"
+            android:layout_width="100dp"
+            android:layout_height="500dp"
+            android:layout_marginEnd="30dp"
+            >
+        </androidx.recyclerview.widget.RecyclerView>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/layout_place_value3"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="20dp"
-        android:layout_width="70dp"
-        android:layout_height="500dp">
-    </androidx.recyclerview.widget.RecyclerView>
-
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_dong"
+            android:layout_width="100dp"
+            tools:listitem="@layout/item_location"
+            android:visibility="invisible"
+            android:layout_height="500dp"
+            >
+        </androidx.recyclerview.widget.RecyclerView>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

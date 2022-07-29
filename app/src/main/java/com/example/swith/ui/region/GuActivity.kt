@@ -51,7 +51,6 @@ class GuActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
     }
-
     fun test(code: String) {
         val retrofit = Retrofit.Builder()
             .baseUrl(RetrofitService.REG_CODE)
@@ -83,16 +82,15 @@ class GuActivity : AppCompatActivity(), View.OnClickListener {
                     adapter.setItemClickListener(object : RegionAdapter.OnItemClickListener {
                         override fun onClick(v: View, position: Int) {
                             val city = adapter.getName(position)
-                            Log.e("doori","선택한 값은 $city")
+                            Log.e("doori","선택한 값은 $city") //여기서 city는 구 정보가 string으로 나오는건가?
                             val code = cityHash.get(city)
-                            Log.e("doori","코드 값은 $code")
+                            Log.e("doori","코드 값은 $code") //구를 포함하는 ex) 서울특별시 종로구면 -> 1111000000 인가?
                             Intent(this@GuActivity,DongActivity::class.java).run {
                                 putExtra("regionCode",code)
                                 startActivity(this)
                             }
                         }
                     })
-
                 }
             }
 

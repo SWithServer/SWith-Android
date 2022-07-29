@@ -80,10 +80,10 @@ class CityActivity : AppCompatActivity(), View.OnClickListener {
                             Log.e("doori","선택한 값은 $city")
                             val code = cityHash.get(city)
                             Log.e("doori","코드 값은 $code")
-                            Intent(this@CityActivity,GuActivity::class.java).run {
-                                putExtra("regionCode",code)
-                                startActivity(this)
-                            }
+//                            Intent(this@CityActivity,GuActivity::class.java).run {
+//                                putExtra("regionCode",code)
+//                                startActivity(this)
+//                            }
                         }
                     })
 
