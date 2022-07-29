@@ -39,8 +39,6 @@ class MainActivity : AppCompatActivity() {
             if(it==ProfileFragment.TAG){
                 //특정 프레그먼트로 이동
                 binding.mainBnv.selectedItemId = R.id.bottom_nav_profile
-            }else{
-                binding.mainBnv.selectedItemId = R.id.bottom_nav_home
             }
         }
     }
