@@ -89,8 +89,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginTop="10dp"
         android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@id/layout_place_values" >
@@ -100,7 +100,7 @@
             tools:listitem="@layout/item_location"
             android:layout_width="100dp"
             android:layout_height="500dp"
-            android:layout_marginEnd="30dp"
+            android:layout_marginEnd="20dp"
             >
         </androidx.recyclerview.widget.RecyclerView>
 
@@ -108,15 +108,15 @@
             android:id="@+id/rv_gu"
             tools:listitem="@layout/item_location"
             android:visibility="invisible"
-            android:layout_width="100dp"
+            android:layout_width="120dp"
             android:layout_height="500dp"
-            android:layout_marginEnd="30dp"
+            android:layout_marginEnd="20dp"
             >
         </androidx.recyclerview.widget.RecyclerView>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_dong"
-            android:layout_width="100dp"
+            android:layout_width="120dp"
             tools:listitem="@layout/item_location"
             android:visibility="invisible"
             android:layout_height="500dp"

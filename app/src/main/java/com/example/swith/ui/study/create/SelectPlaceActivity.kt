@@ -1,5 +1,7 @@
 package com.example.swith.ui.study.create
 
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.Log
@@ -16,6 +18,8 @@ import com.example.swith.repository.ApiService
 import com.example.swith.repository.RetrofitService
 import com.example.swith.ui.adapter.LocationAdapter
 import com.example.swith.ui.adapter.RegionAdapter
+import com.example.swith.ui.profile.ProfileModifyActivity
+import com.example.swith.ui.region.CityActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -33,21 +37,27 @@ var dongHash = HashMap<String, String>()
 
 lateinit var resultData:String
 
+lateinit  var sharedPreference:SharedPreferences
+lateinit var editor:SharedPreferences.Editor
+
+
 class SelectPlaceActivity :  AppCompatActivity(),View.OnClickListener {
     lateinit var binding: ActivitySelectPlaceBinding
     lateinit var locationAdapter: LocationAdapter
-    //var placeNum:Int = -1
+    var placeNum:Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_select_place)
         initView()
-      //  placeNum = intent.getIntExtra("번호",0)
-
+        initData()
+        Log.e("번호","$placeNum")
         test("*00000000", 1)
     }
 
+
     private fun initView() {
+        placeNum = intent.getIntExtra("번호",-1)
         binding.clickListener = this@SelectPlaceActivity
     }
 
@@ -82,6 +92,7 @@ class SelectPlaceActivity :  AppCompatActivity(),View.OnClickListener {
                     Log.e("doori", response.toString())
                     when (num) {
                         1 -> {
+                            cityDataList.clear()
                             for (a in regcodes) {
                                 Log.e("doori", "이름 : ${a.name} , 코드 : ${a.code}")
                                 cityDataList.add(a.name)
@@ -90,6 +101,7 @@ class SelectPlaceActivity :  AppCompatActivity(),View.OnClickListener {
                             adapter_create(cityDataList,1)
                         }
                         2 -> {
+                            guDataList.clear()
                             for (a in regcodes) {
                                 Log.e("doori", "이름 : ${a.name} , 코드 : ${a.code}")
                                 guDataList.add(a.name)
@@ -98,6 +110,7 @@ class SelectPlaceActivity :  AppCompatActivity(),View.OnClickListener {
                             adapter_create(guDataList,2)
                         }
                         3 -> {
+                            dongDataList.clear()
                             for (a in regcodes) {
                                 Log.e("doori", "이름 : ${a.name} , 코드 : ${a.code}")
                                 dongDataList.add(a.name)
@@ -154,10 +167,12 @@ class SelectPlaceActivity :  AppCompatActivity(),View.OnClickListener {
                         Log.e("doori", "선택한 값은 $city")
                         code = dongHash.get(city)
                         Log.e("doori", "코드 값은 $code")
-//                        val sharedPreference = getSharedPreferences("result${placeNum}", 0)
-//                        val editor = sharedPreference.edit()
-//                        editor.putString("이름", "${city}")
-//                        editor.putString("코드","${code}")
+                        sharedPreference = getSharedPreferences("result${placeNum}", 0)
+                        editor = sharedPreference.edit()
+                        editor.putString("이름${placeNum}", "${city}")
+                        editor.putString("코드${placeNum}","${code}")
+                        editor.apply()
+                        finish()
                     }
                 })
             }

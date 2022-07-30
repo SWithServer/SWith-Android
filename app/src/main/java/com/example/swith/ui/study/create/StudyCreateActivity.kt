@@ -10,11 +10,16 @@ import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.swith.R
 import com.example.swith.data.StudyGroup
 import com.example.swith.data.StudyResponse
+import com.example.swith.databinding.ActivitySelectPlaceBinding
 import com.example.swith.databinding.ActivityStudyCreateBinding
 import com.example.swith.repository.RetrofitService
 import com.example.swith.repository.StudyCreateRetrofitInterface
@@ -37,21 +42,18 @@ class StudyCreateActivity :AppCompatActivity() {
     private var month = calendar.get(Calendar.MONTH)
     private var day = calendar.get(Calendar.DAY_OF_MONTH)
 
+
     //입력되는 값들 변수모음
     var title:String=""
-
 //    val userid=SharedPrefManager(this@StudyCreateActivity).getLoginData()
 //    val userIdx = userid?.userIdx
-
     var meet_idx:Int= -1
     var frequency_content:Int?=null
     var periods_content:String?=null
     var online_idx:Int = -1
     var topic_content:String =""
-
     var regionIdx1:Long?=null
     var regionIdx2:Long?=null
-
     var group_content:String=""
 
     // spinner 선택되는 값들 매칭
@@ -65,11 +67,13 @@ class StudyCreateActivity :AppCompatActivity() {
     lateinit var groupStart_ : String
     lateinit var groupEnd_ : String
 
-    lateinit var prefs1:SharedPreferences
-    lateinit var prefs2:SharedPreferences
+    //shpref
+  //  lateinit var prefs1:SharedPreferences
+  //  lateinit var prefs2:SharedPreferences
 
-
+    var placeNum: String="-1"
     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,30 +86,19 @@ class StudyCreateActivity :AppCompatActivity() {
             openGallery()
         }
 
+
         //btn_onClickListener들
         with(binding)
         {
             btnPlusPlace1.setOnClickListener {
-               var intent = Intent(this@StudyCreateActivity, SelectPlaceActivity::class.java)
-            //    intent.putExtra("번호",1)
+                var intent = Intent(this@StudyCreateActivity,SelectPlaceActivity::class.java)
+                intent.putExtra("번호",1)
                 startActivity(intent)
-
-                //미완성
-//                prefs1=getSharedPreferences("result1",0)
-//                val name1 = prefs1.getString("이름"," ")
-//                btnPlusPlace1.setText("${name1}")
-//                regionIdx1 = prefs1.getString("코드","")?.toLong()
-                }
+            }
             btnPlusPlace2.setOnClickListener {
-                var intent_ = Intent(this@StudyCreateActivity, SelectPlaceActivity::class.java)
-           //     intent_.putExtra("번호",2)
-                startActivity(intent_)
-
-                //미완성
-//                prefs2=getSharedPreferences("result2",0)
-//                val name2 = prefs2.getString("이름"," ")
-//                btnPlusPlace2.setText("${name2}")
-//                regionIdx1 = prefs2.getString("코드","")?.toLong()
+                var intent = Intent(this@StudyCreateActivity,SelectPlaceActivity::class.java)
+                intent.putExtra("번호",2)
+                startActivity(intent)
             }
         }
 
@@ -222,6 +215,7 @@ class StudyCreateActivity :AppCompatActivity() {
 
         with(binding)
         {
+            //spinner
             interest_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
                     interest_idx=position
@@ -258,15 +252,14 @@ class StudyCreateActivity :AppCompatActivity() {
                 override fun onNothingSelected(p0: AdapterView<*>?) {
                 }
             }
-        }
-
-        //on,offline 장소선택
-        binding.placeRadioGroup.setOnCheckedChangeListener { group, checkedId ->
-            when (checkedId) {
-                R.id.btn_offline -> {binding.studyCreateOfflineLayout.visibility = View.VISIBLE
-                online_idx = 0}
-                R.id.btn_online -> {binding.studyCreateOfflineLayout.visibility = View.GONE
-                online_idx =1}
+            //on,offline 장소선택
+            placeRadioGroup.setOnCheckedChangeListener { group, checkedId ->
+                when (checkedId) {
+                    R.id.btn_offline -> {binding.studyCreateOfflineLayout.visibility = View.VISIBLE
+                        online_idx = 0}
+                    R.id.btn_online -> {binding.studyCreateOfflineLayout.visibility = View.GONE
+                        online_idx =1}
+                }
             }
         }
 
@@ -351,6 +344,7 @@ class StudyCreateActivity :AppCompatActivity() {
                                 val studyResp = this as StudyResponse
                                 Log.e("summer","body = $studyResp")
                             }
+                            finish()
                         }
                         else
                         {
@@ -363,6 +357,22 @@ class StudyCreateActivity :AppCompatActivity() {
                         Log.e("summer","onFailure msg = ${t.message}")
                     }
                 })
+        }
+    }
+    override fun onResume() {
+        super.onResume()
+        getSharedPreferences("result1",0)?.let {
+            val editor1 = getSharedPreferences("result1",0).edit()
+            binding.btnPlusPlace1.text = it.getString("이름1", "")
+            if(!it.getString("코드1","").toString().equals(""))
+            {regionIdx1 = it.getString("코드1", "").toString().toLong()}
+        }
+
+        getSharedPreferences("result2",0)?.let {
+            val editor2 = getSharedPreferences("result2",0).edit()
+            binding.btnPlusPlace2.text = it.getString("이름2", "")
+            if(!it.getString("코드2","").toString().equals(""))
+            {regionIdx2 = it.getString("코드2", "").toString().toLong()}
         }
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -397,11 +407,11 @@ class StudyCreateActivity :AppCompatActivity() {
             }
         }
     }
-
     //갤러리에서 이미지 선택
     private fun openGallery(){
         val intent: Intent = Intent(Intent.ACTION_GET_CONTENT)
         intent.setType("image/*")
         startActivityForResult(intent,GALLERY)
     }
+
 }
