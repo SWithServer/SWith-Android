@@ -8,6 +8,7 @@
         android:id="@+id/home_scrollview_sv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:overScrollMode="never"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,6 +18,7 @@
                 android:id="@+id/home_study_rv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:overScrollMode="never"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -60,8 +62,8 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
     <ImageView
         android:id="@+id/home_study_add_iv"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_add"
         android:layout_marginBottom="10dp"

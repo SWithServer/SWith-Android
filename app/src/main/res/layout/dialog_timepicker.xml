@@ -4,6 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <TextView
+        android:id="@+id/tv_dialog_guide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:text="최소시간"
+        android:textColor="@color/purple_700"
+        android:textSize="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
     <NumberPicker
         android:id="@+id/np_hour_picker"
         android:layout_width="wrap_content"
