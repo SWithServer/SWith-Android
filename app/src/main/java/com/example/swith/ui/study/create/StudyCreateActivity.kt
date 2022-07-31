@@ -79,6 +79,22 @@ class StudyCreateActivity :AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_study_create)
 
+        getSharedPreferences("result1",0).apply{
+            if(this!=null) {
+                val shPref1 = this
+                val editor1 = this.edit()
+                editor1.clear()
+                editor1.apply()
+            } }
+        getSharedPreferences("result2",0).apply{
+            if(this!=null){
+                val shPref2 = this
+                val editor2 =this.edit()
+                editor2.clear()
+                editor2.apply()
+            }
+        }
+
         val imageBtn: Button = binding.btnImage
         imageBtn.setOnClickListener {
             //스터디 개설 이미지뷰 갤러리 연동
@@ -361,20 +377,26 @@ class StudyCreateActivity :AppCompatActivity() {
     }
     override fun onResume() {
         super.onResume()
-        getSharedPreferences("result1",0)?.let {
+        if(!getSharedPreferences("result1",0).getString("이름1","").toString().equals("")) {
+           val shPref1 = getSharedPreferences("result1",0)
             val editor1 = getSharedPreferences("result1",0).edit()
-            binding.btnPlusPlace1.text = it.getString("이름1", "")
-            if(!it.getString("코드1","").toString().equals(""))
-            {regionIdx1 = it.getString("코드1", "").toString().toLong()}
+            binding.btnPlusPlace1.text = shPref1.getString("이름1", "")
+            if(!shPref1.getString("코드1","").toString().equals(""))
+            {regionIdx1 =shPref1.getString("코드1", "").toString().toLong()}
         }
-
-        getSharedPreferences("result2",0)?.let {
+        if(!getSharedPreferences("result2",0).getString("이름2","").toString().equals("")){
+            val shPref2 = getSharedPreferences("result2",0)
             val editor2 = getSharedPreferences("result2",0).edit()
-            binding.btnPlusPlace2.text = it.getString("이름2", "")
-            if(!it.getString("코드2","").toString().equals(""))
-            {regionIdx2 = it.getString("코드2", "").toString().toLong()}
+            binding.btnPlusPlace2.text = shPref2.getString("이름2", "")
+            if(!shPref2.getString("코드2","").toString().equals(""))
+            {regionIdx2 = shPref2.getString("코드2", "").toString().toLong()}
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == GALLERY)
         {

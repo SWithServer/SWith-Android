@@ -55,7 +55,6 @@ class SelectPlaceActivity :  AppCompatActivity(),View.OnClickListener {
         test("*00000000", 1)
     }
 
-
     private fun initView() {
         placeNum = intent.getIntExtra("번호",-1)
         binding.clickListener = this@SelectPlaceActivity
@@ -167,8 +166,8 @@ class SelectPlaceActivity :  AppCompatActivity(),View.OnClickListener {
                         Log.e("doori", "선택한 값은 $city")
                         code = dongHash.get(city)
                         Log.e("doori", "코드 값은 $code")
-                        sharedPreference = getSharedPreferences("result${placeNum}", 0)
-                        editor = sharedPreference.edit()
+                        sharedPreference = getSharedPreferences("result${placeNum}",0)
+                        editor= sharedPreference.edit()
                         editor.putString("이름${placeNum}", "${city}")
                         editor.putString("코드${placeNum}","${code}")
                         editor.apply()
