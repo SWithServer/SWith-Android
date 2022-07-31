@@ -19,7 +19,8 @@ import com.example.swith.databinding.ActivityRoundCreateBinding
 import com.example.swith.databinding.DialogTimepickerBinding
 import com.example.swith.utils.ToolBarManager
 import java.lang.Integer.max
-import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.util.*
 
 
@@ -140,10 +141,11 @@ class RoundCreateActivity : AppCompatActivity() {
                 setOnDateSetListener { _, dateYear, monthOfYear, dayOfMonth ->
                     val dialogBinding : DialogTimepickerBinding = DataBindingUtil.inflate(layoutInflater, R.layout.dialog_timepicker, null, false)
                     dialogBinding.tvDialogGuide.text = "해당 스터디의 회차 최소시간은 ${minuteMin}분 입니다."
+                    dialogBinding.tvDialogTimelimitGuide.text = "최대 ${hourMax}시간 생성 가능"
                     dialogBinding.npHourPicker.apply {
                         wrapSelectorWheel = false
                         descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
-                        with(LocalDateTime.now()) {
+                        with(ZonedDateTime.now(ZoneId.of("Asia/Seoul"))) {
                             val minuteIdx = minute / 10
                             // 시작 시간보다 종료 시간이 더 뒤에 있어야 함
                             if (!isStart && startTime != null && startTime?.year == dateYear && startTime?.month == monthOfYear + 1 && startTime?.day == dayOfMonth) {
@@ -168,7 +170,7 @@ class RoundCreateActivity : AppCompatActivity() {
                                             max(hour + 1, endTime?.hourOfDay!! - hourMax)
                                         } else max(hour, endTime?.hourOfDay!! - hourMax)
                                     } else {
-                                        endTime?.hourOfDay!! + 24 - hourMax
+                                        max(hour, endTime?.hourOfDay!! + 24 - hourMax)
                                     }
                                 }
                                 else if (!isStart && minute + minuteMin + 10 >= 60){
@@ -295,15 +297,20 @@ class RoundCreateActivity : AppCompatActivity() {
                                                 }
                                                 else -> {
                                                     minValue = 0
-                                                    maxValue = 5
                                                     if (newVal == 23 && endTime?.hourOfDay == 0 && endTime?.minute!! < minuteMin){
+                                                        displayedValues = arrayOf("0", "10", "20", "30", "40", "50").sliceArray(0..(endTime?.minute!! - minuteMin + 60) / 10)
                                                         maxValue = (endTime?.minute!! - minuteMin + 60) / 10
-                                                    displayedValues = arrayOf("0", "10", "20", "30", "40", "50").sliceArray(0..maxValue)
+                                                    }
+                                                    else {
+                                                        displayedValues = arrayOf("0", "10", "20", "30", "40", "50")
+                                                        maxValue = 5
+                                                    }
+
                                                 }
                                             }
                                         }
                                     }
-                                    }else if (year == dateYear && monthValue == monthOfYear + 1 && day == dayOfMonth) {
+                                    else if (year == dateYear && monthValue == monthOfYear + 1 && day == dayOfMonth) {
                                         if (newVal.toString() == hour.toString()) {
                                             minValue = minuteIdx + 1
                                             displayedValues = arrayOf("0", "10", "20", "30", "40", "50").sliceArray(minuteIdx + 1..5)
@@ -323,7 +330,7 @@ class RoundCreateActivity : AppCompatActivity() {
                     dialogBinding.npMinutePicker.apply {
                         wrapSelectorWheel = false
                         descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
-                        with(LocalDateTime.now()) {
+                        with(ZonedDateTime.now(ZoneId.of("Asia/Seoul"))) {
                             if (!isStart && startTime != null) {
                                 // 시작 시간의 날짜와 종료 시간의 날짜가 동일한 경우
                                 if (startTime?.day == dayOfMonth){
@@ -459,7 +466,7 @@ class RoundCreateActivity : AppCompatActivity() {
                         .show()
                 }
                 if(isStart || startTime == null){
-                    with(LocalDateTime.now()) {
+                    with(ZonedDateTime.now(ZoneId.of("Asia/Seoul"))) {
                         if (hour == 23 && minute >= 50)
                             datePicker.minDate = System.currentTimeMillis() + 86400000
                         else datePicker.minDate = System.currentTimeMillis() - 1000
