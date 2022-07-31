@@ -100,7 +100,8 @@
                             android:background="@drawable/card_view"
                             android:elevation="3dp"
                             android:enabled="false"
-                            app:layout_constraintBottom_toBottomOf="@id/check_week"
+                            android:inputType="number"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toEndOf="@id/check_week"
                             app:layout_constraintTop_toTopOf="@id/check_week" />
 
@@ -136,6 +137,7 @@
                         <EditText
                             android:id="@+id/tv_study_month"
                             android:layout_width="30dp"
+                            android:inputType="number"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="3dp"
                             android:background="@drawable/card_view"
@@ -310,6 +312,7 @@
                         android:background="@drawable/card_view"
                         android:elevation="3dp"
                         android:hint="예시: 중국어"
+                        android:inputType="text"
                         android:textSize="13dp" />
                 </LinearLayout>
 

@@ -23,6 +23,7 @@ import com.example.swith.databinding.ActivitySelectPlaceBinding
 import com.example.swith.databinding.ActivityStudyCreateBinding
 import com.example.swith.repository.RetrofitService
 import com.example.swith.repository.StudyCreateRetrofitInterface
+import com.example.swith.utils.SharedPrefManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -45,11 +46,12 @@ class StudyCreateActivity :AppCompatActivity() {
 
     //입력되는 값들 변수모음
     var title:String=""
-//    val userid=SharedPrefManager(this@StudyCreateActivity).getLoginData()
+//    val userid= SharedPrefManager(this@StudyCreateActivity).getLoginData()
 //    val userIdx = userid?.userIdx
     var meet_idx:Int= -1
     var frequency_content:Int?=null
     var periods_content:String?=null
+    // 오프라인 0 온라인 1
     var online_idx:Int = -1
     var topic_content:String =""
     var regionIdx1:Long?=null
@@ -63,22 +65,18 @@ class StudyCreateActivity :AppCompatActivity() {
     var attendanceVaildTime_content : Int=-1
 
     // 날짜 입력값들
-    lateinit var recruitmentEndDate_ : String
-    lateinit var groupStart_ : String
-    lateinit var groupEnd_ : String
-
-    //shpref
-  //  lateinit var prefs1:SharedPreferences
-  //  lateinit var prefs2:SharedPreferences
+     var recruitmentEndDate_ : String = ""
+     var groupStart_ : String =""
+    var groupEnd_ : String =""
 
     var placeNum: String="-1"
     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_study_create)
 
+        Log.e("create","true")
         getSharedPreferences("result1",0).apply{
             if(this!=null) {
                 val shPref1 = this
@@ -101,7 +99,6 @@ class StudyCreateActivity :AppCompatActivity() {
             imageView = binding.ivStudyCreate
             openGallery()
         }
-
 
         //btn_onClickListener들
         with(binding)
@@ -329,27 +326,89 @@ class StudyCreateActivity :AppCompatActivity() {
             with(binding)
             {   group_content= etStudyContent.text.toString()
                 recruitmentEndDate_ = btnDeadline.text.toString()
-            //    recruitmentEndDate = LocalDate.parse(recruitmentEndDate_, formatter)
-                 groupStart_ = btnStartDay.text.toString()
-            //    groupStart = LocalDate.parse(groupStart_,formatter)
-                 groupEnd_ = btnFinishDay.text.toString()
-              //  groupEnd = LocalDate.parse(groupEnd_, formatter)
+                groupStart_ = btnStartDay.text.toString()
+                groupEnd_ = btnFinishDay.text.toString()
                 title = etStudyTitle.text.toString()
                 topic_content = etCreateTopic.text.toString()
+                when(meet_idx) {
+                0->{if (!tvStudyWeek.text.isNullOrBlank())
+                    frequency_content=tvStudyWeek.text.toString().toIntOrNull()
+                    }
+                1->{if (!tvStudyMonth.text.isNullOrBlank())
+                frequency_content=tvStudyMonth.text.toString().toIntOrNull()}
+                2->{if (!tvStudyFree.text.isNullOrBlank())
+                periods_content=tvStudyFree.text.toString()}
+                }
+
+                var studyRequestData=StudyGroup(1,"2",title,meet_idx,frequency_content,periods_content,online_idx,regionIdx1,regionIdx2,interest_idx
+                    ,topic_content,memberLimit_content,applicationMethod_idx,recruitmentEndDate_,groupStart_,groupEnd_
+                    ,attendanceVaildTime_content,group_content)
+                Log.e("summer", "USER DATA = ${studyRequestData.toString()}")
+
+                //Toast Message 설정
+                if (title.equals("")||meet_idx==-1||online_idx==-1||interest_idx==-1||topic_content.equals("")||recruitmentEndDate_.equals("") ||groupStart_.equals("") ||groupEnd_.equals("") || attendanceVaildTime_content==-1 ||group_content.equals(""))
+                {
+                    Toast.makeText(this@StudyCreateActivity,"모든 항목을 작성해주세요!",Toast.LENGTH_SHORT).show()
+                }
+                else{
+                    if (online_idx==0 && (regionIdx1==null||regionIdx2==null))
+                    {
+                        Toast.makeText(this@StudyCreateActivity,"모든 항목을 작성해주세요!",Toast.LENGTH_SHORT).show()
+                    }
+                    when(meet_idx)
+                    {
+                        0,1->{
+                            if (frequency_content==null)
+                            {
+                                Toast.makeText(this@StudyCreateActivity,"모든 항목을 작성해주세요!",Toast.LENGTH_SHORT).show()
+                            }
+                            else{
+                                createStudy(studyRequestData)
+                            }
+                        }
+                        2->{
+                            if (periods_content==null)
+                            {
+                                Toast.makeText(this@StudyCreateActivity,"모든 항목을 작성해주세요!",Toast.LENGTH_SHORT).show()
+
+                            }
+                            else{
+                                createStudy(studyRequestData)
+                            }
+                        }
+                    }
+                }
             }
-            when(meet_idx)
-            {
-                0->{frequency_content=binding.tvStudyWeek.text.toString().toInt()}
-                1->{frequency_content=binding.tvStudyMonth.text.toString().toInt()}
-                2->{periods_content=binding.tvStudyFree.text.toString()}
-            }
-            //시범 스터디 개설 데이터들
-            // userIdx = adminIndex  우선은 기본 숫자값 넣어둠 (SharedPrf 선언은 해둠)
-            var studyRequestData=StudyGroup(1,"2",title,meet_idx,frequency_content,periods_content,online_idx,regionIdx1,regionIdx2,interest_idx
-                ,topic_content,memberLimit_content,applicationMethod_idx,recruitmentEndDate_,groupStart_,groupEnd_
-                ,attendanceVaildTime_content,group_content)
-            Log.e("summer", "USER DATA = ${studyRequestData.toString()}")
-            //레트로핏 부분
+        }
+    }
+    override fun onResume() {
+        super.onResume()
+        Log.e("resume","true")
+        if(!getSharedPreferences("result1",0).getString("이름1","").toString().equals("")) {
+           val shPref1 = getSharedPreferences("result1",0)
+            val editor1 = getSharedPreferences("result1",0).edit()
+            binding.btnPlusPlace1.text = shPref1.getString("이름1", "")
+            if(!shPref1.getString("코드1","").toString().equals(""))
+            {regionIdx1 =shPref1.getString("코드1", "").toString().toLong()}
+        }
+        if(!getSharedPreferences("result2",0).getString("이름2","").toString().equals("")){
+            val shPref2 = getSharedPreferences("result2",0)
+            val editor2 = getSharedPreferences("result2",0).edit()
+            binding.btnPlusPlace2.text = shPref2.getString("이름2", "")
+            if(!shPref2.getString("코드2","").toString().equals(""))
+            {regionIdx2 = shPref2.getString("코드2", "").toString().toLong()}
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.e("destroy","true")
+    }
+
+    fun createStudy(studyRequestData : StudyGroup){
+        //레트로핏 부분
+        Log.e("summer","retrofit 함수 in")
+        Log.e("summer", "USER DATA = ${studyRequestData.toString()}")
                 val retrofitService = RetrofitService.retrofit.create(StudyCreateRetrofitInterface::class.java)
                 retrofitService.createStudy(studyRequestData).enqueue(object : Callback <StudyResponse> {
                     override fun onResponse(call: Call<StudyResponse>, response: Response<StudyResponse>) {
@@ -373,28 +432,6 @@ class StudyCreateActivity :AppCompatActivity() {
                         Log.e("summer","onFailure msg = ${t.message}")
                     }
                 })
-        }
-    }
-    override fun onResume() {
-        super.onResume()
-        if(!getSharedPreferences("result1",0).getString("이름1","").toString().equals("")) {
-           val shPref1 = getSharedPreferences("result1",0)
-            val editor1 = getSharedPreferences("result1",0).edit()
-            binding.btnPlusPlace1.text = shPref1.getString("이름1", "")
-            if(!shPref1.getString("코드1","").toString().equals(""))
-            {regionIdx1 =shPref1.getString("코드1", "").toString().toLong()}
-        }
-        if(!getSharedPreferences("result2",0).getString("이름2","").toString().equals("")){
-            val shPref2 = getSharedPreferences("result2",0)
-            val editor2 = getSharedPreferences("result2",0).edit()
-            binding.btnPlusPlace2.text = shPref2.getString("이름2", "")
-            if(!shPref2.getString("코드2","").toString().equals(""))
-            {regionIdx2 = shPref2.getString("코드2", "").toString().toLong()}
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
