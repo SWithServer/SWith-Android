@@ -17,9 +17,6 @@ import com.example.swith.databinding.ActivitySelectPlaceBinding
 import com.example.swith.repository.ApiService
 import com.example.swith.repository.RetrofitService
 import com.example.swith.ui.adapter.LocationAdapter
-import com.example.swith.ui.adapter.RegionAdapter
-import com.example.swith.ui.profile.ProfileModifyActivity
-import com.example.swith.ui.region.CityActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
