@@ -29,11 +29,20 @@ class HomeViewModel() : ViewModel() {
         val userId = 1
         viewModelScope.launch{
             val data = repository.getAllStudy(userId)
-            withContext(Dispatchers.Main){
-                _groupLiveData.value = data.value
+            data.value?.let{
+                withContext(Dispatchers.Main){
+                    _groupLiveData.value = data.value
+                }
             }
+            initTempData()
         }
     }
 
+    private fun initTempData(){
+        val tempList = ArrayList<GroupItem>()
+        tempList.add(GroupItem(1, "스터디 임시 1", 8, "컴퓨터", "임시 공지사항입니다.", 3, "스터디" ,
+            listOf(2022, 7, 31, 16, 0), 80))
+        _groupLiveData.value = Group(tempList)
+    }
 
 }
