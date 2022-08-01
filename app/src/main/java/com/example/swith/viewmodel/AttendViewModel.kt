@@ -23,6 +23,7 @@ class AttendViewModel : ViewModel() {
     val attendLiveData: LiveData<ArrayList<UserAttend>>
         get() = _attendLiveData
 
+
     init {
         // repository 에서 받아오는 부분으로 수정될 예정
         attendList.add(UserAttend(1, "개똥", 1))

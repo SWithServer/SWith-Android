@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bottom_sheet_drawable"
+    android:paddingBottom="20dp"
+    app:behavior_hideable="true"
+    app:behavior_draggable="true"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+    <TextView
+        android:id="@+id/tv_bottom_round"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="회차"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_margin="20dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+    <TextView
+        android:id="@+id/tv_bottom_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="해당 스터디의 출석"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/purple_700"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@id/tv_bottom_round"
+        app:layout_constraintStart_toStartOf="@id/tv_bottom_round"/>
+    <TextView
+        android:id="@+id/tv_bottom_guide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/bottom_attend_guide"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:lineSpacingExtra="5dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@id/tv_bottom_time"
+        app:layout_constraintStart_toStartOf="@id/tv_bottom_time"/>
+    <Button
+        android:id="@+id/btn_bottom_attend"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="출석 하기"
+        android:layout_marginEnd="20dp"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/teal_700"
+        android:layout_marginTop="60dp"
+        app:layout_constraintTop_toBottomOf="@id/tv_bottom_guide"
+        app:layout_constraintEnd_toEndOf="parent"/>
+    <TextView
+        android:id="@+id/tv_bottom_cancel"
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:paddingStart="20dp"
+        android:text="취소"
+        android:textColor="#F44336"
+        android:gravity="center_vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/btn_bottom_attend"
+        app:layout_constraintBottom_toBottomOf="@id/btn_bottom_attend"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

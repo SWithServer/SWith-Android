@@ -86,4 +86,7 @@ dependencies {
 
     // SimpleRatingBar
     implementation 'com.github.ome450901:SimpleRatingBar:1.5.1'
+
+    // material design
+    implementation 'com.google.android.material:material:<version>'
 }

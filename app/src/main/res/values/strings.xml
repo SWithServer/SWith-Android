@@ -11,7 +11,7 @@
     <string name="create_round_end_time">종료 시간</string>
     <string name="calendar_no_round">해당 날짜에 개설된 회차가 없습니다.\n새로 만들러 가볼까요?</string>
     <string name="attend_no_people">스터디에 참석 중인 스터디 원이 없어요!\n스터디 원을 모집 해봐요!</string>
-
+    <string name="bottom_attend_guide">- 해당 회차에 출석을 진행합니다. \n- 출석을 하게 되면 취소 할 수 없습니다.</string>
     <string-array name="intersting">
         <item></item>
         <item>자격증/시험</item>
