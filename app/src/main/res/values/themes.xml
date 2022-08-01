@@ -15,6 +15,8 @@
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:windowTranslucentStatus">false</item>
         <item name="android:windowFullscreen">false</item>
+
+        <item name="bottomSheetDialogTheme">@style/CustomBottomSheet</item>
     </style>
     <style name="tab_text" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">18sp</item>
@@ -36,5 +38,15 @@
     <style name="CustomDate" parent="TextAppearance.MaterialCalendarWidget.Date">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/black</item>
+    </style>
+
+<!--    BottomSheet Dialog Style-->
+    <style name="CustomBottomSheet" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheet</item>
+        <item name="android:colorBackground">@color/white</item>
+    </style>
+
+    <style name="BottomSheet" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="backgroundTint">@android:color/transparent</item>
     </style>
 </resources>

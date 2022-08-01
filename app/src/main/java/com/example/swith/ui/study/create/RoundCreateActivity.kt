@@ -10,6 +10,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.NumberPicker
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
 import androidx.databinding.DataBindingUtil
@@ -19,13 +20,14 @@ import com.example.swith.databinding.ActivityRoundCreateBinding
 import com.example.swith.databinding.DialogTimepickerBinding
 import com.example.swith.utils.ToolBarManager
 import java.lang.Integer.max
-import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.util.*
 
 
 class RoundCreateActivity : AppCompatActivity() {
     // 회차 최소시간(분단위)
-    private val minuteMin = 30
+    private val minuteMin = 20
     // 회차 최대시간(시간단위)
     private val hourMax = 8
     private val calendar = Calendar.getInstance()
@@ -68,7 +70,7 @@ class RoundCreateActivity : AppCompatActivity() {
                 } else{
                     etCreatePlace.apply{
                         if (cbCreateOffline.isChecked) isEnabled = true
-                        hint = "장소(텍스트 입력)"
+                        hint = resources.getString(R.string.create_place_hint1)
                         setText("")
                     }
                 }
@@ -77,12 +79,14 @@ class RoundCreateActivity : AppCompatActivity() {
                 if (isChecked) {
                     cbCreateOnline.isChecked = false
                     etCreatePlace.apply {
+                        hint = resources.getString(R.string.create_place_hint2)
                         isEnabled = true
                     }
                 }
                 else {
                     etCreatePlace.apply{
                         isEnabled = false
+                        hint = resources.getString(R.string.create_place_hint1)
                         setText("")
                     }
                 }
@@ -117,7 +121,6 @@ class RoundCreateActivity : AppCompatActivity() {
                 etCreatePlace.apply {
                     isClickable = false
                     setText("")
-                    hint = resources.getString(R.string.create_place_hint)
                 }
                 etCreateDetail.apply {
                     setText("")
@@ -140,10 +143,11 @@ class RoundCreateActivity : AppCompatActivity() {
                 setOnDateSetListener { _, dateYear, monthOfYear, dayOfMonth ->
                     val dialogBinding : DialogTimepickerBinding = DataBindingUtil.inflate(layoutInflater, R.layout.dialog_timepicker, null, false)
                     dialogBinding.tvDialogGuide.text = "해당 스터디의 회차 최소시간은 ${minuteMin}분 입니다."
+                    dialogBinding.tvDialogTimelimitGuide.text = "최대 ${hourMax}시간 생성 가능"
                     dialogBinding.npHourPicker.apply {
                         wrapSelectorWheel = false
                         descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
-                        with(LocalDateTime.now()) {
+                        with(ZonedDateTime.now(ZoneId.of("Asia/Seoul"))) {
                             val minuteIdx = minute / 10
                             // 시작 시간보다 종료 시간이 더 뒤에 있어야 함
                             if (!isStart && startTime != null && startTime?.year == dateYear && startTime?.month == monthOfYear + 1 && startTime?.day == dayOfMonth) {
@@ -166,9 +170,15 @@ class RoundCreateActivity : AppCompatActivity() {
                                     minValue = if (dayOfMonth == endTime?.day) {
                                         if (minuteIdx >= 5) {
                                             max(hour + 1, endTime?.hourOfDay!! - hourMax)
+                                        } else if (endTime?.hourOfDay == hour + 1 && endTime?.minute!! <= minuteMin){
+                                            max(hour + 1, endTime?.hourOfDay!! - hourMax)
                                         } else max(hour, endTime?.hourOfDay!! - hourMax)
                                     } else {
-                                        endTime?.hourOfDay!! + 24 - hourMax
+                                        max(hour, endTime?.hourOfDay!! + 24 - hourMax)
+                                    }
+                                } else if (isStart && minuteIdx >= 5){
+                                    minValue = hour + 1 .also {
+                                        value = hour + 1
                                     }
                                 }
                                 else if (!isStart && minute + minuteMin + 10 >= 60){
@@ -207,9 +217,9 @@ class RoundCreateActivity : AppCompatActivity() {
                                     if (!isStart && startTime != null){
                                         if(startTime?.day == dayOfMonth) when (newVal) {
                                             startTime?.hourOfDay -> {
-                                                minValue = (startTime?.minute!! / 10) + minuteMin / 10
                                                 displayedValues = arrayOf("0", "10", "20", "30", "40", "50"
-                                                ).sliceArray(minValue..5)
+                                                ).sliceArray((startTime?.minute!! + minuteMin) / 10..5)
+                                                minValue = (startTime?.minute!! + minuteMin)/ 10
                                                 maxValue = 5
                                             }
                                             startTime?.hourOfDay!! + 1 -> {
@@ -225,10 +235,18 @@ class RoundCreateActivity : AppCompatActivity() {
                                                 maxValue = 5
                                             }
                                             startTime?.hourOfDay!! + hourMax -> {
-                                                minValue = 0
-                                                maxValue = startTime?.minute!! / 10
-                                                displayedValues = arrayOf("0", "10", "20", "30", "40", "50"
-                                                ).sliceArray(0..maxValue)
+                                                value = 0
+                                                if (startTime?.minute == 0){
+                                                    displayedValues = null
+                                                    minValue = 0
+                                                    maxValue = 0
+                                                } else {
+                                                    displayedValues = arrayOf(
+                                                        "0", "10", "20", "30", "40", "50"
+                                                    ).sliceArray(0..startTime?.minute!! / 10)
+                                                    minValue = 0
+                                                    maxValue = startTime?.minute!! / 10
+                                                }
                                             }
                                             else -> {
                                                 value = 0
@@ -238,16 +256,29 @@ class RoundCreateActivity : AppCompatActivity() {
                                             }
                                         } else when (newVal) {
                                             (startTime?.hourOfDay!! + hourMax) % 24 -> {
-                                                maxValue = startTime?.minute!! / 10
-                                                displayedValues = arrayOf(
-                                                    "0", "10", "20", "30", "40", "50"
-                                                ).sliceArray(0..maxValue)
+                                                if (startTime?.minute == 0){
+                                                    displayedValues = null
+                                                    minValue = 0
+                                                    maxValue = 0
+                                                }
+                                                else {
+                                                    displayedValues = arrayOf(
+                                                        "0", "10", "20", "30", "40", "50"
+                                                    ).sliceArray(0..startTime?.minute!! / 10)
+                                                    minValue = 0
+                                                    maxValue = startTime?.minute!! / 10
+                                                }
                                             }
                                             else -> {
-                                                minValue = 0
-                                                if (newVal == 0 && startTime?.hourOfDay == 23 && startTime?.minute!! + minuteMin >= 60)
+                                                if (newVal == 0 && startTime?.hourOfDay == 23 && startTime?.minute!! + minuteMin >= 60){
+                                                    displayedValues = arrayOf("0", "10", "20", "30", "40", "50")
+                                                        .sliceArray((startTime?.minute!! + minuteMin - 60) / 10..5)
                                                     minValue = (startTime?.minute!! + minuteMin - 60) / 10
-                                                displayedValues = arrayOf("0", "10", "20", "30", "40", "50").sliceArray(minValue..5)
+                                                }
+                                                else {
+                                                    displayedValues = arrayOf("0", "10", "20", "30", "40", "50")
+                                                    minValue = 0
+                                                }
                                                 maxValue = 5
                                             }
                                         }
@@ -255,19 +286,18 @@ class RoundCreateActivity : AppCompatActivity() {
                                         if (endTime?.day == dayOfMonth){
                                             when(newVal){
                                                 endTime?.hourOfDay!! -> {
-                                                    minValue = 0
-                                                    maxValue = (endTime?.minute!! - minuteMin) / 10
-                                                    displayedValues = arrayOf("0", "10", "20", "30", "40", "50"
-                                                    ).sliceArray(0..maxValue)
+                                                    if (endTime?.minute == minuteMin){
+                                                        displayedValues = null
+                                                        minValue = 0
+                                                        maxValue = 0
+                                                    }else {
+                                                        displayedValues = arrayOf("0", "10", "20", "30", "40", "50").sliceArray(0..(endTime?.minute!! - minuteMin) / 10)
+                                                        minValue = 0
+                                                        maxValue = (endTime?.minute!! - minuteMin) / 10
+                                                    }
                                                 }
-                                                endTime?.hourOfDay!! - hourMax -> {
-                                                    displayedValues = arrayOf("0", "10", "20", "30", "40", "50"
-                                                    ).sliceArray(0..(endTime?.minute!!) / 10)
-                                                    minValue = 0
-                                                    maxValue = (endTime?.minute!!) / 10
-                                                }
-                                                else -> {
-                                                    if (newVal == endTime?.hourOfDay!! - 1 &&  endTime?.minute!! < minuteMin){
+                                                endTime?.hourOfDay!! -1 -> {
+                                                    if (endTime?.minute!! < minuteMin){
                                                         if (day == dayOfMonth && newVal == hour){
                                                             displayedValues = arrayOf("0", "10", "20", "30", "40", "50").sliceArray(minuteIdx + 1..(endTime?.minute!! + 60 - minuteMin) / 10)
                                                             minValue = minuteIdx + 1
@@ -277,36 +307,59 @@ class RoundCreateActivity : AppCompatActivity() {
                                                             minValue = 0
                                                         }
                                                         maxValue = (endTime?.minute!! + 60 - minuteMin) / 10
-                                                    } else{
-                                                        displayedValues = arrayOf("0", "10", "20", "30", "40", "50")
-                                                        maxValue = 5
                                                     }
-
+                                                    else{
+                                                        displayedValues = arrayOf("0", "10", "20", "30", "40", "50")
+                                                        minValue = 0
+                                                        maxValue = 5
+                                                        Log.e("test12", "발동 ${displayedValues.size}")
+                                                    }
+                                                }
+                                                endTime?.hourOfDay!! - hourMax -> {
+                                                    displayedValues = arrayOf("0", "10", "20", "30", "40", "50"
+                                                    ).sliceArray((endTime?.minute!!) / 10..5)
+                                                    minValue = (endTime?.minute!!) / 10
+                                                    maxValue = 5
+                                                }
+                                                else -> {
+                                                    if (newVal == hour){
+                                                        displayedValues = arrayOf("0", "10", "20", "30", "40", "50").sliceArray((minute/10)+ 1..5)
+                                                        minValue = (minute/10)+ 1
+                                                    }
+                                                    else {
+                                                        displayedValues = arrayOf("0", "10", "20", "30", "40", "50")
+                                                        minValue = 0
+                                                    }
+                                                    maxValue = 5
                                                 }
                                             }
                                         }
                                         else {
                                             when(newVal){
                                                 (endTime?.hourOfDay!! + 24 - hourMax) % 24 ->{
-                                                    minValue = endTime?.minute!! / 10
                                                     displayedValues = arrayOf("0", "10", "20", "30", "40", "50"
-                                                    ).sliceArray(minValue..5)
+                                                    ).sliceArray(endTime?.minute!! / 10..5)
+                                                    minValue = endTime?.minute!! / 10
                                                     maxValue = 5
                                                 }
                                                 else -> {
-                                                    minValue = 0
-                                                    maxValue = 5
                                                     if (newVal == 23 && endTime?.hourOfDay == 0 && endTime?.minute!! < minuteMin){
+                                                        displayedValues = arrayOf("0", "10", "20", "30", "40", "50").sliceArray(0..(endTime?.minute!! - minuteMin + 60) / 10)
                                                         maxValue = (endTime?.minute!! - minuteMin + 60) / 10
-                                                    displayedValues = arrayOf("0", "10", "20", "30", "40", "50").sliceArray(0..maxValue)
+                                                    }
+                                                    else {
+                                                        displayedValues = arrayOf("0", "10", "20", "30", "40", "50")
+                                                        maxValue = 5
+                                                    }
+                                                    minValue = 0
                                                 }
                                             }
                                         }
                                     }
-                                    }else if (year == dateYear && monthValue == monthOfYear + 1 && day == dayOfMonth) {
+                                    else if (year == dateYear && monthValue == monthOfYear + 1 && day == dayOfMonth) {
                                         if (newVal.toString() == hour.toString()) {
-                                            minValue = minuteIdx + 1
                                             displayedValues = arrayOf("0", "10", "20", "30", "40", "50").sliceArray(minuteIdx + 1..5)
+                                            minValue = minuteIdx + 1
                                         } else {
                                             displayedValues = arrayOf("0", "10", "20", "30", "40", "50")
                                             value = 0
@@ -323,7 +376,7 @@ class RoundCreateActivity : AppCompatActivity() {
                     dialogBinding.npMinutePicker.apply {
                         wrapSelectorWheel = false
                         descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
-                        with(LocalDateTime.now()) {
+                        with(ZonedDateTime.now(ZoneId.of("Asia/Seoul"))) {
                             if (!isStart && startTime != null) {
                                 // 시작 시간의 날짜와 종료 시간의 날짜가 동일한 경우
                                 if (startTime?.day == dayOfMonth){
@@ -347,13 +400,16 @@ class RoundCreateActivity : AppCompatActivity() {
                                     minValue = if (startTime?.hourOfDay == 23 && startTime?.minute!! >= 60 - minuteMin){
                                         (startTime?.minute!! + minuteMin - 60) / 10
                                     } else 0
-                                    maxValue = 5
+                                    maxValue = if (dialogBinding.npHourPicker.value == startTime?.hourOfDay!! + hourMax - 24)
+                                        startTime?.minute!! / 10
+                                    else 5
                                     displayedValues = arrayOf("0", "10", "20", "30", "40", "50").sliceArray(
-                                        minValue..5
+                                        minValue..maxValue
                                     )
                                 }
                             }else if (isStart && endTime != null && dateYear == endTime?.year && monthOfYear + 1 == endTime?.month) {
                                 // 종료 시간 먼저 설정 후 시작 시간 설정하는 경우
+                                // 현재 시간 보다는 뒤어야 함
                                 if (dayOfMonth == endTime?.day) {
                                     if (endTime?.hourOfDay.toString() == dialogBinding.npHourPicker.value.toString()) {
                                         if (dayOfMonth == day && dateYear == year && monthValue == monthOfYear + 1) {
@@ -378,11 +434,25 @@ class RoundCreateActivity : AppCompatActivity() {
                                             )
                                         minValue = endTime?.minute!! / 10
                                         maxValue = 5
+
+                                    } else if (dialogBinding.npHourPicker.value == hour){
+                                        displayedValues =
+                                            arrayOf("0", "10", "20", "30", "40", "50").sliceArray(
+                                                minute/10 + 1..5
+                                            )
+                                        minValue = minute/10 + 1
+                                        maxValue = 5
                                     } else {
                                         // 직전 시간
                                         if (dialogBinding.npHourPicker.value + 1 == endTime?.hourOfDay && endTime?.minute!! < minuteMin){
-                                            displayedValues = arrayOf("0", "10", "20", "30", "40", "50").sliceArray(0..(endTime?.minute!! - minuteMin + 60)/10)
-                                            minValue = 0
+                                            if (dialogBinding.npHourPicker.value == hour){
+                                                displayedValues = arrayOf("0", "10", "20", "30", "40", "50").sliceArray(minute / 10 + 1..(endTime?.minute!! - minuteMin + 60)/10)
+                                                minValue = minute / 10 + 1
+                                            }
+                                            else {
+                                                displayedValues = arrayOf("0", "10", "20", "30", "40", "50").sliceArray(0..(endTime?.minute!! - minuteMin + 60)/10)
+                                                minValue = 0
+                                            }
                                             maxValue = (endTime?.minute!! - minuteMin + 60)/10
                                         }
                                         else {
@@ -403,10 +473,24 @@ class RoundCreateActivity : AppCompatActivity() {
                                     }
                                 }
                             }
+                            // 오늘이 아닌 경우
                             else if (year != dateYear || monthValue != monthOfYear + 1 || day != dayOfMonth) {
-                                minValue = 0
-                                displayedValues = arrayOf("0", "10", "20", "30", "40", "50")
-                                maxValue = 5
+                                // 다음 날과 확인해보기
+                                if (!isStart && year == dateYear && monthValue == monthOfYear && hour == 23 && minute >= 60 - minuteMin){
+                                    calendar.add(Calendar.DATE, 1)
+                                    if (calendar.get(Calendar.DAY_OF_MONTH) == dayOfMonth){
+                                        displayedValues = arrayOf("0", "10", "20", "30", "40", "50").sliceArray((minute + minuteMin - 60)/ 10 .. 5)
+                                        minValue = (minute + minuteMin - 60)/ 10
+                                    } else {
+                                        displayedValues = arrayOf("0", "10", "20", "30", "40", "50")
+                                        minValue = 0
+                                    }
+                                    maxValue = 5
+                                } else {
+                                    displayedValues = arrayOf("0", "10", "20", "30", "40", "50")
+                                    minValue = 0
+                                    maxValue = 5
+                                }
                             }
                             else if (year == dateYear && monthValue == monthOfYear + 1 && day == dayOfMonth && hour.toString() == dialogBinding.npHourPicker.value.toString()) {
                                 minValue = if (isStart) minute / 10 + 1 else ((minuteMin + minute) / 10 + 1) % 6
@@ -438,6 +522,8 @@ class RoundCreateActivity : AppCompatActivity() {
                                     btnCreateEndDate.text = "종료 시간"
                                     endTime = null
                                 }
+
+
                             }
                             else {
                                 btnCreateEndDate.text = String.format(
@@ -451,6 +537,8 @@ class RoundCreateActivity : AppCompatActivity() {
                                     btnCreateStartDate.text = "시작 시간 "
                                     startTime = null
                                 }
+
+
                             }
                         }
                         .setNegativeButton("취소") { _, _
@@ -459,8 +547,8 @@ class RoundCreateActivity : AppCompatActivity() {
                         .show()
                 }
                 if(isStart || startTime == null){
-                    with(LocalDateTime.now()) {
-                        if (hour == 23 && minute >= 50)
+                    with(ZonedDateTime.now(ZoneId.of("Asia/Seoul"))) {
+                        if (hour == 23 && minute >= 60 - minuteMin)
                             datePicker.minDate = System.currentTimeMillis() + 86400000
                         else datePicker.minDate = System.currentTimeMillis() - 1000
                     }
@@ -510,6 +598,7 @@ class RoundCreateActivity : AppCompatActivity() {
         }
     }
 
+    // 코드로 가능한 경우 다 막음
     private fun compareStartEndTime() : Int {
         // 0 : 둘다 null
         // 1 : startTime 이 더 빠름 (startTime 의 값이 더 작음)
@@ -525,6 +614,26 @@ class RoundCreateActivity : AppCompatActivity() {
             }
         }
         return 0
+    }
+
+    // 현재 시간과 비교 후 창 띄우기
+    private fun checkCondition(){
+        startTime?.let {
+            with(ZonedDateTime.now(ZoneId.of("Asia/Seoul"))){
+                val startTimeToLong = String.format("%4d%02d%02d%02d%02d", startTime?.year, startTime?.month, startTime?.day, startTime?.hourOfDay, startTime?.minute).toLong()
+                val nowTimeToLong = String.format("%4d%02d%02d%02d%02d", year, monthValue, day, hour, minute).toLong()
+                if (startTimeToLong <= nowTimeToLong){
+                    // Todo : 창 띄우면서 거절
+                } else {
+                    endTime?.let {
+                        val endTimeToLong = String.format("%4d%02d%02d%02d%02d", endTime?.year, endTime?.month, endTime?.day, endTime?.hourOfDay, endTime?.minute).toLong()
+                        if (endTimeToLong - startTimeToLong > 800){
+                            // Todo : 창 띄우면서 거절
+                        }
+                    }
+                }
+            }
+        }
     }
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
         if (currentFocus != null) {

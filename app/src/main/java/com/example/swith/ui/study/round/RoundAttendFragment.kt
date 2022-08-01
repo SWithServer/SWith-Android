@@ -39,13 +39,18 @@ class RoundAttendFragment : BaseFragment<FragmentRoundAttendBinding>(R.layout.fr
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             }
             btnAttend.setOnClickListener {
-                ConfirmDialog("출석 하시겠습니까?").apply {
-                    setMyDialogInterface(this, object: ConfirmDialogInterface {
-                        override fun onYesButtonClick() {
+                BottomSheet(1, viewModel.attendLimit).apply {
+                    setCustomListener(object: BottomSheet.customClickListener{
+                        override fun onAttendClick() {
+                            dismiss()
                             viewModel.updateCurAttend()
                         }
+
+                        override fun onCancelClick() {
+                            dismiss()
+                        }
                     })
-                }.show(requireActivity().supportFragmentManager, "attendDialog")
+                }.show(requireActivity().supportFragmentManager, "bottomSheet")
             }
         }
     }
@@ -58,10 +63,6 @@ class RoundAttendFragment : BaseFragment<FragmentRoundAttendBinding>(R.layout.fr
         }
     }
 
-    // 외부에서 인터페이스 리스너 삽입
-    private fun setMyDialogInterface(dialog: ConfirmDialog, myDialogInterface: ConfirmDialogInterface){
-        dialog.confirmDialogInterface = myDialogInterface
-    }
 
     // Todo : 10분 넘었을 때 지각으로 처리되는 로직도 추가해야함
 }

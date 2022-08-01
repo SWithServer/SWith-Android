@@ -19,6 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="20dp"
+        android:overScrollMode="never"
         app:layout_constraintTop_toBottomOf="@id/tv_attend_min_time"
         app:layout_constraintBottom_toBottomOf="parent">
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -78,6 +79,7 @@
             </TableLayout>
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_attend"
+                android:overScrollMode="never"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/tl_attend_top_row"/>
