@@ -10,6 +10,8 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.example.swith.R
 import com.example.swith.databinding.FragmentBottomSheetBinding
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class BottomSheet(private val count: Int, private val attendLimit: Int) : BottomSheetDialogFragment(){

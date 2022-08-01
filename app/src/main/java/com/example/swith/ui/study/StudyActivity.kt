@@ -23,7 +23,7 @@ class StudyActivity : AppCompatActivity() {
     private var groupId = 0
     lateinit var binding: ActivityStudyBinding
     // BottomNav 중 회차(연필)을 누르는 경우 가장 최근에 닫은 회차 프래그먼트로 이동
-    lateinit var prevRoundFragment: String
+    private var prevRoundFragment: String = "fragment"
     private val isManager = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,7 +83,11 @@ class StudyActivity : AppCompatActivity() {
                                 replace(R.id.study_frm, RoundTabFragment())
                                     .commitAllowingStateLoss()
                             else{
-                                replace(R.id.study_frm, RoundFragment())
+                                prevRoundFragment = fragments[0].toString()
+                                if (fragments[0] is RoundTabFragment)
+                                    replace(R.id.study_frm, RoundTabFragment())
+                                        .commitAllowingStateLoss()
+                                else replace(R.id.study_frm, RoundFragment())
                                     .commitAllowingStateLoss()
                             }
                         }

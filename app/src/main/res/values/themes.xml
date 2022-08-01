@@ -44,6 +44,7 @@
     <style name="CustomBottomSheet" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/BottomSheet</item>
         <item name="android:colorBackground">@color/white</item>
+        <item name="behavior_draggable">false</item>
     </style>
 
     <style name="BottomSheet" parent="Widget.MaterialComponents.BottomSheet.Modal">

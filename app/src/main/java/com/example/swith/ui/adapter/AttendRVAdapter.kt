@@ -1,6 +1,7 @@
 package com.example.swith.ui.adapter
 
 import android.graphics.Color
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -9,7 +10,7 @@ import com.example.swith.R
 import com.example.swith.data.UserAttend
 import com.example.swith.databinding.ItemAttendBinding
 
-class AttendRVAdapter : RecyclerView.Adapter<AttendRVAdapter.ViewHolder>() {
+class AttendRVAdapter(private val userId: Int) : RecyclerView.Adapter<AttendRVAdapter.ViewHolder>() {
     lateinit var binding: ItemAttendBinding
     private var userAttendList = ArrayList<UserAttend>()
 
@@ -32,6 +33,8 @@ class AttendRVAdapter : RecyclerView.Adapter<AttendRVAdapter.ViewHolder>() {
     inner class ViewHolder(private val binding: ItemAttendBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(userAttend: UserAttend){
             with(binding){
+                if (userId == userAttend.userId)
+                    tvItemName.typeface = Typeface.DEFAULT_BOLD
                 tvItemName.text = userAttend.name
                 tvItemAttend.apply {
                     when(userAttend.attend){

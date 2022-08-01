@@ -15,7 +15,7 @@ import com.example.swith.ui.BaseFragment
 import com.example.swith.ui.adapter.AttendRVAdapter
 import com.example.swith.viewmodel.AttendViewModel
 
-class RoundAttendFragment : BaseFragment<FragmentRoundAttendBinding>(R.layout.fragment_round_attend){
+class RoundAttendFragment(private val curCount: Int) : BaseFragment<FragmentRoundAttendBinding>(R.layout.fragment_round_attend){
     private val viewModel: AttendViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -24,6 +24,7 @@ class RoundAttendFragment : BaseFragment<FragmentRoundAttendBinding>(R.layout.fr
     }
 
     private fun initView(){
+        // 현재 회차 받기
         viewModel.setCurUser(5)
         setVisibility(viewModel.isUpdateAvailable(), viewModel.attendLiveData.value == null)
 
@@ -35,11 +36,11 @@ class RoundAttendFragment : BaseFragment<FragmentRoundAttendBinding>(R.layout.fr
         with(binding){
             tvAttendMinTime.text = "출석 유효 시간 : ${viewModel.attendLimit}분"
             rvAttend.apply{
-                adapter = AttendRVAdapter()
+                adapter = AttendRVAdapter(5)
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             }
             btnAttend.setOnClickListener {
-                BottomSheet(1, viewModel.attendLimit).apply {
+                BottomSheet(curCount, viewModel.attendLimit).apply {
                     setCustomListener(object: BottomSheet.customClickListener{
                         override fun onAttendClick() {
                             dismiss()
