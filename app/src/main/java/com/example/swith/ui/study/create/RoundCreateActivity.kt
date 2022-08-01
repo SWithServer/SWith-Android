@@ -11,14 +11,18 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.NumberPicker
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import com.example.swith.R
 import com.example.swith.data.DateTime
+import com.example.swith.data.Session
 import com.example.swith.databinding.ActivityRoundCreateBinding
 import com.example.swith.databinding.DialogTimepickerBinding
 import com.example.swith.utils.ToolBarManager
+import com.example.swith.viewmodel.RoundCreateViewModel
 import java.lang.Integer.max
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -26,6 +30,7 @@ import java.util.*
 
 
 class RoundCreateActivity : AppCompatActivity() {
+    private val viewModel : RoundCreateViewModel by viewModels()
     // 회차 최소시간(분단위)
     private val minuteMin = 20
     // 회차 최대시간(시간단위)
@@ -95,6 +100,10 @@ class RoundCreateActivity : AppCompatActivity() {
     }
 
     private fun initListener(){
+        viewModel.sessionIdLiveData.observe(this, Observer{
+            finishActivity(1)
+        })
+
         // 시간 설정 후에 추가해줘야 함
         with(binding){
             btnCreateStartDate.setOnClickListener {
@@ -129,6 +138,11 @@ class RoundCreateActivity : AppCompatActivity() {
             }
             btnCreateAdd.setOnClickListener {
                 // Todo : ViewModel 에서 post
+                val startTimeToString = String.format("%4d-%02d-%02dT%02d:%02d", startTime?.year, startTime?.month, startTime?.day, startTime?.hourOfDay, startTime?.minute)
+                val endTimeToString = String.format("%4d-%02d-%02dT%02d:%02d", endTime?.year, endTime?.month, endTime?.day, endTime?.hourOfDay, endTime?.minute)
+                val isOnline = if(cbCreateOnline.isChecked) 1 else 0
+
+                viewModel.postRound(Session(3, isOnline, etCreatePlace.text.toString(), etCreateDetail.text.toString(), startTimeToString, endTimeToString, 1))
             }
         }
     }
