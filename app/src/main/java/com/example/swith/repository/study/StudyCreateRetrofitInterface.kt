@@ -1,4 +1,4 @@
-package com.example.swith.repository
+package com.example.swith.repository.study
 
 import com.example.swith.data.StudyGroup
 import com.example.swith.data.StudyResponse

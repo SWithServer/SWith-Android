@@ -1,8 +1,8 @@
 package com.example.swith.ui.study.create
 
 import android.app.DatePickerDialog
+import android.app.Dialog
 import android.content.Intent
-import android.content.SharedPreferences
 import android.graphics.ImageDecoder
 import android.os.Build
 import android.os.Bundle
@@ -10,20 +10,15 @@ import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.*
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContract
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.swith.R
 import com.example.swith.data.StudyGroup
 import com.example.swith.data.StudyResponse
-import com.example.swith.databinding.ActivitySelectPlaceBinding
 import com.example.swith.databinding.ActivityStudyCreateBinding
 import com.example.swith.repository.RetrofitService
-import com.example.swith.repository.StudyCreateRetrofitInterface
-import com.example.swith.utils.SharedPrefManager
+import com.example.swith.repository.study.StudyCreateRetrofitInterface
+import org.w3c.dom.Text
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -72,9 +67,14 @@ class StudyCreateActivity :AppCompatActivity() {
     var placeNum: String="-1"
     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
+    lateinit var dialog_ :Dialog
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_study_create)
+
+        dialog_ = Dialog(this@StudyCreateActivity)
+        dialog_.setContentView(R.layout.fragment_dialog)
 
         Log.e("create","true")
         getSharedPreferences("result1",0).apply{
@@ -319,7 +319,6 @@ class StudyCreateActivity :AppCompatActivity() {
         binding.checkMonth.setOnCheckedChangeListener(listener)
         binding.checkFree.setOnCheckedChangeListener(listener)
 
-
         //스터디 개설버튼
         //retrofit 연결을 위해 잠시 개설확인 dialog를 지운상태.
         binding.btnStudyCreate.setOnClickListener {
@@ -363,7 +362,7 @@ class StudyCreateActivity :AppCompatActivity() {
                                 Toast.makeText(this@StudyCreateActivity,"모든 항목을 작성해주세요!",Toast.LENGTH_SHORT).show()
                             }
                             else{
-                                createStudy(studyRequestData)
+                                createStudy(studyRequestData,"개설하시겠습니까?")
                             }
                         }
                         2->{
@@ -373,7 +372,7 @@ class StudyCreateActivity :AppCompatActivity() {
 
                             }
                             else{
-                                createStudy(studyRequestData)
+                                createStudy(studyRequestData,"개설하시겠습니까?")
                             }
                         }
                     }
@@ -405,33 +404,45 @@ class StudyCreateActivity :AppCompatActivity() {
         Log.e("destroy","true")
     }
 
-    fun createStudy(studyRequestData : StudyGroup){
+    fun createStudy(studyRequestData : StudyGroup,content_text:String){
         //레트로핏 부분
-        Log.e("summer","retrofit 함수 in")
-        Log.e("summer", "USER DATA = ${studyRequestData.toString()}")
-                val retrofitService = RetrofitService.retrofit.create(StudyCreateRetrofitInterface::class.java)
-                retrofitService.createStudy(studyRequestData).enqueue(object : Callback <StudyResponse> {
-                    override fun onResponse(call: Call<StudyResponse>, response: Response<StudyResponse>) {
-                        if (response.isSuccessful)
-                        {
-                            Log.e("summer", "성공${response.toString()}")
-                            response.body()?.apply {
-                                val studyResp = this as StudyResponse
-                                Log.e("summer","body = $studyResp")
-                            }
-                            finish()
+        dialog_.findViewById<TextView>(R.id.tv_confirm).text = content_text
+        dialog_.show()
+
+        dialog_.findViewById<Button>(R.id.btn_no).setOnClickListener {
+            dialog_.dismiss()
+        }
+        dialog_.findViewById<Button>(R.id.btn_yes).setOnClickListener {
+            Log.e("summer","retrofit 함수 in")
+            Log.e("summer", "USER DATA = ${studyRequestData.toString()}")
+            val retrofitService = RetrofitService.retrofit.create(StudyCreateRetrofitInterface::class.java)
+            retrofitService.createStudy(studyRequestData).enqueue(object : Callback <StudyResponse> {
+                override fun onResponse(call: Call<StudyResponse>, response: Response<StudyResponse>) {
+                    if (response.isSuccessful)
+                    {
+                        Log.e("summer", "성공${response.toString()}")
+                        response.body()?.apply {
+                            val studyResp = this as StudyResponse
+                            Log.e("summer","body = $studyResp")
                         }
-                        else
-                        {
-                            Log.e("summer", "전달실패 code = ${response.code()}")
-                            Log.e("summer", "전달실패 msg = ${response.message()}")
-                        }
+                        finish()
                     }
-                    override fun onFailure(call: Call<StudyResponse>, t: Throwable) {
-                        Log.e("summer","onFailure t = ${t.toString()}")
-                        Log.e("summer","onFailure msg = ${t.message}")
+                    else
+                    {
+                        Log.e("summer", "전달실패 code = ${response.code()}")
+                        Log.e("summer", "전달실패 msg = ${response.message()}")
+                        Toast.makeText(this@StudyCreateActivity,"다시 시도해주세요",Toast.LENGTH_SHORT).show()
+                    dialog_.dismiss()
                     }
-                })
+                }
+                override fun onFailure(call: Call<StudyResponse>, t: Throwable) {
+                    Log.e("summer","onFailure t = ${t.toString()}")
+                    Log.e("summer","onFailure msg = ${t.message}")
+                    Toast.makeText(this@StudyCreateActivity,"다시 시도해주세요",Toast.LENGTH_SHORT).show()
+                    dialog_.dismiss()
+                }
+            })
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
