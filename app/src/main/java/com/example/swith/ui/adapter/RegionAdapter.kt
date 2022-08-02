@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.swith.databinding.ItemRegionBinding
 //
 //class RegionAdapter(regionList: ArrayList<String>): RecyclerView.Adapter<RegionHolder>() {
 //        var list = regionList

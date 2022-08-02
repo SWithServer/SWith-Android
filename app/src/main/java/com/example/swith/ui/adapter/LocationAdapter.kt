@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.swith.databinding.ItemLocationBinding
-import com.example.swith.databinding.ItemRegionBinding
 
 class LocationAdapter(regionList: ArrayList<String>): RecyclerView.Adapter<LocationHolder>() {
     var list = regionList
