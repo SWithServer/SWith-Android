@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="categoryList">
-        <item>컴퓨터</item>
+        <item>자격증/시험</item>
         <item>어학</item>
-        <item>자격증</item>
-        <item>고시</item>
+        <item>청소년/입시</item>
+        <item>취업/창업</item>
+        <item>컴퓨터/IT</item>
+        <item>취미/문화</item>
+        <item>면접</item>
     </string-array>
     <string-array name="methodList">
         <item>선착순</item>
