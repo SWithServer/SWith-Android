@@ -100,8 +100,9 @@ class RoundCreateActivity : AppCompatActivity() {
     }
 
     private fun initListener(){
-        viewModel.sessionIdLiveData.observe(this, Observer{
-            finishActivity(1)
+        viewModel.sessionLiveEvent.observe(this, Observer{
+            Toast.makeText(applicationContext, "회차 생성이 완료되었습니다", Toast.LENGTH_SHORT).show()
+            finish()
         })
 
         // 시간 설정 후에 추가해줘야 함
@@ -137,12 +138,11 @@ class RoundCreateActivity : AppCompatActivity() {
                 }
             }
             btnCreateAdd.setOnClickListener {
-                // Todo : ViewModel 에서 post
-                val startTimeToString = String.format("%4d-%02d-%02dT%02d:%02d", startTime?.year, startTime?.month, startTime?.day, startTime?.hourOfDay, startTime?.minute)
-                val endTimeToString = String.format("%4d-%02d-%02dT%02d:%02d", endTime?.year, endTime?.month, endTime?.day, endTime?.hourOfDay, endTime?.minute)
-                val isOnline = if(cbCreateOnline.isChecked) 1 else 0
-
-                viewModel.postRound(Session(3, isOnline, etCreatePlace.text.toString(), etCreateDetail.text.toString(), startTimeToString, endTimeToString, 1))
+                val startTimeToString : String = String.format("%4d-%02d-%02dT%02d:%02d", startTime?.year, startTime?.month, startTime?.day, startTime?.hourOfDay, startTime?.minute)
+                val endTimeToString : String = String.format("%4d-%02d-%02dT%02d:%02d", endTime?.year, endTime?.month, endTime?.day, endTime?.hourOfDay, endTime?.minute)
+                val online : Int = if(cbCreateOnline.isChecked) 1 else 0
+                //checkCondition()
+                viewModel.postRound(Session(1, online, etCreatePlace.text.toString(), etCreateDetail.text.toString(), endTimeToString, startTimeToString, 1).also { Log.e("body", it.toString()) })
             }
         }
     }
