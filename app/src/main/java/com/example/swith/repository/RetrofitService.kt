@@ -3,6 +3,7 @@ package com.example.swith.repository
 import com.example.swith.data.CityResponse
 import okhttp3.ConnectionSpec
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -14,10 +15,20 @@ object RetrofitService {
     const val baseUrl = "http://3.39.89.30:9000/"
     const val REG_CODE="https://grpc-proxy-server-mkvo6j4wsq-du.a.run.app/v1/"
 
+    private val httpLoggingInterceptor = HttpLoggingInterceptor().apply {
+        level = HttpLoggingInterceptor.Level.BODY
+    }
+
+    val client : OkHttpClient by lazy {
+        OkHttpClient.Builder()
+            .addInterceptor(httpLoggingInterceptor)
+            .build()
+    }
     val retrofit : Retrofit by lazy {
         Retrofit.Builder()
             .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
+            .client(client)
             .build()
     }
 

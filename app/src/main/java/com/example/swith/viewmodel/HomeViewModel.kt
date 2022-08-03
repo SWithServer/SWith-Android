@@ -29,7 +29,7 @@ class HomeViewModel() : ViewModel() {
             val res = repository.getAllStudy(userId)
             withContext(Dispatchers.Main) {
                 res?.let { _groupLiveData.value = it }
-                initTempData()
+                //initTempData()
             }
         }
     }
