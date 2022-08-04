@@ -19,11 +19,12 @@ object RetrofitService {
         level = HttpLoggingInterceptor.Level.BODY
     }
 
-    val client : OkHttpClient by lazy {
+    private val client : OkHttpClient by lazy {
         OkHttpClient.Builder()
             .addInterceptor(httpLoggingInterceptor)
             .build()
     }
+
     val retrofit : Retrofit by lazy {
         Retrofit.Builder()
             .baseUrl(baseUrl)

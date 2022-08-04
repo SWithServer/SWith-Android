@@ -45,7 +45,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.study.StudyActivity" />
+        <activity android:name=".ui.study.StudyActivity"
+            android:windowSoftInputMode="adjustNothing"/>
         <activity
             android:name=".ui.study.create.StudyCreateActivity"
             android:exported="true"
