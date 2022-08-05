@@ -10,6 +10,7 @@ import com.example.swith.repository.RetrofitService
 import com.example.swith.repository.home.HomeRemoteDataSource
 import com.example.swith.repository.home.HomeRepository
 import com.example.swith.utils.SharedPrefManager
+import com.example.swith.utils.SingleLiveEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -17,21 +18,30 @@ import kotlinx.coroutines.withContext
 
 class HomeViewModel() : ViewModel() {
     private val repository: HomeRepository = HomeRepository(HomeRemoteDataSource())
-    private var groupData = ArrayList<GroupItem>()
-    private var _groupLiveData = MutableLiveData<Group>()
+    private var _groupLiveData = SingleLiveEvent<Group>()
+
     val groupLiveData: LiveData<Group>
         get() = _groupLiveData
 
-    init{
+    fun loadData(){
         // val userId = SharedPrefManager().getLoginData()?.userIdx
-        val userId = 10
+        val userId = 1
         viewModelScope.launch{
             val res = repository.getAllStudy(userId)
             withContext(Dispatchers.Main) {
                 res?.let { _groupLiveData.value = it }
                 initTempData()
+
+                // 해당 메서드 호출 시 데이터 null 값 됨
+                // _groupLiveData.call()
             }
         }
+    }
+
+
+    fun getEmptyOrNull() : Boolean{
+        return if (_groupLiveData.value == null) true
+        else _groupLiveData.value?.group.isNullOrEmpty()
     }
 
     private fun initTempData(){
@@ -39,7 +49,6 @@ class HomeViewModel() : ViewModel() {
         tempList.add(GroupItem("임시 공지사항입니다.",80, 1, "컴퓨터",8, "임시 임시", 3,
             listOf(2022, 7, 31, 16, 0), "스터디 임시 1"))
         _groupLiveData.value = Group(tempList)
-        Log.e("value", groupLiveData.value.toString())
     }
 
 }

@@ -16,7 +16,9 @@
         <item name="android:windowTranslucentStatus">false</item>
         <item name="android:windowFullscreen">false</item>
 
+<!--        Material Design Color-->
         <item name="bottomSheetDialogTheme">@style/CustomBottomSheet</item>
+        <item name="circularProgressIndicatorStyle">@style/Widget.App.CircularProgressIndicator</item>
     </style>
     <style name="tab_text" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">18sp</item>
@@ -49,5 +51,14 @@
 
     <style name="BottomSheet" parent="Widget.MaterialComponents.BottomSheet.Modal">
         <item name="backgroundTint">@android:color/transparent</item>
+    </style>
+
+<!--    Circular Indicator Style-->
+    <style name="Widget.App.CircularProgressIndicator" parent="Widget.MaterialComponents.CircularProgressIndicator">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.CircularProgressIndicator</item>
+    </style>
+
+    <style name="ThemeOverlay.App.CircularProgressIndicator" parent="">
+        <item name="colorPrimary">@color/color_swith</item>
     </style>
 </resources>

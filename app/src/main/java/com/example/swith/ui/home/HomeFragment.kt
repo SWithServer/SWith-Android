@@ -2,6 +2,7 @@ package com.example.swith.ui.home
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 
 import androidx.fragment.app.viewModels
@@ -22,11 +23,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        // progress bar
+        setViewVisibility(isStudyNotExists = true, beforeDataLoad = true)
+        viewModel.loadData()
 
         viewModel.groupLiveData.observe(viewLifecycleOwner, Observer{ data ->
             // 스터디가 1개 이상 존재하면 스터디 리사이클러 뷰 보여줌
-            setViewVisibility(data.group.isNullOrEmpty())
-            data.group?.let{(binding.homeStudyRv.adapter as HomeStudyRVAdapter).setData(data)}
+            setViewVisibility(viewModel.getEmptyOrNull(), false)
+            data?.group?.let{(binding.homeStudyRv.adapter as HomeStudyRVAdapter).setData(data)}
         })
 
         binding.homeStudyRv.apply {
@@ -47,14 +51,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home){
         }
     }
 
-    private fun setViewVisibility(isStudyNotExists: Boolean){
+    private fun setViewVisibility(isStudyNotExists: Boolean, beforeDataLoad: Boolean){
         with(binding) {
-            if (isStudyNotExists) {
+            if (beforeDataLoad){
+                homeScrollviewSv.visibility = View.GONE
+                homeNoStudyLayout.visibility = View.GONE
+            }else if (isStudyNotExists) {
                 homeScrollviewSv.visibility = View.GONE
                 homeNoStudyLayout.visibility = View.VISIBLE
+                homeCircularIndicator.visibility = View.GONE
             } else{
                 homeScrollviewSv.visibility = View.VISIBLE
                 homeNoStudyLayout.visibility = View.GONE
+                homeCircularIndicator.visibility = View.GONE
             }
         }
     }
