@@ -13,7 +13,7 @@ class RoundTabVPAdapter(fragment: Fragment, private val curCount : Int) : Fragme
         return when(position){
             0 -> RoundSummaryFragment()
             1 -> RoundAttendFragment(curCount)
-            else -> RoundMemoFragment()
+            else -> RoundMemoFragment(curCount)
         }
     }
 }

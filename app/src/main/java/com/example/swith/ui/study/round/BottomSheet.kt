@@ -14,10 +14,11 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class BottomSheet(private val count: Int, private val attendLimit: Int) : BottomSheetDialogFragment(){
+class BottomSheet(private val count: Int, private val attendLimit: Int, private var isFromMemo: Boolean) : BottomSheetDialogFragment(){
     private lateinit var binding : FragmentBottomSheetBinding
+
     interface customClickListener{
-        fun onAttendClick()
+        fun onCheckClick()
         fun onCancelClick()
     }
     private lateinit var customListener: customClickListener
@@ -37,9 +38,17 @@ class BottomSheet(private val count: Int, private val attendLimit: Int) : Bottom
 
     private fun initView(){
         with(binding){
-            tvBottomRound.text = "${count}회차 출석"
-            tvBottomTime.text = "회차 시작 후 ${attendLimit}분 까지 출석 가능"
-            btnBottomAttend.setOnClickListener { customListener.onAttendClick() }
+            if (isFromMemo) {
+                tvBottomTitle.text = "${count}회차 메모 수정"
+                tvBottomTime.visibility = View.GONE
+                tvBottomGuide.text = resources.getString(R.string.bottom_memo_guide)
+                btnBottomCheck.text = "수정 완료"
+            }
+            else {
+                tvBottomTitle.text = "${count}회차 출석"
+                tvBottomTime.text = "회차 시작 후 ${attendLimit}분 까지 출석 가능"
+            }
+            btnBottomCheck.setOnClickListener { customListener.onCheckClick() }
             tvBottomCancel.setOnClickListener { customListener.onCancelClick() }
         }
     }

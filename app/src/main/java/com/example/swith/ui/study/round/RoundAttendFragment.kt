@@ -38,9 +38,9 @@ class RoundAttendFragment(private val curCount: Int) : BaseFragment<FragmentRoun
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             }
             btnAttend.setOnClickListener {
-                BottomSheet(curCount, viewModel.attendLimit).apply {
+                BottomSheet(curCount, viewModel.attendLimit, false).apply {
                     setCustomListener(object: BottomSheet.customClickListener{
-                        override fun onAttendClick() {
+                        override fun onCheckClick() {
                             dismiss()
                             viewModel.updateCurAttend()
                         }
@@ -49,7 +49,7 @@ class RoundAttendFragment(private val curCount: Int) : BaseFragment<FragmentRoun
                             dismiss()
                         }
                     })
-                }.show(requireActivity().supportFragmentManager, "bottomSheet")
+                }.show(requireActivity().supportFragmentManager, "bottomAttend")
             }
         }
     }
