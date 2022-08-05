@@ -7,8 +7,6 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.studywith.ConfirmDialog
-import com.example.studywith.ConfirmDialogInterface
 import com.example.swith.R
 import com.example.swith.databinding.FragmentRoundAttendBinding
 import com.example.swith.ui.BaseFragment
