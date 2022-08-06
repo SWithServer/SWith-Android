@@ -30,10 +30,7 @@ class HomeViewModel() : ViewModel() {
             val res = repository.getAllStudy(userId)
             withContext(Dispatchers.Main) {
                 res?.let { _groupLiveData.value = it }
-                initTempData()
-
-                // 해당 메서드 호출 시 데이터 null 값 됨
-                // _groupLiveData.call()
+                if (res == null) _groupLiveData.call()
             }
         }
     }

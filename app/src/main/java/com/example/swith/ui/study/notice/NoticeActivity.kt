@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import com.example.swith.R
 import com.example.swith.databinding.ActivityNoticeBinding
 import com.example.swith.utils.NoticeManager
+import com.example.swith.utils.ToolBarManager
 
 class NoticeActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var binding: ActivityNoticeBinding
@@ -16,7 +17,10 @@ class NoticeActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_notice)
 
-        initToolbar()
+        ToolBarManager(this).initToolBar(binding.studyNoticeToolbar,
+            titleVisible = false,
+            backVisible = true
+        )
 
         initData()
         initView()
@@ -30,12 +34,6 @@ class NoticeActivity : AppCompatActivity(), View.OnClickListener {
         //공지사항 가져오기
     }
 
-    private fun initToolbar(){
-        setSupportActionBar(binding.studyNoticeToolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             android.R.id.home -> finish()
@@ -45,10 +43,10 @@ class NoticeActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(view: View?) {
         when(view?.id){
-            R.id.btn_test ->{
-                //TODO only test, pushService만들면 로직 삭제
-                NoticeManager(this@NoticeActivity).runNotice("알람제목","알람테스트")
-            }
+//            R.id.btn_test ->{
+//                //TODO only test, pushService만들면 로직 삭제
+//                NoticeManager(this@NoticeActivity).runNotice("알람제목","알람테스트")
+//            }
         }
     }
 }
