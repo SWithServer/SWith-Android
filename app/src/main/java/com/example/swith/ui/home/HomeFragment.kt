@@ -10,7 +10,6 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.swith.R
 import com.example.swith.data.Group
-import com.example.swith.data.GroupItem
 import com.example.swith.databinding.FragmentHomeBinding
 import com.example.swith.ui.BaseFragment
 import com.example.swith.ui.adapter.HomeStudyRVAdapter
@@ -36,7 +35,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home){
         binding.homeStudyRv.apply {
             adapter = HomeStudyRVAdapter().apply {
                 setMyItemClickListener(object: HomeStudyRVAdapter.myItemClickListener{
-                    override fun onItemClick(group: GroupItem) {
+                    override fun onItemClick(group: Group) {
                         startActivity(Intent(activity, StudyActivity::class.java).apply {
                             putExtra("group", group.groupIdx)
                         })

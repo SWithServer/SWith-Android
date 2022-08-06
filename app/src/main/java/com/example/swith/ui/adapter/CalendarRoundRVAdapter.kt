@@ -5,11 +5,11 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.swith.R
-import com.example.swith.data.Round
+import com.example.swith.data.GetSessionRes
 import com.example.swith.databinding.ItemCalendarRoundBinding
 
 class CalendarRoundRVAdapter() : RecyclerView.Adapter<CalendarRoundRVAdapter.ViewHolder>(){
-    private var roundList = ArrayList<Round>()
+    private var roundList = ArrayList<GetSessionRes>()
     lateinit var binding: ItemCalendarRoundBinding
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -23,21 +23,17 @@ class CalendarRoundRVAdapter() : RecyclerView.Adapter<CalendarRoundRVAdapter.Vie
 
     override fun getItemCount(): Int = roundList.size
 
-    fun setData(roundData : ArrayList<Round>){
-        roundList = roundData
+    fun setData(roundData : List<GetSessionRes>){
+        roundList = roundData as ArrayList<GetSessionRes>
         notifyDataSetChanged()
     }
 
-    fun addData(round: Round) {
-        roundList.add(round)
-        notifyDataSetChanged()
-    }
 
     inner class ViewHolder(val binding: ItemCalendarRoundBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(round: Round){
+        fun bind(round: GetSessionRes){
             with(binding){
-                tvItemCalendarRound.text = "${round.count}회차"
-                tvItemCalendarDetail.text = "내용 : ${round.detail}"
+                tvItemCalendarRound.text = "${round.sessionNum}회차"
+                tvItemCalendarDetail.text = "내용 : ${round.sessionContent}"
             }
         }
     }

@@ -19,23 +19,30 @@ import com.example.swith.utils.ToolBarManager
 import com.example.swith.viewmodel.RoundViewModel
 
 class StudyActivity : AppCompatActivity() {
-    // Intent 전달 표시용
     private var groupId = 0
     lateinit var binding: ActivityStudyBinding
     // BottomNav 중 회차(연필)을 누르는 경우 가장 최근에 닫은 회차 프래그먼트로 이동
     private var prevRoundFragment: String = "fragment"
-    private val isManager = true
+    private val viewModel: RoundViewModel by viewModels()
+
+    private val isManager = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_study)
+
+        initData()
 
         ToolBarManager(this).initToolBar(binding.studyToolbar,
             titleVisible = false,
             backVisible = true
         )
         initBottomNavigation()
+    }
+
+    private fun initData(){
         intent.hasExtra("group")?.let { groupId = intent.getIntExtra("group", 0) }
-        Log.e("studyActivity", groupId.toString())
+        viewModel.groupIdx = groupId
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

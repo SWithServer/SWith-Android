@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.example.swith.data.DateTime
 import com.example.swith.data.Group
-import com.example.swith.data.GroupItem
+import com.example.swith.data.GroupList
 import com.example.swith.repository.RetrofitApi
 import com.example.swith.repository.RetrofitService
 import com.example.swith.repository.home.HomeRemoteDataSource
@@ -12,15 +12,14 @@ import com.example.swith.repository.home.HomeRepository
 import com.example.swith.utils.SharedPrefManager
 import com.example.swith.utils.SingleLiveEvent
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class HomeViewModel() : ViewModel() {
     private val repository: HomeRepository = HomeRepository(HomeRemoteDataSource())
-    private var _groupLiveData = SingleLiveEvent<Group>()
+    private var _groupLiveData = SingleLiveEvent<GroupList>()
 
-    val groupLiveData: LiveData<Group>
+    val groupLiveData: LiveData<GroupList>
         get() = _groupLiveData
 
     fun loadData(){
@@ -42,10 +41,10 @@ class HomeViewModel() : ViewModel() {
     }
 
     private fun initTempData(){
-        val tempList = ArrayList<GroupItem>()
-        tempList.add(GroupItem("임시 공지사항입니다.",80, 1, "컴퓨터",8, "임시 임시", 3,
+        val tempList = ArrayList<Group>()
+        tempList.add(Group("임시 공지사항입니다.",80, 1, "컴퓨터",8, "임시 임시", 3,
             listOf(2022, 7, 31, 16, 0), "스터디 임시 1"))
-        _groupLiveData.value = Group(tempList)
+        _groupLiveData.value = GroupList(tempList)
     }
 
 }

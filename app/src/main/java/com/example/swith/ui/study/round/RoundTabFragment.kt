@@ -20,7 +20,7 @@ class RoundTabFragment() : BaseFragment<FragmentRoundTabBinding>(R.layout.fragme
         initTabLayout()
     }
     private fun initTabLayout(){
-        binding.vpRoundTab.adapter = RoundTabVPAdapter(this, viewModel.currentLiveData?.value?.count!!)
+        binding.vpRoundTab.adapter = RoundTabVPAdapter(this, viewModel.currentLiveData?.value?.sessionNum!!)
         TabLayoutMediator(binding.tbLayoutRoundTab, binding.vpRoundTab){
             tab, position -> tab.text = information[position]
         }.attach()

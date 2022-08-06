@@ -7,6 +7,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.swith.R
 import com.example.swith.data.DateTime
+import com.example.swith.data.GetSessionRes
 import com.example.swith.data.Round
 import com.example.swith.databinding.FragmentRoundBinding
 import com.example.swith.ui.BaseFragment
@@ -20,13 +21,13 @@ class RoundFragment : BaseFragment<FragmentRoundBinding>(R.layout.fragment_round
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        initListener()
+        setViewVisibility(true)
+        viewModel.loadData()
 
         binding.roundListRv.apply {
-            adapter = RoundRVAdapter(viewModel.curCount).apply {
+            adapter = RoundRVAdapter().apply {
                 setItemClickListener(object : RoundRVAdapter.myItemClickListener {
-                    override fun onItemClick(round: Round) {
+                    override fun onItemClick(round: GetSessionRes) {
                         viewModel.setCurrentData(round)
                         requireActivity().supportFragmentManager.beginTransaction()
                             .replace(R.id.study_frm, RoundTabFragment())
@@ -35,16 +36,29 @@ class RoundFragment : BaseFragment<FragmentRoundBinding>(R.layout.fragment_round
                 })
             }
         }
-
         viewModel.roundLiveData.observe(viewLifecycleOwner, Observer {
+            setViewVisibility(false)
             (binding.roundListRv.adapter as RoundRVAdapter).setData(it)
+            binding.roundNoticeContentTv.text = it.announcementContent
         })
+
+        initListener()
+    }
+
+    private fun setViewVisibility(beforeDataLoad: Boolean){
+        with(binding) {
+            if (beforeDataLoad) {
+                roundCircularIndicator.visibility = View.VISIBLE
+                roundMainLayout.visibility = View.INVISIBLE
+            }else{
+                roundMainLayout.visibility = View.VISIBLE
+                roundCircularIndicator.visibility = View.INVISIBLE
+            }
+        }
     }
 
     private fun initListener(){
-        var testCount = 7
         with(binding){
-            roundAddBtn.setOnClickListener { viewModel.addData(Round(testCount, DateTime(2022, 7, 22, 22, 0), DateTime(2022, 7, 22, 23, 0), "영어 ${testCount++}회차 스터디", true, null, 3)) }
             roundNoticeIv.setOnClickListener { startActivity(Intent(activity, NoticeActivity::class.java)) }
             roundAddBtn.setOnClickListener { startActivity(Intent(activity, RoundCreateActivity::class.java)) }
             roundPreviousCb.setOnCheckedChangeListener { view, isChecked -> viewModel.setPastData(view.isChecked) }

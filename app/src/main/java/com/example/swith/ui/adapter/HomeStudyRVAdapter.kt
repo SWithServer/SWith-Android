@@ -7,16 +7,16 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.swith.R
 import com.example.swith.data.Group
-import com.example.swith.data.GroupItem
+import com.example.swith.data.GroupList
 import com.example.swith.databinding.ItemStudyBinding
 import java.util.*
 
 class HomeStudyRVAdapter : RecyclerView.Adapter<HomeStudyRVAdapter.ViewHolder>() {
-    private var groupList = ArrayList<GroupItem>()
+    private var groupList = ArrayList<Group>()
     private lateinit var binding: ItemStudyBinding
 
     interface myItemClickListener{
-        fun onItemClick(group: GroupItem)
+        fun onItemClick(group: Group)
     }
 
     private lateinit var mItemClickListener: myItemClickListener
@@ -37,13 +37,13 @@ class HomeStudyRVAdapter : RecyclerView.Adapter<HomeStudyRVAdapter.ViewHolder>()
 
     override fun getItemCount(): Int = groupList.size
 
-    fun setData(newList: Group){
-        groupList = newList.group as ArrayList<GroupItem>
+    fun setData(newList: GroupList){
+        groupList = newList.group as ArrayList<Group>
         notifyDataSetChanged()
     }
 
     inner class ViewHolder(val binding: ItemStudyBinding) : RecyclerView.ViewHolder(binding.root){
-        fun bind(group: GroupItem){
+        fun bind(group: Group){
             with(binding) {
                 studyTitleTv.text = group.title
                 studyNoticeTv.text = group.announcementContent

@@ -2,7 +2,7 @@ package com.example.swith.data
 
 import com.google.gson.annotations.SerializedName
 
-data class GroupItem(
+data class Group(
     val announcementContent: String,
     val attendanceRate: Int,
     val groupIdx: Int,
@@ -14,6 +14,6 @@ data class GroupItem(
     val title: String
 )
 
-data class Group(
-    @SerializedName("result") val group: List<GroupItem>
+data class GroupList(
+    @SerializedName("result") val group: List<Group>
 )
