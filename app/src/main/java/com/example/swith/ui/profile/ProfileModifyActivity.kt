@@ -22,18 +22,18 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun initView() {
         binding.clickListener = this@ProfileModifyActivity
-        setSpinnerListener()
+       // setSpinnerListener()
     }
 
-    private fun setSpinnerListener() {
-        val interestingList = resources.getStringArray(R.array.intersting)
-        val interestingAdapter = ArrayAdapter(
-            this,
-            android.R.layout.simple_spinner_dropdown_item, interestingList
-        )
-        binding.spInteresting1.adapter = interestingAdapter
-        binding.spInteresting2.adapter = interestingAdapter
-    }
+//    private fun setSpinnerListener() {
+//        val interestingList = resources.getStringArray(R.array.intersting)
+//        val interestingAdapter = ArrayAdapter(
+//            this,
+//            android.R.layout.simple_spinner_dropdown_item, interestingList
+//        )
+//        binding.spInteresting1.adapter = interestingAdapter
+//        binding.spInteresting2.adapter = interestingAdapter
+//    }
 
     private fun initData() {
         //TODO("Not yet implemented")
@@ -53,6 +53,18 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener {
                     putExtra("profile","ProfileFragment")
                     startActivity(this)
                 }
+            }
+            R.id.btn_interesting1->{
+                //TODO
+            }
+            R.id.btn_interesting2->{
+                //TODO
+            }
+            R.id.tv_interesting1->{
+                //TODO
+            }
+            R.id.tv_interesting2->{
+                //TODO
             }
         }
     }
