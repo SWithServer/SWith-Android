@@ -2,7 +2,9 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
         <variable
             name="clickListener"
             type="android.view.View.OnClickListener" />
@@ -10,41 +12,65 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_gradation_basic">
+
 
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="30dp"
-            android:text="Study With!\n스윗"
-            android:textSize="30dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="130dp"
+            android:fontFamily="@font/kr_regular"
+            android:includeFontPadding="false"
+            android:text="@string/login_title"
+            android:textColor="@color/white"
+            android:textSize="18dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/btn_kakao"
+        <TextView
+            android:id="@+id/tv_app_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="50dp"
-            android:text="카카오로 로그인하기"
-            android:textSize="30dp"
-            android:onClick="@{clickListener}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <Button
-            android:id="@+id/btn_logout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="logout"
-            android:onClick="@{clickListener}"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/kr_bold"
+            android:text="@string/app_name_kr"
+            android:textColor="@color/white"
+            android:textSize="32dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/btn_kakao"/>
-
+            app:layout_constraintTop_toBottomOf="@id/tv_title" />
+        <LinearLayout
+            android:id="@+id/ll_kakao"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="150dp"
+            android:orientation="horizontal"
+            android:background="@drawable/btn_round_white_selector"
+            android:onClick="@{clickListener}"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_kakao"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/login_kakao"
+                android:fontFamily="@font/kr_regular"
+                android:textSize="16dp"
+                android:textColor="@color/color_swith"/>
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
 
 </layout>

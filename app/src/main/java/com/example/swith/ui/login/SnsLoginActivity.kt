@@ -42,22 +42,22 @@ class SnsLoginActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(view: View?) {
         when (view?.id) {
-            R.id.btn_kakao -> {
+            R.id.ll_kakao -> {
                 Toast.makeText(this, "kakao", Toast.LENGTH_SHORT).show()
                 hasKakaoToken()
             }
-            R.id.btn_logout -> {
-                // 연결 끊기
-                UserApiClient.instance.unlink { error ->
-                    if (error != null) {
-                        Log.e("doori", "연결 끊기 실패", error)
-                        cautionDialog(error.message?:"연결끊기오류")
-                    } else {
-                        Log.i("doori", "연결 끊기 성공. SDK에서 토큰 삭제 됨")
-                        SharedPrefManager(this@SnsLoginActivity).deleteLoginData()
-                    }
-                }
-            }
+//            R.id.btn_logout -> {
+//                // 연결 끊기
+//                UserApiClient.instance.unlink { error ->
+//                    if (error != null) {
+//                        Log.e("doori", "연결 끊기 실패", error)
+//                        cautionDialog(error.message?:"연결끊기오류")
+//                    } else {
+//                        Log.i("doori", "연결 끊기 성공. SDK에서 토큰 삭제 됨")
+//                        SharedPrefManager(this@SnsLoginActivity).deleteLoginData()
+//                    }
+//                }
+//            }
 
         }
     }

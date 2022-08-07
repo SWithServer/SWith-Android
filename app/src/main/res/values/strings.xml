@@ -22,6 +22,7 @@
     <!-- login, splash -->
     <string name="login_title">우리의 소중한 시간관리</string>
     <string name="login">로그인</string>
+    <string name="login_kakao">카카오로 시작하기</string>
 
 
     <string-array name="intersting">
