@@ -10,4 +10,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="transparent">#00FF0000</color>
     <color name="light_grey">#D3D3D3</color>
+
+    <!--프로젝트에 쓸 색-->
+    <color name="color_ADA0FF">#FFADA0FF</color>
+    <color name="color_003C99">#FF003C99</color>
 </resources>
