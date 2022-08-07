@@ -5,7 +5,7 @@ import android.view.View
 import androidx.fragment.app.activityViewModels
 import com.example.swith.R
 import com.example.swith.databinding.FragmentRoundTabBinding
-import com.example.swith.ui.BaseFragment
+import com.example.swith.utils.base.BaseFragment
 import com.example.swith.ui.adapter.RoundTabVPAdapter
 import com.example.swith.viewmodel.RoundViewModel
 import com.google.android.material.tabs.TabLayoutMediator

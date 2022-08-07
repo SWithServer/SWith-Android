@@ -1,15 +1,13 @@
 package com.example.swith.ui.study.round
 
-import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.swith.R
 import com.example.swith.databinding.FragmentRoundAttendBinding
-import com.example.swith.ui.BaseFragment
+import com.example.swith.utils.base.BaseFragment
 import com.example.swith.ui.adapter.AttendRVAdapter
 import com.example.swith.viewmodel.AttendViewModel
 

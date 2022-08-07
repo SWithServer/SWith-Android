@@ -3,12 +3,10 @@ package com.example.swith.ui.study.round
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
-import androidx.core.widget.addTextChangedListener
 import com.example.swith.R
 import com.example.swith.databinding.FragmentRoundMemoBinding
-import com.example.swith.ui.BaseFragment
+import com.example.swith.utils.base.BaseFragment
 
 class RoundMemoFragment(private val curCount: Int) : BaseFragment<FragmentRoundMemoBinding>(R.layout.fragment_round_memo) {
     private var beforeText: String? = null

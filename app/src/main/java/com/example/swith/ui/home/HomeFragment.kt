@@ -2,8 +2,8 @@ package com.example.swith.ui.home
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import android.widget.Toast
 
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.swith.R
 import com.example.swith.data.Group
 import com.example.swith.databinding.FragmentHomeBinding
-import com.example.swith.ui.BaseFragment
+import com.example.swith.utils.base.BaseFragment
 import com.example.swith.ui.adapter.HomeStudyRVAdapter
 import com.example.swith.ui.study.StudyActivity
 import com.example.swith.ui.study.create.StudyCreateActivity
@@ -22,15 +22,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // progress bar
-        setViewVisibility(isStudyNotExists = true, beforeDataLoad = true)
-        viewModel.loadData()
 
-        viewModel.groupLiveData.observe(viewLifecycleOwner, Observer{ data ->
-            // 스터디가 1개 이상 존재하면 스터디 리사이클러 뷰 보여줌
-            setViewVisibility(viewModel.getEmptyOrNull(), false)
-            data?.group?.let{(binding.homeStudyRv.adapter as HomeStudyRVAdapter).setData(data)}
-        })
+        observeViewModel()
 
         binding.homeStudyRv.apply {
             adapter = HomeStudyRVAdapter().apply {
@@ -48,6 +41,29 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home){
         binding.homeStudyAddIv.setOnClickListener{
             startActivity(Intent(requireActivity(), StudyCreateActivity::class.java))
         }
+    }
+
+    private fun observeViewModel(){
+        // progress bar
+        setViewVisibility(isStudyNotExists = true, beforeDataLoad = true)
+        viewModel.loadData()
+
+        viewModel.groupLiveData.observe(viewLifecycleOwner, Observer{ data ->
+            // 스터디가 1개 이상 존재하면 스터디 리사이클러 뷰 보여줌
+            data?.group?.let{(binding.homeStudyRv.adapter as HomeStudyRVAdapter).setData(data)}
+        })
+
+        viewModel.mutableErrorMessage.observe(viewLifecycleOwner, Observer {
+            Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
+        })
+
+        viewModel.mutableErrorType.observe(viewLifecycleOwner, Observer {
+            Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
+        })
+
+        viewModel.mutableScreenState.observe(viewLifecycleOwner, Observer {
+            setViewVisibility(viewModel.getEmptyOrNull(), false)
+        })
     }
 
     private fun setViewVisibility(isStudyNotExists: Boolean, beforeDataLoad: Boolean){
