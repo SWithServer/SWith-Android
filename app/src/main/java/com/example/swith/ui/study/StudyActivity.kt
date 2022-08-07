@@ -25,7 +25,9 @@ class StudyActivity : AppCompatActivity() {
     private var prevRoundFragment: String = "fragment"
     private val viewModel: RoundViewModel by viewModels()
 
-    private val isManager = false
+    // 툴바 화면에 관련된 것
+    private lateinit var mainMenu: Menu
+    private var isManager = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +49,7 @@ class StudyActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.toolbar_menu, menu)
+        mainMenu = menu
         if (!isManager)
             menu.findItem(R.id.toolbar_setting).isVisible = false
         return true
@@ -74,6 +77,11 @@ class StudyActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    fun getToolBarMenu(isManager: Boolean) : Menu{
+        this.isManager = isManager
+        return mainMenu
     }
 
     private fun initBottomNavigation(){

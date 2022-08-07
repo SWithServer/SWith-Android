@@ -21,7 +21,8 @@ import com.example.swith.ui.adapter.CalendarRoundRVAdapter
 import com.example.swith.ui.study.create.RoundCreateActivity
 import com.example.swith.viewmodel.RoundViewModel
 import com.prolificinteractive.materialcalendarview.*
-import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZonedDateTime
 
 class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment_calendar){
     private val viewModel : RoundViewModel by activityViewModels()
@@ -32,10 +33,9 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
     }
 
     private fun initView(){
-        // Todo : Round 클래스 변경에 맞게 로직 수정
-        with(LocalDateTime.now()){
+        with(ZonedDateTime.now(ZoneId.of("Asia/Seoul"))){
             binding.tvCalendarDate.text = "${year%1000}/${monthValue}/${dayOfMonth}"
-            //viewModel.setCalendarData(year, monthValue, dayOfMonth)
+            viewModel.setCalendarData(year, monthValue, dayOfMonth)
         }
 
         with(binding.rvCalendarRound){
@@ -57,14 +57,13 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
 
             setOnDateChangedListener { _, date, _ ->
                 binding.tvCalendarDate.text = "${date.year % 1000}/${date.month}/${date.day}"
-                // viewModel.setCalendarData(date.year, date.month, date.day)
+                viewModel.setCalendarData(date.year, date.month, date.day)
             }
         }
         with(viewModel.calendarLiveData){
             observe(viewLifecycleOwner, Observer {
-                (binding.rvCalendarRound.adapter as CalendarRoundRVAdapter).setData(it.getSessionResList)
-                Log.d("CalendarViewModel", value?.toString()!!)
-                //value?.isEmpty()?.let { it1 -> setRVVisibility(it1) }
+                (binding.rvCalendarRound.adapter as CalendarRoundRVAdapter).setData(it)
+                value?.isEmpty()?.let { it1 -> setRVVisibility(it1) }
             })
         }
 
@@ -74,7 +73,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
 
     inner class TodayDecorator: DayViewDecorator{
         override fun shouldDecorate(date: CalendarDay): Boolean {
-            with(LocalDateTime.now()){
+            with(ZonedDateTime.now(ZoneId.of("Asia/Seoul"))){
                 if (year == date.year && monthValue == date.month && dayOfMonth == date.day) return true
             }
             return false
@@ -87,7 +86,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
     }
 
     inner class RoundDecorator: DayViewDecorator{
-        override fun shouldDecorate(date: CalendarDay): Boolean = false //viewModel.roundDayExists(date.year, date.month, date.day)
+        override fun shouldDecorate(date: CalendarDay): Boolean = viewModel.roundDayExists(date.year, date.month, date.day)
 
         override fun decorate(view: DayViewFacade?) {
             view?.addSpan(CustomDotSpan())

@@ -23,8 +23,8 @@ class CalendarRoundRVAdapter() : RecyclerView.Adapter<CalendarRoundRVAdapter.Vie
 
     override fun getItemCount(): Int = roundList.size
 
-    fun setData(roundData : List<GetSessionRes>){
-        roundList = roundData as ArrayList<GetSessionRes>
+    fun setData(roundData : ArrayList<GetSessionRes>){
+        roundList = roundData
         notifyDataSetChanged()
     }
 

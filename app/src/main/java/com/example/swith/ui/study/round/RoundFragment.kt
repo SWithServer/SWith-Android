@@ -12,6 +12,7 @@ import com.example.swith.data.Round
 import com.example.swith.databinding.FragmentRoundBinding
 import com.example.swith.ui.BaseFragment
 import com.example.swith.ui.adapter.RoundRVAdapter
+import com.example.swith.ui.study.StudyActivity
 import com.example.swith.ui.study.create.RoundCreateActivity
 import com.example.swith.ui.study.notice.NoticeActivity
 import com.example.swith.viewmodel.RoundViewModel
@@ -40,6 +41,7 @@ class RoundFragment : BaseFragment<FragmentRoundBinding>(R.layout.fragment_round
             setViewVisibility(false)
             (binding.roundListRv.adapter as RoundRVAdapter).setData(it)
             binding.roundNoticeContentTv.text = it.announcementContent
+            (requireActivity() as StudyActivity).getToolBarMenu(it.admin).findItem(R.id.toolbar_setting).isVisible = it.admin
         })
 
         initListener()

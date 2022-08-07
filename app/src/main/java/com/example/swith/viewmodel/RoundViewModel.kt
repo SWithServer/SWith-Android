@@ -26,7 +26,7 @@ class RoundViewModel() : ViewModel() {
     private var _roundLiveData = SingleLiveEvent<Round>()
 
     // 캘린더 화면에 관한 것
-    private var _calendarLiveData = MutableLiveData<Round>()
+    private var _calendarLiveData = MutableLiveData<ArrayList<GetSessionRes>>()
 
     val currentLiveData : LiveData<GetSessionRes>
         get() = _currentLiveData
@@ -34,7 +34,7 @@ class RoundViewModel() : ViewModel() {
     val roundLiveData : LiveData<Round>
         get() = _roundLiveData
 
-    val calendarLiveData : LiveData<Round>
+    val calendarLiveData : LiveData<ArrayList<GetSessionRes>>
         get () = _calendarLiveData
 
 
@@ -76,29 +76,29 @@ class RoundViewModel() : ViewModel() {
         return true
     }
 
-    // 해당 날짜에 회차가 있는지 여부 체크
-//    fun roundDayExists(year: Int, month: Int, day: Int) : Boolean{
-//        val thisTimeToLong = String.format("%4d%02d%02d", year, month, day).toLong()
-//        allData.forEach {
-//            val startTimeToLong = String.format("%4d%02d%02d", it.startTime.year, it.startTime.month, it.startTime.day).toLong()
-//            val endTimeToLong = String.format("%4d%02d%02d", it.endTime.year, it.endTime.month, it.endTime.day).toLong()
-//
-//            if (thisTimeToLong in startTimeToLong..endTimeToLong) return true
-//        }
-//        return false
-//    }
-//
-//    // 캘린더에 보여질 data 설정
-//    fun setCalendarData(year: Int, month: Int, day: Int){
-//        val tempList = ArrayList<Round>()
-//        val thisTimeToLong = String.format("%4d%02d%02d", year, month, day).toLong()
-//        allData.forEach {
-//            val startTimeToLong = String.format("%4d%02d%02d", it.startTime.year, it.startTime.month, it.startTime.day).toLong()
-//            val endTimeToLong = String.format("%4d%02d%02d", it.endTime.year, it.endTime.month, it.endTime.day).toLong()
-//
-//            if (thisTimeToLong in startTimeToLong..endTimeToLong) tempList.add(it)
-//        }
-//        _calendarLiveData.value = tempList
-//    }
+     // 해당 날짜에 회차가 있는지 여부 체크
+    fun roundDayExists(year: Int, month: Int, day: Int) : Boolean{
+        val thisTimeToLong = String.format("%4d%02d%02d", year, month, day).toLong()
+        allData.forEach {
+            val startTimeToLong = String.format("%4d%02d%02d", it.sessionStart[0], it.sessionStart[1], it.sessionStart[2]).toLong()
+            val endTimeToLong = String.format("%4d%02d%02d", it.sessionEnd[0], it.sessionEnd[1], it.sessionEnd[2]).toLong()
+
+            if (thisTimeToLong in startTimeToLong..endTimeToLong) return true
+        }
+        return false
+    }
+
+    // 캘린더에 보여질 data 설정
+    fun setCalendarData(year: Int, month: Int, day: Int){
+        val tempList = ArrayList<GetSessionRes>()
+        val thisTimeToLong = String.format("%4d%02d%02d", year, month, day).toLong()
+        allData.forEach {
+            val startTimeToLong = String.format("%4d%02d%02d",it.sessionStart[0], it.sessionStart[1], it.sessionStart[2]).toLong()
+            val endTimeToLong = String.format("%4d%02d%02d", it.sessionEnd[0], it.sessionEnd[1], it.sessionEnd[2]).toLong()
+
+            if (thisTimeToLong in startTimeToLong..endTimeToLong) tempList.add(it)
+        }
+        _calendarLiveData.value = tempList
+    }
 
 }

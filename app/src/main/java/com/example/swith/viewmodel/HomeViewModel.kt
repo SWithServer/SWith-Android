@@ -2,11 +2,8 @@ package com.example.swith.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.*
-import com.example.swith.data.DateTime
 import com.example.swith.data.Group
 import com.example.swith.data.GroupList
-import com.example.swith.repository.RetrofitApi
-import com.example.swith.repository.RetrofitService
 import com.example.swith.repository.home.HomeRemoteDataSource
 import com.example.swith.repository.home.HomeRepository
 import com.example.swith.utils.SharedPrefManager
