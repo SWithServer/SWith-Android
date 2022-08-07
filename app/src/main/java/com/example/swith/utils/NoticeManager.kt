@@ -6,8 +6,12 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Context.NOTIFICATION_SERVICE
 import android.content.Intent
+import android.content.res.Resources
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import androidx.core.app.NotificationCompat
+import com.example.swith.R
 import com.example.swith.ui.MainActivity
 import com.example.swith.ui.study.notice.NoticeActivity
 
@@ -51,9 +55,8 @@ class NoticeManager(private val context: Context) {
         val actionIntent = Intent(context,NoticeActivity::class.java)
         val actionPendingIntent = PendingIntent.getActivity(context, CHANNEL_NUMBER,actionIntent,PendingIntent.FLAG_IMMUTABLE)
 
-        //TODO 임시아이콘
         builder.run {
-            setSmallIcon(android.R.mipmap.sym_def_app_icon)
+            setSmallIcon(R.drawable.ic_stat_notification)
             setWhen(System.currentTimeMillis())
             setContentTitle(title)
             setContentText(content)
