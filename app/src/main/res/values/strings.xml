@@ -20,6 +20,8 @@
     
     <!-- common -->
     <string name="complete">완료</string>
+    <string name="cancel">취소</string>
+    <string name="confirm">확인</string>
 
 
     <!-- login, splash -->
@@ -36,6 +38,8 @@
     <string name="location">활동지역</string>
     <string name="choice">선택해주세요.</string>
     <string name="introduce_hint">소개글을 적어주세요.</string>
+    <string name="profile_complete">프로필 수정을 완료하시겠습니까?</string>
+    <string name="profile_complete_detail">회원가입이 완료되었습니다. 정말 완료하시겠습니까?</string>
 
     <string-array name="intersting">
         <item></item>
