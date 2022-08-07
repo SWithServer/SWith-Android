@@ -6,14 +6,10 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Context.NOTIFICATION_SERVICE
 import android.content.Intent
-import android.content.res.Resources
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import androidx.core.app.NotificationCompat
 import com.example.swith.R
-import com.example.swith.ui.MainActivity
-import com.example.swith.ui.study.notice.NoticeActivity
+import com.example.swith.ui.study.announce.AnnounceActivity
 
 
 class NoticeManager(private val context: Context) {
@@ -52,7 +48,7 @@ class NoticeManager(private val context: Context) {
     }
 
     fun runNotice(title: String,content: String){
-        val actionIntent = Intent(context,NoticeActivity::class.java)
+        val actionIntent = Intent(context,AnnounceActivity::class.java)
         val actionPendingIntent = PendingIntent.getActivity(context, CHANNEL_NUMBER,actionIntent,PendingIntent.FLAG_IMMUTABLE)
 
         builder.run {

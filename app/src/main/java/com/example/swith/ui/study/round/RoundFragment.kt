@@ -13,7 +13,7 @@ import com.example.swith.utils.base.BaseFragment
 import com.example.swith.ui.adapter.RoundRVAdapter
 import com.example.swith.ui.study.StudyActivity
 import com.example.swith.ui.study.create.RoundCreateActivity
-import com.example.swith.ui.study.notice.NoticeActivity
+import com.example.swith.ui.study.announce.AnnounceActivity
 import com.example.swith.viewmodel.RoundViewModel
 
 class RoundFragment : BaseFragment<FragmentRoundBinding>(R.layout.fragment_round) {
@@ -80,7 +80,7 @@ class RoundFragment : BaseFragment<FragmentRoundBinding>(R.layout.fragment_round
 
     private fun initListener(){
         with(binding){
-            roundNoticeIv.setOnClickListener { startActivity(Intent(activity, NoticeActivity::class.java)) }
+            roundNoticeIv.setOnClickListener { startActivity(Intent(activity, AnnounceActivity::class.java).apply { putExtra("manager", viewModel.roundLiveData.value?.admin) })}
             roundAddBtn.setOnClickListener { startActivity(Intent(activity, RoundCreateActivity::class.java)) }
             roundPreviousCb.setOnCheckedChangeListener { view, isChecked -> viewModel.setPastData(view.isChecked) }
         }
