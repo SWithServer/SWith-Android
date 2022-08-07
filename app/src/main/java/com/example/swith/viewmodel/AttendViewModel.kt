@@ -1,16 +1,12 @@
 package com.example.swith.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.swith.data.UserAttend
-import kotlinx.coroutines.launch
-import java.util.*
+import com.example.swith.utils.base.BaseViewModel
 import kotlin.collections.ArrayList
 
-class AttendViewModel : ViewModel() {
+class AttendViewModel : BaseViewModel() {
     private var _attendLiveData = MutableLiveData<ArrayList<UserAttend>>()
     private var _userIdx = -1
     private var _attendLimit = 10

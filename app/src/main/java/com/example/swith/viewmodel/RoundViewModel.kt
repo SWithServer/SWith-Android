@@ -1,21 +1,21 @@
 package com.example.swith.viewmodel
 
 import androidx.lifecycle.*
-import com.example.swith.data.DateTime
 import com.example.swith.data.GetSessionRes
 import com.example.swith.data.Round
 import com.example.swith.repository.round.RoundRemoteDataSource
 import com.example.swith.repository.round.RoundRepository
 import com.example.swith.utils.SingleLiveEvent
+import com.example.swith.utils.base.BaseViewModel
+import com.example.swith.utils.error.ScreenState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.ZoneId
 import java.time.ZonedDateTime
-import java.util.*
 import kotlin.collections.ArrayList
 
-class RoundViewModel() : ViewModel() {
+class RoundViewModel() : BaseViewModel() {
     private val repository = RoundRepository(RoundRemoteDataSource())
     private var allData = ArrayList<GetSessionRes>()
     private var postData = ArrayList<GetSessionRes>()
@@ -42,11 +42,15 @@ class RoundViewModel() : ViewModel() {
         // val userIdx = SharedPrefManager().getLoginData()?.userIdx
         val userIdx = 1
         viewModelScope.launch {
-            val res = repository.getAllRound(userIdx, groupIdx)
+            val res = repository.getAllRound(this@RoundViewModel, userIdx, groupIdx)
             withContext(Dispatchers.Main) {
+                postData.clear()
+                allData.clear()
+                if (res == null){
+                    mutableScreenState.postValue(ScreenState.RENDER)
+                }
                 res?.let {
-                    postData.clear()
-                    allData.clear()
+                    mutableScreenState.postValue(ScreenState.RENDER)
                     it.getSessionResList.forEach { s ->
                         if (compareWithNow(s)) postData.add(s)
                         allData.add(s)

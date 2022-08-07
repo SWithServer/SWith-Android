@@ -3,14 +3,13 @@ package com.example.swith.ui.study.round
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.swith.R
-import com.example.swith.data.DateTime
 import com.example.swith.data.GetSessionRes
-import com.example.swith.data.Round
 import com.example.swith.databinding.FragmentRoundBinding
-import com.example.swith.ui.BaseFragment
+import com.example.swith.utils.base.BaseFragment
 import com.example.swith.ui.adapter.RoundRVAdapter
 import com.example.swith.ui.study.StudyActivity
 import com.example.swith.ui.study.create.RoundCreateActivity
@@ -22,8 +21,7 @@ class RoundFragment : BaseFragment<FragmentRoundBinding>(R.layout.fragment_round
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setViewVisibility(true)
-        viewModel.loadData()
+
 
         binding.roundListRv.apply {
             adapter = RoundRVAdapter().apply {
@@ -37,14 +35,35 @@ class RoundFragment : BaseFragment<FragmentRoundBinding>(R.layout.fragment_round
                 })
             }
         }
+
+        observeViewModel()
+
+        initListener()
+    }
+
+    private fun observeViewModel(){
+        setViewVisibility(true)
+        viewModel.loadData()
+
         viewModel.roundLiveData.observe(viewLifecycleOwner, Observer {
-            setViewVisibility(false)
             (binding.roundListRv.adapter as RoundRVAdapter).setData(it)
             binding.roundNoticeContentTv.text = it.announcementContent
             (requireActivity() as StudyActivity).getToolBarMenu(it.admin).findItem(R.id.toolbar_setting).isVisible = it.admin
         })
 
-        initListener()
+        viewModel.mutableScreenState.observe(viewLifecycleOwner, Observer {
+            setViewVisibility(false)
+        })
+
+        viewModel.mutableErrorMessage.observe(viewLifecycleOwner, Observer {
+            // 임시
+            Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
+        })
+
+        viewModel.mutableErrorType.observe(viewLifecycleOwner, Observer {
+            // 임시
+            Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
+        })
     }
 
     private fun setViewVisibility(beforeDataLoad: Boolean){

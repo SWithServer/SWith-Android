@@ -10,13 +10,12 @@ import android.os.Bundle
 import android.text.style.ForegroundColorSpan
 import android.text.style.LineBackgroundSpan
 import android.text.style.StyleSpan
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.swith.R
 import com.example.swith.databinding.FragmentCalendarBinding
-import com.example.swith.ui.BaseFragment
+import com.example.swith.utils.base.BaseFragment
 import com.example.swith.ui.adapter.CalendarRoundRVAdapter
 import com.example.swith.ui.study.create.RoundCreateActivity
 import com.example.swith.viewmodel.RoundViewModel

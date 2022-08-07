@@ -8,7 +8,7 @@ import com.example.swith.R
 import com.example.swith.data.DateTime
 import com.example.swith.data.GetSessionRes
 import com.example.swith.databinding.FragmentRoundSummaryBinding
-import com.example.swith.ui.BaseFragment
+import com.example.swith.utils.base.BaseFragment
 import com.example.swith.viewmodel.RoundViewModel
 
 

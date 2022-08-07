@@ -1,14 +1,11 @@
 package com.example.swith.ui.profile
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import com.example.swith.R
 import com.example.swith.databinding.FragmentProfileBinding
-import com.example.swith.ui.BaseFragment
+import com.example.swith.utils.base.BaseFragment
 
 class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_profile),
     View.OnClickListener {

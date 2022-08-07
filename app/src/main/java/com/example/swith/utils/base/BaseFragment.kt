@@ -1,4 +1,4 @@
-package com.example.swith.ui
+package com.example.swith.utils.base
 
 import android.os.Bundle
 import android.view.LayoutInflater

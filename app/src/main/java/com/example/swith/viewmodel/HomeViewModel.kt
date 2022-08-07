@@ -1,18 +1,18 @@
 package com.example.swith.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.*
 import com.example.swith.data.Group
 import com.example.swith.data.GroupList
 import com.example.swith.repository.home.HomeRemoteDataSource
 import com.example.swith.repository.home.HomeRepository
-import com.example.swith.utils.SharedPrefManager
 import com.example.swith.utils.SingleLiveEvent
+import com.example.swith.utils.base.BaseViewModel
+import com.example.swith.utils.error.ScreenState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class HomeViewModel() : ViewModel() {
+class HomeViewModel() : BaseViewModel() {
     private val repository: HomeRepository = HomeRepository(HomeRemoteDataSource())
     private var _groupLiveData = SingleLiveEvent<GroupList>()
 
@@ -23,10 +23,13 @@ class HomeViewModel() : ViewModel() {
         // val userId = SharedPrefManager().getLoginData()?.userIdx
         val userId = 1
         viewModelScope.launch{
-            val res = repository.getAllStudy(userId)
+            val res = repository.getAllStudy(this@HomeViewModel, userId)
             withContext(Dispatchers.Main) {
-                res?.let { _groupLiveData.value = it }
-                if (res == null) _groupLiveData.call()
+                if (res == null) mutableScreenState.postValue(ScreenState.RENDER)
+                res?.let{
+                    _groupLiveData.value = res!!
+                    mutableScreenState.postValue(ScreenState.RENDER)
+                }
             }
         }
     }
