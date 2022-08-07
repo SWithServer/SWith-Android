@@ -23,7 +23,7 @@
             android:name=".ui.login.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.study.notice.NoticeActivity"
+            android:name=".ui.study.announce.AnnounceActivity"
             android:exported="false" />
         <activity
             android:name=".ui.SplashActivity"

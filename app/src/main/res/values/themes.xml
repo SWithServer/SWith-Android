@@ -15,7 +15,7 @@
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:windowTranslucentStatus">false</item>
         <item name="android:windowFullscreen">false</item>
-
+        <item name="fontFamily">@font/kr_regular</item>
 <!--        Material Design Color-->
         <item name="bottomSheetDialogTheme">@style/CustomBottomSheet</item>
         <item name="circularProgressIndicatorStyle">@style/Widget.App.CircularProgressIndicator</item>

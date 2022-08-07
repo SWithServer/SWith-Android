@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="80dp">
         <TextView
-            android:id="@+id/tv_content"
+            android:id="@+id/tv_announce_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -19,13 +19,23 @@
             android:text="안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요"/>
 
         <TextView
-            android:id="@+id/tv_date"
+            android:id="@+id/tv_announce_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="날짜 : 22/06/03"
             android:layout_marginStart="10dp"
             android:layout_marginBottom="5dp"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+        <ImageButton
+            android:id="@+id/ib_announce_delete"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:scaleType="fitCenter"
+            android:background="@color/transparent"
+            android:src="@drawable/ic_remove"
+            android:padding="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
         <View
             android:layout_width="match_parent"
