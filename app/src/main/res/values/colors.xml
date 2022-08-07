@@ -14,4 +14,5 @@
     <!--프로젝트에 쓸 색-->
     <color name="color_ADA0FF">#FFADA0FF</color>
     <color name="color_003C99">#FF003C99</color>
+    <color name="color_F1F1F1">#FFF1F1F1</color>
 </resources>
