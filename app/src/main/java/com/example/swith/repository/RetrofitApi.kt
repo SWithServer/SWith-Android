@@ -11,6 +11,9 @@ interface RetrofitApi {
     @GET("/groupinfo/session")
     suspend fun getAllRound(@Query("userIdx") userIdx: Int, @Query("groupIdx") groupIdx: Int) : Response<RoundResponse>
 
+    @GET("/groupinfo/announcement/{groupIdx}")
+    suspend fun getAllAnnounce(@Path("groupIdx") groupIdx: Int) : Response<AnnounceList>
+
     @POST("/session")
     suspend fun createRound(@Body session: Session): Response<SessionResponse>
 }

@@ -80,7 +80,8 @@ class RoundFragment : BaseFragment<FragmentRoundBinding>(R.layout.fragment_round
 
     private fun initListener(){
         with(binding){
-            roundNoticeIv.setOnClickListener { startActivity(Intent(activity, AnnounceActivity::class.java).apply { putExtra("manager", viewModel.roundLiveData.value?.admin) })}
+            roundNoticeIv.setOnClickListener { startActivity(Intent(activity, AnnounceActivity::class.java).apply { putExtra("manager", viewModel.roundLiveData.value?.admin)
+                                                    putExtra("groupIdx", viewModel.groupIdx)})}
             roundAddBtn.setOnClickListener { startActivity(Intent(activity, RoundCreateActivity::class.java)) }
             roundPreviousCb.setOnCheckedChangeListener { view, isChecked -> viewModel.setPastData(view.isChecked) }
         }

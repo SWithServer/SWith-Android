@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -22,6 +23,12 @@ class AnnounceActivity : AppCompatActivity(){
             intent.getBooleanExtra("manager", false)
         else false
     }
+    // group Idx
+    private val groupIdx: Int by lazy {
+        if (intent.hasExtra("groupIdx"))
+            intent.getIntExtra("groupIdx", 0)
+        else 0
+    }
 
     lateinit var binding: ActivityAnnounceBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,16 +44,10 @@ class AnnounceActivity : AppCompatActivity(){
         observeViewModel()
     }
 
-    override fun onStart() {
-        super.onStart()
-
-    }
-
     private fun initView() {
         with(binding){
-            Log.e("ismanger", isManager.toString())
             rvAnnounce.adapter = AnnounceRVAdapter(isManager).apply {
-
+                // 리스너 추가
             }
             rvAnnounce.layoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.VERTICAL, false)
         }
@@ -54,11 +55,23 @@ class AnnounceActivity : AppCompatActivity(){
 
 
     private fun observeViewModel() {
-        viewModel.loadData()
+        setVisibility(true)
+        viewModel.loadData(groupIdx)
 
         viewModel.announceLiveData.observe(this, Observer {
             (binding.rvAnnounce.adapter as AnnounceRVAdapter).setData(it.announces)
         })
+
+        viewModel.mutableScreenState.observe(this, Observer{
+            setVisibility(false)
+        })
+    }
+
+    private fun setVisibility(beforeLoad: Boolean){
+        with(binding){
+            svAnnounce.visibility = if(beforeLoad) View.INVISIBLE else View.VISIBLE
+            announceCircularIndicator.visibility = if (beforeLoad) View.VISIBLE else View.INVISIBLE
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

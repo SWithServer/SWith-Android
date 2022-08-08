@@ -9,6 +9,6 @@ import com.example.swith.utils.error.RemoteErrorEmitter
 
 class RoundCreateRemoteDataSource : BaseRepository() {
     suspend fun createRound(errorEmitter: RemoteErrorEmitter, session: Session) : SessionResponse?{
-        return safeApiCall(errorEmitter) { retrofitApi.createRound(session).also { Log.e("response", it.toString()) }.body() }
+        return safeApiCall(errorEmitter) { retrofitApi.createRound(session).body()}
     }
 }
