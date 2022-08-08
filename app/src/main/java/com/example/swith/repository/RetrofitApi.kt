@@ -1,6 +1,7 @@
 package com.example.swith.repository
 
 import com.example.swith.data.*
+import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -16,4 +17,7 @@ interface RetrofitApi {
 
     @POST("/session")
     suspend fun createRound(@Body session: Session): Response<SessionResponse>
+
+    @POST("/groupinfo")
+    fun createStudy(@Body body:StudyGroup) : Call<StudyResponse>
 }

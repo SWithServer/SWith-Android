@@ -16,8 +16,8 @@ import com.example.swith.R
 import com.example.swith.data.StudyGroup
 import com.example.swith.data.StudyResponse
 import com.example.swith.databinding.ActivityStudyCreateBinding
+import com.example.swith.repository.RetrofitApi
 import com.example.swith.repository.RetrofitService
-import com.example.swith.repository.study.StudyCreateRetrofitInterface
 import org.w3c.dom.Text
 import retrofit2.Call
 import retrofit2.Callback
@@ -345,7 +345,7 @@ class StudyCreateActivity :AppCompatActivity() {
                 Log.e("summer", "USER DATA = ${studyRequestData.toString()}")
 
                 //Toast Message 설정
-                if (title.equals("")||meet_idx==-1||online_idx==-1||interest_idx==-1||topic_content.equals("")||recruitmentEndDate_.equals("") ||groupStart_.equals("") ||groupEnd_.equals("") || attendanceVaildTime_content==-1 ||group_content.equals(""))
+                if (title.equals("")||meet_idx==-1||online_idx==-1||interest_idx==-1||topic_content.equals("")||recruitmentEndDate_.equals("+") ||groupStart_.equals("+") ||groupEnd_.equals("+") || attendanceVaildTime_content==-1 ||group_content.equals(""))
                 {
                     Toast.makeText(this@StudyCreateActivity,"모든 항목을 작성해주세요!",Toast.LENGTH_SHORT).show()
                 }
@@ -415,7 +415,7 @@ class StudyCreateActivity :AppCompatActivity() {
         dialog_.findViewById<Button>(R.id.btn_yes).setOnClickListener {
             Log.e("summer","retrofit 함수 in")
             Log.e("summer", "USER DATA = ${studyRequestData.toString()}")
-            val retrofitService = RetrofitService.retrofit.create(StudyCreateRetrofitInterface::class.java)
+            val retrofitService = RetrofitService.retrofit.create(RetrofitApi::class.java)
             retrofitService.createStudy(studyRequestData).enqueue(object : Callback <StudyResponse> {
                 override fun onResponse(call: Call<StudyResponse>, response: Response<StudyResponse>) {
                     if (response.isSuccessful)

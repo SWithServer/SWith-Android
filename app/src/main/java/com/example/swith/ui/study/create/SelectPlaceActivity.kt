@@ -4,19 +4,28 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.provider.Settings.Global.putString
 import android.util.Log
+import android.view.Gravity.apply
 import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat.apply
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.setFragmentResult
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.swith.R
 import com.example.swith.data.CityResponse
 import com.example.swith.data.Location
 import com.example.swith.databinding.ActivitySelectPlaceBinding
+import com.example.swith.databinding.FragmentStudyFindBinding
 import com.example.swith.repository.ApiService
 import com.example.swith.repository.RetrofitService
 import com.example.swith.ui.adapter.LocationAdapter
+import com.example.swith.ui.study.find.StudyFindFragment
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -160,18 +169,27 @@ class SelectPlaceActivity :  AppCompatActivity(),View.OnClickListener {
                 adapter.setItemClickListener(object : LocationAdapter.OnItemClickListener {
                     override fun onClick(v: View, position: Int) {
                         val city = adapter.getName(position)
-                        Log.e("doori", "선택한 값은 $city")
+                        Log.e(" ", "선택한 값은 $city")
                         code = dongHash.get(city)
-                        Log.e("doori", "코드 값은 $code")
+                        Log.e(" ", "코드 값은 $code")
+                        if (placeNum == 3)
+                        {
+                            Log.e("지역(select)","${city}")
+                            var bundle = Bundle()
+                            bundle.putString("지역","${city}")
+                            Log.e("bundle 값","${bundle.getString("지역")}")
+                        }
+                        else{
                         sharedPreference = getSharedPreferences("result${placeNum}",0)
                         editor= sharedPreference.edit()
                         editor.putString("이름${placeNum}", "${city}")
                         editor.putString("코드${placeNum}","${code}")
                         editor.apply()
-                        finish()
+                            finish()
+                        }
                     }
                 })
             }
         }
-    }
+        }
 }

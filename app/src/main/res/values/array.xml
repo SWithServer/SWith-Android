@@ -32,4 +32,8 @@
         <item>50</item>
         <item>60</item>
     </string-array>
+    <string-array name="deadLineOrLatest">
+        <item>마감일</item>
+        <item>최신순</item>
+    </string-array>
 </resources>
