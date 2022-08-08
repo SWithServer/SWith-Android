@@ -11,6 +11,7 @@ import com.example.swith.R
 import com.example.swith.databinding.ActivityMainBinding
 import com.example.swith.ui.home.HomeFragment
 import com.example.swith.ui.profile.ProfileFragment
+import com.example.swith.ui.study.find.StudyFindFragment
 import com.example.swith.utils.ToolBarManager
 
 
@@ -68,10 +69,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun goSearchPage() {
-        //TODO: search
-    }
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.toolbar_menu, menu)
         menu.findItem(R.id.toolbar_setting).isVisible = false
@@ -109,6 +106,13 @@ class MainActivity : AppCompatActivity() {
     private fun goMainPage() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.main_frm, HomeFragment())
+            .commitAllowingStateLoss()
+    }
+    private fun goSearchPage() {
+        //TODO: search
+        Log.e("summer","goSearchPage")
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.main_frm,StudyFindFragment())
             .commitAllowingStateLoss()
     }
 }
