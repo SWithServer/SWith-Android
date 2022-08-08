@@ -9,6 +9,7 @@ import com.example.swith.R
 import com.example.swith.databinding.FragmentRoundAttendBinding
 import com.example.swith.utils.base.BaseFragment
 import com.example.swith.ui.adapter.AttendRVAdapter
+import com.example.swith.ui.dialog.BottomSheet
 import com.example.swith.viewmodel.AttendViewModel
 
 class RoundAttendFragment(private val curCount: Int) : BaseFragment<FragmentRoundAttendBinding>(R.layout.fragment_round_attend){
@@ -36,15 +37,12 @@ class RoundAttendFragment(private val curCount: Int) : BaseFragment<FragmentRoun
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             }
             btnAttend.setOnClickListener {
-                BottomSheet(curCount, viewModel.attendLimit, false).apply {
+                BottomSheet("${curCount}회차 출석", "회차 시작 후 ${viewModel.attendLimit}분 까지 출석 가능", resources.getString(R.string.bottom_attend_guide)
+                , "출석 하기").apply {
                     setCustomListener(object: BottomSheet.customClickListener{
                         override fun onCheckClick() {
                             dismiss()
                             viewModel.updateCurAttend()
-                        }
-
-                        override fun onCancelClick() {
-                            dismiss()
                         }
                     })
                 }.show(requireActivity().supportFragmentManager, "bottomAttend")

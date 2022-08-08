@@ -35,10 +35,10 @@
         app:layout_constraintStart_toEndOf="@id/guideline_create_1"/>
     <TextView
         android:id="@+id/tv_create_reset"
-        android:layout_width="50dp"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:gravity="end"
-        android:text="초기화"
+        android:text="시간 초기화"
         android:textSize="16dp"
         android:textColor="@color/purple_700"
         app:layout_constraintTop_toTopOf="@id/tv_create_info"
@@ -140,6 +140,7 @@
         android:layout_marginBottom="10dp"
         android:hint="@string/create_detail"
         android:gravity="center_horizontal"
+        android:padding="5dp"
         app:layout_constraintStart_toStartOf="@id/guideline_create_1"
         app:layout_constraintEnd_toEndOf="@id/guideline_create_2"
         app:layout_constraintTop_toBottomOf="@id/et_create_place"
@@ -148,11 +149,11 @@
         android:backgroundTint="@color/light_grey"/>
     <Button
         android:id="@+id/btn_create_add"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
         android:text="완료"
-        android:textColor="@color/black"
-        android:background="@color/light_grey"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/color_swith"
         android:layout_marginBottom="10dp"
         android:visibility="invisible"
         app:layout_constraintStart_toStartOf="@id/guideline_create_1"

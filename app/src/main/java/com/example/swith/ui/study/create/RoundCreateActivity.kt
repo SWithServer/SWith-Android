@@ -21,6 +21,8 @@ import com.example.swith.data.DateTime
 import com.example.swith.data.Session
 import com.example.swith.databinding.ActivityRoundCreateBinding
 import com.example.swith.databinding.DialogTimepickerBinding
+import com.example.swith.ui.dialog.BottomSheet
+import com.example.swith.ui.dialog.CustomAlertDialog
 import com.example.swith.utils.ToolBarManager
 import com.example.swith.viewmodel.RoundCreateViewModel
 import java.lang.Integer.max
@@ -125,24 +127,24 @@ class RoundCreateActivity : AppCompatActivity() {
                 startTime = null
                 endTime = null
                 btnCreateStartDate.text = "시작 시간"
+                btnCreateStartDate.isClickable = true
                 btnCreateEndDate.text = "종료 시간"
-                cbCreateOffline.isChecked = false
-                cbCreateOnline.isChecked = false
-                etCreatePlace.apply {
-                    isClickable = false
-                    setText("")
-                }
-                etCreateDetail.apply {
-                    setText("")
-                    hint = resources.getString(R.string.create_detail)
-                }
             }
             btnCreateAdd.setOnClickListener {
                 val startTimeToString : String = String.format("%4d-%02d-%02dT%02d:%02d", startTime?.year, startTime?.month, startTime?.day, startTime?.hourOfDay, startTime?.minute)
                 val endTimeToString : String = String.format("%4d-%02d-%02dT%02d:%02d", endTime?.year, endTime?.month, endTime?.day, endTime?.hourOfDay, endTime?.minute)
                 val online : Int = if(cbCreateOnline.isChecked) 1 else 0
-                //checkCondition()
-                viewModel.postRound(Session(1, online, etCreatePlace.text.toString(), etCreateDetail.text.toString(), endTimeToString, startTimeToString, 1).also { Log.e("body", it.toString()) })
+                if (checkCondition()) {
+                    BottomSheet("회차 생성", null, resources.getString(R.string.bottom_round_create_guide), "생성 완료").apply {
+                        setCustomListener(object: BottomSheet.customClickListener{
+                            override fun onCheckClick() {
+                                dismiss()
+                                viewModel.postRound(Session(
+                                    1, online, etCreatePlace.text.toString(), etCreateDetail.text.toString(), endTimeToString, startTimeToString, 1))
+                            }
+                        })
+                    }.show(supportFragmentManager, "roundCreate")
+                }
             }
         }
     }
@@ -536,7 +538,7 @@ class RoundCreateActivity : AppCompatActivity() {
                                     btnCreateEndDate.text = "종료 시간"
                                     endTime = null
                                 }
-
+                                btnCreateStartDate.isClickable = (endTime == null)
 
                             }
                             else {
@@ -551,7 +553,7 @@ class RoundCreateActivity : AppCompatActivity() {
                                     btnCreateStartDate.text = "시작 시간 "
                                     startTime = null
                                 }
-
+                                btnCreateStartDate.isClickable = (startTime == null)
 
                             }
                         }
@@ -631,23 +633,27 @@ class RoundCreateActivity : AppCompatActivity() {
     }
 
     // 현재 시간과 비교 후 창 띄우기
-    private fun checkCondition(){
+    private fun checkCondition() : Boolean {
         startTime?.let {
             with(ZonedDateTime.now(ZoneId.of("Asia/Seoul"))){
                 val startTimeToLong = String.format("%4d%02d%02d%02d%02d", startTime?.year, startTime?.month, startTime?.day, startTime?.hourOfDay, startTime?.minute).toLong()
                 val nowTimeToLong = String.format("%4d%02d%02d%02d%02d", year, monthValue, day, hour, minute).toLong()
                 if (startTimeToLong <= nowTimeToLong){
-                    // Todo : 창 띄우면서 거절
+                    CustomAlertDialog("시작시간 오류", "시작시간이 현재 시간보다 전입니다.\n시간 초기화 후 다시 설정해주세요.").show(supportFragmentManager, "startTimeAlert")
+
+                    return false
                 } else {
                     endTime?.let {
                         val endTimeToLong = String.format("%4d%02d%02d%02d%02d", endTime?.year, endTime?.month, endTime?.day, endTime?.hourOfDay, endTime?.minute).toLong()
                         if (endTimeToLong - startTimeToLong > 800){
-                            // Todo : 창 띄우면서 거절
+                            CustomAlertDialog("회차시간 오류", "회차 시간이 8시간 보다 깁니다. \n시간 초기화 후 다시 설정해주세요.").show(supportFragmentManager, "endTimeAlert")
+                            return false
                         }
                     }
                 }
             }
         }
+        return true
     }
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
         if (currentFocus != null) {
