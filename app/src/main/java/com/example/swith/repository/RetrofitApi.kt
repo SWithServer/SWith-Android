@@ -19,5 +19,5 @@ interface RetrofitApi {
     suspend fun createRound(@Body session: Session): Response<SessionResponse>
 
     @POST("/groupinfo")
-    fun createStudy(@Body body:StudyGroup) : Call<StudyResponse>
+     fun createStudy(@Body body:StudyGroup) : Call<StudyResponse>
 }

@@ -350,14 +350,14 @@ class StudyCreateActivity :AppCompatActivity() {
                     Toast.makeText(this@StudyCreateActivity,"모든 항목을 작성해주세요!",Toast.LENGTH_SHORT).show()
                 }
                 else{
-                    if (online_idx==0 && (regionIdx1==null||regionIdx2==null))
-                    {
-                        Toast.makeText(this@StudyCreateActivity,"모든 항목을 작성해주세요!",Toast.LENGTH_SHORT).show()
-                    }
                     when(meet_idx)
                     {
                         0,1->{
-                            if (frequency_content==null)
+                            if (online_idx==0 && (regionIdx1==null||regionIdx2==null))
+                            {
+                                Toast.makeText(this@StudyCreateActivity,"모든 항목을 작성해주세요!",Toast.LENGTH_SHORT).show()
+                            }
+                            else if (frequency_content==null)
                             {
                                 Toast.makeText(this@StudyCreateActivity,"모든 항목을 작성해주세요!",Toast.LENGTH_SHORT).show()
                             }
@@ -366,7 +366,11 @@ class StudyCreateActivity :AppCompatActivity() {
                             }
                         }
                         2->{
-                            if (periods_content==null)
+                            if (online_idx==0 && (regionIdx1==null||regionIdx2==null))
+                            {
+                                Toast.makeText(this@StudyCreateActivity,"모든 항목을 작성해주세요!",Toast.LENGTH_SHORT).show()
+                            }
+                            else if (periods_content==null)
                             {
                                 Toast.makeText(this@StudyCreateActivity,"모든 항목을 작성해주세요!",Toast.LENGTH_SHORT).show()
 

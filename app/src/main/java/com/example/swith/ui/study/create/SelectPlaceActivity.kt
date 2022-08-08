@@ -174,9 +174,9 @@ class SelectPlaceActivity :  AppCompatActivity(),View.OnClickListener {
                         Log.e(" ", "코드 값은 $code")
                         if (placeNum == 3)
                         {
-                            Log.e("지역(select)","${city}")
                             var intent = Intent()
                             intent.putExtra("지역","${city}")
+                            intent.putExtra("코드","${code}")
                             setResult(RESULT_OK,intent)
                             finish()
                         }

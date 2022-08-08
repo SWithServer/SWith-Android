@@ -60,12 +60,13 @@
             />
     </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/layout_find_list"
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="20dp"
+        android:id="@+id/rv_study_find"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/layout_find_top">
-    </androidx.core.widget.NestedScrollView>
+    </androidx.recyclerview.widget.RecyclerView>
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
