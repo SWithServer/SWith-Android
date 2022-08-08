@@ -1,8 +1,10 @@
 package com.example.swith.viewmodel
 
 import androidx.lifecycle.*
+import com.example.swith.data.GetAttendance
 import com.example.swith.data.GetSessionRes
 import com.example.swith.data.Round
+import com.example.swith.data.SessionInfo
 import com.example.swith.repository.round.RoundRemoteDataSource
 import com.example.swith.repository.round.RoundRepository
 import com.example.swith.utils.SingleLiveEvent
@@ -22,14 +24,14 @@ class RoundViewModel() : BaseViewModel() {
 
     var groupIdx = 0
     private var pastVisible = false
-    private var _currentLiveData = MutableLiveData<GetSessionRes>()
+    private var curSessionIdx = 0
     private var _roundLiveData = SingleLiveEvent<Round>()
 
     // 캘린더 화면에 관한 것
     private var _calendarLiveData = MutableLiveData<ArrayList<GetSessionRes>>()
 
-    val currentLiveData : LiveData<GetSessionRes>
-        get() = _currentLiveData
+    // Tab 화면
+    private var _sessionLiveData = MutableLiveData<SessionInfo>()
 
     val roundLiveData : LiveData<Round>
         get() = _roundLiveData
@@ -37,10 +39,14 @@ class RoundViewModel() : BaseViewModel() {
     val calendarLiveData : LiveData<ArrayList<GetSessionRes>>
         get () = _calendarLiveData
 
+    val sessionLiveData: LiveData<SessionInfo>
+        get() = _sessionLiveData
+
+    // private val userIdx = SharedPrefManager().getLoginData()?.userIdx
+    private val userIdx = 1
+    var curUserAttend: GetAttendance? = null
 
     fun loadData(){
-        // val userIdx = SharedPrefManager().getLoginData()?.userIdx
-        val userIdx = 1
         viewModelScope.launch {
             val res = repository.getAllRound(this@RoundViewModel, userIdx, groupIdx)
             withContext(Dispatchers.Main) {
@@ -61,8 +67,30 @@ class RoundViewModel() : BaseViewModel() {
         }
     }
 
-    fun setCurrentData(round: GetSessionRes){
-        _currentLiveData.value = round
+
+    fun loadInfoData(){
+        viewModelScope.launch {
+            val res = repository.getSessionInfo(this@RoundViewModel, userIdx, curSessionIdx)
+            if (res == null) mutableScreenState.postValue(ScreenState.RENDER)
+            res?.let {
+                it.getAttendanceList.forEach { a ->
+                    if (a.userIdx == userIdx) curUserAttend = a
+                }
+                mutableScreenState.postValue(ScreenState.RENDER)
+                _sessionLiveData.value = res
+            }
+        }
+    }
+
+    fun getCurrentSession(): Int{
+        sessionLiveData.value?.let {
+            return it.sessionNum
+        }
+        return 0
+    }
+
+    fun setCurrentData(sessionIdx: Int){
+        curSessionIdx = sessionIdx
     }
 
     fun setPastData(pastVisible: Boolean){
@@ -105,4 +133,20 @@ class RoundViewModel() : BaseViewModel() {
         _calendarLiveData.value = tempList
     }
 
+    fun isUpdateAvailable() : Boolean{
+        // Todo: 시간 조건 비교하는 것 추가
+        if (curUserAttend?.status == 0) return true
+        return false
+    }
+
+    // 현재 유저 출석 업데이트
+    fun updateCurAttend(){
+//        (_userIdx != -1).let {
+//            attendList[_userIdx].attend = 1
+//            _attendLiveData.value = attendList
+////            viewModelScope.launch{
+////
+////            }
+//        }
+    }
 }

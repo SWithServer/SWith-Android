@@ -36,13 +36,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/black"/>
-                <TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:weightSum="5">
                     <View
                         android:layout_width="1dp"
                         android:layout_height="match_parent"
                         android:background="@color/black"/>
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="40dp"
                         android:layout_weight="1"
                         android:textSize="16dp"
@@ -50,14 +53,14 @@
                         android:padding="3dp"
                         android:textColor="@color/black"
                         android:text="이름"
-                        android:gravity="center"
-                        android:layout_column="1"/>
+                        android:layout_column="@integer/material_motion_duration_long_2"
+                        android:gravity="center" />
                     <View
                         android:layout_width="1dp"
                         android:layout_height="match_parent"
                         android:background="@color/black"/>
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="40dp"
                         android:text="출석"
                         android:textSize="16dp"
@@ -65,8 +68,7 @@
                         android:padding="3dp"
                         android:layout_weight="4"
                         android:textColor="@color/black"
-                        android:gravity="center"
-                        android:layout_column="1"/>
+                        android:gravity="center" />
                     <View
                         android:layout_width="1dp"
                         android:layout_height="match_parent"

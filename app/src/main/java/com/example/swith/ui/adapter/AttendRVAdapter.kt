@@ -2,17 +2,18 @@ package com.example.swith.ui.adapter
 
 import android.graphics.Color
 import android.graphics.Typeface
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.swith.R
-import com.example.swith.data.UserAttend
+import com.example.swith.data.GetAttendance
 import com.example.swith.databinding.ItemAttendBinding
 
 class AttendRVAdapter(private val userId: Int) : RecyclerView.Adapter<AttendRVAdapter.ViewHolder>() {
     lateinit var binding: ItemAttendBinding
-    private var userAttendList = ArrayList<UserAttend>()
+    private var userAttendList = ArrayList<GetAttendance>()
 
     override fun getItemCount(): Int = userAttendList.size
 
@@ -25,19 +26,19 @@ class AttendRVAdapter(private val userId: Int) : RecyclerView.Adapter<AttendRVAd
         holder.bind(userAttendList[position])
     }
 
-    fun setData(userAttendData: ArrayList<UserAttend>){
-        userAttendList = userAttendData
+    fun setData(userAttendData: List<GetAttendance>){
+        userAttendList = userAttendData as ArrayList<GetAttendance>
         notifyDataSetChanged()
     }
 
     inner class ViewHolder(private val binding: ItemAttendBinding) : RecyclerView.ViewHolder(binding.root){
-        fun bind(userAttend: UserAttend){
+        fun bind(userAttend: GetAttendance){
             with(binding){
-                if (userId == userAttend.userId)
+                if (userId == userAttend.userIdx)
                     tvItemName.typeface = Typeface.DEFAULT_BOLD
-                tvItemName.text = userAttend.name
+                tvItemName.text = userAttend.nickname
                 tvItemAttend.apply {
-                    when(userAttend.attend){
+                    when(userAttend.status){
                         0 -> {
                             text = "예정"
                         }

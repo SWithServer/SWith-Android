@@ -2,7 +2,7 @@ package com.example.swith.ui.study.round
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.swith.R
@@ -10,10 +10,10 @@ import com.example.swith.databinding.FragmentRoundAttendBinding
 import com.example.swith.utils.base.BaseFragment
 import com.example.swith.ui.adapter.AttendRVAdapter
 import com.example.swith.ui.dialog.BottomSheet
-import com.example.swith.viewmodel.AttendViewModel
+import com.example.swith.viewmodel.RoundViewModel
 
 class RoundAttendFragment(private val curCount: Int) : BaseFragment<FragmentRoundAttendBinding>(R.layout.fragment_round_attend){
-    private val viewModel: AttendViewModel by viewModels()
+    private val viewModel: RoundViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initView()
@@ -21,23 +21,19 @@ class RoundAttendFragment(private val curCount: Int) : BaseFragment<FragmentRoun
     }
 
     private fun initView(){
-        // 현재 회차 받기
-        viewModel.setCurUser(5)
-        setVisibility(viewModel.isUpdateAvailable(), viewModel.attendLiveData.value == null)
-
-        viewModel.attendLiveData.observe(viewLifecycleOwner, Observer {
-            setVisibility(viewModel.isUpdateAvailable(), viewModel.attendLiveData.value == null)
-            (binding.rvAttend.adapter as AttendRVAdapter).setData(it)
+        viewModel.sessionLiveData.observe(viewLifecycleOwner, Observer {
+            setVisibility(viewModel.isUpdateAvailable(), viewModel.curUserAttend == null)
+            (binding.rvAttend.adapter as AttendRVAdapter).setData(it.getAttendanceList)
         })
 
         with(binding){
-            tvAttendMinTime.text = "출석 유효 시간 : ${viewModel.attendLimit}분"
+            tvAttendMinTime.text = "출석 유효 시간 : ${10}분"
             rvAttend.apply{
-                adapter = AttendRVAdapter(5)
+                adapter = AttendRVAdapter(viewModel.curUserAttend?.userIdx!!)
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             }
             btnAttend.setOnClickListener {
-                BottomSheet("${curCount}회차 출석", "회차 시작 후 ${viewModel.attendLimit}분 까지 출석 가능", resources.getString(R.string.bottom_attend_guide)
+                BottomSheet("${curCount}회차 출석", "회차 시작 후 ${10}분 까지 출석 가능", resources.getString(R.string.bottom_attend_guide)
                 , "출석 하기").apply {
                     setCustomListener(object: BottomSheet.customClickListener{
                         override fun onCheckClick() {

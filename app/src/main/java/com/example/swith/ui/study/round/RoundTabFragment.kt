@@ -3,10 +3,12 @@ package com.example.swith.ui.study.round
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import com.example.swith.R
 import com.example.swith.databinding.FragmentRoundTabBinding
 import com.example.swith.utils.base.BaseFragment
 import com.example.swith.ui.adapter.RoundTabVPAdapter
+import com.example.swith.utils.CustomBinder
 import com.example.swith.viewmodel.RoundViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -17,12 +19,30 @@ class RoundTabFragment() : BaseFragment<FragmentRoundTabBinding>(R.layout.fragme
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initTabLayout()
+        observeViewModel()
     }
+
+    private fun observeViewModel(){
+        setViewVisibility(true)
+        viewModel.loadInfoData()
+
+        viewModel.mutableScreenState.observe(viewLifecycleOwner, Observer {
+            setViewVisibility(false)
+            initTabLayout()
+        })
+    }
+
     private fun initTabLayout(){
-        binding.vpRoundTab.adapter = RoundTabVPAdapter(this, viewModel.currentLiveData?.value?.sessionNum!!)
+        binding.vpRoundTab.adapter = RoundTabVPAdapter(this, viewModel.getCurrentSession())
         TabLayoutMediator(binding.tbLayoutRoundTab, binding.vpRoundTab){
             tab, position -> tab.text = information[position]
         }.attach()
+    }
+
+    private fun setViewVisibility(beforeLoad: Boolean){
+        with(binding) {
+            roundCircularIndicator.visibility = if(beforeLoad) View.VISIBLE else View.INVISIBLE
+            roundTabLayout.visibility = if(beforeLoad) View.INVISIBLE else View.VISIBLE
+        }
     }
 }

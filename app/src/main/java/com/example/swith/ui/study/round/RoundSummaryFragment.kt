@@ -4,9 +4,11 @@ package com.example.swith.ui.study.round
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import com.example.swith.R
 import com.example.swith.data.DateTime
 import com.example.swith.data.GetSessionRes
+import com.example.swith.data.SessionInfo
 import com.example.swith.databinding.FragmentRoundSummaryBinding
 import com.example.swith.utils.base.BaseFragment
 import com.example.swith.viewmodel.RoundViewModel
@@ -16,17 +18,22 @@ class RoundSummaryFragment : BaseFragment<FragmentRoundSummaryBinding>(R.layout.
     private val viewModel: RoundViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        initView()
         super.onViewCreated(view, savedInstanceState)
+        observeViewModel()
     }
 
-    private fun initView(){
-        val curRound : GetSessionRes = viewModel.currentLiveData.value!!
+    private fun observeViewModel(){
+        viewModel.sessionLiveData.observe(viewLifecycleOwner, Observer {
+            initView(it)
+        })
+    }
+
+    private fun initView(session: SessionInfo){
         with(binding){
-            tvSummaryCount.text = "${curRound.sessionNum}회차"
-            val startTime = DateTime(curRound.sessionStart[0], curRound.sessionStart[1], curRound.sessionStart[2], curRound.sessionStart[3], curRound.sessionStart[4] )
-            val endTime = DateTime(curRound.sessionEnd[0], curRound.sessionEnd[1], curRound.sessionEnd[2], curRound.sessionEnd[3], curRound.sessionEnd[4])
-            tvSummaryDate.text = with(curRound){
+            tvSummaryCount.text = "${session.sessionNum}회차"
+            val startTime = DateTime(session.sessionStart[0], session.sessionStart[1], session.sessionStart[2], session.sessionStart[3], session.sessionStart[4] )
+            val endTime = DateTime(session.sessionEnd[0], session.sessionEnd[1], session.sessionEnd[2], session.sessionEnd[3], session.sessionEnd[4])
+            tvSummaryDate.text = with(session){
                 // 시작 날짜와 종료 날짜가 같은 경우 시작 시간의 날짜만 표시, 종료 시간의 날짜는 표시 X
                 if (startTime.year == endTime.year && startTime.month == endTime.month && startTime.day == endTime.day) {
                     String.format(
@@ -42,8 +49,12 @@ class RoundSummaryFragment : BaseFragment<FragmentRoundSummaryBinding>(R.layout.
                     )
                 }
             }
-            tvSummaryContent.text = "학습 내용 : ${curRound.sessionContent}"
-            tvSummaryPlace.text = String.format("장소 : %s", curRound.place ?: "온라인")
+            tvSummaryContent.text = "학습 내용 : ${session.sessionContent}"
+            tvSummaryPlace.text = String.format("장소 : %s", session.place ?: "온라인")
+
+            session.groupImgUrl?.let {
+                // 이미지 설정
+            }
         }
     }
 }

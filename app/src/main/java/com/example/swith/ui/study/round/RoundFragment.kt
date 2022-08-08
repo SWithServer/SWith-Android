@@ -27,7 +27,7 @@ class RoundFragment : BaseFragment<FragmentRoundBinding>(R.layout.fragment_round
             adapter = RoundRVAdapter().apply {
                 setItemClickListener(object : RoundRVAdapter.myItemClickListener {
                     override fun onItemClick(round: GetSessionRes) {
-                        viewModel.setCurrentData(round)
+                        viewModel.setCurrentData(round.sessionIdx)
                         requireActivity().supportFragmentManager.beginTransaction()
                             .replace(R.id.study_frm, RoundTabFragment())
                             .commitAllowingStateLoss()

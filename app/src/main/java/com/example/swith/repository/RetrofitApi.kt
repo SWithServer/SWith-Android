@@ -18,6 +18,9 @@ interface RetrofitApi {
     @POST("/groupinfo/session")
     suspend fun createRound(@Body session: Session): Response<SessionResponse>
 
+    @GET("/groupinfo/session/info")
+    suspend fun getSessionInfo(@Query("userIdx") userIdx: Int, @Query("sessionIdx") sessionIdx: Int) : Response<SessionInfoResponse>
+
     @POST("/groupinfo")
      fun createStudy(@Body body:StudyGroup) : Call<StudyResponse>
 }

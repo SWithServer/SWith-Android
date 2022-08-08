@@ -645,7 +645,7 @@ class RoundCreateActivity : AppCompatActivity() {
                 } else {
                     endTime?.let {
                         val endTimeToLong = String.format("%4d%02d%02d%02d%02d", endTime?.year, endTime?.month, endTime?.day, endTime?.hourOfDay, endTime?.minute).toLong()
-                        if (endTimeToLong - startTimeToLong > 800){
+                        if (startTime?.day == endTime?.day && endTimeToLong - startTimeToLong > 800){
                             CustomAlertDialog("회차시간 오류", "회차 시간이 8시간 보다 깁니다. \n시간 초기화 후 다시 설정해주세요.").show(supportFragmentManager, "endTimeAlert")
                             return false
                         }
