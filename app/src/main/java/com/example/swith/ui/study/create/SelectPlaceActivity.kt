@@ -175,9 +175,10 @@ class SelectPlaceActivity :  AppCompatActivity(),View.OnClickListener {
                         if (placeNum == 3)
                         {
                             Log.e("지역(select)","${city}")
-                            var bundle = Bundle()
-                            bundle.putString("지역","${city}")
-                            Log.e("bundle 값","${bundle.getString("지역")}")
+                            var intent = Intent()
+                            intent.putExtra("지역","${city}")
+                            setResult(RESULT_OK,intent)
+                            finish()
                         }
                         else{
                         sharedPreference = getSharedPreferences("result${placeNum}",0)
