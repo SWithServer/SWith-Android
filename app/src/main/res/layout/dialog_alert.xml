@@ -1,8 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    android:layout_height="wrap_content"
+    android:layout_margin="20dp"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/tv_alert_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="제목제목제목제목"
+        android:layout_marginTop="20dp"
+        android:textStyle="bold"
+        android:textSize="18sp"/>
+    <TextView
+        android:id="@+id/tv_alert_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:text="내용내용"
+        android:layout_margin="20dp"
+        android:maxLines="2"/>
+    <Button
+        android:id="@+id/btn_alert_confirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="확인"
+        android:textColor="@color/white"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="@color/color_swith"
+        android:layout_marginBottom="20dp"/>
+</LinearLayout>
 </layout>

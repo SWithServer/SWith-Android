@@ -6,6 +6,7 @@ import android.text.TextWatcher
 import android.view.View
 import com.example.swith.R
 import com.example.swith.databinding.FragmentRoundMemoBinding
+import com.example.swith.ui.dialog.BottomSheet
 import com.example.swith.utils.base.BaseFragment
 
 class RoundMemoFragment(private val curCount: Int) : BaseFragment<FragmentRoundMemoBinding>(R.layout.fragment_round_memo) {
@@ -41,18 +42,13 @@ class RoundMemoFragment(private val curCount: Int) : BaseFragment<FragmentRoundM
             btnEditFinish.setOnClickListener {
                 etMemo.apply {
                     clearFocus()
-                    BottomSheet(curCount, 0, true).apply {
+                    BottomSheet("${curCount}회차 메모 수정", null, resources.getString(R.string.bottom_memo_guide), "수정 완료").apply {
                         setCustomListener(object : BottomSheet.customClickListener{
                             override fun onCheckClick() {
                                 dismiss()
                                 beforeText = etMemo.text.toString()
                                 btnEditFinish.visibility = View.INVISIBLE
                             }
-
-                            override fun onCancelClick() {
-                                dismiss()
-                            }
-
                         })
                     }.show(requireActivity().supportFragmentManager, "bottomMemo")
                 }
