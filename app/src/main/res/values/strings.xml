@@ -23,6 +23,7 @@
     <string name="complete">완료</string>
     <string name="cancel">취소</string>
     <string name="confirm">확인</string>
+    <string name="logout">로그아웃</string>
 
 
     <!-- login, splash -->
@@ -41,6 +42,8 @@
     <string name="introduce_hint">소개글을 적어주세요.</string>
     <string name="profile_complete">프로필 수정을 완료하시겠습니까?</string>
     <string name="profile_complete_detail">회원가입이 완료되었습니다. 정말 완료하시겠습니까?</string>
+    <string name="profile_resume">내 지원서</string>
+    <string name="complete_study">완료한 스터디 총</string>
 
     <string-array name="intersting">
         <item></item>
