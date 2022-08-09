@@ -16,7 +16,7 @@
     <string name="bottom_memo_guide">- 메모 내용이 수정됩니다. \n- 수정을 하게 되면 취소 할 수 없습니다.</string>
     <string name="find_search_hint">"원하는 스터디를 찾아보세요!(제목)"</string>
     <string name="memo_hint">"회차별 자신만의 메모를 만들어보세요!"</string>
-    <string name="memo_guide">"주의) 앱 삭제시 메모 내용이 지워집니다!"</string>
+    <string name="memo_guide">"화면을 터치해 메모를 수정하세요!"</string>
     <string name="bottom_round_create_guide">"- 생성되는 회차는 날짜 순으로 조정됩니다.\n- 회차 생성 후 수정 및 삭제는 관리자 탭에서 가능합니다."</string>
     
     <!-- common -->

@@ -3,6 +3,7 @@ package com.example.swith.data
 import com.google.gson.annotations.SerializedName
 
 data class SessionInfo(
+    val attendanceValidTime: Int,
     var getAttendanceList: List<GetAttendance>,
     val groupImgUrl: String?,
     val online: Int?,
@@ -12,7 +13,7 @@ data class SessionInfo(
     val sessionIdx: Int,
     val sessionNum: Int,
     val sessionStart: List<Int>,
-    val userMemo: String
+    val userMemo: String?
 )
 
 data class GetAttendance(

@@ -11,7 +11,7 @@ import com.example.swith.R
 import com.example.swith.data.GetAttendance
 import com.example.swith.databinding.ItemAttendBinding
 
-class AttendRVAdapter(private val userId: Int) : RecyclerView.Adapter<AttendRVAdapter.ViewHolder>() {
+class AttendRVAdapter(private val userId: Int?) : RecyclerView.Adapter<AttendRVAdapter.ViewHolder>() {
     lateinit var binding: ItemAttendBinding
     private var userAttendList = ArrayList<GetAttendance>()
 

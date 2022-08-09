@@ -4,12 +4,16 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import com.example.swith.R
 import com.example.swith.databinding.FragmentRoundMemoBinding
 import com.example.swith.ui.dialog.BottomSheet
 import com.example.swith.utils.base.BaseFragment
+import com.example.swith.viewmodel.RoundViewModel
 
 class RoundMemoFragment(private val curCount: Int) : BaseFragment<FragmentRoundMemoBinding>(R.layout.fragment_round_memo) {
+    private val viewModel: RoundViewModel by activityViewModels()
     private var beforeText: String? = null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initView()
@@ -17,7 +21,16 @@ class RoundMemoFragment(private val curCount: Int) : BaseFragment<FragmentRoundM
     }
 
     private fun initView(){
+        viewModel.sessionLiveData.observe(viewLifecycleOwner, Observer {
+            it.userMemo?.let { memo -> binding.etMemo.setText(memo)
+                beforeText = memo
+                binding.btnEditFinish.visibility = View.INVISIBLE
+                binding.tvMemoGuide.visibility = View.VISIBLE
+            }
+        })
+
         with(binding) {
+            tvMemoGuide.visibility = View.INVISIBLE
             btnEditFinish.visibility = View.INVISIBLE
             etMemo.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {

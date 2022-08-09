@@ -12,8 +12,8 @@ data class Round(
 
 data class GetSessionRes(
     val attendanceRate: Int,
-    val online: Any?,
-    val place: Any?,
+    val online: Int?,
+    val place: String?,
     val sessionContent: String,
     val sessionEnd: List<Int>,
     val sessionIdx: Int,

@@ -53,7 +53,7 @@ class RoundSummaryFragment : BaseFragment<FragmentRoundSummaryBinding>(R.layout.
             tvSummaryPlace.text = String.format("장소 : %s", session.place ?: "온라인")
 
             session.groupImgUrl?.let {
-                // 이미지 설정
+                // Todo : 이미지 설정
             }
         }
     }

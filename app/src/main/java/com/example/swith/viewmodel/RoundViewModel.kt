@@ -82,6 +82,8 @@ class RoundViewModel() : BaseViewModel() {
         }
     }
 
+    fun getAttendValidTime(): Int = sessionLiveData.value?.attendanceValidTime!!
+
     fun getCurrentSession(): Int{
         sessionLiveData.value?.let {
             return it.sessionNum

@@ -16,8 +16,8 @@ class RoundAttendFragment(private val curCount: Int) : BaseFragment<FragmentRoun
     private val viewModel: RoundViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        initView()
         super.onViewCreated(view, savedInstanceState)
+        initView()
     }
 
     private fun initView(){
@@ -27,13 +27,13 @@ class RoundAttendFragment(private val curCount: Int) : BaseFragment<FragmentRoun
         })
 
         with(binding){
-            tvAttendMinTime.text = "출석 유효 시간 : ${10}분"
+            tvAttendMinTime.text = "출석 유효 시간 : ${viewModel.getAttendValidTime()}분"
             rvAttend.apply{
                 adapter = AttendRVAdapter(viewModel.curUserAttend?.userIdx!!)
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             }
             btnAttend.setOnClickListener {
-                BottomSheet("${curCount}회차 출석", "회차 시작 후 ${10}분 까지 출석 가능", resources.getString(R.string.bottom_attend_guide)
+                BottomSheet("${curCount}회차 출석", "회차 시작 후 ${viewModel.getAttendValidTime()}분 까지 출석 가능", resources.getString(R.string.bottom_attend_guide)
                 , "출석 하기").apply {
                     setCustomListener(object: BottomSheet.customClickListener{
                         override fun onCheckClick() {
