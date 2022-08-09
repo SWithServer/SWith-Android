@@ -46,7 +46,6 @@
     <string name="complete_study">완료한 스터디 총</string>
 
     <string-array name="intersting">
-        <item></item>
         <item>자격증/시험</item>
         <item>어학</item>
         <item>청소년/입시</item>
