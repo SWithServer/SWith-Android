@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.swith.databinding.ItemLocationBinding
 
-class LocationAdapter(regionList: ArrayList<String>): RecyclerView.Adapter<LocationHolder>() {
+class LocationAdapter(regionList: ArrayList<String>): RecyclerView.Adapter<LocationAdapter.LocationHolder>() {
     var list = regionList
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LocationHolder {
         val binding = ItemLocationBinding.inflate(LayoutInflater.from(parent.context),parent,false)
@@ -40,5 +40,7 @@ class LocationAdapter(regionList: ArrayList<String>): RecyclerView.Adapter<Locat
     fun getName(position: Int): String {
         return list[position]
     }
+
+    class   LocationHolder(val binding: ItemLocationBinding): RecyclerView.ViewHolder(binding.root)
 }
-class   LocationHolder(val binding: ItemLocationBinding): RecyclerView.ViewHolder(binding.root)
+

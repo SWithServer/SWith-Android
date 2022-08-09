@@ -9,7 +9,6 @@ import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import com.example.swith.ui.adapter.InterestingAdapter
-import com.example.swith.ui.adapter.InterestingCallback
 
 class CustomInterestingDialog(dataList: ArrayList<String>,interesting1:String,interesting2: String,context: Context, view: View, width: Int = WindowManager.LayoutParams.WRAP_CONTENT, height: Int = WindowManager.LayoutParams.WRAP_CONTENT): Dialog(context) {
     private var listener: DialogClickListener? = null
@@ -51,15 +50,12 @@ class CustomInterestingDialog(dataList: ArrayList<String>,interesting1:String,in
         this.listener = listener
     }
 
-    fun onSelect(select:String) {
-        dismiss()
-    }
     fun onClose(){
         dismiss()
     }
 
     fun setAdapter(){
-        interestingAdapter = InterestingAdapter(object : InterestingCallback{
+        interestingAdapter = InterestingAdapter(object : InterestingAdapter.InterestingCallback{
             override fun onClick(data: String) {
                 select = data
                 listener?.onSelect(select)
