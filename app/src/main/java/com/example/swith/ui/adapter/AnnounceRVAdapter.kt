@@ -13,6 +13,17 @@ class AnnounceRVAdapter(private val isManager: Boolean) : RecyclerView.Adapter<A
     private lateinit var binding: ItemAnnounceBinding
     private var announceList = ArrayList<Announce>()
 
+    interface CustomListener{
+        fun onDelete(announce: Announce)
+        fun onItemClick(announce: Announce)
+    }
+
+    private lateinit var customListener: CustomListener
+
+    fun setListener(listener: CustomListener){
+        customListener = listener
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         binding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_announce, parent, false)
         return ViewHolder(binding)
@@ -20,6 +31,7 @@ class AnnounceRVAdapter(private val isManager: Boolean) : RecyclerView.Adapter<A
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(announceList[position])
+        holder.itemView.setOnClickListener { customListener.onItemClick(announceList[position]) }
     }
 
     fun setData(announceData: List<Announce>){
@@ -32,9 +44,14 @@ class AnnounceRVAdapter(private val isManager: Boolean) : RecyclerView.Adapter<A
     inner class ViewHolder(binding: ItemAnnounceBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(announce: Announce){
             with(binding){
-                ibAnnounceDelete.visibility = if(isManager) View.VISIBLE else View.INVISIBLE
+                ibAnnounceDelete.apply {
+                    visibility = if(isManager) View.VISIBLE else View.INVISIBLE
+                    setOnClickListener { customListener.onDelete(announce) }
+                }
                 tvAnnounceContent.text = announce.announcementContent
                 tvAnnounceDate.text = "날짜 : ${announce.createdAt[0]}/${announce.createdAt[1]}/${announce.createdAt[2]}"
+
+
             }
         }
     }

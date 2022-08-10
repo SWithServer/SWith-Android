@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tv_confirm_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="제목제목제목제목"
+            android:layout_marginTop="20dp"
+            android:textStyle="bold"
+            android:textSize="18sp"/>
+        <TextView
+            android:id="@+id/tv_confirm_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="내용내용"
+            android:layout_margin="20dp"
+            android:maxLines="2"
+            android:lineSpacingExtra="5dp"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp">
+            <TextView
+                android:id="@+id/tv_dialog_cancel"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:paddingStart="20dp"
+                android:text="취소"
+                android:textSize="16dp"
+                android:textColor="#F44336"
+                android:gravity="center_vertical"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/btn_dialog_confirm"
+                app:layout_constraintBottom_toBottomOf="@id/btn_dialog_confirm"/>
+            <Button
+                android:id="@+id/btn_dialog_confirm"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
+                android:text="확인"
+                android:textColor="@color/white"
+                android:layout_marginEnd="20dp"
+                android:backgroundTint="@color/color_swith"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+</layout>
