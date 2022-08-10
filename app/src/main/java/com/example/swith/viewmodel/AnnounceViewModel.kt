@@ -15,9 +15,13 @@ import kotlinx.coroutines.launch
 class AnnounceViewModel : BaseViewModel() {
     private val repository = AnnounceRepository(AnnounceRemoteDataSource())
     private var _announceLiveData = SingleLiveEvent<AnnounceList>()
+    private var _deleteLiveEvent = SingleLiveEvent<Any>()
 
     val announceLiveData : LiveData<AnnounceList>
         get() = _announceLiveData
+
+    val deleteLiveEvent : LiveData<Any>
+        get() = _deleteLiveEvent
 
     fun loadData(groupIdx: Int){
         viewModelScope.launch {
@@ -29,12 +33,13 @@ class AnnounceViewModel : BaseViewModel() {
         }
     }
 
-//    private fun tempData(){
-//
-//        val tempList = ArrayList<Announce>()
-//        tempList.add(Announce("1회차 발표 예정입니다!", 1, listOf(2022, 6, 3)))
-//        tempList.add(Announce("2회차 발표 예정입니다!", 2, listOf(2022, 6, 5)))
-//        tempList.add(Announce("3회차 발표 예정입니다!", 3, listOf(2022, 6, 7)))
-//        _announceLiveData.value = AnnounceList(tempList)
-//    }
+    fun deleteAnnounce(announceIdx: Int){
+        viewModelScope.launch {
+            val res = repository.deleteAnnounce(this@AnnounceViewModel, announceIdx)
+            res?.let { _deleteLiveEvent.call()
+                mutableScreenState.postValue(ScreenState.LOAD)
+            }
+        }
+    }
+
 }

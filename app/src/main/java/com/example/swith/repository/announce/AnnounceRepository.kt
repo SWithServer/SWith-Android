@@ -5,4 +5,6 @@ import com.example.swith.utils.error.RemoteErrorEmitter
 
 class AnnounceRepository(private val announceRemoteDataSource: AnnounceRemoteDataSource) {
     suspend fun getAllAnnounce(errorEmitter: RemoteErrorEmitter, groupIdx: Int): AnnounceList? = announceRemoteDataSource.getAllAnnounce(errorEmitter, groupIdx)
+
+    suspend fun deleteAnnounce(emitter: RemoteErrorEmitter, announcementIdx: Int) = announceRemoteDataSource.deleteAnnounce(emitter, announcementIdx)
 }

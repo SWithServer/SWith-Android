@@ -9,4 +9,11 @@ class AnnounceRemoteDataSource : BaseRepository(){
     suspend fun getAllAnnounce(errorEmitter: RemoteErrorEmitter, groupIdx: Int) : AnnounceList? {
         return safeApiCall(errorEmitter){retrofitApi.getAllAnnounce(groupIdx).body()}
     }
+
+    suspend fun deleteAnnounce(emitter: RemoteErrorEmitter, announcementIdx: Int) : String?{
+        return safeApiCall(emitter){retrofitApi.deleteAnnounce(announcementIdx).let {
+            if (it.isSuccessful) it.body()
+            else null
+        }}
+    }
 }

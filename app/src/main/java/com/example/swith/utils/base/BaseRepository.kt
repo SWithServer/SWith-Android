@@ -5,6 +5,7 @@ import com.example.swith.utils.error.RemoteErrorEmitter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody
+import okhttp3.ResponseBody.Companion.toResponseBody
 import okio.IOException
 import org.json.JSONObject
 import retrofit2.HttpException
