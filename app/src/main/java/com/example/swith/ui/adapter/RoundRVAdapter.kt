@@ -51,7 +51,7 @@ class RoundRVAdapter() : RecyclerView.Adapter<RoundRVAdapter.ViewHolder>() {
                         String.format("%d월 %d일 %d:%02d", round.sessionStart[1], round.sessionStart[2], round.sessionStart[3], round.sessionStart[4])
                     else
                         String.format("%2d년 %d월 %d일 %d:%02d", round.sessionStart[0] % 2000, round.sessionStart[1], round.sessionStart[2], round.sessionStart[3], round.sessionStart[4])
-                roundAttendTv.text = "${round.attendanceRate}%"
+                roundAttendTv.text = if(round.attendanceRate != null && round.attendanceRate >=0)  "${round.attendanceRate}%" else ""
             }
         }
     }

@@ -58,7 +58,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home){
         })
 
         viewModel.mutableErrorType.observe(viewLifecycleOwner, Observer {
-            Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireActivity(), "$it 오류", Toast.LENGTH_SHORT).show()
         })
 
         viewModel.mutableScreenState.observe(viewLifecycleOwner, Observer {

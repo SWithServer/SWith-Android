@@ -110,7 +110,8 @@ class RoundCreateActivity : AppCompatActivity() {
         // 시간 설정 후에 추가해줘야 함
         with(binding){
             btnCreateStartDate.setOnClickListener {
-                initDateTimePicker(true)
+                if (startTime != null && endTime != null) tvRoundCreateAlert.visibility = View.VISIBLE
+                else initDateTimePicker(true)
             }
             btnCreateEndDate.setOnClickListener {
                 initDateTimePicker(false)
@@ -129,6 +130,7 @@ class RoundCreateActivity : AppCompatActivity() {
                 btnCreateStartDate.text = "시작 시간"
                 btnCreateStartDate.isClickable = true
                 btnCreateEndDate.text = "종료 시간"
+                tvRoundCreateAlert.visibility = View.GONE
             }
             btnCreateAdd.setOnClickListener {
                 val startTimeToString : String = String.format("%4d-%02d-%02dT%02d:%02d", startTime?.year, startTime?.month, startTime?.day, startTime?.hourOfDay, startTime?.minute)
@@ -538,8 +540,6 @@ class RoundCreateActivity : AppCompatActivity() {
                                     btnCreateEndDate.text = "종료 시간"
                                     endTime = null
                                 }
-                                btnCreateStartDate.isClickable = (endTime == null)
-
                             }
                             else {
                                 btnCreateEndDate.text = String.format(
@@ -553,8 +553,6 @@ class RoundCreateActivity : AppCompatActivity() {
                                     btnCreateStartDate.text = "시작 시간 "
                                     startTime = null
                                 }
-                                btnCreateStartDate.isClickable = (startTime == null)
-
                             }
                         }
                         .setNegativeButton("취소") { _, _

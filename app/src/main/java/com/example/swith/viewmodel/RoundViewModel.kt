@@ -1,5 +1,6 @@
 package com.example.swith.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.example.swith.data.GetAttendance
 import com.example.swith.data.GetSessionRes
@@ -9,6 +10,7 @@ import com.example.swith.repository.round.RoundRemoteDataSource
 import com.example.swith.repository.round.RoundRepository
 import com.example.swith.utils.SingleLiveEvent
 import com.example.swith.utils.base.BaseViewModel
+import com.example.swith.utils.error.ErrorType
 import com.example.swith.utils.error.ScreenState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -33,6 +35,8 @@ class RoundViewModel() : BaseViewModel() {
     // Tab 화면
     private var _sessionLiveData = MutableLiveData<SessionInfo>()
 
+    private var _attendLiveEvent = SingleLiveEvent<Any>()
+
     val roundLiveData : LiveData<Round>
         get() = _roundLiveData
 
@@ -41,6 +45,9 @@ class RoundViewModel() : BaseViewModel() {
 
     val sessionLiveData: LiveData<SessionInfo>
         get() = _sessionLiveData
+
+    val attendLiveEvent: LiveData<Any>
+        get() = _attendLiveEvent
 
     // private val userIdx = SharedPrefManager().getLoginData()?.userIdx
     private val userIdx = 1
@@ -143,12 +150,16 @@ class RoundViewModel() : BaseViewModel() {
 
     // 현재 유저 출석 업데이트
     fun updateCurAttend(){
-//        (_userIdx != -1).let {
-//            attendList[_userIdx].attend = 1
-//            _attendLiveData.value = attendList
-////            viewModelScope.launch{
-////
-////            }
-//        }
+        viewModelScope.launch {
+            val res = repository.updateAttend(this@RoundViewModel, userIdx, curSessionIdx)
+            withContext(Dispatchers.Main){
+                if (res?.isSuccess == false) {
+                    mutableErrorMessage.postValue(res.message)
+                }
+                else{
+                    _attendLiveEvent.call()
+                }
+            }
+        }
     }
 }

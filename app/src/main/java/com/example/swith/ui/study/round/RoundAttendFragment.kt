@@ -1,7 +1,10 @@
 package com.example.swith.ui.study.round
 
+import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,6 +13,7 @@ import com.example.swith.databinding.FragmentRoundAttendBinding
 import com.example.swith.utils.base.BaseFragment
 import com.example.swith.ui.adapter.AttendRVAdapter
 import com.example.swith.ui.dialog.BottomSheet
+import com.example.swith.ui.dialog.CustomAlertDialog
 import com.example.swith.viewmodel.RoundViewModel
 
 class RoundAttendFragment(private val curCount: Int) : BaseFragment<FragmentRoundAttendBinding>(R.layout.fragment_round_attend){
@@ -17,13 +21,34 @@ class RoundAttendFragment(private val curCount: Int) : BaseFragment<FragmentRoun
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        observeViewModel()
         initView()
     }
 
+    private fun observeViewModel(){
+        viewModel.sessionLiveData.observe(viewLifecycleOwner, Observer {
+            setVisibility(viewModel.isUpdateAvailable(), viewModel.curUserAttend == null)
+            (binding.rvAttend.adapter as AttendRVAdapter).setData(it.getAttendanceList)
+        })
+
+        viewModel.attendLiveEvent.observe(viewLifecycleOwner, Observer {
+            // 출석이 완료되었습니다 Dialog 뜨도록!
+        })
+
+        viewModel.mutableErrorMessage.observe(viewLifecycleOwner, Observer {
+            CustomAlertDialog("출석 오류", it)
+                .show(requireActivity().supportFragmentManager, "출석 오류")
+        })
+
+    }
     private fun initView(){
         viewModel.sessionLiveData.observe(viewLifecycleOwner, Observer {
             setVisibility(viewModel.isUpdateAvailable(), viewModel.curUserAttend == null)
             (binding.rvAttend.adapter as AttendRVAdapter).setData(it.getAttendanceList)
+        })
+
+        viewModel.attendLiveEvent.observe(viewLifecycleOwner, Observer {
+            Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
         })
 
         with(binding){

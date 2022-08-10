@@ -21,6 +21,9 @@ interface RetrofitApi {
     @GET("/groupinfo/session/info")
     suspend fun getSessionInfo(@Query("userIdx") userIdx: Int, @Query("sessionIdx") sessionIdx: Int) : Response<SessionInfoResponse>
 
+    @PATCH("/groupinfo/attendance")
+    suspend fun updateAttend(@Query("userIdx") userIdx: Int, @Query("sessionIdx") sessionIdx: Int) : Response<AttendResponse>
+
     @POST("/groupinfo")
      fun createStudy(@Body body:StudyGroup) : Call<StudyResponse>
 }

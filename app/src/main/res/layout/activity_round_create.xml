@@ -80,12 +80,24 @@
             app:layout_constraintStart_toStartOf="@id/guideline_create_1"
             app:layout_constraintEnd_toEndOf="@id/guideline_create_2"/>
     </LinearLayout>
+    <TextView
+        android:id="@+id/tv_round_create_alert"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:text="시간 초기화 후에 시작 시간 재설정이 가능합니다."
+        android:visibility="gone"
+        android:textColor="#F44336"
+        android:layout_marginStart="5dp"
+        app:layout_constraintStart_toStartOf="@id/guideline_create_1"
+        app:layout_constraintEnd_toEndOf="@id/guideline_create_2"
+        app:layout_constraintTop_toBottomOf="@id/layout_create_date"/>
     <LinearLayout
         android:id="@+id/layout_create_checkbox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/layout_create_date"
+        app:layout_constraintTop_toBottomOf="@id/tv_round_create_alert"
         app:layout_constraintStart_toStartOf="@id/guideline_create_1"
         app:layout_constraintEnd_toEndOf="@id/guideline_create_2">
         <LinearLayout

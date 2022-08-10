@@ -55,14 +55,8 @@ class RoundFragment : BaseFragment<FragmentRoundBinding>(R.layout.fragment_round
             setViewVisibility(false)
         })
 
-        viewModel.mutableErrorMessage.observe(viewLifecycleOwner, Observer {
-            // 임시
-            Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
-        })
-
         viewModel.mutableErrorType.observe(viewLifecycleOwner, Observer {
-            // 임시
-            Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireActivity(), "$it 오류", Toast.LENGTH_SHORT).show()
         })
     }
 
