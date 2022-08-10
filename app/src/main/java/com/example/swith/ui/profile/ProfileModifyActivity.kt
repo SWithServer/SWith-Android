@@ -1,14 +1,18 @@
 package com.example.swith.ui.profile
 
+import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
-import android.widget.ArrayAdapter
+import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import com.example.swith.R
 import com.example.swith.databinding.ActivityProfileModifyBinding
@@ -31,46 +35,40 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun initView() {
         binding.clickListener = this@ProfileModifyActivity
-        // setSpinnerListener()
     }
 
-//    private fun setSpinnerListener() {
-//        val interestingList = resources.getStringArray(R.array.intersting)
-//        val interestingAdapter = ArrayAdapter(
-//            this,
-//            android.R.layout.simple_spinner_dropdown_item, interestingList
-//        )
-//        binding.spInteresting1.adapter = interestingAdapter
-//        binding.spInteresting2.adapter = interestingAdapter
-//    }
 
     private fun initData() {
         //TODO("Not yet implemented")
-        //dongActivity에서 최종 주소를 받아온다
-        intent.getStringExtra("region")?.run {
-            binding.tvLocationDetail.text = this.split(",")[0]
-        }
     }
 
     override fun onClick(view: View?) {
         when (view?.id) {
             R.id.tv_location_detail -> {
                 //TODO
+                hideKeyboard()
             }
             R.id.btn_save -> {
-                showDialog()
+                hideKeyboard()
+                if (allCheck()) {
+                    showSaveDialog()
+                }
             }
             R.id.btn_interesting1 -> {
+                hideKeyboard()
                 showInterestingDialog(1)
             }
             R.id.btn_interesting2 -> {
                 //TODO
+                hideKeyboard()
                 showInterestingDialog(2)
             }
             R.id.tv_interesting1 -> {
+                hideKeyboard()
                 //TODO
             }
             R.id.tv_interesting2 -> {
+                hideKeyboard()
                 //TODO
             }
         }
@@ -115,7 +113,7 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun showDialog() {
+    private fun showSaveDialog() {
         DataBindingUtil.inflate<DialogProfileBinding>(
             LayoutInflater.from(this@ProfileModifyActivity),
             R.layout.dialog_profile,
@@ -143,6 +141,53 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener {
         Intent(this@ProfileModifyActivity, MainActivity::class.java).run {
             putExtra("profile", "ProfileFragment")
             startActivity(this)
+        }
+    }
+
+    fun allCheck(): Boolean {
+        binding.apply {
+            if (etNickname.text.isEmpty()) {
+                showDialog("닉네임을 입력해주세요.")
+                return false
+            }
+            if (btnInteresting1.text.toString() == "+" && btnInteresting2.text.toString() == "+") {
+                showDialog("관심분야를 선택해주세요.")
+                return false
+            }
+            if (tvLocationDetail.text.toString() == "선택해주세요.") {
+                showDialog("활동지역을 선택해주세요.")
+                return false
+            }
+            if (etIntroduceDetail.text.isEmpty()) {
+                showDialog("소개글을 작성해주세요.")
+                return false
+            }
+            return true
+        }
+    }
+
+    fun showDialog(errorMsg: String) {
+        val builder = AlertDialog.Builder(this@ProfileModifyActivity)
+            .setTitle("프로필을 모두 작성해주세요.")
+            .setMessage(errorMsg)
+            .setPositiveButton("확인",
+                DialogInterface.OnClickListener { _, _ ->
+                })
+            .setNegativeButton("취소",
+                DialogInterface.OnClickListener { _, _ ->
+
+                })
+        builder.show()
+    }
+
+    fun hideKeyboard() {
+        val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val currentFocus = window.currentFocus
+        if (currentFocus != null) {
+            inputManager.hideSoftInputFromWindow(
+                currentFocus.windowToken,
+                InputMethodManager.HIDE_NOT_ALWAYS
+            )
         }
     }
 }
