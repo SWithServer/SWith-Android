@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -109,14 +110,20 @@ class AnnounceActivity : AppCompatActivity(){
         })
 
         viewModel.deleteLiveEvent.observe(this, Observer {
+            CustomAlertDialog("삭제 완료", "공지사항이 삭제 되었습니다.").show(supportFragmentManager, "삭제 완료")
             reloadData()
         })
 
-        viewModel.mutableErrorType.observe(this, Observer{
-            // if(it == ErrorType.UNKNOWN) CustomAlertDialog("공지사항 삭제 실패", "삭제할려는 회차가 없습니다").show(supportFragmentManager, "삭제")
+        viewModel.mutableErrorMessage.observe(this, Observer {
+            CustomAlertDialog("삭제 오류", it).show(supportFragmentManager, "삭제 오류")
+        })
+
+        viewModel.mutableErrorType.observe(this, Observer {
+            Toast.makeText(applicationContext, "$it 오류", Toast.LENGTH_SHORT).show()
         })
 
         viewModel.createLiveEvent.observe(this, Observer {
+            CustomAlertDialog("생성 완료", "공지사항이 생성 되었습니다.").show(supportFragmentManager, "생성 완료")
             reloadData()
         })
     }

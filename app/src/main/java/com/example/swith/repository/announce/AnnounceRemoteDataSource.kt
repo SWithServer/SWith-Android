@@ -13,8 +13,11 @@ class AnnounceRemoteDataSource : BaseRepository(){
 
     suspend fun deleteAnnounce(emitter: RemoteErrorEmitter, announcementIdx: Int) : String?{
         return safeApiCall(emitter){retrofitApi.deleteAnnounce(announcementIdx).let {
-            if (it.isSuccessful) it.body()?.result
-            else null
+            if (it.body()?.isSuccess == true) it.body()?.result
+            else {
+                emitter.onError(it.body()?.message!!)
+                null
+            }
         }}
     }
 

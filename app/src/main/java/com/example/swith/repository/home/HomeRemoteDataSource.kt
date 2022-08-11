@@ -7,6 +7,14 @@ import com.example.swith.utils.error.RemoteErrorEmitter
 
 class HomeRemoteDataSource() : BaseRepository(){
     suspend fun getAllStudy(errorEmitter: RemoteErrorEmitter, userId: Int) : GroupList? {
-        return safeApiCall(errorEmitter) { retrofitApi.getAllStudy(userId).body()}
+        return safeApiCall(errorEmitter) {
+            retrofitApi.getAllStudy(userId).let {
+                if (it.body()?.isSuccess == true) it.body()
+                else {
+                    errorEmitter.onError(it.body()?.message!!)
+                    null
+                }
+            }
+        }
     }
 }

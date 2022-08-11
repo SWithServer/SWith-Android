@@ -2,6 +2,7 @@ package com.example.swith.ui.adapter
 
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -31,7 +32,7 @@ class HomeStudyRVAdapter : RecyclerView.Adapter<HomeStudyRVAdapter.ViewHolder>()
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(groupList[position])
+        holder.bind(groupList[position], position)
         holder.itemView.setOnClickListener{ mItemClickListener.onItemClick(groupList[position])}
     }
 
@@ -43,14 +44,17 @@ class HomeStudyRVAdapter : RecyclerView.Adapter<HomeStudyRVAdapter.ViewHolder>()
     }
 
     inner class ViewHolder(val binding: ItemStudyBinding) : RecyclerView.ViewHolder(binding.root){
-        fun bind(group: Group){
+        fun bind(group: Group, position: Int){
             with(binding) {
                 studyTitleTv.text = group.title
                 studyNoticeTv.text = group.announcementContent
-                studyRoundTitle.text = group.sessionNum.toString() + "회차"
-                studyAttendRate.text = "출석율 : ${group.attendanceRate}%"
+                tvStudyAttendRate.text = "${group.attendanceRate}%"
                 studyTotalPeople.text = "${group.memberLimit}명"
-                studyCategory.text = group.interestContent
+                tvItemStudyCategory.text = group.interestContent
+                studyCountTv.text = "${group.sessionNum}회차 학습내용"
+                studyContentTv.text = group.sessionContent
+                if (position == itemCount - 1)
+                    itemStudyLine.visibility = View.INVISIBLE
             }
         }
     }

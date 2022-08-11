@@ -15,5 +15,7 @@ data class Group(
 )
 
 data class GroupList(
+    val isSuccess: Boolean,
+    val message: String,
     @SerializedName("result") val group: List<Group>
 )

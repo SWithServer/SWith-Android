@@ -40,11 +40,4 @@ class HomeViewModel() : BaseViewModel() {
         else _groupLiveData.value?.group.isNullOrEmpty()
     }
 
-    private fun initTempData(){
-        val tempList = ArrayList<Group>()
-        tempList.add(Group("임시 공지사항입니다.",80, 1, "컴퓨터",8, "임시 임시", 3,
-            listOf(2022, 7, 31, 16, 0), "스터디 임시 1"))
-        _groupLiveData.value = GroupList(tempList)
-    }
-
 }
