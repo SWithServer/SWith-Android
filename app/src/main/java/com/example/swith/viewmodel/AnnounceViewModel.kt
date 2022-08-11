@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.swith.data.Announce
+import com.example.swith.data.AnnounceCreate
 import com.example.swith.data.AnnounceList
 import com.example.swith.repository.announce.AnnounceRemoteDataSource
 import com.example.swith.repository.announce.AnnounceRepository
@@ -16,12 +17,16 @@ class AnnounceViewModel : BaseViewModel() {
     private val repository = AnnounceRepository(AnnounceRemoteDataSource())
     private var _announceLiveData = SingleLiveEvent<AnnounceList>()
     private var _deleteLiveEvent = SingleLiveEvent<Any>()
+    private var _createLiveEvent = SingleLiveEvent<Any>()
 
     val announceLiveData : LiveData<AnnounceList>
         get() = _announceLiveData
 
     val deleteLiveEvent : LiveData<Any>
         get() = _deleteLiveEvent
+
+    val createLiveEvent : LiveData<Any>
+        get() =  _createLiveEvent
 
     fun loadData(groupIdx: Int){
         viewModelScope.launch {
@@ -36,10 +41,22 @@ class AnnounceViewModel : BaseViewModel() {
     fun deleteAnnounce(announceIdx: Int){
         viewModelScope.launch {
             val res = repository.deleteAnnounce(this@AnnounceViewModel, announceIdx)
-            res?.let { _deleteLiveEvent.call()
+            res?.let {
+                _deleteLiveEvent.call()
                 mutableScreenState.postValue(ScreenState.LOAD)
             }
         }
     }
+
+    fun createAnnounce(announceCreate: AnnounceCreate){
+        viewModelScope.launch {
+            val res = repository.createAnnounce(this@AnnounceViewModel, announceCreate)
+            res?.let {
+                _createLiveEvent.call()
+                mutableScreenState.postValue(ScreenState.LOAD)
+            }
+        }
+    }
+
 
 }

@@ -11,9 +11,11 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.swith.R
 import com.example.swith.data.Announce
+import com.example.swith.data.AnnounceCreate
 import com.example.swith.databinding.ActivityAnnounceBinding
 import com.example.swith.ui.adapter.AnnounceRVAdapter
 import com.example.swith.ui.dialog.CustomAlertDialog
+import com.example.swith.ui.dialog.CustomAnnounceCreateDialog
 import com.example.swith.ui.dialog.CustomConfirmDialog
 import com.example.swith.utils.ToolBarManager
 import com.example.swith.utils.error.ErrorType
@@ -72,6 +74,24 @@ class AnnounceActivity : AppCompatActivity(){
                 })
             }
             rvAnnounce.layoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.VERTICAL, false)
+            ivAnnounceCreate.apply {
+                visibility = if (isManager) View.VISIBLE else View.INVISIBLE
+                setOnClickListener { CustomAnnounceCreateDialog().apply {
+                    setCustomListener(object: CustomAnnounceCreateDialog.CustomListener{
+                        override fun onConfirm(content: String) {
+                            dismiss()
+                            CustomConfirmDialog("공지사항 생성", "해당 공지사항을 생성합니다.").apply {
+                                setCustomListener(object: CustomConfirmDialog.CustomListener{
+                                    override fun onConfirm() {
+                                        viewModel.createAnnounce(AnnounceCreate(content, groupIdx))
+                                        dismiss()
+                                    }
+                                })
+                            }.show(supportFragmentManager, "공지사항 생성")
+                        }
+                    })
+                }.show(supportFragmentManager, "announceCreate") }
+            }
         }
     }
 
@@ -89,14 +109,15 @@ class AnnounceActivity : AppCompatActivity(){
         })
 
         viewModel.deleteLiveEvent.observe(this, Observer {
-            CustomAlertDialog("삭제 완료", "해당 공지사항이 삭제되었습니다").apply {
-                show(supportFragmentManager, "공지사항 삭제완료")
-            }
             reloadData()
         })
 
         viewModel.mutableErrorType.observe(this, Observer{
             // if(it == ErrorType.UNKNOWN) CustomAlertDialog("공지사항 삭제 실패", "삭제할려는 회차가 없습니다").show(supportFragmentManager, "삭제")
+        })
+
+        viewModel.createLiveEvent.observe(this, Observer {
+            reloadData()
         })
     }
 

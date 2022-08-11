@@ -8,6 +8,18 @@ data class Announce(
     val createdAt: List<Int>
 )
 
+data class AnnounceCreate(
+    val announcementContent: String,
+    val groupIdx: Int
+)
+
+data class AnnounceDelete(
+    val code: Int,
+    val isSuccess: Boolean,
+    val message: String,
+    val result: String
+)
+
 data class AnnounceList(
     @SerializedName("result") val announces: List<Announce>
 )

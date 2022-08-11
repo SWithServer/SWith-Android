@@ -24,6 +24,7 @@
             android:exported="false" />
         <activity
             android:name=".ui.study.announce.AnnounceActivity"
+            android:windowSoftInputMode="adjustNothing"
             android:exported="false" />
         <activity
             android:name=".ui.SplashActivity"

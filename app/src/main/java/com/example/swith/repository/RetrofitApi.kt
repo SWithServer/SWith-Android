@@ -32,7 +32,11 @@ interface RetrofitApi {
 
     // 공지사항 삭제
     @PATCH("/groupinfo/announcement/{announcementIdx}/status")
-    suspend fun deleteAnnounce(@Path("announcementIdx") announcementIdx: Int) : Response<String>
+    suspend fun deleteAnnounce(@Path("announcementIdx") announcementIdx: Int) : Response<AnnounceDelete>
+
+    // 공지사항 생성
+    @POST("/groupinfo/announcement")
+    suspend fun createAnnounce(@Body announceCreate: AnnounceCreate) : Response<Any>
 
     @POST("/groupinfo")
      fun createStudy(@Body body:StudyGroup) : Call<StudyResponse>
