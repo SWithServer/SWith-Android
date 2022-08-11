@@ -33,6 +33,7 @@
         android:layout_height="wrap_content"
         app:menu="@menu/bottom_main_menu"
         app:itemBackground="@color/white"
+        app:itemIconTint="@drawable/bottom_menu_selector_color"
         app:labelVisibilityMode="unlabeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
