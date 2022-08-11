@@ -7,10 +7,13 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import com.example.swith.R
+import com.example.swith.data.StudyFindData
 import com.example.swith.databinding.ActivityMainBinding
 import com.example.swith.ui.home.HomeFragment
 import com.example.swith.ui.profile.ProfileFragment
+import com.example.swith.ui.study.find.StudyFindDetailFragment
 import com.example.swith.ui.study.find.StudyFindFragment
 import com.example.swith.utils.ToolBarManager
 
@@ -114,5 +117,15 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.main_frm,StudyFindFragment())
             .commitAllowingStateLoss()
+    }
+    fun goDeatailPage(groupIdx:Int,fragment: Fragment) {
+        Log.e("summer","goDetailPage")
+        var fragment_ = fragment
+        var bundle = Bundle()
+        fragment.arguments=bundle
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.main_frm,fragment_)
+            .addToBackStack(null)
+            .commit()
     }
 }

@@ -320,7 +320,6 @@ class StudyCreateActivity :AppCompatActivity() {
         binding.checkFree.setOnCheckedChangeListener(listener)
 
         //스터디 개설버튼
-        //retrofit 연결을 위해 잠시 개설확인 dialog를 지운상태.
         binding.btnStudyCreate.setOnClickListener {
             with(binding)
             {   group_content= etStudyContent.text.toString()
@@ -353,7 +352,7 @@ class StudyCreateActivity :AppCompatActivity() {
                     when(meet_idx)
                     {
                         0,1->{
-                            if (online_idx==0 && (regionIdx1==null||regionIdx2==null))
+                            if (online_idx==0 && regionIdx1==null&&regionIdx2==null)
                             {
                                 Toast.makeText(this@StudyCreateActivity,"모든 항목을 작성해주세요!",Toast.LENGTH_SHORT).show()
                             }
@@ -366,7 +365,7 @@ class StudyCreateActivity :AppCompatActivity() {
                             }
                         }
                         2->{
-                            if (online_idx==0 && (regionIdx1==null||regionIdx2==null))
+                            if (online_idx==0 && (regionIdx1==null&&regionIdx2==null))
                             {
                                 Toast.makeText(this@StudyCreateActivity,"모든 항목을 작성해주세요!",Toast.LENGTH_SHORT).show()
                             }

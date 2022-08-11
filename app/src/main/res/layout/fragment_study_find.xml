@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -15,6 +16,15 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
+
+<!--        <SearchView-->
+<!--            android:id="@+id/sv_study_search"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:queryHint="원하는 스터디를 찾아보세요! (제목)"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            android:layout_margin="10dp"/>-->
+
     <EditText
         android:id="@+id/et_study_search"
         app:layout_constraintTop_toTopOf="parent"
@@ -53,7 +63,7 @@
             android:layout_height="wrap_content"
             android:text="분류"/>
         <Spinner
-            android:id="@+id/spinner_deadline"
+            android:id="@+id/spinner_sort"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="마감일"

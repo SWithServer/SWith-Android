@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    tools:context=".ui.study.find.StudyFindDetailFragment">
     <androidx.core.widget.NestedScrollView
         android:id="@+id/study_apply_layout"
         android:layout_width="match_parent"
@@ -47,8 +55,6 @@
                     android:text="리더"
                     app:layout_constraintTop_toTopOf="@id/tv_study_detail_title"
                     app:layout_constraintStart_toEndOf="@id/tv_study_detail_title" />
-
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
@@ -290,3 +296,4 @@ kdfjsdlfjsdlfjsldfjsldkfjlsdkjsldksjdfklsdjf"
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

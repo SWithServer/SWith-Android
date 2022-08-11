@@ -1,5 +1,6 @@
 package com.example.swith.data
 
+import com.google.gson.annotations.SerializedName
 import java.time.LocalDate
 import java.util.*
 
@@ -24,5 +25,28 @@ data class StudyGroup(
     var groupEnd:String,
 
     var attendanceValidTime:Int,
-    var groupContent:String
+    var groupContent:String,
 )
+
+data class StudyGroupResponse(
+    @SerializedName("code") val code: Int,
+    @SerializedName("isSuccess") val isSuccess: Boolean,
+    @SerializedName("message") val message: String,
+    @SerializedName("result") val studyGroup:ArrayList<StudyGroup>
+)
+
+data class  getStudyContent(
+    var groupIndx:Int,
+    var result : ArrayList<getStudyResponse>
+)
+
+data class getStudyResponse(
+    var title : String,
+    var regionIdx1:Long,
+    var regionIdx2:Long,
+    var deadline:LocalDate,
+    var createDate : LocalDate,
+    var memberLimit: Int,
+    var groupContent : String
+)
+
