@@ -1,5 +1,6 @@
 package com.example.swith.ui.profile
 
+import android.Manifest
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -11,6 +12,7 @@ import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import com.example.swith.R
@@ -25,6 +27,15 @@ import com.example.swith.ui.dialog.CustomInterestingDialog
 import com.example.swith.utils.CustomBinder
 
 class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener {
+    private val requestPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                //nothing
+            } else {
+                Toast.makeText(this@ProfileModifyActivity,"권한을 허용해주세요",Toast.LENGTH_SHORT).show()
+            }
+        }
+
     lateinit var binding: ActivityProfileModifyBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,26 +79,14 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener {
                 hideKeyboard()
                 showInterestingDialog(2)
             }
-            R.id.tv_interesting1 -> {
-                hideKeyboard()
-                //TODO
-            }
-            R.id.tv_interesting2 -> {
-                hideKeyboard()
-                //TODO
-            }
         }
     }
 
     private fun showImageDialog() {
         DataBindingUtil.inflate<DialogImageBinding>(
-            LayoutInflater.from(this@ProfileModifyActivity),
-            R.layout.dialog_image,
-            null,
-            false
+            LayoutInflater.from(this@ProfileModifyActivity), R.layout.dialog_image, null, false
         ).apply {
-            this.imageDialog = CustomBinder.showCustomImageDialog(
-                this@ProfileModifyActivity,
+            this.imageDialog = CustomBinder.showCustomImageDialog(this@ProfileModifyActivity,
                 root,
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.MATCH_PARENT,
@@ -99,14 +98,14 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener {
 
                     override fun onCamera() {
                         Log.e("doori", "camera")
-                        Toast.makeText(this@ProfileModifyActivity, "camera", Toast.LENGTH_SHORT)
-                            .show()
+                        requestPermissionLauncher.launch(Manifest.permission.CAMERA)
+                        Toast.makeText(this@ProfileModifyActivity, "camera", Toast.LENGTH_SHORT).show()
                     }
 
                     override fun onGallery() {
                         Log.e("doori", "gallery")
-                        Toast.makeText(this@ProfileModifyActivity, "camera", Toast.LENGTH_SHORT)
-                            .show()
+                        requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+                        Toast.makeText(this@ProfileModifyActivity, "camera", Toast.LENGTH_SHORT).show()
                     }
                 })
         }
@@ -115,10 +114,7 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener {
     private fun showInterestingDialog(btnNumber: Int) {
         val imageArray = resources.getStringArray(R.array.intersting).toList() as ArrayList<String>
         DataBindingUtil.inflate<DialogInterestingBinding>(
-            LayoutInflater.from(this@ProfileModifyActivity),
-            R.layout.dialog_interesting,
-            null,
-            false
+            LayoutInflater.from(this@ProfileModifyActivity), R.layout.dialog_interesting, null, false
         ).apply {
             val interestingDialog = CustomBinder.showCustomInterestringDialog(imageArray,
                 binding.btnInteresting1.text as String,
@@ -152,13 +148,9 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun showSaveDialog() {
         DataBindingUtil.inflate<DialogProfileBinding>(
-            LayoutInflater.from(this@ProfileModifyActivity),
-            R.layout.dialog_profile,
-            null,
-            false
+            LayoutInflater.from(this@ProfileModifyActivity), R.layout.dialog_profile, null, false
         ).apply {
-            this.profileDialog = CustomBinder.showCustomDialog(
-                this@ProfileModifyActivity,
+            this.profileDialog = CustomBinder.showCustomDialog(this@ProfileModifyActivity,
                 root,
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.MATCH_PARENT,
@@ -204,16 +196,11 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     fun showDialog(errorMsg: String) {
-        val builder = AlertDialog.Builder(this@ProfileModifyActivity)
-            .setTitle("프로필을 모두 작성해주세요.")
-            .setMessage(errorMsg)
-            .setPositiveButton("확인",
-                DialogInterface.OnClickListener { _, _ ->
-                })
-            .setNegativeButton("취소",
-                DialogInterface.OnClickListener { _, _ ->
+        val builder = AlertDialog.Builder(this@ProfileModifyActivity).setTitle("프로필을 모두 작성해주세요.").setMessage(errorMsg)
+            .setPositiveButton("확인", DialogInterface.OnClickListener { _, _ ->
+            }).setNegativeButton("취소", DialogInterface.OnClickListener { _, _ ->
 
-                })
+            })
         builder.show()
 
 
@@ -224,8 +211,7 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener {
         val currentFocus = window.currentFocus
         if (currentFocus != null) {
             inputManager.hideSoftInputFromWindow(
-                currentFocus.windowToken,
-                InputMethodManager.HIDE_NOT_ALWAYS
+                currentFocus.windowToken, InputMethodManager.HIDE_NOT_ALWAYS
             )
         }
     }
