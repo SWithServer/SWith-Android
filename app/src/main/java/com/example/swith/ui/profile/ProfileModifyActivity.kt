@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
@@ -16,10 +15,12 @@ import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import com.example.swith.R
 import com.example.swith.databinding.ActivityProfileModifyBinding
+import com.example.swith.databinding.DialogImageBinding
 import com.example.swith.databinding.DialogInterestingBinding
 import com.example.swith.databinding.DialogProfileBinding
 import com.example.swith.ui.MainActivity
 import com.example.swith.ui.dialog.CustomDialog
+import com.example.swith.ui.dialog.CustomImageDialog
 import com.example.swith.ui.dialog.CustomInterestingDialog
 import com.example.swith.utils.CustomBinder
 
@@ -44,6 +45,10 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(view: View?) {
         when (view?.id) {
+            R.id.civ_image -> {
+                hideKeyboard()
+                showImageDialog()
+            }
             R.id.tv_location_detail -> {
                 //TODO
                 hideKeyboard()
@@ -74,16 +79,48 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun showInterestingDialog(btnNumber: Int) {
-        val testArray = resources.getStringArray(R.array.intersting).toList() as ArrayList<String>
+    private fun showImageDialog() {
+        DataBindingUtil.inflate<DialogImageBinding>(
+            LayoutInflater.from(this@ProfileModifyActivity),
+            R.layout.dialog_image,
+            null,
+            false
+        ).apply {
+            this.imageDialog = CustomBinder.showCustomImageDialog(
+                this@ProfileModifyActivity,
+                root,
+                WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.MATCH_PARENT,
+                object : CustomImageDialog.DialogClickListener {
+                    override fun onClose() {
+                        // nothing
+                        Log.e("doori", "onClose")
+                    }
 
+                    override fun onCamera() {
+                        Log.e("doori", "camera")
+                        Toast.makeText(this@ProfileModifyActivity, "camera", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+
+                    override fun onGallery() {
+                        Log.e("doori", "gallery")
+                        Toast.makeText(this@ProfileModifyActivity, "camera", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                })
+        }
+    }
+
+    private fun showInterestingDialog(btnNumber: Int) {
+        val imageArray = resources.getStringArray(R.array.intersting).toList() as ArrayList<String>
         DataBindingUtil.inflate<DialogInterestingBinding>(
             LayoutInflater.from(this@ProfileModifyActivity),
             R.layout.dialog_interesting,
             null,
             false
         ).apply {
-            val interestingDialog = CustomBinder.showCustomInterestringDialog(testArray,
+            val interestingDialog = CustomBinder.showCustomInterestringDialog(imageArray,
                 binding.btnInteresting1.text as String,
                 binding.btnInteresting2.text as String,
                 this@ProfileModifyActivity,
@@ -154,7 +191,7 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener {
                 showDialog("관심분야를 선택해주세요.")
                 return false
             }
-            if (tvLocationDetail.text.toString() == "선택해주세요.") {
+            if (tvLocationDetail.text.toString() == "선택해주세요j.") {
                 showDialog("활동지역을 선택해주세요.")
                 return false
             }
@@ -178,6 +215,8 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener {
 
                 })
         builder.show()
+
+
     }
 
     fun hideKeyboard() {
