@@ -63,7 +63,9 @@ class StudyActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext, "알림 버튼 Clicked", Toast.LENGTH_SHORT).show()
             }
             R.id.toolbar_setting -> {
-                startActivity(Intent(this, ManageActivity::class.java))
+                startActivity(Intent(this, ManageActivity::class.java).apply {
+                    putExtra("groupId", groupId)
+                })
             }
             android.R.id.home -> {
                 with(supportFragmentManager){

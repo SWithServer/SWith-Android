@@ -1,6 +1,7 @@
 package com.example.swith.ui.manage
 
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -10,6 +11,10 @@ import com.example.swith.utils.ToolBarManager
 
 class ManageActivity : AppCompatActivity() {
     private lateinit var binding: ActivityManageBinding
+    private val groupIdx: Int by lazy{
+        if(intent.hasExtra("groupId")) intent.getIntExtra("groupId", 0)
+        else 0
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,6 +23,7 @@ class ManageActivity : AppCompatActivity() {
             titleVisible = false,
             backVisible = true
         )
+        Log.e("groupIdx", groupIdx.toString())
         initListener()
     }
 
