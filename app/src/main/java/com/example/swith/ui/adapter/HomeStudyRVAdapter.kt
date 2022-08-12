@@ -55,6 +55,7 @@ class HomeStudyRVAdapter : RecyclerView.Adapter<HomeStudyRVAdapter.ViewHolder>()
                 studyContentTv.text = group.sessionContent
                 if (position == itemCount - 1)
                     itemStudyLine.visibility = View.INVISIBLE
+                if (group.online == 0) tvItemStudyPlace.text = "온라인"
             }
         }
     }

@@ -48,6 +48,7 @@
         </activity>
         <activity android:name=".ui.study.StudyActivity"
             android:windowSoftInputMode="adjustNothing"/>
+        <activity android:name=".ui.manage.ManageActivity"/>
         <activity
             android:name=".ui.study.create.StudyCreateActivity"
             android:exported="true"

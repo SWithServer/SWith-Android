@@ -1,11 +1,22 @@
 package com.example.swith.repository.home
 
 import com.example.swith.data.GroupList
+import com.example.swith.repository.ApiService
+import com.example.swith.repository.RetrofitService.REG_CODE
 import com.example.swith.repository.RetrofitService.retrofitApi
 import com.example.swith.utils.base.BaseRepository
 import com.example.swith.utils.error.RemoteErrorEmitter
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class HomeRemoteDataSource() : BaseRepository(){
+//    private val regService by lazy{
+//        Retrofit.Builder()
+//        .baseUrl(REG_CODE)
+//        .addConverterFactory(GsonConverterFactory.create())
+//        .build()
+//        .create(ApiService::class.java) }
+
     suspend fun getAllStudy(errorEmitter: RemoteErrorEmitter, userId: Int) : GroupList? {
         return safeApiCall(errorEmitter) {
             retrofitApi.getAllStudy(userId).let {
@@ -17,4 +28,9 @@ class HomeRemoteDataSource() : BaseRepository(){
             }
         }
     }
+
+//    suspend fun getRegPlace(emitter: RemoteErrorEmitter, regionIdx: Long) : String?{
+//        return safeApiCall(emitter){regService.getCityCode2(regionIdx).body()?.name}
+//    }
 }
+

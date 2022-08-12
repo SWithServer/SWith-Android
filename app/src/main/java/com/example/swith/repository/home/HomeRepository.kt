@@ -10,4 +10,5 @@ import kotlinx.coroutines.flow.Flow
 
 class HomeRepository(private val homeRemoteDataSource: HomeRemoteDataSource){
     suspend fun getAllStudy(remoteErrorEmitter: RemoteErrorEmitter, userId: Int) : GroupList? = homeRemoteDataSource.getAllStudy(remoteErrorEmitter, userId)
+//    suspend fun getRegPlace(remoteErrorEmitter: RemoteErrorEmitter, regionIdx: Long) = homeRemoteDataSource.getRegPlace(remoteErrorEmitter, regionIdx)
 }

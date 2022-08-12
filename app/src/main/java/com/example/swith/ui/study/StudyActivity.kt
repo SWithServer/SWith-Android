@@ -1,5 +1,6 @@
 package com.example.swith.ui.study
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -13,6 +14,7 @@ import androidx.lifecycle.Observer
 import com.example.swith.R
 import com.example.swith.databinding.ActivityStudyBinding
 import com.example.swith.ui.home.HomeFragment
+import com.example.swith.ui.manage.ManageActivity
 import com.example.swith.ui.study.round.RoundFragment
 import com.example.swith.ui.study.round.RoundTabFragment
 import com.example.swith.utils.ToolBarManager
@@ -61,7 +63,7 @@ class StudyActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext, "알림 버튼 Clicked", Toast.LENGTH_SHORT).show()
             }
             R.id.toolbar_setting -> {
-                Toast.makeText(applicationContext, "설정 버튼 Clicked", Toast.LENGTH_SHORT).show()
+                startActivity(Intent(this, ManageActivity::class.java))
             }
             android.R.id.home -> {
                 with(supportFragmentManager){
