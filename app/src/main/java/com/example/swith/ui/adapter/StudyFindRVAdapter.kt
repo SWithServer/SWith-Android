@@ -66,7 +66,7 @@ class StudyFindRVAdapter(val studyList : ArrayList<getStudyResponse>) : Recycler
             with(binding)
             {
                 tvStudyTitle.text = studyList.title
-                tvStudyFindDetailContent.text = studyList.groupContent
+                tvSearchContent.text = studyList.groupContent
                 var formatter = SimpleDateFormat("yyyy-MM-dd")
                 var date = formatter.parse("${studyList.deadline}").time
                 var today = Calendar.getInstance().apply {
@@ -75,10 +75,10 @@ class StudyFindRVAdapter(val studyList : ArrayList<getStudyResponse>) : Recycler
                     set(Calendar.SECOND, 0)
                     set(Calendar.MILLISECOND, 0)
                 }.time.time
-                tvStudyDetailDeadline.text = "마감 D-${(date - today) / (60 * 60 * 24 * 1000)}"
-                tvStudyDetailRecruitment.text = studyList.memberLimit.toString()
-                tvStudyDetailRegion1.text = setRegion(studyList.regionIdx1!!.toLong())
-                tvStudyDetailRegion2.text = setRegion(studyList.regionIdx2!!.toLong())
+                tvSearchDeadline.text = "마감 D-${(date - today) / (60 * 60 * 24 * 1000)}"
+                tvSearchPeople.text = studyList.memberLimit.toString()
+                tvSearchRegion.text = setRegion(studyList.regionIdx1!!.toLong())
+                tvSearchRegion.text = setRegion(studyList.regionIdx2!!.toLong())
             }
         }
     }
