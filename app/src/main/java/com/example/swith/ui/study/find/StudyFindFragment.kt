@@ -4,48 +4,34 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.EditText
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.GravityCompat.apply
-import androidx.fragment.app.FragmentTransaction
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.swith.R
 import com.example.swith.data.*
 import com.example.swith.databinding.FragmentStudyFindBinding
-import com.example.swith.databinding.FragmentStudyFindDetailBinding
 import com.example.swith.repository.RetrofitApi
 import com.example.swith.repository.RetrofitService
 import com.example.swith.ui.MainActivity
-import com.example.swith.ui.adapter.HomeStudyRVAdapter
 import com.example.swith.ui.adapter.StudyFindRVAdapter
-import com.example.swith.ui.profile.ProfileFragment.Companion.newInstance
-import com.example.swith.ui.study.StudyActivity
 import com.example.swith.ui.study.create.SelectPlaceActivity
 import com.example.swith.utils.base.BaseFragment
-import com.example.swith.viewmodel.StudyFindViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.text.SimpleDateFormat
-import java.time.format.DateTimeFormatter
 
 
-class StudyFindFragment : BaseFragment<FragmentStudyFindBinding>(R.layout.fragment_study_find) {
-   // private val viewModel: StudyFindViewModel by viewModels()
-    // lateinit var studyFindAdapter : StudyFindRVAdapter
-
+class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.fragment_study_find) {
     var activity_: MainActivity? = null
     var regionCode: Long = -1
     var regionName: String = ""
-    lateinit var sort_recently : ArrayList<Long>
-    lateinit var sort_deadline : ArrayList<Long>
-
 
     var search_title : String ?= null
     var select_region : Long?=null
@@ -65,6 +51,7 @@ class StudyFindFragment : BaseFragment<FragmentStudyFindBinding>(R.layout.fragme
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //지역 선택창에서 값 받아오기
         binding.rvStudyFind.apply {
             val activityResultLauncher = registerForActivityResult<Intent, ActivityResult>(
                 ActivityResultContracts.StartActivityForResult()
@@ -73,7 +60,7 @@ class StudyFindFragment : BaseFragment<FragmentStudyFindBinding>(R.layout.fragme
                     val data = result.data
                     val region = data!!.getCharSequenceExtra("지역")
                     val code = data!!.getCharSequenceExtra("코드")
-                    binding.tvSelectRegion.text = region
+                    binding.btnSelectRegion.text = region
                     regionCode = code.toString().toLong()
                     select_region = regionCode
                     loadData(search_title,select_region,select_interest1,select_interest2,select_sort)
@@ -81,21 +68,41 @@ class StudyFindFragment : BaseFragment<FragmentStudyFindBinding>(R.layout.fragme
             }
             with(binding)
             {
-                if (etStudySearch.text.isNotEmpty()){
-                    search_title=etStudySearch.text.toString()
-                    loadData(search_title,select_region,select_interest1,select_interest2,select_sort)
+
+                etStudySearch.setOnKeyListener { view, code, event ->
+                    if( (event.action == KeyEvent.ACTION_DOWN) && (code == KeyEvent.KEYCODE_ENTER) && !etStudySearch.text.equals("")){
+                        search_title = etStudySearch.text.toString()
+                        hideKeyboard(etStudySearch)
+                        loadData(search_title,select_region,select_interest1,select_interest2,select_sort)
+                        true
+                    }
+                    else{
+                        false
+                    }
                 }
 
-                tvSelectRegion.setOnClickListener {
+                ivSearchIcon.setOnClickListener {
+                    if (!etStudySearch.text.isNullOrBlank() && !etStudySearch.text.equals(""))
+                    {
+                        search_title = etStudySearch.text.toString()
+                        hideKeyboard(etStudySearch)
+                        loadData(search_title,select_region,select_interest1,select_interest2,select_sort)
+                    }
+                }
+
+                btnSelectRegion.setOnClickListener {
                     var intent = Intent(requireActivity(), SelectPlaceActivity::class.java)
                     intent.putExtra("번호", 3)
                     activityResultLauncher.launch(intent)
                 }
+
                 spinnerInterest1.adapter = ArrayAdapter.createFromResource(
                     activity!!.applicationContext,
                     R.array.intersting,
-                    android.R.layout.simple_spinner_item
-                )
+                    R.layout.item_search_spinner
+                ).apply{
+                    this.setDropDownViewResource(R.layout.item_search_spinner_dropdown)
+                }
                 spinnerInterest1.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
                     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
                         select_interest1=position
@@ -107,8 +114,10 @@ class StudyFindFragment : BaseFragment<FragmentStudyFindBinding>(R.layout.fragme
                 spinnerInterest2.adapter = ArrayAdapter.createFromResource(
                     activity!!.applicationContext,
                     R.array.intersting,
-                    android.R.layout.simple_spinner_item
-                )
+                    R.layout.item_search_spinner
+                ).apply{
+                    this.setDropDownViewResource(R.layout.item_search_spinner_dropdown)
+                }
                 spinnerInterest2.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
                     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
                         select_interest2=position
@@ -120,8 +129,10 @@ class StudyFindFragment : BaseFragment<FragmentStudyFindBinding>(R.layout.fragme
                 spinnerSort.adapter = ArrayAdapter.createFromResource(
                     activity!!.applicationContext,
                     R.array.deadLineOrLatest,
-                    android.R.layout.simple_spinner_item
-                )
+                    R.layout.item_search_spinner
+                ).apply{
+                    this.setDropDownViewResource(R.layout.item_search_spinner_dropdown)
+                }
                 spinnerSort.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
                     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
                         select_sort=position
@@ -158,44 +169,24 @@ class StudyFindFragment : BaseFragment<FragmentStudyFindBinding>(R.layout.fragme
             ) {
                 if (response.isSuccessful) {
                     Log.e("summer", "성공${response.toString()}")
-                    response.body()?.apply{
+                    response.body()?.apply {
                         studyList = this.result
                         var listSize = studyList.size
-                        when(sort)
-                        {
-                            0->{
-                                for (i: Int in 0..listSize-1)
-                                {
-                                    for (j : Int in 0..listSize-1)
-                                    {
-                                        if (studyList[j].deadline.compareTo(studyList[j+1].deadline)>0) //j번째 날짜가 j+1번째 날짜보다 클때
-                                        {
-                                            var temp = studyList[j]
-                                            studyList[j]=studyList[j+1]
-                                            studyList[j+1]=temp
-                                        }
-                                    }
-                                }
+                        // 마감순, 최신순 정렬하는 부분
+                        when (sort) {
+                            // 마감순
+                            0 -> {
+                              studyList = sort(0, studyList, listSize)
                             }
-                            1->{
-                                for (i: Int in 0..listSize-1)
-                                {
-                                    for (j : Int in 0..listSize-1)
-                                    {
-                                        if (studyList[j].createDate.compareTo(studyList[j+1].createDate)<0) //j번째 날짜가 j+1번째 날짜보다 작을때
-                                        {
-                                            var temp = studyList[j]
-                                            studyList[j]=studyList[j+1]
-                                            studyList[j+1]=temp
-                                        }
-                                    }
-                                }
+                            // 최신순
+                            1 -> {
+                                studyList = sort(1, studyList, listSize)
                             }
                         }
                         setAdapter(studyList)
-                        Log.e("summer", "User Data = $studyList")
                     }
-                } else {
+                }
+                else {
                     Log.e("summer", "전달실패 code = ${response.code()}")
                     Log.e("summer", "전달실패 msg = ${response.message()}")
                     Log.e("summer","$search_title $region $intrest1 $intrest2 $sort")
@@ -207,13 +198,57 @@ class StudyFindFragment : BaseFragment<FragmentStudyFindBinding>(R.layout.fragme
             }
         })
     }
+
+    // 마감순, 최신순 정렬 함수
+    fun sort (sortNum : Int, studyList : ArrayList<getStudyResponse>, listSize: Int ) : ArrayList<getStudyResponse>
+    {
+        when(sortNum)
+        {
+            // 마감순일때 local date 비교해서 앞 index 마감일 값이 더 크면 swap
+            0->{
+                for (i: Int in 0 until listSize-1)
+                {
+                    for (j : Int in 0 until listSize-1)
+                    {
+                        if (studyList[j].deadline.compareTo(studyList[j+1].deadline)>0) //j번째 날짜가 j+1번째 날짜보다 클때
+                        {
+                            var temp = studyList[j]
+                            studyList[j]=studyList[j+1]
+                            studyList[j+1]=temp
+                        }
+                    }
+                }
+            }
+            // 최신순일때 local date 비교해서 뒤 index 생성일 값이 더 크면 swap
+            1->{
+                for (i: Int in  0 until listSize-1)
+                {
+                    for (j : Int in  0 until listSize-1)
+                    {
+                        if (studyList[j].createDate.compareTo(studyList[j+1].createDate)<0) //j번째 날짜가 j+1번째 날짜보다 작을때
+                        {
+                            var temp = studyList[j]
+                            studyList[j]=studyList[j+1]
+                            studyList[j+1]=temp
+                        }
+                    }
+                }
+            }
+        }
+        return studyList
+    }
+
+    fun hideKeyboard(editText: EditText){
+        val mInputMethodManager =
+            context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        mInputMethodManager.hideSoftInputFromWindow(
+            editText.getWindowToken(),
+            0
+        )
+    }
     override fun onResume() {
         super.onResume()
         Log.e("resume", "True")
         Log.e("regionCode", "${regionCode}")
     }
-    override fun onDetach() {
-        super.onDetach()
-    }
-
 }

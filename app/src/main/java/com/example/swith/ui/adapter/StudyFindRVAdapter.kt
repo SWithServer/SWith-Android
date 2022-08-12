@@ -83,6 +83,7 @@ class StudyFindRVAdapter(val studyList : ArrayList<getStudyResponse>) : Recycler
         }
     }
 
+    //리스트값으로 지역코드 받아오면 지역이름으로 변경하는 함수
     fun setRegion(code:Long) : String{
         var name_: String = ""
         val retrofit = Retrofit.Builder()

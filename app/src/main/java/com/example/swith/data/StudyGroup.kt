@@ -25,7 +25,7 @@ data class StudyGroup(
     var groupEnd:String,
 
     var attendanceValidTime:Int,
-    var groupContent:String,
+    var groupContent:String
 )
 
 data class StudyGroupResponse(
