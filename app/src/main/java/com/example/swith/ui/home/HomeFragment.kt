@@ -52,11 +52,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home){
         }
     }
 
-    private fun observeViewModel(){
+    override fun onResume() {
+        super.onResume()
         // progress bar
         setViewVisibility(isStudyNotExists = true, beforeDataLoad = true)
         viewModel.loadData()
+    }
 
+    private fun observeViewModel(){
         viewModel.groupLiveData.observe(viewLifecycleOwner, Observer{ data ->
             // 스터디가 1개 이상 존재하면 스터디 리사이클러 뷰 보여줌
             data?.group.let{(binding.homeStudyRv.adapter as HomeStudyRVAdapter).setData(data)}

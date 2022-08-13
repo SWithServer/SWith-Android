@@ -40,10 +40,13 @@ class RoundFragment : BaseFragment<FragmentRoundBinding>(R.layout.fragment_round
         initListener()
     }
 
-    private fun observeViewModel(){
+    override fun onResume() {
+        super.onResume()
         setViewVisibility(true)
         viewModel.loadData()
+    }
 
+    private fun observeViewModel(){
         viewModel.roundLiveData.observe(viewLifecycleOwner, Observer {
             (binding.roundListRv.adapter as RoundRVAdapter).setData(it)
             binding.roundNoticeContentTv.text = it.announcementContent
@@ -76,7 +79,7 @@ class RoundFragment : BaseFragment<FragmentRoundBinding>(R.layout.fragment_round
             roundNoticeIv.setOnClickListener { startActivity(Intent(activity, AnnounceActivity::class.java).apply { putExtra("manager", viewModel.roundLiveData.value?.admin)
                                                     putExtra("groupIdx", viewModel.groupIdx)})}
             roundAddBtn.setOnClickListener { startActivity(Intent(activity, RoundCreateActivity::class.java)) }
-            roundPreviousCb.setOnCheckedChangeListener { view, isChecked -> viewModel.setPastData(view.isChecked) }
+            roundPreviousCb.setOnCheckedChangeListener { _, isChecked -> viewModel.roundLiveData.value?.let { viewModel.setPastData(isChecked) }}
             roundPullToRefresh.apply {
                 setOnRefreshListener {
                     isRefreshing = false
