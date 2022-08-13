@@ -38,6 +38,10 @@ interface RetrofitApi {
     @POST("/groupinfo/announcement")
     suspend fun createAnnounce(@Body announceCreate: AnnounceCreate) : Response<Any>
 
+    // 공지사항 수정
+    @PATCH("/groupinfo/announcement")
+    suspend fun updateAnnounce(@Body announceModify: AnnounceModify) : Response<Any>
+
     @POST("/groupinfo")
      fun createStudy(@Body body:StudyGroup) : Call<StudyResponse>
 

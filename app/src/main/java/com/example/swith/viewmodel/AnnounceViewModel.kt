@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.swith.data.Announce
 import com.example.swith.data.AnnounceCreate
 import com.example.swith.data.AnnounceList
+import com.example.swith.data.AnnounceModify
 import com.example.swith.repository.announce.AnnounceRemoteDataSource
 import com.example.swith.repository.announce.AnnounceRepository
 import com.example.swith.utils.SingleLiveEvent
@@ -18,6 +19,7 @@ class AnnounceViewModel : BaseViewModel() {
     private var _announceLiveData = SingleLiveEvent<AnnounceList>()
     private var _deleteLiveEvent = SingleLiveEvent<Any>()
     private var _createLiveEvent = SingleLiveEvent<Any>()
+    private var _updateLiveEvent = SingleLiveEvent<Any>()
 
     val announceLiveData : LiveData<AnnounceList>
         get() = _announceLiveData
@@ -27,6 +29,9 @@ class AnnounceViewModel : BaseViewModel() {
 
     val createLiveEvent : LiveData<Any>
         get() =  _createLiveEvent
+
+    val updateLiveEvent : LiveData<Any>
+        get() = _updateLiveEvent
 
     fun loadData(groupIdx: Int){
         viewModelScope.launch {
@@ -58,5 +63,14 @@ class AnnounceViewModel : BaseViewModel() {
         }
     }
 
+    fun updateAnnounce(announceModify: AnnounceModify){
+        viewModelScope.launch {
+            val res = repository.updateAnnounce(this@AnnounceViewModel, announceModify)
+            res?.let {
+                _updateLiveEvent.call()
+                mutableScreenState.postValue(ScreenState.LOAD)
+            }
+        }
+    }
 
 }
