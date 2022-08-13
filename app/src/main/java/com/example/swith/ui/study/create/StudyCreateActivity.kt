@@ -202,55 +202,20 @@ class StudyCreateActivity :AppCompatActivity() {
 
         //spinner
         val interest_spinner = binding.spinnerCategory
-        interest_spinner.adapter = ArrayAdapter.createFromResource(
-            this,
-            R.array.categoryList,
-            android.R.layout.simple_spinner_item
-        )
         val memberLimit_spinner = binding.spinnerPeople
-        memberLimit_spinner.adapter = ArrayAdapter.createFromResource(
-            this,
-            R.array.peopleList,
-            android.R.layout.simple_spinner_item
-        )
         val applicationMethod_spinner = binding.spinnerMethod
-        applicationMethod_spinner.adapter = ArrayAdapter.createFromResource(
-            this,
-            R.array.methodList,
-            android.R.layout.simple_spinner_item
-        )
         val attendanceVaildTime_spinner = binding.spinnerAttendTime
-        attendanceVaildTime_spinner.adapter = ArrayAdapter.createFromResource(
-            this,
-            R.array.attendTimeList,
-            android.R.layout.simple_spinner_item
-        )
 
         with(binding)
         {
             //spinner
-            interest_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
-                    interest_idx=position
-                }
-                override fun onNothingSelected(p0: AdapterView<*>?) {
-                }
-            }
-            memberLimit_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
-                    memberLimit_content = "${memberLimit_spinner.getItemAtPosition(position)}".toInt()
-                }
-                override fun onNothingSelected(p0: AdapterView<*>?) {
-                }
-            }
-            applicationMethod_spinner.onItemSelectedListener= object:AdapterView.OnItemSelectedListener{
-                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
-                    applicationMethod_idx = position
-                }
-
-                override fun onNothingSelected(p0: AdapterView<*>?) {
-                }
-            }
+//            interest_spinner.adapter = ArrayAdapter.createFromResource(
+//                this@StudyCreateActivity,
+//                R.layout.item_create_spinner,
+//                R.array.intersting
+//            ).apply{
+//                this.setDropDownViewResource(R.layout.item_search_spinner_dropdown)
+//            }
             interest_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
                     interest_idx=position+1
@@ -258,6 +223,41 @@ class StudyCreateActivity :AppCompatActivity() {
                 override fun onNothingSelected(p0: AdapterView<*>?) {
                 }
             }
+//            memberLimit_spinner.adapter = ArrayAdapter.createFromResource(
+//                this@StudyCreateActivity,
+//                R.layout.item_create_spinner,
+//                R.array.peopleList
+//            ).apply{
+//                this.setDropDownViewResource(R.layout.item_search_spinner_dropdown)
+//            }
+            memberLimit_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
+                    memberLimit_content = "${memberLimit_spinner.getItemAtPosition(position)}".toInt()
+                }
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+                }
+            }
+//            applicationMethod_spinner.adapter = ArrayAdapter.createFromResource(
+//                this@StudyCreateActivity,
+//                R.layout.item_create_spinner,
+//                R.array.methodList
+//            ).apply{
+//                this.setDropDownViewResource(R.layout.item_search_spinner_dropdown)
+//            }
+            applicationMethod_spinner.onItemSelectedListener= object:AdapterView.OnItemSelectedListener{
+                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
+                    applicationMethod_idx = position
+                }
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+                }
+            }
+//            attendanceVaildTime_spinner.adapter = ArrayAdapter.createFromResource(
+//                this@StudyCreateActivity,
+//                R.layout.item_create_spinner,
+//                R.array.attendTimeList
+//            ).apply{
+//                this.setDropDownViewResource(R.layout.item_search_spinner_dropdown)
+//            }
             attendanceVaildTime_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
                     attendanceVaildTime_content = "${attendanceVaildTime_spinner.getItemAtPosition(position)}".toInt()
@@ -265,16 +265,33 @@ class StudyCreateActivity :AppCompatActivity() {
                 override fun onNothingSelected(p0: AdapterView<*>?) {
                 }
             }
+
             //on,offline 장소선택
-            placeRadioGroup.setOnCheckedChangeListener { group, checkedId ->
-                when (checkedId) {
-                    R.id.btn_offline -> {binding.studyCreateOfflineLayout.visibility = View.VISIBLE
-                        online_idx = 0}
-                    R.id.btn_online -> {binding.studyCreateOfflineLayout.visibility = View.GONE
-                        online_idx =1}
+            val listener_online = CompoundButton.OnCheckedChangeListener { checkbox, isChecked ->
+                with(binding) {
+                    if (isChecked)
+                        when (checkbox.id) {
+                            R.id.btn_online -> {
+                                btnOnline.isChecked = true
+                                btnOffline.isChecked = false
+                                tvStudyRegion.visibility=View.GONE
+                                layoutCreateRegionBtns.visibility=View.GONE
+                                lineRegion.visibility=View.GONE
+                                online_idx = 1
+                            }
+                            R.id.btn_offline -> {
+                                btnOnline.isChecked = false
+                                btnOffline.isChecked =true
+                                tvStudyRegion.visibility=View.VISIBLE
+                                binding.layoutCreateRegionBtns.visibility = View.VISIBLE
+                                lineRegion.visibility=View.VISIBLE
+                                online_idx = 0
+                            }
+                        }
                 }
             }
-        }
+            binding.btnOnline.setOnCheckedChangeListener(listener_online)
+            binding.btnOffline.setOnCheckedChangeListener(listener_online)
 
         //시간 선택
         val listener = CompoundButton.OnCheckedChangeListener { checkbox, isChecked ->
@@ -282,35 +299,35 @@ class StudyCreateActivity :AppCompatActivity() {
                 if (isChecked)
                     when (checkbox.id) {
                         R.id.check_week -> {
-                            tvStudyFree.setText("")
-                            tvStudyMonth.setText("")
+                            etStudyFree.setText("")
+                            etStudyMonth.setText("")
                             checkMonth.isChecked = false
                             checkFree.isChecked = false
-                            tvStudyWeek.isEnabled = true
-                            tvStudyMonth.isEnabled = false
-                            tvStudyFree.isEnabled = false
+                            etStudyWeek.isEnabled = true
+                            etStudyMonth.isEnabled = false
+                            etStudyFree.isEnabled = false
                             meet_idx=0
                         }
                         R.id.check_month -> {
-                            tvStudyWeek.setText("")
-                            tvStudyFree.setText("")
+                            etStudyWeek.setText("")
+                            etStudyFree.setText("")
                             checkWeek.isChecked = false
                             checkFree.isChecked = false
-                            tvStudyMonth.isEnabled = true
-                            tvStudyWeek.isEnabled = false
-                            tvStudyFree.isEnabled = false
+                            etStudyMonth.isEnabled = true
+                            etStudyWeek.isEnabled = false
+                            etStudyFree.isEnabled = false
                             meet_idx=1
                         }
                         R.id.check_free -> {
-                            tvStudyWeek.setText("")
-                            tvStudyMonth.setText("")
+                            etStudyWeek.setText("")
+                            etStudyMonth.setText("")
                             checkMonth.isChecked = false
                             checkWeek.isChecked = false
-                            tvStudyFree.isEnabled = true
-                            tvStudyWeek.isEnabled = false
-                            tvStudyMonth.isEnabled = false
+                            etStudyFree.isEnabled = true
+                            etStudyWeek.isEnabled = false
+                            etStudyMonth.isEnabled = false
                             meet_idx=2
-                            periods_content=tvStudyFree.text.toString()
+                            periods_content=etStudyFree.text.toString()
                         }
                     }
             }
@@ -329,13 +346,13 @@ class StudyCreateActivity :AppCompatActivity() {
                 title = etStudyTitle.text.toString()
                 topic_content = etCreateTopic.text.toString()
                 when(meet_idx) {
-                0->{if (!tvStudyWeek.text.isNullOrBlank())
-                    frequency_content=tvStudyWeek.text.toString().toIntOrNull()
+                0->{if (!etStudyWeek.text.isNullOrBlank())
+                    frequency_content=etStudyWeek.text.toString().toIntOrNull()
                     }
-                1->{if (!tvStudyMonth.text.isNullOrBlank())
-                frequency_content=tvStudyMonth.text.toString().toIntOrNull()}
-                2->{if (!tvStudyFree.text.isNullOrBlank())
-                periods_content=tvStudyFree.text.toString()}
+                1->{if (!etStudyMonth.text.isNullOrBlank())
+                frequency_content=etStudyMonth.text.toString().toIntOrNull()}
+                2->{if (!etStudyFree.text.isNullOrBlank())
+                periods_content=etStudyFree.text.toString()}
                 }
 
                 var studyRequestData=StudyGroup(1,"2",title,meet_idx,frequency_content,periods_content,online_idx,regionIdx1,regionIdx2,interest_idx
@@ -382,7 +399,10 @@ class StudyCreateActivity :AppCompatActivity() {
                 }
             }
         }
+
+        }
     }
+
     override fun onResume() {
         super.onResume()
         Log.e("resume","true")
@@ -486,5 +506,4 @@ class StudyCreateActivity :AppCompatActivity() {
         intent.setType("image/*")
         startActivityForResult(intent,GALLERY)
     }
-
-}
+    }
