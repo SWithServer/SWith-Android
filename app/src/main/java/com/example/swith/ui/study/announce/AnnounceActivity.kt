@@ -1,5 +1,6 @@
 package com.example.swith.ui.study.announce
 
+import android.os.Build.VERSION_CODES.P
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -13,11 +14,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.swith.R
 import com.example.swith.data.Announce
 import com.example.swith.data.AnnounceCreate
+import com.example.swith.data.AnnounceModify
 import com.example.swith.databinding.ActivityAnnounceBinding
 import com.example.swith.ui.adapter.AnnounceRVAdapter
 import com.example.swith.ui.dialog.CustomAlertDialog
 import com.example.swith.ui.dialog.CustomAnnounceCreateDialog
+import com.example.swith.ui.dialog.CustomAnnounceModifyDialog
 import com.example.swith.ui.dialog.CustomConfirmDialog
+import com.example.swith.utils.CustomBinder.Companion.setVisibility
 import com.example.swith.utils.ToolBarManager
 import com.example.swith.utils.error.ErrorType
 import com.example.swith.utils.error.ScreenState
@@ -68,8 +72,28 @@ class AnnounceActivity : AppCompatActivity(){
                     }
 
                     override fun onItemClick(announce: Announce) {
-                        CustomAlertDialog("공지사항", "${announce.announcementContent}").apply {
-                            show(supportFragmentManager, "공지사항")
+                        // 매니저인 경우 수정 화면 뜨도록
+                        if (isManager) {
+                            CustomAnnounceModifyDialog(announce.announcementContent).apply {
+                                setCustomListener(object: CustomAnnounceModifyDialog.CustomListener{
+                                    override fun onConfirm(content: String) {
+                                        dismiss()
+                                        CustomConfirmDialog("공지사항 수정", "공지사항 내용을 수정합니다.").apply {
+                                            setCustomListener(object: CustomConfirmDialog.CustomListener{
+                                                override fun onConfirm() {
+                                                    dismiss()
+                                                    viewModel.updateAnnounce(AnnounceModify(content, announce.announcementIdx))
+                                                }
+                                            })
+                                        }.show(supportFragmentManager, "수정 확인")
+                                    }
+                                })
+                            }.show(supportFragmentManager, "공지사항 수정")
+                        } else {
+                            // 매니저가 아닌 경우 내용 팝업 다이얼로그
+                            CustomAlertDialog("공지사항", "${announce.announcementContent}").apply {
+                                show(supportFragmentManager, "공지사항")
+                            }
                         }
                     }
                 })
@@ -126,6 +150,12 @@ class AnnounceActivity : AppCompatActivity(){
             CustomAlertDialog("생성 완료", "공지사항이 생성 되었습니다.").show(supportFragmentManager, "생성 완료")
             reloadData()
         })
+
+        viewModel.updateLiveEvent.observe(this, Observer {
+            CustomAlertDialog("수정 완료", "공지사항이 수정 되었습니다.").show(supportFragmentManager, "수정 완료")
+            reloadData()
+        })
+
     }
 
     private fun setVisibility(beforeLoad: Boolean){

@@ -12,10 +12,13 @@
         android:allowBackup="false"
         android:icon="@mipmap/ic_app_launcher"
         android:label="@string/app_name"
-        android:usesCleartextTraffic="true"
         android:roundIcon="@mipmap/ic_app_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.SWith">
+        android:theme="@style/Theme.SWith"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".ui.manage.ManageRoundActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.study.create.RoundCreateActivity"
             android:exported="false" />
@@ -24,8 +27,8 @@
             android:exported="false" />
         <activity
             android:name=".ui.study.announce.AnnounceActivity"
-            android:windowSoftInputMode="adjustNothing"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".ui.SplashActivity"
             android:exported="true" />
@@ -34,20 +37,20 @@
             android:exported="false" />
         <activity
             android:name=".ui.profile.ProfileModifyActivity"
-            android:exported="true">
-
-        </activity>
+            android:exported="true"></activity>
         <activity
             android:name=".ui.MainActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.study.StudyActivity"
-            android:windowSoftInputMode="adjustNothing"/>
+        <activity
+            android:name=".ui.study.StudyActivity"
+            android:windowSoftInputMode="adjustNothing" />
+        <activity android:name=".ui.manage.ManageActivity" />
         <activity
             android:name=".ui.study.create.StudyCreateActivity"
             android:exported="true"
@@ -59,16 +62,18 @@
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
             android:exported="true">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.VIEW" />-->
-<!--                <category android:name="android.intent.category.DEFAULT" />-->
-<!--                <category android:name="android.intent.category.BROWSABLE" />-->
 
-<!--                &lt;!&ndash; Redirect URI: "kakao${NATIVE_APP_KEY}://oauth" &ndash;&gt;-->
-<!--                <data-->
-<!--                    android:host="oauth"-->
-<!--                    android:scheme="kakao${KAKAO_API_KEY}" />-->
-<!--            </intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.VIEW" /> -->
+            <!-- <category android:name="android.intent.category.DEFAULT" /> -->
+            <!-- <category android:name="android.intent.category.BROWSABLE" /> -->
+
+
+            <!-- &lt;!&ndash; Redirect URI: "kakao${NATIVE_APP_KEY}://oauth" &ndash;&gt; -->
+            <!-- <data -->
+            <!-- android:host="oauth" -->
+            <!-- android:scheme="kakao${KAKAO_API_KEY}" /> -->
+            <!-- </intent-filter> -->
         </activity>
     </application>
 

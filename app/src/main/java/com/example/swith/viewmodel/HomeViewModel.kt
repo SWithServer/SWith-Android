@@ -27,6 +27,14 @@ class HomeViewModel() : BaseViewModel() {
             withContext(Dispatchers.Main) {
                 if (res == null) mutableScreenState.postValue(ScreenState.RENDER)
                 res?.let{
+                    // region Idx 로 받는부분?! 추후 구현
+//                    res.group.forEach {
+//                        if (it.online != 0){
+//                            withContext(Dispatchers.IO){
+//
+//                            }
+//                        }
+//                    }
                     _groupLiveData.value = res!!
                     mutableScreenState.postValue(ScreenState.RENDER)
                 }

@@ -20,6 +20,11 @@ data class AnnounceDelete(
     val result: String
 )
 
+data class AnnounceModify(
+    val announcementContent: String,
+    val announcementIdx: Int
+)
+
 data class AnnounceList(
     @SerializedName("result") val announces: List<Announce>
 )

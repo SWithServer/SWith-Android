@@ -6,14 +6,15 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.example.swith.R
-import com.example.swith.databinding.DialogAnnounceCreateBinding
+import com.example.swith.databinding.DialogAnnounceModifyBinding
 
-class CustomAnnounceCreateDialog : DialogFragment(){
-    private lateinit var binding: DialogAnnounceCreateBinding
+class CustomAnnounceModifyDialog(private val content: String) : DialogFragment(){
+    private lateinit var binding: DialogAnnounceModifyBinding
 
     interface CustomListener{
         fun onConfirm(content: String)
@@ -43,7 +44,7 @@ class CustomAnnounceCreateDialog : DialogFragment(){
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.dialog_announce_create, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.dialog_announce_modify, container, false)
         // 모서리 직각 제거
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
@@ -52,20 +53,23 @@ class CustomAnnounceCreateDialog : DialogFragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.etAnnounceCreate.addTextChangedListener(object: TextWatcher{
+        binding.etAnnounceModify.setText(content)
+        binding.etAnnounceModify.addTextChangedListener(object: TextWatcher{
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                binding.btnAnnounceCreate.visibility = View.INVISIBLE
+                binding.btnAnnounceModify.visibility = View.INVISIBLE
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                binding.btnAnnounceCreate.visibility = if (!s.isNullOrEmpty()) View.VISIBLE else View.INVISIBLE
+                Log.d("text change", "s : $s , content : $content")
+                binding.btnAnnounceModify.visibility = if (s.isNullOrEmpty() || s.toString() == content) View.INVISIBLE else View.VISIBLE
             }
 
             override fun afterTextChanged(s: Editable?) {
-                // 행동 X
+                // 없음
             }
 
         })
-        binding.btnAnnounceCreate.setOnClickListener { customListener.onConfirm(binding.etAnnounceCreate.text.toString()) }
+        binding.btnAnnounceModify.setOnClickListener { customListener.onConfirm(binding.etAnnounceModify.text.toString()) }
+        binding.tvDialogModifyCancel.setOnClickListener { dismiss() }
     }
 }

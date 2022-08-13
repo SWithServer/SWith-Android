@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.swith.R
 import com.example.swith.data.Group
+import com.example.swith.data.GroupRV
 import com.example.swith.databinding.FragmentHomeBinding
 import com.example.swith.utils.base.BaseFragment
 import com.example.swith.ui.adapter.HomeStudyRVAdapter
@@ -41,16 +42,27 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home){
         binding.homeStudyAddIv.setOnClickListener{
             startActivity(Intent(requireActivity(), StudyCreateActivity::class.java))
         }
+
+        binding.homePullToRefresh.apply {
+            setOnRefreshListener {
+                isRefreshing = false
+                viewModel.loadData()
+            }
+            setColorSchemeResources(R.color.color_swith)
+        }
     }
 
-    private fun observeViewModel(){
+    override fun onResume() {
+        super.onResume()
         // progress bar
         setViewVisibility(isStudyNotExists = true, beforeDataLoad = true)
         viewModel.loadData()
+    }
 
+    private fun observeViewModel(){
         viewModel.groupLiveData.observe(viewLifecycleOwner, Observer{ data ->
             // 스터디가 1개 이상 존재하면 스터디 리사이클러 뷰 보여줌
-            data?.group?.let{(binding.homeStudyRv.adapter as HomeStudyRVAdapter).setData(data)}
+            data?.group.let{(binding.homeStudyRv.adapter as HomeStudyRVAdapter).setData(data)}
         })
 
         viewModel.mutableErrorMessage.observe(viewLifecycleOwner, Observer {

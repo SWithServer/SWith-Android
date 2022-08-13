@@ -1,10 +1,12 @@
 package com.example.swith.repository
 
 import com.example.swith.data.CityResponse
+import com.example.swith.data.Regcode
 import okhttp3.ConnectionSpec
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
@@ -38,4 +40,7 @@ object RetrofitService {
 interface ApiService{
     @GET("regcodes?")
     fun getCityCode(@Query("regcode_pattern")regcode_pattern: String): Call<CityResponse>
+
+//    @GET("regcodes")
+//    suspend fun getCityCode2(@Query("regcode_pattern")regcode_pattern: Long): Response<Regcode>
 }
