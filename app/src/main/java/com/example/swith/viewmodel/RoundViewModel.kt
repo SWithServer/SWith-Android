@@ -74,6 +74,24 @@ class RoundViewModel() : BaseViewModel() {
         }
     }
 
+    fun loadAllData(){
+        viewModelScope.launch {
+            val res = repository.getAllRound(this@RoundViewModel, userIdx, groupIdx)
+            withContext(Dispatchers.Main) {
+                allData.clear()
+                if (res == null){
+                    mutableScreenState.postValue(ScreenState.RENDER)
+                }
+                res?.let {
+                    mutableScreenState.postValue(ScreenState.RENDER)
+                    it.getSessionResList.forEach { s ->
+                        allData.add(s)
+                    }
+                    _roundLiveData.value = it.apply { getSessionResList = allData }
+                }
+            }
+        }
+    }
 
     fun loadInfoData(){
         viewModelScope.launch {

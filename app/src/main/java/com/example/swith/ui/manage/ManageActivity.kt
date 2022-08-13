@@ -1,5 +1,6 @@
 package com.example.swith.ui.manage
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -30,7 +31,10 @@ class ManageActivity : AppCompatActivity() {
     private fun initListener(){
         with(binding){
             layoutManageStudy.setOnClickListener { /* 스터디 관리 화면으로 */ }
-            layoutManageRound.setOnClickListener { /* 회차 관리 화면으로 */ }
+            layoutManageRound.setOnClickListener {
+                startActivity(Intent(this@ManageActivity, ManageRoundActivity::class.java).apply {
+                    putExtra("groupId", groupIdx)
+            }) }
             layoutManageAttend.setOnClickListener { /* 출석 관리 화면으로 */ }
             layoutManageUser.setOnClickListener { /* 유저 관리 화면으로 */ }
             layoutManageFinish.setOnClickListener { /* 스터디 종료 */ }
