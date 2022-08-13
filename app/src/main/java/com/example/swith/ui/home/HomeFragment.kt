@@ -42,6 +42,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home){
         binding.homeStudyAddIv.setOnClickListener{
             startActivity(Intent(requireActivity(), StudyCreateActivity::class.java))
         }
+
+        binding.homePullToRefresh.apply {
+            setOnRefreshListener {
+                isRefreshing = false
+                viewModel.loadData()
+            }
+            setColorSchemeResources(R.color.color_swith)
+        }
     }
 
     private fun observeViewModel(){

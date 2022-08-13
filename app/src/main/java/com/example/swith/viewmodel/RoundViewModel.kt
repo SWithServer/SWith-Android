@@ -68,7 +68,7 @@ class RoundViewModel() : BaseViewModel() {
                         if (compareWithNow(s)) postData.add(s)
                         allData.add(s)
                     }
-                    _roundLiveData.value = it.apply { getSessionResList = postData }
+                    _roundLiveData.value = it.apply { getSessionResList = if(pastVisible) allData else postData }
                 }
             }
         }

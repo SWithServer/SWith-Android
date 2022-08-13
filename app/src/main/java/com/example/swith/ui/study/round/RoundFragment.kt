@@ -22,7 +22,6 @@ class RoundFragment : BaseFragment<FragmentRoundBinding>(R.layout.fragment_round
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         binding.roundListRv.apply {
             adapter = RoundRVAdapter().apply {
                 setItemClickListener(object : RoundRVAdapter.myItemClickListener {
@@ -78,6 +77,13 @@ class RoundFragment : BaseFragment<FragmentRoundBinding>(R.layout.fragment_round
                                                     putExtra("groupIdx", viewModel.groupIdx)})}
             roundAddBtn.setOnClickListener { startActivity(Intent(activity, RoundCreateActivity::class.java)) }
             roundPreviousCb.setOnCheckedChangeListener { view, isChecked -> viewModel.setPastData(view.isChecked) }
+            roundPullToRefresh.apply {
+                setOnRefreshListener {
+                    isRefreshing = false
+                    viewModel.loadData()
+                }
+                setColorSchemeResources(R.color.color_swith)
+            }
         }
     }
 
