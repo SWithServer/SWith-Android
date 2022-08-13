@@ -3,11 +3,13 @@ package com.example.swith.viewmodel
 import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.swith.data.StudyGroup
 import com.example.swith.data.StudyGroupResponse
 import com.example.swith.data.StudyResponse
+import com.example.swith.data.getStudyResponse
 import com.example.swith.repository.RetrofitApi
 import com.example.swith.repository.RetrofitService
 import com.example.swith.repository.study.StudyFindRemoteDataSource
@@ -23,13 +25,17 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class StudyFindViewModel : BaseViewModel() {
-// val retrofitService = RetrofitService.retrofit.create(RetrofitApi::class.java)
+//    private val studyFindRepository = StudyFindRepository()
+//    private val studyFind : LiveData<getStudyResponse>
+//        get() = studyFindRepository._study
 //
-    lateinit var studyList : StudyGroupResponse
+//    fun loadStudy(page:Int)
+//    {
+//        studyFindRepository.loadStudy(page)
+//    }
 //
-    fun getView(){
-
-    }
-//private val repository : StudyFindRepository = StudyFindRepository(StudyFindRemoteDataSource())
-    //스터디 정보 repository로 받아오기
+//    fun getAll():LiveData<getStudyResponse>
+//    {
+//        return studyFind
+//    }
 }

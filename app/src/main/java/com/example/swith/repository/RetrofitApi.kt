@@ -47,5 +47,5 @@ interface RetrofitApi {
 
      //임시 스터디 찾기 - 스터디 불러오기 부분
     @GET("/groupinfo")
-    fun getSearchStudy(@Query("title") title:String?=null,@Query("region") regionCode : Long?= null, @Query("interest1") interest1:Int?=null, @Query("interest2") intrest2:Int?=null,@Query("sort") sort:Int?=null):Call<getStudyContent>
+    fun getSearchStudy(@Query("page") page : Int, @Query("limit") limit : Int,@Query("title") title:String?=null,@Query("region") regionCode : Long?= null, @Query("interest1") interest1:Int?=null, @Query("interest2") intrest2:Int?=null,@Query("sort") sort:Int?=null):Call<getStudyContent>
 }

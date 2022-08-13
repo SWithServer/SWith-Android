@@ -36,6 +36,8 @@ data class StudyGroupResponse(
 )
 
 data class  getStudyContent(
+    var total_count:Int,
+    var is_Next : Boolean,
     var groupIndx:Int,
     var result : ArrayList<getStudyResponse>
 )
@@ -44,8 +46,10 @@ data class getStudyResponse(
     var title : String,
     var regionIdx1:Long,
     var regionIdx2:Long,
-    var deadline:LocalDate,
-    var createDate : LocalDate,
+//    var deadline:LocalDate,
+//    var createDate : LocalDate,
+    var deadline:String,
+    var createDate : String,
     var memberLimit: Int,
     var groupContent : String
 )

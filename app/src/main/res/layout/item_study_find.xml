@@ -6,7 +6,6 @@
         android:id="@+id/item_layout_study"
         android:layout_width="match_parent"
         android:layout_height="120dp"
-        android:background="@color/white"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="10dp"
         android:paddingStart="10dp"

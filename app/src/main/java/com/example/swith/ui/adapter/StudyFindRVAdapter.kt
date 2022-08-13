@@ -1,74 +1,98 @@
 package com.example.swith.ui.adapter
 
-import android.content.Context
-import android.text.Layout
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.swith.R
 import com.example.swith.data.*
-import com.example.swith.databinding.FragmentStudyFindBinding
-import com.example.swith.databinding.ItemLocationBinding
+import com.example.swith.databinding.ItemLoadingBinding
 import com.example.swith.databinding.ItemStudyFindBinding
-import com.example.swith.repository.ApiService
-import com.example.swith.repository.RetrofitService
-import com.example.swith.ui.profile.ProfileFragment
 import com.example.swith.ui.study.create.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.lang.reflect.Array.set
-import java.sql.Date
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.*
-import kotlin.collections.ArrayList
 
-//private val studyList:ArrayList<StudyFindData>
+class StudyFindRVAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-class StudyFindRVAdapter(val studyList : ArrayList<getStudyResponse>) : RecyclerView.Adapter<StudyFindRVAdapter.FindViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FindViewHolder {
-        val binding =
-            ItemStudyFindBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return FindViewHolder(binding)
+    companion object{
+        private const val TYPE_VIEW = 0
+        private const val TYPE_LOADING = 1
     }
 
-    override fun onBindViewHolder(holder: FindViewHolder, position: Int) {
-        holder.onBind((studyList[position]))
-        holder.itemView.setOnClickListener {
-            itemClickListener.onClick(studyList[position])
+    private val studyList = mutableListOf<getStudyResponse?>()
+
+    fun setData(studyList: ArrayList<getStudyResponse>)
+    {
+        this.studyList.apply{
+            clear()
+            addAll(studyList)
+        }
+        notifyDataSetChanged()
+    }
+
+    fun addData(studyList : ArrayList <getStudyResponse>)
+    {
+        Log.e("DATA",studyList.toString())
+        this.studyList.addAll(studyList)
+        notifyDataSetChanged()
+    }
+
+    fun setLoadingView(b:Boolean)
+    {
+        if (b)
+        {
+            android.os.Handler(Looper.getMainLooper()).post{
+                this.studyList.add(null)
+                notifyItemInserted(studyList.size - 1)
+            }
+        }
+        else{
+            if (this.studyList[studyList.size-1]==null){
+                this.studyList.removeAt(studyList.size-1)
+                notifyItemRemoved(studyList.size)
+            }
         }
     }
 
-    override fun getItemCount(): Int {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        when(viewType)
+        {
+            TYPE_VIEW->{
+                val inflatedView = LayoutInflater.from(parent.context)
+                val binding = ItemStudyFindBinding.inflate(inflatedView,parent,false)
+                return FindViewHolder(binding)
+            }
+            else ->{
+                val inflatedView = LayoutInflater.from(parent.context)
+                val binding = ItemLoadingBinding.inflate(inflatedView,parent,false)
+                return LoadingViewHolder(binding)
+            }
+        }
+    }
+
+    override fun getItemViewType(position:Int):Int{
+        return when(studyList[position]){
+            null-> TYPE_LOADING
+            else-> TYPE_VIEW
+        }
+    }
+
+    override fun getItemCount():Int{
         return studyList.size
     }
 
-    interface OnItemClickListener {
-        fun onClick(stduyList : getStudyResponse)
-    }
-
-
-    fun setItemClickListener(itemClickListener: OnItemClickListener) {
-        this.itemClickListener = itemClickListener
-    }
-
-    private lateinit var itemClickListener: OnItemClickListener
 
     inner class FindViewHolder(val binding: ItemStudyFindBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun onBind(studyList: getStudyResponse) {
+        fun onBind(studyList:getStudyResponse?) {
             with(binding)
             {
-                tvStudyTitle.text = studyList.title
-                tvSearchContent.text = studyList.groupContent
+                tvStudyTitle.text = studyList?.title
+                tvSearchContent.text = studyList?.groupContent
                 var formatter = SimpleDateFormat("yyyy-MM-dd")
-                var date = formatter.parse("${studyList.deadline}").time
+                var date = formatter.parse("${studyList?.deadline}").time
                 var today = Calendar.getInstance().apply {
                     set(Calendar.HOUR_OF_DAY, 0)
                     set(Calendar.MINUTE, 0)
@@ -76,38 +100,40 @@ class StudyFindRVAdapter(val studyList : ArrayList<getStudyResponse>) : Recycler
                     set(Calendar.MILLISECOND, 0)
                 }.time.time
                 tvSearchDeadline.text = "마감 D-${(date - today) / (60 * 60 * 24 * 1000)}"
-                tvSearchPeople.text = studyList.memberLimit.toString()
-                tvSearchRegion.text = setRegion(studyList.regionIdx1!!.toLong())
-                tvSearchRegion.text = setRegion(studyList.regionIdx2!!.toLong())
+                tvSearchPeople.text = studyList?.memberLimit.toString()
+                tvSearchRegion.text = "인천광역시 남동구"
+                tvSearchRegion.text = "인천광역시 남동구"
+            }
+
+            binding.root.setOnClickListener { v ->
+                val pos = adapterPosition
+                if (pos != RecyclerView.NO_POSITION) {
+                    if (itemClickListener != null) {
+                        itemClickListener.onClick(v, pos)
+                    }
+                }
             }
         }
     }
 
-    //리스트값으로 지역코드 받아오면 지역이름으로 변경하는 함수
-    fun setRegion(code:Long) : String{
-        var name_: String = ""
-        val retrofit = Retrofit.Builder()
-            .baseUrl(RetrofitService.REG_CODE)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-        val regionService = retrofit.create(ApiService::class.java)
-        regionService.getCityCode(code.toString()).enqueue(object : Callback<CityResponse> {
-            override fun onResponse(
-                call: Call<CityResponse>,
-                response: Response<CityResponse>
-            ) {
-                response.body()?.apply {
-                    val regResponse = this as CityResponse
-                    val regcodes = regResponse.regcodes
-                    for (a in regcodes) {
-                        name_ = a.name
-                    } }
+    inner class LoadingViewHolder(val binding:ItemLoadingBinding):
+        RecyclerView.ViewHolder(binding.root){
+    }
+    private lateinit var itemClickListener: OnItemClickListener
+
+    interface OnItemClickListener {
+        fun onClick(v:View, pos:Int)
+    }
+    fun setItemClickListener(itemClickListener: OnItemClickListener) {
+        this.itemClickListener = itemClickListener
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (holder.itemViewType) {
+            TYPE_VIEW -> {
+                val findViewHolder = holder as FindViewHolder
+                findViewHolder.onBind(studyList[position])
             }
-            override fun onFailure(call: Call<CityResponse>, t: Throwable) {
-                Log.e("summer", t.toString())
-                name_=""
-            }
-        })
-        return name_
+        }
     }
 }
