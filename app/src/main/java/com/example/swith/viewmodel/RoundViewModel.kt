@@ -68,26 +68,9 @@ class RoundViewModel() : BaseViewModel() {
                         if (compareWithNow(s)) postData.add(s)
                         allData.add(s)
                     }
+                    allData.sortBy { s -> s.sessionNum }
+                    postData.sortBy { s -> s.sessionNum }
                     _roundLiveData.value = it.apply { getSessionResList = if(pastVisible) allData else postData }
-                }
-            }
-        }
-    }
-
-    fun loadAllData(){
-        viewModelScope.launch {
-            val res = repository.getAllRound(this@RoundViewModel, userIdx, groupIdx)
-            withContext(Dispatchers.Main) {
-                allData.clear()
-                if (res == null){
-                    mutableScreenState.postValue(ScreenState.RENDER)
-                }
-                res?.let {
-                    mutableScreenState.postValue(ScreenState.RENDER)
-                    it.getSessionResList.forEach { s ->
-                        allData.add(s)
-                    }
-                    _roundLiveData.value = it.apply { getSessionResList = allData }
                 }
             }
         }
@@ -123,6 +106,10 @@ class RoundViewModel() : BaseViewModel() {
     fun setPastData(pastVisible: Boolean){
         this.pastVisible = pastVisible
         _roundLiveData.value = _roundLiveData.value?.apply { getSessionResList = if(pastVisible) allData else postData }
+    }
+
+    fun setPastVisible(pastVisible: Boolean){
+        this.pastVisible = pastVisible
     }
 
     // 현재시간과 각 세션 시간 비교

@@ -43,7 +43,8 @@ class ManageRoundActivity : AppCompatActivity() {
 
     private fun observeViewModel(){
         setVisibility(true)
-        viewModel.loadAllData()
+        viewModel.setPastVisible(true)
+        viewModel.loadData()
 
         viewModel.roundLiveData.observe(this, Observer {
             (binding.rvManageRound.adapter as ManageRoundRVAdapter).setData(it.getSessionResList)
