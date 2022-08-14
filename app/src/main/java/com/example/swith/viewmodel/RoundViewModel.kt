@@ -10,6 +10,7 @@ import com.example.swith.repository.round.RoundRemoteDataSource
 import com.example.swith.repository.round.RoundRepository
 import com.example.swith.utils.SingleLiveEvent
 import com.example.swith.utils.base.BaseViewModel
+import com.example.swith.utils.compareTimeWithNow
 import com.example.swith.utils.error.ErrorType
 import com.example.swith.utils.error.ScreenState
 import kotlinx.coroutines.Dispatchers
@@ -65,7 +66,7 @@ class RoundViewModel() : BaseViewModel() {
                 res?.let {
                     mutableScreenState.postValue(ScreenState.RENDER)
                     it.getSessionResList.forEach { s ->
-                        if (compareWithNow(s)) postData.add(s)
+                        if (compareTimeWithNow(s.sessionStart)) postData.add(s)
                         allData.add(s)
                     }
                     allData.sortBy { s -> s.sessionNum }
@@ -112,16 +113,6 @@ class RoundViewModel() : BaseViewModel() {
         this.pastVisible = pastVisible
     }
 
-    // 현재시간과 각 세션 시간 비교
-    private fun compareWithNow(session: GetSessionRes) : Boolean{
-        with(ZonedDateTime.now(ZoneId.of("Asia/Seoul"))){
-            val nowTimeToLong = String.format("%4d%02d%02d%02d%02d", year, monthValue, dayOfMonth, hour, minute).toLong()
-            val sessionTimeToLong = String.format("%4d%02d%02d%02d%02d", session.sessionStart[0], session.sessionStart[1], session.sessionStart[2], session.sessionStart[3], session.sessionStart[4]).toLong()
-            if (sessionTimeToLong < nowTimeToLong) return false
-        }
-        return true
-    }
-
      // 해당 날짜에 회차가 있는지 여부 체크
     fun roundDayExists(year: Int, month: Int, day: Int) : Boolean{
         val thisTimeToLong = String.format("%4d%02d%02d", year, month, day).toLong()
@@ -145,6 +136,7 @@ class RoundViewModel() : BaseViewModel() {
             if (thisTimeToLong in startTimeToLong..endTimeToLong) tempList.add(it)
         }
         _calendarLiveData.value = tempList
+        mutableScreenState.postValue(ScreenState.LOAD)
     }
 
     fun isUpdateAvailable() : Boolean{

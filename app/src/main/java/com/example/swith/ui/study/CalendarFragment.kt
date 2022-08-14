@@ -18,6 +18,7 @@ import com.example.swith.databinding.FragmentCalendarBinding
 import com.example.swith.utils.base.BaseFragment
 import com.example.swith.ui.adapter.CalendarRoundRVAdapter
 import com.example.swith.ui.study.create.RoundCreateActivity
+import com.example.swith.utils.compareDayWithNow
 import com.example.swith.viewmodel.RoundViewModel
 import com.prolificinteractive.materialcalendarview.*
 import java.time.ZoneId
@@ -25,18 +26,17 @@ import java.time.ZonedDateTime
 
 class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment_calendar){
     private val viewModel : RoundViewModel by activityViewModels()
+    private val nowTimezone by lazy {
+        ZonedDateTime.now(ZoneId.of("Asia/Seoul"))
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initView()
+        observeViewModel()
         super.onViewCreated(view, savedInstanceState)
     }
 
     private fun initView(){
-        with(ZonedDateTime.now(ZoneId.of("Asia/Seoul"))){
-            binding.tvCalendarDate.text = "${year%1000}/${monthValue}/${dayOfMonth}"
-            viewModel.setCalendarData(year, monthValue, dayOfMonth)
-        }
-
         with(binding.rvCalendarRound){
             adapter = CalendarRoundRVAdapter()
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -59,20 +59,28 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
                 viewModel.setCalendarData(date.year, date.month, date.day)
             }
         }
-        with(viewModel.calendarLiveData){
-            observe(viewLifecycleOwner, Observer {
-                (binding.rvCalendarRound.adapter as CalendarRoundRVAdapter).setData(it)
-                value?.isEmpty()?.let { it1 -> setRVVisibility(it1) }
-            })
-        }
 
         binding.btnCreateCalendar.setOnClickListener { startActivity(Intent(activity, RoundCreateActivity::class.java)) }
         binding.btnNoCreateCalendar.setOnClickListener { startActivity(Intent(activity, RoundCreateActivity::class.java)) }
     }
 
+    private fun observeViewModel(){
+        with(nowTimezone){
+            binding.tvCalendarDate.text = "${year%1000}/${monthValue}/${dayOfMonth}"
+            viewModel.setCalendarData(year, monthValue, dayOfMonth)
+        }
+
+        with(viewModel.calendarLiveData){
+            observe(viewLifecycleOwner, Observer {
+                (binding.rvCalendarRound.adapter as CalendarRoundRVAdapter).setData(it)
+                value?.isEmpty()?.let { e -> setRVVisibility(e) }
+            })
+        }
+    }
+
     inner class TodayDecorator: DayViewDecorator{
         override fun shouldDecorate(date: CalendarDay): Boolean {
-            with(ZonedDateTime.now(ZoneId.of("Asia/Seoul"))){
+            with(nowTimezone){
                 if (year == date.year && monthValue == date.month && dayOfMonth == date.day) return true
             }
             return false
@@ -118,9 +126,17 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
     private fun setRVVisibility(isEmpty: Boolean){
         with(binding){
             rvCalendarRound.visibility = if (isEmpty) View.INVISIBLE else View.VISIBLE
-            btnCreateCalendar.visibility = if(isEmpty) View.INVISIBLE else View.VISIBLE
-            tvNoRound.visibility = if (isEmpty) View.VISIBLE else View.INVISIBLE
-            btnNoCreateCalendar.visibility = if(isEmpty) View.VISIBLE else View.INVISIBLE
+            if (!compareDayWithNow(calendarView.selectedDate!!)){
+                tvNoRound.visibility = if (isEmpty) View.VISIBLE else View.INVISIBLE
+                tvNoRound.setText(R.string.calendar_no_round_before)
+                btnNoCreateCalendar.visibility = View.INVISIBLE
+                btnCreateCalendar.visibility = View.INVISIBLE
+            } else {
+                btnCreateCalendar.visibility = if(isEmpty) View.INVISIBLE else View.VISIBLE
+                tvNoRound.setText(R.string.calendar_no_round)
+                tvNoRound.visibility = if (isEmpty) View.VISIBLE else View.INVISIBLE
+                btnNoCreateCalendar.visibility = if (isEmpty) View.VISIBLE else View.INVISIBLE
+            }
         }
     }
 }
