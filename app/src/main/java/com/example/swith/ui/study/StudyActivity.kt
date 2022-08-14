@@ -119,9 +119,12 @@ class StudyActivity : AppCompatActivity() {
                             .commitAllowingStateLoss()
                         return@setOnItemSelectedListener true
                     }
-                    R.id.bottom_nav_statistics -> {
+                    else -> {
                         if (fragments[0] is RoundTabFragment || fragments[0] is RoundFragment) prevRoundFragment = fragments[0].toString()
-                        // Todo
+                        beginTransaction()
+                            .replace(R.id.study_frm, StatsFragment())
+                            .commitAllowingStateLoss()
+                        return@setOnItemSelectedListener  true
                     }
                 }
             }

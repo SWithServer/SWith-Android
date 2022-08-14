@@ -100,6 +100,8 @@ class RoundViewModel() : BaseViewModel() {
         return 0
     }
 
+    fun getAllData() : ArrayList<GetSessionRes> = allData
+
     fun setCurrentData(sessionIdx: Int){
         curSessionIdx = sessionIdx
     }
