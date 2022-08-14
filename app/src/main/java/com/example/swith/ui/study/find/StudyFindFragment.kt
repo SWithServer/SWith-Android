@@ -111,7 +111,6 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
                     intent.putExtra("번호", 3)
                     activityResultLauncher.launch(intent)
                 }
-
                 spinnerInterest1.adapter = ArrayAdapter.createFromResource(
                     activity!!.applicationContext,
                     R.array.intersting,

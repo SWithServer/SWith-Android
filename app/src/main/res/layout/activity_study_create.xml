@@ -2,26 +2,54 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-
+    <data>
+        <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener" />
+    </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_create_back"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/layout_create_scroll">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/iv_back"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="10dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:onClick="@{clickListener}">
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="15.75dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="13dp"
+                    android:src="@drawable/ic_create_back"/>
 
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/layout_create_scroll"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@id/btn_study_create"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
+            app:layout_constraintTop_toBottomOf="@id/layout_create_back">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:orientation="vertical">
-
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/layout_create_image"
                     android:layout_width="match_parent"
@@ -53,7 +81,7 @@
                     android:layout_marginEnd="20dp"
                     android:layout_marginTop="10dp">
                     <TextView
-                        app:layout_constraintBottom_toTopOf="@id/et_study_title"
+                        app:layout_constraintBottom_toTopOf="@id/layout_et_study_title"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         android:id="@+id/tv_study_title"
@@ -61,23 +89,27 @@
                         android:layout_height="wrap_content"
                         android:text="스터디 제목"
                         android:textSize="14sp" />
-                    <EditText
-                        android:id="@+id/et_study_title"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        android:layout_width="370dp"
-                        android:layout_height="44dp"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/layout_et_study_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:paddingTop="5dp"
-                        android:paddingBottom="5dp"
-                        android:paddingStart="20dp"
-                        android:background="@drawable/bg_round_gray"
-                        android:textColor="@color/black"
                         app:layout_constraintTop_toBottomOf="@id/tv_study_title"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        android:textSize="12sp"/>
+                        android:background="@drawable/bg_round_gray">
+                        <EditText
+                            android:id="@+id/et_study_title"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:layout_width="match_parent"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginEnd="20dp"
+                            android:layout_height="44dp"
+                            android:background="@drawable/bg_round_gray"
+                            android:textColor="@color/black"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:textSize="12sp"/>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -358,6 +390,7 @@
                             android:layout_height="match_parent"
                             android:layout_margin="6dp"
                             android:textColor="@color/white"
+                            android:textSize="12sp"
                             android:paddingTop="5dp"
                             android:paddingBottom="5dp"
                             android:paddingStart="10dp"
@@ -374,6 +407,7 @@
                             android:paddingBottom="5dp"
                             android:paddingStart="10dp"
                             android:paddingEnd="10dp"
+                            android:textSize="12sp"
                             android:textColor="@color/white"
                             style="?android:attr/borderlessButtonStyle"
                             android:background="@drawable/bg_create_skyblue"
@@ -398,23 +432,30 @@
                     android:layout_marginEnd="20dp">
                     <TextView
                         android:id="@+id/tv_study_category"
-                        app:layout_constraintBottom_toTopOf="@id/spinner_category"
+                        app:layout_constraintBottom_toTopOf="@id/layout_spinner_category"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="분류"
                         android:textSize="14sp" />
-
-                    <Spinner
-                        android:id="@+id/spinner_category"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/layout_spinner_category"
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="10dp"
+                        android:layout_height="44dp"
+                        android:background="@drawable/bg_round_gray"
                         app:layout_constraintTop_toBottomOf="@id/tv_study_category"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        android:layout_marginStart="5dp" />
+                        >
+                        <Spinner
+                            android:id="@+id/spinner_category"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:layout_marginStart="20dp" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
                 <View
                     android:layout_width="match_parent"
@@ -436,28 +477,30 @@
                android:layout_height="wrap_content"
                app:layout_constraintTop_toTopOf="parent"
                app:layout_constraintStart_toStartOf="parent"
-               app:layout_constraintBottom_toTopOf="@id/et_create_topic"
+               app:layout_constraintBottom_toTopOf="@+id/layout_et_study_detail"
                android:text="세부주제"
                android:textSize="14sp"
                android:textColor="@color/black" />
-
-           <EditText
-               android:id="@+id/et_create_topic"
-               app:layout_constraintStart_toStartOf="parent"
-               app:layout_constraintEnd_toEndOf="parent"
-               android:layout_width="370dp"
-               android:layout_height="44dp"
+           <androidx.constraintlayout.widget.ConstraintLayout
+               android:id="@+id/layout_et_study_detail"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
                android:layout_marginTop="10dp"
-               android:paddingTop="5dp"
-               android:paddingBottom="5dp"
-               android:paddingStart="20dp"
-               android:background="@drawable/bg_round_gray"
-               android:textColor="@color/color_9F9F9F"
-               android:hint="직접 입력해주세요"
-               app:layout_constraintTop_toBottomOf="@id/tv_study_detail_interest"
-               app:layout_constraintBottom_toBottomOf="parent"
-               android:textSize="12sp"/>
-
+               app:layout_constraintTop_toBottomOf="@+id/tv_study_detail_interest"
+               android:background="@drawable/bg_round_gray">
+               <EditText
+                   android:id="@+id/et_create_topic"
+                   app:layout_constraintStart_toStartOf="parent"
+                   app:layout_constraintEnd_toEndOf="parent"
+                   android:layout_width="match_parent"
+                   android:layout_marginStart="20dp"
+                   android:layout_marginEnd="20dp"
+                   android:layout_height="44dp"
+                   android:background="@drawable/bg_round_gray"
+                   android:textColor="@color/black"
+                   app:layout_constraintBottom_toBottomOf="parent"
+                   android:textSize="12sp"/>
+           </androidx.constraintlayout.widget.ConstraintLayout>
        </androidx.constraintlayout.widget.ConstraintLayout>
                 <View
                     android:layout_width="match_parent"
@@ -476,22 +519,30 @@
                     android:layout_marginEnd="20dp">
                     <TextView
                         android:id="@+id/tv_study_people"
-                        app:layout_constraintBottom_toTopOf="@id/spinner_people"
+                        app:layout_constraintBottom_toTopOf="@id/layout_spinner_people"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="모집인원"
                         android:textSize="14sp" />
-                    <Spinner
-                        android:id="@+id/spinner_people"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/layout_spinner_people"
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="10dp"
+                        android:layout_height="44dp"
+                        android:background="@drawable/bg_round_gray"
                         app:layout_constraintTop_toBottomOf="@id/tv_study_people"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        android:layout_marginStart="5dp" />
+                        >
+                        <Spinner
+                            android:id="@+id/spinner_people"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:layout_marginStart="20dp" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
                 <View
                     android:layout_width="match_parent"
@@ -509,22 +560,30 @@
                     android:layout_marginEnd="20dp">
                     <TextView
                         android:id="@+id/tv_study_method"
-                        app:layout_constraintBottom_toTopOf="@id/spinner_method"
+                        app:layout_constraintBottom_toTopOf="@id/layout_spinner_method"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="모집방식"
                         android:textSize="14sp" />
-                    <Spinner
-                        android:id="@+id/spinner_method"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/layout_spinner_method"
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="10dp"
+                        android:layout_height="44dp"
+                        android:background="@drawable/bg_round_gray"
                         app:layout_constraintTop_toBottomOf="@id/tv_study_method"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        android:layout_marginStart="5dp" />
+                        >
+                        <Spinner
+                            android:id="@+id/spinner_method"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:layout_marginStart="20dp" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <View
@@ -644,22 +703,30 @@
                     android:layout_marginEnd="20dp">
                     <TextView
                         android:id="@+id/tv_study_attend_time"
-                        app:layout_constraintBottom_toTopOf="@id/spinner_attend_time"
+                        app:layout_constraintBottom_toTopOf="@+id/layout_spinner_attendtime"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="출석 유효시간"
                         android:textSize="14sp" />
-                    <Spinner
-                        android:id="@+id/spinner_attend_time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/layout_spinner_attendtime"
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="10dp"
+                        android:layout_height="44dp"
+                        android:background="@drawable/bg_round_gray"
                         app:layout_constraintTop_toBottomOf="@id/tv_study_attend_time"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        android:layout_marginStart="5dp" />
+                        >
+                        <Spinner
+                            android:id="@+id/spinner_attend_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:layout_marginStart="20dp" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView

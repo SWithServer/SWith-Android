@@ -2,13 +2,16 @@ package com.example.swith.ui.study.create
 
 import android.app.DatePickerDialog
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.graphics.ImageDecoder
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.KeyEvent
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -26,7 +29,7 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 
 
-class StudyCreateActivity :AppCompatActivity() {
+class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
     lateinit var binding: ActivityStudyCreateBinding
 
     private val GALLERY=1
@@ -38,6 +41,13 @@ class StudyCreateActivity :AppCompatActivity() {
     private var month = calendar.get(Calendar.MONTH)
     private var day = calendar.get(Calendar.DAY_OF_MONTH)
 
+    override fun onClick(view: View?) {
+        when (view?.id) {
+            R.id.iv_back -> {
+                finish()
+            }
+        }
+    }
 
     //입력되는 값들 변수모음
     var title:String=""
@@ -72,6 +82,8 @@ class StudyCreateActivity :AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_study_create)
+        binding.clickListener = this@StudyCreateActivity
+
 
         dialog_ = Dialog(this@StudyCreateActivity)
         dialog_.setContentView(R.layout.fragment_dialog)
@@ -103,6 +115,67 @@ class StudyCreateActivity :AppCompatActivity() {
         //btn_onClickListener들
         with(binding)
         {
+            etStudyContent.setOnKeyListener { view, code, event ->
+                if( (event.action == KeyEvent.ACTION_DOWN) && (code == KeyEvent.KEYCODE_ENTER) && !etStudyContent.text.equals("")){
+                    group_content= etStudyContent.text.toString()
+                    hideKeyboard(etStudyContent)
+                    true
+                }
+                else{
+                    false
+                }
+            }
+            etCreateTopic.setOnKeyListener { view, code, event ->
+                if( (event.action == KeyEvent.ACTION_DOWN) && (code == KeyEvent.KEYCODE_ENTER) && !etCreateTopic.text.equals("")){
+                    topic_content= etCreateTopic.text.toString()
+                    hideKeyboard(etCreateTopic)
+                    true
+                }
+                else{
+                    false
+                }
+            }
+            etStudyTitle.setOnKeyListener { view, code, event ->
+                if( (event.action == KeyEvent.ACTION_DOWN) && (code == KeyEvent.KEYCODE_ENTER) && !etStudyTitle.text.equals("")){
+                    title= etStudyTitle.text.toString()
+                    hideKeyboard(etStudyTitle)
+                    true
+                }
+                else{
+                    false
+                }
+            }
+            etStudyWeek.setOnKeyListener { view, code, event ->
+                if( (event.action == KeyEvent.ACTION_DOWN) && (code == KeyEvent.KEYCODE_ENTER) && !etStudyWeek.text.equals("")){
+                    group_content= etStudyWeek.text.toString()
+                    hideKeyboard(etStudyWeek)
+                    true
+                }
+                else{
+                    false
+                }
+            }
+            etStudyMonth.setOnKeyListener { view, code, event ->
+                if( (event.action == KeyEvent.ACTION_DOWN) && (code == KeyEvent.KEYCODE_ENTER) && !etStudyMonth.text.equals("")){
+                    group_content= etStudyMonth.text.toString()
+                    hideKeyboard(etStudyMonth)
+                    true
+                }
+                else{
+                    false
+                }
+            }
+            etStudyFree.setOnKeyListener { view, code, event ->
+                if( (event.action == KeyEvent.ACTION_DOWN) && (code == KeyEvent.KEYCODE_ENTER) && !etStudyFree.text.equals("")){
+                    group_content= etStudyFree.text.toString()
+                    hideKeyboard(etStudyFree)
+                    true
+                }
+                else{
+                    false
+                }
+            }
+
             btnPlusPlace1.setOnClickListener {
                 var intent = Intent(this@StudyCreateActivity,SelectPlaceActivity::class.java)
                 intent.putExtra("번호",1)
@@ -200,67 +273,34 @@ class StudyCreateActivity :AppCompatActivity() {
             }
         }
 
-        //spinner
-        val interest_spinner = binding.spinnerCategory
-        val memberLimit_spinner = binding.spinnerPeople
-        val applicationMethod_spinner = binding.spinnerMethod
-        val attendanceVaildTime_spinner = binding.spinnerAttendTime
-
+        setupSinner()
         with(binding)
         {
             //spinner
-//            interest_spinner.adapter = ArrayAdapter.createFromResource(
-//                this@StudyCreateActivity,
-//                R.layout.item_create_spinner,
-//                R.array.intersting
-//            ).apply{
-//                this.setDropDownViewResource(R.layout.item_search_spinner_dropdown)
-//            }
-            interest_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            spinnerCategory.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
                     interest_idx=position+1
                 }
                 override fun onNothingSelected(p0: AdapterView<*>?) {
                 }
             }
-//            memberLimit_spinner.adapter = ArrayAdapter.createFromResource(
-//                this@StudyCreateActivity,
-//                R.layout.item_create_spinner,
-//                R.array.peopleList
-//            ).apply{
-//                this.setDropDownViewResource(R.layout.item_search_spinner_dropdown)
-//            }
-            memberLimit_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            spinnerPeople.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
-                    memberLimit_content = "${memberLimit_spinner.getItemAtPosition(position)}".toInt()
+                    memberLimit_content = "${spinnerPeople.getItemAtPosition(position)}".toInt()
                 }
                 override fun onNothingSelected(p0: AdapterView<*>?) {
                 }
             }
-//            applicationMethod_spinner.adapter = ArrayAdapter.createFromResource(
-//                this@StudyCreateActivity,
-//                R.layout.item_create_spinner,
-//                R.array.methodList
-//            ).apply{
-//                this.setDropDownViewResource(R.layout.item_search_spinner_dropdown)
-//            }
-            applicationMethod_spinner.onItemSelectedListener= object:AdapterView.OnItemSelectedListener{
+            spinnerMethod.onItemSelectedListener= object:AdapterView.OnItemSelectedListener{
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
                     applicationMethod_idx = position
                 }
                 override fun onNothingSelected(p0: AdapterView<*>?) {
                 }
             }
-//            attendanceVaildTime_spinner.adapter = ArrayAdapter.createFromResource(
-//                this@StudyCreateActivity,
-//                R.layout.item_create_spinner,
-//                R.array.attendTimeList
-//            ).apply{
-//                this.setDropDownViewResource(R.layout.item_search_spinner_dropdown)
-//            }
-            attendanceVaildTime_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            spinnerAttendTime.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
-                    attendanceVaildTime_content = "${attendanceVaildTime_spinner.getItemAtPosition(position)}".toInt()
+                    attendanceVaildTime_content = "${spinnerAttendTime.getItemAtPosition(position)}".toInt()
                 }
                 override fun onNothingSelected(p0: AdapterView<*>?) {
                 }
@@ -339,12 +379,9 @@ class StudyCreateActivity :AppCompatActivity() {
         //스터디 개설버튼
         binding.btnStudyCreate.setOnClickListener {
             with(binding)
-            {   group_content= etStudyContent.text.toString()
-                recruitmentEndDate_ = btnDeadline.text.toString()
+            { recruitmentEndDate_ = btnDeadline.text.toString()
                 groupStart_ = btnStartDay.text.toString()
                 groupEnd_ = btnFinishDay.text.toString()
-                title = etStudyTitle.text.toString()
-                topic_content = etCreateTopic.text.toString()
                 when(meet_idx) {
                 0->{if (!etStudyWeek.text.isNullOrBlank())
                     frequency_content=etStudyWeek.text.toString().toIntOrNull()
@@ -421,12 +458,6 @@ class StudyCreateActivity :AppCompatActivity() {
             {regionIdx2 = shPref2.getString("코드2", "").toString().toLong()}
         }
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.e("destroy","true")
-    }
-
     fun createStudy(studyRequestData : StudyGroup,content_text:String){
         //레트로핏 부분
         dialog_.findViewById<TextView>(R.id.tv_confirm).text = content_text
@@ -500,10 +531,52 @@ class StudyCreateActivity :AppCompatActivity() {
             }
         }
     }
+
     //갤러리에서 이미지 선택
     private fun openGallery(){
         val intent: Intent = Intent(Intent.ACTION_GET_CONTENT)
         intent.setType("image/*")
         startActivityForResult(intent,GALLERY)
     }
+    fun setupSinner(){
+        val interest_spinner = binding.spinnerCategory
+        val memberLimit_spinner = binding.spinnerPeople
+        val applicationMethod_spinner = binding.spinnerMethod
+        val attendanceVaildTime_spinner = binding.spinnerAttendTime
+
+        interest_spinner.adapter = ArrayAdapter.createFromResource(
+            this.applicationContext,R.array.intersting,R.layout.item_create_spinner
+        ).apply{
+            this.setDropDownViewResource(R.layout.item_search_spinner_dropdown)
+        }
+
+        applicationMethod_spinner.adapter = ArrayAdapter.createFromResource(
+            this.applicationContext,
+            R.array.methodList,
+            R.layout.item_create_spinner
+        ).apply{
+            this.setDropDownViewResource(R.layout.item_search_spinner_dropdown)
+        }
+        attendanceVaildTime_spinner.adapter = ArrayAdapter.createFromResource(
+            this.applicationContext,
+            R.array.attendTimeList,
+            R.layout.item_create_spinner
+        ).apply{
+            this.setDropDownViewResource(R.layout.item_search_spinner_dropdown)
+        }
+        memberLimit_spinner.adapter = ArrayAdapter.createFromResource(
+            this.applicationContext,
+            R.array.peopleList,
+            R.layout.item_create_spinner
+        ).apply{
+            this.setDropDownViewResource(R.layout.item_search_spinner_dropdown)
+        }
     }
+    fun hideKeyboard(editText: EditText){
+        val mInputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        mInputMethodManager.hideSoftInputFromWindow(
+            editText.getWindowToken(),
+            0
+        )
+    }
+}
