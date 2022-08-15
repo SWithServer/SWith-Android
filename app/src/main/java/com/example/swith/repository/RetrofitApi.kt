@@ -4,6 +4,7 @@ import com.example.swith.data.*
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
+import java.time.LocalDateTime
 
 interface RetrofitApi {
     // 홈화면 정보 받기
@@ -42,10 +43,11 @@ interface RetrofitApi {
     @PATCH("/groupinfo/announcement")
     suspend fun updateAnnounce(@Body announceModify: AnnounceModify) : Response<Any>
 
+    //스터디 개설
     @POST("/groupinfo")
      fun createStudy(@Body body:StudyGroup) : Call<StudyResponse>
 
      //임시 스터디 찾기 - 스터디 불러오기 부분
-    @GET("/groupinfo")
-    fun getSearchStudy(@Query("page") page : Int, @Query("limit") limit : Int,@Query("title") title:String?=null,@Query("region") regionCode : Long?= null, @Query("interest1") interest1:Int?=null, @Query("interest2") intrest2:Int?=null,@Query("sort") sort:Int?=null):Call<getStudyContent>
+    @GET("/groupinfo/search")
+    fun getSearchStudy(@Query("limit") limit : Int=5,@Query("title") title:String?=null,@Query("regionIdx") regionIdx : String?= null, @Query("interest1") interest1:Int?=null, @Query("interest2") interest2:Int?=null,@Query("groupIdx") groupIdx : Int?=null,@Query("sortCond") sortCond:Int?=null,@Query("ClientTime") ClientTime :LocalDateTime):Call<StudyFindResponse>
 }

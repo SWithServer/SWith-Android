@@ -9,7 +9,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.swith.data.StudyGroup
 import com.example.swith.data.StudyGroupResponse
 import com.example.swith.data.StudyResponse
-import com.example.swith.data.getStudyResponse
 import com.example.swith.repository.RetrofitApi
 import com.example.swith.repository.RetrofitService
 import com.example.swith.repository.study.StudyFindRemoteDataSource

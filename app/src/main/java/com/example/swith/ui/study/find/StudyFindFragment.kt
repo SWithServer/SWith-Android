@@ -27,6 +27,8 @@ import com.example.swith.utils.base.BaseFragment
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.time.LocalDate
+import java.time.LocalDateTime
 
 
 class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.fragment_study_find) {
@@ -34,7 +36,8 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
    private var totalCount = 0 // 전체 아이템 개수
     private var isNext = false // 다음 페이지 유무
     private var page =0 // 현재 페이지
-    private var limit =6 // 한번에 가져올 아이템 개수
+    private var limit =5 // 한번에 가져올 아이템 개수
+
     private lateinit var adapter : StudyFindRVAdapter
 
     var activity_: MainActivity? = null
@@ -42,16 +45,13 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
     var regionName: String = ""
 
     var search_title : String ?= null
-    var select_region : Long?=null
+    var select_region : String?=null
     var select_interest1 : Int?=null
     var select_interest2 : Int?=null
     var select_sort : Int=0 // 0이면 마감일 1이면 최신순 이런식
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        loadData(search_title,select_region, select_interest1, select_interest2, select_sort)
-//        initScrollListener()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -59,8 +59,10 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
 
         adapter = StudyFindRVAdapter()
         binding.rvStudyFind.adapter = adapter
-        binding.rvStudyFind.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
         adapter.setData(setData())
+//        loadData(search_title,select_region, select_interest1, select_interest2, select_sort)
+        initScrollListener()
 
         adapter.setItemClickListener(object:StudyFindRVAdapter.OnItemClickListener{
             override fun onClick(view: View, pos:Int) {
@@ -78,9 +80,10 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
                     val region = data!!.getCharSequenceExtra("지역")
                     val code = data!!.getCharSequenceExtra("코드")
                     binding.btnSelectRegion.text = region
-                    regionCode = code.toString().toLong()
-                    select_region = regionCode
-                   // loadData(search_title,select_region,select_interest1,select_interest2,select_sort)
+                    regionName = region.toString()
+                    select_region = regionName
+                    loadData(search_title,select_region, select_interest1, select_interest2, select_sort)
+                    initScrollListener()
                 }
             }
             with(binding)
@@ -89,7 +92,8 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
                     if( (event.action == KeyEvent.ACTION_DOWN) && (code == KeyEvent.KEYCODE_ENTER) && !etStudySearch.text.equals("")){
                         search_title = etStudySearch.text.toString()
                         hideKeyboard(etStudySearch)
-//                        loadData(search_title,select_region,select_interest1,select_interest2,select_sort)
+                        loadData(search_title,select_region, select_interest1, select_interest2, select_sort)
+                        initScrollListener()
                         true
                     }
                     else{
@@ -102,7 +106,8 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
                     {
                         search_title = etStudySearch.text.toString()
                         hideKeyboard(etStudySearch)
-//                        loadData(search_title,select_region,select_interest1,select_interest2,select_sort)
+                        loadData(search_title,select_region, select_interest1, select_interest2, select_sort)
+                        initScrollListener()
                     }
                 }
 
@@ -121,7 +126,8 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
                 spinnerInterest1.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
                     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
                         select_interest1=position
-//                        loadData(search_title,select_region,select_interest1,select_interest2,select_sort)
+                        loadData(search_title,select_region, select_interest1, select_interest2, select_sort)
+                        initScrollListener()
                     }
                     override fun onNothingSelected(p0: AdapterView<*>?) {
                     }
@@ -136,7 +142,8 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
                 spinnerInterest2.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
                     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
                         select_interest2=position
-//                        loadData(search_title,select_region,select_interest1,select_interest2,select_sort)
+                        loadData(search_title,select_region, select_interest1, select_interest2, select_sort)
+                        initScrollListener()
                     }
                     override fun onNothingSelected(p0: AdapterView<*>?) {
                     }
@@ -151,7 +158,8 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
                 spinnerSort.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
                     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
                         select_sort=position
-//                        loadData(search_title,select_region,select_interest1,select_interest2,select_sort)
+                        loadData(search_title,select_region, select_interest1, select_interest2, select_sort)
+                        initScrollListener()
                     }
                     override fun onNothingSelected(p0: AdapterView<*>?) {
                     }
@@ -161,21 +169,21 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
     }
 
     //최초로 넣어줄 데이터 load
-    fun loadData(title:String?,region:Long?, intrest1:Int?, intrest2:Int?, sort:Int?){
-        lateinit var studyList: ArrayList<getStudyResponse>
+    fun loadData(title:String?,region:String?, intrest1:Int?, intrest2:Int?, sort:Int?){
+        lateinit var studyList: ArrayList<Content>
         val retrofitService = RetrofitService.retrofit.create(RetrofitApi::class.java)
-        retrofitService.getSearchStudy(getPage(),limit,title,region,intrest1,intrest2,sort).enqueue(object : Callback<getStudyContent> {
+        retrofitService.getSearchStudy(limit,title,region,intrest1,intrest2,groupIdx=null,sort,
+            LocalDateTime.now()).enqueue(object : Callback<StudyFindResponse> {
             override fun onResponse(
-                call: Call<getStudyContent>,
-                response: Response<getStudyContent>
+                call: Call<StudyFindResponse>,
+                response: Response<StudyFindResponse>
             ) {
                 if (response.isSuccessful) {
                     Log.e("summer", "성공${response.toString()}")
                     response.body()?.apply {
-                        studyList = this.result
-                        totalCount = studyList.size
-                        isNext = this.is_Next
-                        adapter.setData(studyList)
+                        totalCount = this.result.numberOfElements
+                        isNext = this.result.last
+                        adapter.setData(this.result.content)
                     }
                 }
                 else {
@@ -184,29 +192,31 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
                     Log.e("summer","$search_title $region $intrest1 $intrest2 $sort")
                 }
             }
-            override fun onFailure(call: Call<getStudyContent>, t: Throwable) {
+            override fun onFailure(call: Call<StudyFindResponse>, t: Throwable) {
                 Log.e("summer", "onFailure t = ${t.toString()}")
                 Log.e("summer", "onFailure msg = ${t.message}")
             }
         })
     }
 
-    fun loadMoreData(title:String?,region:Long?, intrest1:Int?, intrest2:Int?, sort:Int?)
+    //리사이클러뷰에 더 보여줄 데이터를 로드하는 경우
+    fun loadMoreData(title:String?,region:String?, intrest1:Int?, intrest2:Int?, sort:Int?,groupIdx:Int)
     {
         adapter.setLoadingView(true)
         val retrofitService = RetrofitService.retrofit.create(RetrofitApi::class.java)
         val handler = android.os.Handler()
         handler.postDelayed({
-            retrofitService.getSearchStudy(getPage(), limit,title,region, intrest1, intrest2, sort,)
-                .enqueue(object : Callback<getStudyContent> {
-                    override fun onResponse(call: Call<getStudyContent>, response: Response<getStudyContent>) {
+            retrofitService.getSearchStudy(limit,title,region,intrest1,intrest2,groupIdx,sort,
+                LocalDateTime.now())
+                .enqueue(object : Callback<StudyFindResponse> {
+                    override fun onResponse(call: Call<StudyFindResponse>, response: Response<StudyFindResponse>) {
                         val body = response.body()
                         if (body != null && response.isSuccessful) {
-                            totalCount = body.total_count
-                            isNext = body.is_Next
-                            adapter.run {
+                            totalCount = body.result.numberOfElements
+                            isNext = body.result.last
+                            adapter.run{
                                 setLoadingView(false)
-                                addData(body.result)
+                                addData(body.result.content)
                             }
                         } else {
                             Log.e("summer", "전달실패 code = ${response.code()}")
@@ -214,7 +224,7 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
                             Log.e("summer","$search_title $region $intrest1 $intrest2 $sort")
                         }
                     }
-                    override fun onFailure(call: Call<getStudyContent>, t: Throwable) {
+                    override fun onFailure(call: Call<StudyFindResponse>, t: Throwable) {
                         Log.e("summer", "onFailure t = ${t.toString()}")
                         Log.e("summer", "onFailure msg = ${t.message}")
                     }
@@ -237,7 +247,6 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
 
     private fun initScrollListener() {
         binding.rvStudyFind.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
@@ -247,11 +256,11 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
                 if (hasNextPage()) {
                     val lastVisibleItem = (layoutManager as LinearLayoutManager)
                         .findLastCompletelyVisibleItemPosition()
-
+                    val last_groupIdx = adapter.getData()[lastVisibleItem]!!.groupIdx
                     // 마지막으로 보여진 아이템 position 이
                     // 전체 아이템 개수보다 5개 모자란 경우, 데이터를 loadMore 한다
                     if (layoutManager.itemCount <= lastVisibleItem + 5) {
-                        loadMoreData(search_title,select_region, select_interest1, select_interest2, select_sort)
+                        loadMoreData(search_title,select_region, select_interest1, select_interest2, select_sort,last_groupIdx)
                         setHasNextPage(false)
                     }
                 }
@@ -268,22 +277,15 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
         )
     }
 
-    fun setData():ArrayList<getStudyResponse>
+    fun setData():List<Content>
     {
-        var mDatas = ArrayList<getStudyResponse>()
+        var mDatas = ArrayList<Content>()
         mDatas.apply{
-            add( getStudyResponse("부천 인천 중급 영어",12345,12345,"2022-08-10","2022-08-10",5,"인원모집합니다"))
-            add( getStudyResponse("김해 중국어",12345,12345,"2022-08-10","2022-08-10",5,"인원모집합니다"))
-            add( getStudyResponse("서울 강서구 알고리즘",12345,12345,"2022-08-10","2022-08-10",5,"인원모집합니다"))
-            add( getStudyResponse("인천 만수동 면접스터디",12345,12345,"2022-08-10","2022-08-10",5,"인원모집합니다"))
-            add( getStudyResponse("부천 인천 중급 영어",12345,12345,"2022-08-10","2022-08-10",5,"인원모집합니다"))
-            add( getStudyResponse("김해 중국어",12345,12345,"2022-08-10","2022-08-10",5,"인원모집합니다"))
-            add( getStudyResponse("서울 강서구 알고리즘",12345,12345,"2022-08-10","2022-08-10",5,"인원모집합니다"))
-            add( getStudyResponse("인천 만수동 면접스터디",12345,12345,"2022-08-10","2022-08-10",5,"인원모집합니다"))
-            add( getStudyResponse("부천 인천 중급 영어",12345,12345,"2022-08-10","2022-08-10",5,"인원모집합니다"))
-            add( getStudyResponse("김해 중국어",12345,12345,"2022-08-10","2022-08-10",5,"인원모집합니다"))
-            add( getStudyResponse("서울 강서구 알고리즘",12345,12345,"2022-08-10","2022-08-10",5,"인원모집합니다"))
-            add( getStudyResponse("인천 만수동 면접스터디",12345,12345,"2022-08-10","2022-08-10",5,"인원모집합니다"))
+          add(Content(1,"인천 만수동 스터디","인원을 모집합니다","인천광역시 남동구","인천광역시 남동구",listOf(2022,8,21),0,listOf(0),0))
+            add(Content(1,"김해 스터디","인원을 모집합니다","인천광역시 남동구","인천광역시 남동구",listOf(2022,8,21),0,listOf(0),0))
+            add(Content(1,"서울 강서구 스터디","인원을 모집합니다","인천광역시 남동구","인천광역시 남동구",listOf(2022,8,21),0,listOf(0),0))
+            add(Content(1,"인천 용현동 스터디","인원을 모집합니다","인천광역시 남동구","인천광역시 남동구",listOf(2022,8,21),0,listOf(0),0))
+            add(Content(1,"미추홀구 스터디","인원을 모집합니다","인천광역시 남동구","인천광역시 남동구",listOf(2022,8,21),0,listOf(0),0))
         }
         return mDatas
     }

@@ -4,7 +4,6 @@ import androidx.lifecycle.MutableLiveData
 import com.example.swith.data.Group
 import com.example.swith.data.StudyGroup
 import com.example.swith.data.StudyResponse
-import com.example.swith.data.getStudyResponse
 import com.example.swith.utils.error.RemoteErrorEmitter
 
 class StudyFindRepository{
@@ -13,6 +12,4 @@ class StudyFindRepository{
 //    fun loadBaeminStudy(page: Int) {
 //
 //    }
-
-
 }

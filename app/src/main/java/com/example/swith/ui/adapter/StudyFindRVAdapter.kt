@@ -9,7 +9,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.swith.data.*
 import com.example.swith.databinding.ItemLoadingBinding
 import com.example.swith.databinding.ItemStudyFindBinding
+import com.example.swith.repository.ApiService
+import com.example.swith.repository.RetrofitService
 import com.example.swith.ui.study.create.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.lang.reflect.Array.set
 import java.text.SimpleDateFormat
 import java.util.*
@@ -21,9 +28,9 @@ class StudyFindRVAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private const val TYPE_LOADING = 1
     }
 
-    private val studyList = mutableListOf<getStudyResponse?>()
+    private val studyList = mutableListOf<Content?>()
 
-    fun setData(studyList: ArrayList<getStudyResponse>)
+    fun setData(studyList: List<Content>)
     {
         this.studyList.apply{
             clear()
@@ -32,11 +39,15 @@ class StudyFindRVAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         notifyDataSetChanged()
     }
 
-    fun addData(studyList : ArrayList <getStudyResponse>)
+    fun addData(studyList : List <Content>)
     {
         Log.e("DATA",studyList.toString())
         this.studyList.addAll(studyList)
         notifyDataSetChanged()
+    }
+
+    fun getData() : MutableList<Content?> {
+        return studyList
     }
 
     fun setLoadingView(b:Boolean)
@@ -86,13 +97,16 @@ class StudyFindRVAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     inner class FindViewHolder(val binding: ItemStudyFindBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun onBind(studyList:getStudyResponse?) {
+        fun onBind(studyList:Content?) {
             with(binding)
             {
                 tvStudyTitle.text = studyList?.title
                 tvSearchContent.text = studyList?.groupContent
                 var formatter = SimpleDateFormat("yyyy-MM-dd")
-                var date = formatter.parse("${studyList?.deadline}").time
+                var year = studyList!!.recruitmentEndDate[0]
+                var month = studyList!!.recruitmentEndDate[1]
+                var day = studyList!!.recruitmentEndDate[2]
+                var date =formatter.parse( "${year}"+"-"+"${month}"+"-"+"${day}").time
                 var today = Calendar.getInstance().apply {
                     set(Calendar.HOUR_OF_DAY, 0)
                     set(Calendar.MINUTE, 0)
@@ -101,8 +115,8 @@ class StudyFindRVAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 }.time.time
                 tvSearchDeadline.text = "마감 D-${(date - today) / (60 * 60 * 24 * 1000)}"
                 tvSearchPeople.text = studyList?.memberLimit.toString()
-                tvSearchRegion.text = "인천광역시 남동구"
-                tvSearchRegion.text = "인천광역시 남동구"
+             tvSearchRegion.text =studyList?.regionIdx1
+                tvSearchRegion.text =studyList?.regionIdx2
             }
 
             binding.root.setOnClickListener { v ->
@@ -136,4 +150,5 @@ class StudyFindRVAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
         }
     }
+
 }

@@ -13,8 +13,8 @@ data class StudyGroup(
     var frequency:Int?,
     var periods:String?,
     var online:Int,
-    var regionIdx1:Long?,
-    var regionIdx2:Long?,
+    var regionIdx1:String?,
+    var regionIdx2:String?,
     var interest:Int,
     var topic:String,
     var memberLimit:Int,
@@ -33,24 +33,5 @@ data class StudyGroupResponse(
     @SerializedName("isSuccess") val isSuccess: Boolean,
     @SerializedName("message") val message: String,
     @SerializedName("result") val studyGroup:ArrayList<StudyGroup>
-)
-
-data class  getStudyContent(
-    var total_count:Int,
-    var is_Next : Boolean,
-    var groupIndx:Int,
-    var result : ArrayList<getStudyResponse>
-)
-
-data class getStudyResponse(
-    var title : String,
-    var regionIdx1:Long,
-    var regionIdx2:Long,
-//    var deadline:LocalDate,
-//    var createDate : LocalDate,
-    var deadline:String,
-    var createDate : String,
-    var memberLimit: Int,
-    var groupContent : String
 )
 

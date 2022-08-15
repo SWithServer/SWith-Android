@@ -59,8 +59,8 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
     // 오프라인 0 온라인 1
     var online_idx:Int = -1
     var topic_content:String =""
-    var regionIdx1:Long?=null
-    var regionIdx2:Long?=null
+    var regionIdx1:String?=null
+    var regionIdx2:String?=null
     var group_content:String=""
 
     // spinner 선택되는 값들 매칭
@@ -379,7 +379,10 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
         //스터디 개설버튼
         binding.btnStudyCreate.setOnClickListener {
             with(binding)
-            { recruitmentEndDate_ = btnDeadline.text.toString()
+            { title = etStudyTitle.text.toString()
+                group_content = etStudyContent.text.toString()
+                topic_content = etCreateTopic.text.toString()
+                recruitmentEndDate_ = btnDeadline.text.toString()
                 groupStart_ = btnStartDay.text.toString()
                 groupEnd_ = btnFinishDay.text.toString()
                 when(meet_idx) {
@@ -447,15 +450,15 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
            val shPref1 = getSharedPreferences("result1",0)
             val editor1 = getSharedPreferences("result1",0).edit()
             binding.btnPlusPlace1.text = shPref1.getString("이름1", "")
-            if(!shPref1.getString("코드1","").toString().equals(""))
-            {regionIdx1 =shPref1.getString("코드1", "").toString().toLong()}
+            if(!shPref1.getString("이름1","").toString().equals(""))
+            {regionIdx1 =shPref1.getString("이름1", "").toString()}
         }
         if(!getSharedPreferences("result2",0).getString("이름2","").toString().equals("")){
             val shPref2 = getSharedPreferences("result2",0)
             val editor2 = getSharedPreferences("result2",0).edit()
             binding.btnPlusPlace2.text = shPref2.getString("이름2", "")
-            if(!shPref2.getString("코드2","").toString().equals(""))
-            {regionIdx2 = shPref2.getString("코드2", "").toString().toLong()}
+            if(!shPref2.getString("이름2","").toString().equals(""))
+            {regionIdx2 = shPref2.getString("이름2", "").toString()}
         }
     }
     fun createStudy(studyRequestData : StudyGroup,content_text:String){
