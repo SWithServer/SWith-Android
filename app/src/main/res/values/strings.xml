@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">SWith</string>
     <string name="app_name_kr">스윗</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- 스터디, 회차탭 -->
     <string name="no_study">진행중인 스터디가 없어요! \n 한번 찾아볼까요?</string>
     <string name="create_info">* 회차는 날짜 순에 따라 조정됩니다.</string>
     <string name="create_place_hint1">온라인, 오프라인 선택</string>
@@ -19,6 +19,7 @@
     <string name="memo_hint">"회차별 자신만의 메모를 만들어보세요!"</string>
     <string name="memo_guide">"화면을 터치해 메모를 수정하세요!"</string>
     <string name="bottom_round_create_guide">"- 생성되는 회차는 날짜 순으로 조정됩니다.\n- 회차 생성 후 수정 및 삭제는 관리자 탭에서 가능합니다."</string>
+    <string name="manage_round_modify">"- 회차 내용이 작성한 대로 수정됩니다.</string>
 
     <!-- common -->
     <string name="complete">완료</string>

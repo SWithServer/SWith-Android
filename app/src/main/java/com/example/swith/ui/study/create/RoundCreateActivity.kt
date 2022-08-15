@@ -31,18 +31,18 @@ import java.time.ZonedDateTime
 import java.util.*
 
 
-class RoundCreateActivity : AppCompatActivity() {
+open class RoundCreateActivity : AppCompatActivity() {
     private val viewModel : RoundCreateViewModel by viewModels()
     // 회차 최소시간(분단위)
-    private val minuteMin = 20
+    protected var minuteMin = 20
     // 회차 최대시간(시간단위)
     private val hourMax = 8
     private val calendar = Calendar.getInstance()
     private val year = calendar.get(Calendar.YEAR)
     private val month = calendar.get(Calendar.MONTH)
     private val day = calendar.get(Calendar.DAY_OF_MONTH)
-    private var startTime: DateTime? = null
-    private var endTime: DateTime? = null
+    protected var startTime: DateTime? = null
+    protected var endTime: DateTime? = null
 
     lateinit var binding: ActivityRoundCreateBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -101,7 +101,7 @@ class RoundCreateActivity : AppCompatActivity() {
         }
     }
 
-    private fun initListener(){
+    protected open fun initListener(){
         viewModel.sessionLiveEvent.observe(this, Observer{
             Toast.makeText(applicationContext, "회차 생성이 완료되었습니다", Toast.LENGTH_SHORT).show()
             finish()
@@ -131,6 +131,7 @@ class RoundCreateActivity : AppCompatActivity() {
                 btnCreateStartDate.isClickable = true
                 btnCreateEndDate.text = "종료 시간"
                 tvRoundCreateAlert.visibility = View.GONE
+                btnCreateAdd.visibility = View.INVISIBLE
             }
             btnCreateAdd.setOnClickListener {
                 val startTimeToString : String = String.format("%4d-%02d-%02dT%02d:%02d", startTime?.year, startTime?.month, startTime?.day, startTime?.hourOfDay, startTime?.minute)

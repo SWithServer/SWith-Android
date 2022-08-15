@@ -12,6 +12,15 @@ class ManageRoundRVAdapter : RecyclerView.Adapter<ManageRoundRVAdapter.ViewHolde
     private lateinit var binding: ItemMangeRoundBinding
     private var roundList = ArrayList<GetSessionRes>()
 
+    interface CustomListener{
+        fun onClick(round: GetSessionRes)
+    }
+    private lateinit var customListener: CustomListener
+
+    fun setCustomListener(listener: CustomListener){
+        customListener = listener
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         binding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_mange_round, parent, false)
         return ViewHolder(binding)
@@ -19,6 +28,7 @@ class ManageRoundRVAdapter : RecyclerView.Adapter<ManageRoundRVAdapter.ViewHolde
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(roundList[position])
+        holder.itemView.setOnClickListener { customListener.onClick(roundList[position]) }
     }
 
     override fun getItemCount(): Int = roundList.size

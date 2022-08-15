@@ -1,5 +1,6 @@
 package com.example.swith.ui.manage
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.swith.R
+import com.example.swith.data.GetSessionRes
 import com.example.swith.databinding.ActivityManageRoundBinding
 import com.example.swith.ui.adapter.ManageRoundRVAdapter
 import com.example.swith.utils.ToolBarManager
@@ -36,7 +38,15 @@ class ManageRoundActivity : AppCompatActivity() {
     private fun initView(){
         ToolBarManager(this).initToolBar(binding.toolbarManageRound, false, backVisible = true)
         binding.rvManageRound.apply {
-            adapter = ManageRoundRVAdapter()
+            adapter = ManageRoundRVAdapter().apply {
+                setCustomListener(object: ManageRoundRVAdapter.CustomListener{
+                    override fun onClick(round: GetSessionRes) {
+                        startActivity(Intent(applicationContext, ManageRoundModifyActivity::class.java).apply {
+                            putExtra("curRound", round)
+                        })
+                    }
+                })
+            }
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         }
     }

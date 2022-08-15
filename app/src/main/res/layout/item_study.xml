@@ -78,7 +78,7 @@
             android:layout_marginStart="5dp"
             android:textColor="@color/color_82B4FF"
             android:text="출석율"
-            android:textSize="9sp"/>
+            android:textSize="11sp"/>
         <View
             android:layout_width="1dp"
             android:layout_height="8dp"
@@ -94,7 +94,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:textSize="9sp"
+            android:textSize="11sp"
             android:textColor="@color/color_82B4FF"
             android:text="명수"/>
         <View
@@ -113,7 +113,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:textSize="9sp"
+            android:textSize="11sp"
             android:textColor="@color/color_82B4FF"
             android:text="카테고리"/>
 
