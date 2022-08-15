@@ -20,6 +20,9 @@
             android:name=".ui.manage.ManageRoundActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.manage.ManageAttendActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.study.create.RoundCreateActivity"
             android:exported="false" />
         <activity

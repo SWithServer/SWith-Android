@@ -64,4 +64,9 @@
     <style name="ThemeOverlay.App.CircularProgressIndicator" parent="">
         <item name="colorPrimary">@color/color_swith</item>
     </style>
+
+    <style name="CustomSpinnerStyle" parent="Widget.AppCompat.DropDownItem.Spinner">
+        <item name="android:divider">#000000</item>
+        <item name="android:dividerHeight">0.5dp</item>
+    </style>
 </resources>

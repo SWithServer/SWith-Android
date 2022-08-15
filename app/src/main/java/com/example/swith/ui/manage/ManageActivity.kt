@@ -35,7 +35,9 @@ class ManageActivity : AppCompatActivity() {
                 startActivity(Intent(this@ManageActivity, ManageRoundActivity::class.java).apply {
                     putExtra("groupId", groupIdx)
             }) }
-            layoutManageAttend.setOnClickListener { /* 출석 관리 화면으로 */ }
+            layoutManageAttend.setOnClickListener { startActivity(Intent(this@ManageActivity, ManageAttendActivity::class.java).apply {
+                putExtra("groupId", groupIdx)
+            }) }
             layoutManageUser.setOnClickListener { /* 유저 관리 화면으로 */ }
             layoutManageFinish.setOnClickListener { /* 스터디 종료 */ }
         }
