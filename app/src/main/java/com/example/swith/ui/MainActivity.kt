@@ -90,7 +90,19 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onBackPressed() {
+    interface onBackPressedListener{
+        fun onBackPressed()
+    }
+
+    override fun onBackPressed(){
+        val fragmentList = supportFragmentManager.fragments
+        for (fragment in fragmentList)
+        {
+            if (fragment is onBackPressedListener){
+                (fragment as onBackPressedListener).onBackPressed()
+                return
+            }
+        }
         if (System.currentTimeMillis() <= backKeyPressedTime + 2000) {
             // 뒤로가기 두 번 누르면 종료
             finish()
@@ -99,6 +111,16 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "뒤로 가기 한 번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
         }
     }
+
+//    override fun onBackPressed() {
+//        if (System.currentTimeMillis() <= backKeyPressedTime + 2000) {
+//            // 뒤로가기 두 번 누르면 종료
+//            finish()
+//        } else{
+//            backKeyPressedTime = System.currentTimeMillis()
+//            Toast.makeText(this, "뒤로 가기 한 번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
+//        }
+//    }
 
     private fun goProfilePage() {
         Log.e("doori","goProfilePage")
@@ -111,8 +133,7 @@ class MainActivity : AppCompatActivity() {
             .replace(R.id.main_frm, HomeFragment())
             .commitAllowingStateLoss()
     }
-    private fun goSearchPage() {
-        //TODO: search
+    fun goSearchPage() {
         Log.e("summer","goSearchPage")
         supportFragmentManager.beginTransaction()
             .replace(R.id.main_frm,StudyFindFragment())
@@ -123,6 +144,7 @@ class MainActivity : AppCompatActivity() {
         var fragment_ = fragment
         var bundle = Bundle()
         fragment.arguments=bundle
+        bundle.putInt("groupIdx",groupIdx)
         supportFragmentManager.beginTransaction()
             .replace(R.id.main_frm,fragment_)
             .addToBackStack(null)

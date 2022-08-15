@@ -27,11 +27,3 @@ data class StudyGroup(
     var attendanceValidTime:Int,
     var groupContent:String
 )
-
-data class StudyGroupResponse(
-    @SerializedName("code") val code: Int,
-    @SerializedName("isSuccess") val isSuccess: Boolean,
-    @SerializedName("message") val message: String,
-    @SerializedName("result") val studyGroup:ArrayList<StudyGroup>
-)
-

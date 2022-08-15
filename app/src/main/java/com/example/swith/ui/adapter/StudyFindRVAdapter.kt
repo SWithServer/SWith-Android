@@ -9,15 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.swith.data.*
 import com.example.swith.databinding.ItemLoadingBinding
 import com.example.swith.databinding.ItemStudyFindBinding
-import com.example.swith.repository.ApiService
-import com.example.swith.repository.RetrofitService
 import com.example.swith.ui.study.create.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import java.lang.reflect.Array.set
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -97,6 +89,7 @@ class StudyFindRVAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     inner class FindViewHolder(val binding: ItemStudyFindBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
         fun onBind(studyList:Content?) {
             with(binding)
             {
@@ -118,16 +111,17 @@ class StudyFindRVAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
              tvSearchRegion.text =studyList?.regionIdx1
                 tvSearchRegion.text =studyList?.regionIdx2
             }
-
             binding.root.setOnClickListener { v ->
                 val pos = adapterPosition
                 if (pos != RecyclerView.NO_POSITION) {
                     if (itemClickListener != null) {
-                        itemClickListener.onClick(v, pos)
+                        var groupIdx = studyList!!.groupIdx
+                        itemClickListener.onClick(v, pos,groupIdx)
                     }
                 }
             }
         }
+
     }
 
     inner class LoadingViewHolder(val binding:ItemLoadingBinding):
@@ -136,7 +130,7 @@ class StudyFindRVAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private lateinit var itemClickListener: OnItemClickListener
 
     interface OnItemClickListener {
-        fun onClick(v:View, pos:Int)
+        fun onClick(v:View, pos:Int,groupIdx:Int)
     }
     fun setItemClickListener(itemClickListener: OnItemClickListener) {
         this.itemClickListener = itemClickListener
