@@ -42,6 +42,12 @@ class StudyFindDetailFragment : BaseFragment<FragmentStudyFindDetailBinding>(R.l
         super.onCreate(savedInstanceState)
         dialog_ = Dialog(requireActivity())
         dialog_.setContentView(R.layout.fragment_dialog_application)
+        Log.e("summer", "fragment이동 true")
+        groupIdx = arguments?.getInt("groupIdx",0)
+        applicationMethod = arguments?.getInt("applicationMethod",0)
+        Log.e("summer","groupIdx = $groupIdx")
+        Log.e("summer","applicationMethod = $applicationMethod")
+        setData(groupIdx)
     }
 
     override fun onCreateView(
@@ -49,30 +55,25 @@ class StudyFindDetailFragment : BaseFragment<FragmentStudyFindDetailBinding>(R.l
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        Log.e("fragment이동", "true")
-        groupIdx = arguments?.getInt("groupIdx",0)
-        applicationMethod = arguments?.getInt("applicationMethod",0)
-        setData(groupIdx)
         return super.onCreateView(inflater, container, savedInstanceState)
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.e("groupIdx","$groupIdx")
-        Log.e("applicationMethod","$applicationMethod")
-    with(binding)
-    {
-        btnStudyApply.setOnClickListener {
-            when(applicationMethod)
-            {
-                0->{
-                    showLastDialog(null)
-                }
-                1->{
-                    createApplication()
-                }
-            }
+
+        with(binding)
+        {
+            btnStudyApply.setOnClickListener {
+                 when(applicationMethod)
+                {
+                     0->{
+                       showLastDialog(null) //선착순(신청서 필요 x)
+                     }
+                     1->{
+                    createApplication() //지원(신청서 -> 최종 dialog)
+                    }
+                 }
+             }
         }
-    }
     }
 
     override fun onBackPressed() {
@@ -80,6 +81,7 @@ class StudyFindDetailFragment : BaseFragment<FragmentStudyFindDetailBinding>(R.l
         activity_?.goSearchPage()
     }
 
+    //신청서 Dialog
     fun createApplication (){
         dialog_.show()
         var dialog_et = dialog_.findViewById<EditText>(R.id.et_application)
@@ -100,6 +102,7 @@ class StudyFindDetailFragment : BaseFragment<FragmentStudyFindDetailBinding>(R.l
         }
     }
 
+    //최종 제출하기 Dialog
     fun showLastDialog(applyContent : String?){
         Log.e("신청서 내용","${applyContent}")
         DataBindingUtil.inflate<DialogCreateBinding>(
@@ -120,8 +123,10 @@ class StudyFindDetailFragment : BaseFragment<FragmentStudyFindDetailBinding>(R.l
         }
     }
 
-    fun setData(groupIdx: Int?) //groupIdx로 study정보 가져오는 retrofit 부분 (API 나오면 바로 작성하기)
+    //groupIdx로 study정보 가져오는 retrofit 부분 (API 나오면 작성하기)
+    fun setData(groupIdx: Int?)
     {
+        Log.e("summer","데이터 set true")
         val retrofitService = RetrofitService.retrofit.create(RetrofitApi::class.java)
 //        retrofitService.getStudyDetail(groupIdx).enqueue(object : Callback<StudyFindResponse> {
 //            override fun onResponse(
@@ -165,11 +170,12 @@ class StudyFindDetailFragment : BaseFragment<FragmentStudyFindDetailBinding>(R.l
 //        })
     }
 
-    // 신청서 내용 보내기
+    // 신청서 내용 보내기 retrofit 부분 (API 나오면 작성)
     fun postData(groupIdx:Int?, applyContent:String?, UserIdx:Int)
     {
 
     }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         activity_ = activity as MainActivity

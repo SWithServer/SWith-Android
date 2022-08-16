@@ -39,7 +39,9 @@ class ManageActivity : AppCompatActivity() {
                 putExtra("groupId", groupIdx)
             }) }
             layoutManageUser.setOnClickListener { /* 유저 관리 화면으로 */ }
-            layoutManageFinish.setOnClickListener { /* 스터디 종료 */ }
+            layoutManageFinish.setOnClickListener { startActivity(Intent(this@ManageActivity,ManageFinishActivity::class.java).apply{
+                putExtra("groupIdx",groupIdx)
+            })}
         }
     }
 

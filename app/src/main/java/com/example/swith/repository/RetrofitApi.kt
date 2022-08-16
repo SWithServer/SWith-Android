@@ -54,4 +54,8 @@ interface RetrofitApi {
     //스터디 정보보기
     @GET("/groupinfo")
     fun getStudyDetail(@Query("groupIdx") groupIdx:Int)
+
+    //스터디 삭제하기
+    @DELETE("/groupinfo")
+    fun delStudy(@Query("groupIdx") groupIdx : Int)
 }
