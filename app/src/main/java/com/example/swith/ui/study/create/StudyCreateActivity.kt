@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.ImageDecoder
 import android.os.Build
 import android.os.Bundle
@@ -14,6 +15,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.example.swith.R
 import com.example.swith.data.StudyGroup
@@ -451,14 +453,17 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
             val editor1 = getSharedPreferences("result1",0).edit()
             binding.btnPlusPlace1.text = shPref1.getString("이름1", "")
             if(!shPref1.getString("이름1","").toString().equals(""))
-            {regionIdx1 =shPref1.getString("이름1", "").toString()}
+            {regionIdx1 =shPref1.getString("이름1", "").toString()
+                binding.btnPlusPlace1.background = ContextCompat.getDrawable(this,R.drawable.bg_round_skyblue) }
         }
         if(!getSharedPreferences("result2",0).getString("이름2","").toString().equals("")){
             val shPref2 = getSharedPreferences("result2",0)
             val editor2 = getSharedPreferences("result2",0).edit()
             binding.btnPlusPlace2.text = shPref2.getString("이름2", "")
             if(!shPref2.getString("이름2","").toString().equals(""))
-            {regionIdx2 = shPref2.getString("이름2", "").toString()}
+            {regionIdx2 = shPref2.getString("이름2", "").toString()
+                binding.btnPlusPlace2.background = ContextCompat.getDrawable(this,R.drawable.bg_round_skyblue)
+            }
         }
     }
     fun createStudy(studyRequestData : StudyGroup,content_text:String){

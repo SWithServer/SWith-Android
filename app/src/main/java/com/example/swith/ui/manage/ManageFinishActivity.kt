@@ -1,7 +1,6 @@
 package com.example.swith.ui.manage
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -16,7 +15,7 @@ class ManageFinishActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this@ManageFinishActivity,R.layout.activity_manage_finish)
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_manage_finish)
         ToolBarManager(this).initToolBar(binding.toolbarManageFinish, false, backVisible = true)
 
         initData()
@@ -33,8 +32,8 @@ class ManageFinishActivity : AppCompatActivity() {
 
     fun initData()
     {
-        (intent.hasExtra("gropuIdx")).let { groupIdx = intent.getIntExtra("groupIdx", 0) }
-        Log.e("summer","${groupIdx}")
+        (intent.hasExtra("groupIdx")).let { groupIdx = intent.getIntExtra("groupIdx", 0) }
+        Log.e("summer","groupIdx = ${groupIdx}")
     }
 
     fun finishStudy(groupIdx : Int){

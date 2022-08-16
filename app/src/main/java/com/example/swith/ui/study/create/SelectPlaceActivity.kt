@@ -118,8 +118,11 @@ class SelectPlaceActivity :  AppCompatActivity(),View.OnClickListener {
                             dongDataList.clear()
                             for (a in regcodes) {
                                 Log.e("doori", "이름 : ${a.name} , 코드 : ${a.code}")
-                                dongDataList.add(a.name)
-                                dongHash.put(a.name, a.code)
+                                if(a.code.toString().substring(5).equals("00000"))
+                                {
+                                    dongDataList.add(a.name)
+                                    dongHash.put(a.name, a.code)
+                                }
                             }
                             adapter_create(dongDataList,3)
                         }
@@ -159,7 +162,27 @@ class SelectPlaceActivity :  AppCompatActivity(),View.OnClickListener {
                         code = guHash.get(city)
                         Log.e("doori", "코드 값은 $code")
                         binding.rvDong.visibility=View.VISIBLE
-                        test("${code}".substring(0,4)+"*",3)
+                        var codeSub = "${code}".substring(0,4)
+                        if(codeSub.equals("4111") || codeSub.equals("4113") ||  codeSub.equals("4117") || codeSub.equals("4128") ||  codeSub.equals("4146") )
+                        {
+                            test("${code}".substring(0,4)+"*",3)
+                        }
+                        else{
+                            if (placeNum == 3)
+                            {
+                                var intent = Intent()
+                                intent.putExtra("지역","${city}")
+                                intent.putExtra("코드","${code}")
+                                setResult(RESULT_OK,intent)
+                                finish()
+                            }
+                            sharedPreference = getSharedPreferences("result${placeNum}",0)
+                            editor= sharedPreference.edit()
+                            editor.putString("이름${placeNum}", "${city}")
+                            editor.putString("코드${placeNum}","${code}")
+                            editor.apply()
+                            finish()
+                        }
                     }
                 })
             }

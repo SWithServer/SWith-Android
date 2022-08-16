@@ -24,6 +24,7 @@ import com.example.swith.repository.RetrofitService
 import com.example.swith.ui.MainActivity
 import com.example.swith.ui.dialog.CustomDialog
 import com.example.swith.utils.CustomBinder
+import com.example.swith.utils.ToolBarManager
 import com.example.swith.utils.base.BaseFragment
 import com.example.swith.viewmodel.StudyFindViewModel
 import retrofit2.Call
