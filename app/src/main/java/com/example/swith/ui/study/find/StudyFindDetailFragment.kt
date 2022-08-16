@@ -4,22 +4,26 @@ import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import com.example.swith.R
 import com.example.swith.data.StudyFindResponse
 import com.example.swith.data.StudyGroup
 import com.example.swith.data.StudyResponse
+import com.example.swith.databinding.DialogCreateBinding
+import com.example.swith.databinding.DialogProfileBinding
 import com.example.swith.databinding.FragmentStudyFindDetailBinding
 import com.example.swith.repository.RetrofitApi
 import com.example.swith.repository.RetrofitService
 import com.example.swith.ui.MainActivity
+import com.example.swith.ui.dialog.CustomDialog
+import com.example.swith.utils.CustomBinder
 import com.example.swith.utils.base.BaseFragment
 import com.example.swith.viewmodel.StudyFindViewModel
 import retrofit2.Call
@@ -31,11 +35,11 @@ class StudyFindDetailFragment : BaseFragment<FragmentStudyFindDetailBinding>(R.l
     var groupIdx : Int? = -1
     var activity_:MainActivity? =null
     lateinit var dialog_ :Dialog
-    lateinit var lastDialog : Dialog
+    var applicationMethod : Int? = -1
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        lastDialog = Dialog(requireActivity())
-        lastDialog.setContentView(R.layout.fragment_dialog)
         dialog_ = Dialog(requireActivity())
         dialog_.setContentView(R.layout.fragment_dialog_application)
     }
@@ -47,15 +51,26 @@ class StudyFindDetailFragment : BaseFragment<FragmentStudyFindDetailBinding>(R.l
     ): View {
         Log.e("fragment이동", "true")
         groupIdx = arguments?.getInt("groupIdx",0)
+        applicationMethod = arguments?.getInt("applicationMethod",0)
         setData(groupIdx)
         return super.onCreateView(inflater, container, savedInstanceState)
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.e("groupIdx","$groupIdx")
+        Log.e("applicationMethod","$applicationMethod")
     with(binding)
     {
         btnStudyApply.setOnClickListener {
-            createApplication()
+            when(applicationMethod)
+            {
+                0->{
+                    showLastDialog(null)
+                }
+                1->{
+                    createApplication()
+                }
+            }
         }
     }
     }
@@ -64,21 +79,44 @@ class StudyFindDetailFragment : BaseFragment<FragmentStudyFindDetailBinding>(R.l
         Log.e("뒤로가기 눌림","true")
         activity_?.goSearchPage()
     }
+
     fun createApplication (){
         dialog_.show()
+        var dialog_et = dialog_.findViewById<EditText>(R.id.et_application)
+        var applyContent = ""
+        dialog_et.setOnKeyListener { view, code, event ->
+            if( (event.action == KeyEvent.ACTION_DOWN) && (code == KeyEvent.KEYCODE_ENTER) && !dialog_et.text.equals("")){
+                applyContent = dialog_et.text.toString()
+                hideKeyboard(dialog_et)
+                true
+            }
+            else
+                false
+            }
         dialog_.findViewById<Button>(R.id.btn_application_apply).setOnClickListener {
            //신청서 작성 내용 변수
-            var application_content = dialog_.findViewById<EditText>(R.id.et_application).toString()
-            lastDialog.findViewById<TextView>(R.id.tv_confirm).text = "제출하시겠습니까?"
-            lastDialog.show()
+            showLastDialog(applyContent)
+            dialog_.dismiss()
+        }
+    }
 
-            lastDialog.findViewById<Button>(R.id.btn_no).setOnClickListener {
-                lastDialog.dismiss()
-            }
-            lastDialog.findViewById<Button>(R.id.btn_yes).setOnClickListener {
-                // 예스시 어떻게 처리할지.. retrofit 지원 내용, user idx post
-                lastDialog.dismiss()
-            }
+    fun showLastDialog(applyContent : String?){
+        Log.e("신청서 내용","${applyContent}")
+        DataBindingUtil.inflate<DialogCreateBinding>(
+            LayoutInflater.from(requireActivity()), R.layout.dialog_create, null, false
+        ).apply {
+            this.createDialog = CustomBinder.showCustomDialog(requireActivity(),
+                root,
+                WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.MATCH_PARENT,
+                object : CustomDialog.DialogClickListener {
+                    override fun onClose() {
+                    }
+
+                    override fun onConfirm() {
+                        postData(groupIdx,applyContent,1)
+                    }
+                })
         }
     }
 
@@ -126,8 +164,23 @@ class StudyFindDetailFragment : BaseFragment<FragmentStudyFindDetailBinding>(R.l
 //            }
 //        })
     }
+
+    // 신청서 내용 보내기
+    fun postData(groupIdx:Int?, applyContent:String?, UserIdx:Int)
+    {
+
+    }
     override fun onAttach(context: Context) {
         super.onAttach(context)
         activity_ = activity as MainActivity
+    }
+
+    fun hideKeyboard(editText: EditText){
+        val mInputMethodManager =
+            context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        mInputMethodManager.hideSoftInputFromWindow(
+            editText.getWindowToken(),
+            0
+        )
     }
 }

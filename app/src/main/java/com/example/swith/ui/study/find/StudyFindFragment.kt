@@ -65,10 +65,10 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
         initScrollListener()
 
         adapter.setItemClickListener(object:StudyFindRVAdapter.OnItemClickListener{
-            override fun onClick(view: View, pos:Int,groupIdx:Int) {
+            override fun onClick(view: View, pos:Int,groupIdx:Int,applicationMethod:Int) {
                 Log.e("클릭이벤트 발생","true")
                 Log.e("그룹 idx 값","${groupIdx}")
-                activity_?.goDeatailPage(groupIdx,StudyFindDetailFragment())
+                activity_?.goDeatailPage(groupIdx,applicationMethod,StudyFindDetailFragment())
             }
         })
 
@@ -282,11 +282,11 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
     {
         var mDatas = ArrayList<Content>()
         mDatas.apply{
-          add(Content(1,"인천 만수동 스터디","인원을 모집합니다","인천광역시 남동구","인천광역시 남동구",listOf(2022,8,21),0,listOf(0),0))
-            add(Content(2,"김해 스터디","인원을 모집합니다","인천광역시 남동구","인천광역시 남동구",listOf(2022,8,21),0,listOf(0),0))
-            add(Content(3,"서울 강서구 스터디","인원을 모집합니다","인천광역시 남동구","인천광역시 남동구",listOf(2022,8,21),0,listOf(0),0))
-            add(Content(4,"인천 용현동 스터디","인원을 모집합니다","인천광역시 남동구","인천광역시 남동구",listOf(2022,8,21),0,listOf(0),0))
-            add(Content(5,"미추홀구 스터디","인원을 모집합니다","인천광역시 남동구","인천광역시 남동구",listOf(2022,8,21),0,listOf(0),0))
+          add(Content(1,"인천 만수동 스터디","인원을 모집합니다","인천광역시 남동구","인천광역시 남동구",listOf(2022,8,21),0,listOf(0),0,1))
+            add(Content(2,"김해 스터디","인원을 모집합니다","인천광역시 남동구","인천광역시 남동구",listOf(2022,8,21),0,listOf(0),0,0))
+            add(Content(3,"서울 강서구 스터디","인원을 모집합니다","인천광역시 남동구","인천광역시 남동구",listOf(2022,8,21),0,listOf(0),0,1))
+            add(Content(4,"인천 용현동 스터디","인원을 모집합니다","인천광역시 남동구","인천광역시 남동구",listOf(2022,8,21),0,listOf(0),0,1))
+            add(Content(5,"미추홀구 스터디","인원을 모집합니다","인천광역시 남동구","인천광역시 남동구",listOf(2022,8,21),0,listOf(0),0,0))
         }
         return mDatas
     }

@@ -112,6 +112,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+// 수정 전 코드
 //    override fun onBackPressed() {
 //        if (System.currentTimeMillis() <= backKeyPressedTime + 2000) {
 //            // 뒤로가기 두 번 누르면 종료
@@ -139,12 +140,13 @@ class MainActivity : AppCompatActivity() {
             .replace(R.id.main_frm,StudyFindFragment())
             .commitAllowingStateLoss()
     }
-    fun goDeatailPage(groupIdx:Int,fragment: Fragment) {
+    fun goDeatailPage(groupIdx:Int,applicationMethod:Int,fragment: Fragment) {
         Log.e("summer","goDetailPage")
         var fragment_ = fragment
         var bundle = Bundle()
         fragment.arguments=bundle
         bundle.putInt("groupIdx",groupIdx)
+        bundle.putInt("applicationMethod",applicationMethod)
         supportFragmentManager.beginTransaction()
             .replace(R.id.main_frm,fragment_)
             .addToBackStack(null)

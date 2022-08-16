@@ -4,12 +4,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.swith.R
 import com.example.swith.data.Announce
 import com.example.swith.databinding.ItemAnnounceBinding
+import com.example.swith.utils.ItemTouchHelperListener
 
-class AnnounceRVAdapter(private val isManager: Boolean) : RecyclerView.Adapter<AnnounceRVAdapter.ViewHolder>(){
+class AnnounceRVAdapter(private val isManager: Boolean) : RecyclerView.Adapter<AnnounceRVAdapter.ViewHolder>(), ItemTouchHelperListener{
     private lateinit var binding: ItemAnnounceBinding
     private var announceList = ArrayList<Announce>()
 
@@ -45,7 +47,8 @@ class AnnounceRVAdapter(private val isManager: Boolean) : RecyclerView.Adapter<A
         fun bind(announce: Announce){
             with(binding){
                 ibAnnounceDelete.apply {
-                    visibility = if(isManager) View.VISIBLE else View.INVISIBLE
+                    // 임시로 전부 안보이게 함
+                    visibility = View.INVISIBLE
                     setOnClickListener { customListener.onDelete(announce) }
                 }
                 tvAnnounceContent.text = announce.announcementContent
@@ -54,5 +57,9 @@ class AnnounceRVAdapter(private val isManager: Boolean) : RecyclerView.Adapter<A
 
             }
         }
+    }
+
+    override fun onDeleteButtonClick(position: Int) {
+        customListener.onDelete(announceList[position])
     }
 }
