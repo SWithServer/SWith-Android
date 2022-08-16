@@ -30,7 +30,9 @@ class ManageActivity : AppCompatActivity() {
 
     private fun initListener(){
         with(binding){
-            layoutManageStudy.setOnClickListener { /* 스터디 관리 화면으로 */ }
+            layoutManageStudy.setOnClickListener { startActivity(Intent(this@ManageActivity,ManageStudyModifyActivity::class.java).apply{
+                putExtra("groupIdx",groupIdx)
+            }) }
             layoutManageRound.setOnClickListener {
                 startActivity(Intent(this@ManageActivity, ManageRoundActivity::class.java).apply {
                     putExtra("groupId", groupIdx)
