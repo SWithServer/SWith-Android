@@ -40,9 +40,13 @@ class CustomImageDialog(context: Context, view: View, width: Int = WindowManager
     }
 
     fun onCamera() {
+        isClickConfirm = true
         listener?.onCamera()
+        dismiss()
     }
     fun onGallery(){
+        isClickConfirm = true
         listener?.onGallery()
+        dismiss()
     }
 }

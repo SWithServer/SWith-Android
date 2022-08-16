@@ -4,8 +4,11 @@ import android.Manifest
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.BitmapFactory
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,8 +16,11 @@ import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.DimenRes
+import androidx.annotation.Dimension
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
+import com.bumptech.glide.Glide
 import com.example.swith.R
 import com.example.swith.databinding.ActivityProfileModifyBinding
 import com.example.swith.databinding.DialogImageBinding
@@ -32,9 +38,27 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener {
             if (isGranted) {
                 //nothing
             } else {
-                Toast.makeText(this@ProfileModifyActivity,"권한을 허용해주세요",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@ProfileModifyActivity, "권한을 허용해주세요", Toast.LENGTH_SHORT).show()
             }
         }
+
+    private val requestGalleryLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+    {
+        if (it.resultCode == RESULT_OK) {
+            Glide.with(this)
+                .load(it.data!!.data)
+                .into(binding.civProfile)
+        }
+    }
+
+    private val requestCameraLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+    {
+        if (it.resultCode == RESULT_OK) {
+            Glide.with(this)
+                .load(it.data!!.extras?.get("data"))
+                .into(binding.civProfile)
+        }
+    }
 
     lateinit var binding: ActivityProfileModifyBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,7 +99,6 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener {
                 showInterestingDialog(1)
             }
             R.id.btn_interesting2 -> {
-                //TODO
                 hideKeyboard()
                 showInterestingDialog(2)
             }
@@ -93,21 +116,32 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener {
                 object : CustomImageDialog.DialogClickListener {
                     override fun onClose() {
                         // nothing
-                        Log.e("doori", "onClose")
                     }
 
                     override fun onCamera() {
-                        Log.e("doori", "camera")
                         requestPermissionLauncher.launch(Manifest.permission.CAMERA)
-                        Toast.makeText(this@ProfileModifyActivity, "camera", Toast.LENGTH_SHORT).show()
+                        getImageToCamera()
                     }
 
                     override fun onGallery() {
-                        Log.e("doori", "gallery")
                         requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
-                        Toast.makeText(this@ProfileModifyActivity, "camera", Toast.LENGTH_SHORT).show()
+                        getImageToGallery()
                     }
                 })
+        }
+    }
+
+    private fun getImageToCamera() {
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).run {
+            requestCameraLauncher.launch(this)
+        }
+    }
+
+    private fun getImageToGallery() {
+        Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI).run {
+            type = "image/*"
+            requestGalleryLauncher.launch(this)
+
         }
     }
 
