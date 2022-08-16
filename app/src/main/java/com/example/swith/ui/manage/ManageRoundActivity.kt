@@ -67,8 +67,8 @@ class ManageRoundActivity : AppCompatActivity(){
                 })
             }
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            val itemTouchCallback = ItemTouchHelper(SwipeController(this.adapter as ManageRoundRVAdapter))
-            itemTouchCallback.attachToRecyclerView(this)
+            val itemTouchHelper = ItemTouchHelper(SwipeController(this.adapter as ManageRoundRVAdapter))
+            itemTouchHelper.attachToRecyclerView(this)
         }
     }
 

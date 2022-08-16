@@ -9,7 +9,9 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
+import androidx.databinding.adapters.ViewGroupBindingAdapter.setListener
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.swith.R
 import com.example.swith.data.Announce
@@ -22,6 +24,7 @@ import com.example.swith.ui.dialog.CustomAnnounceCreateDialog
 import com.example.swith.ui.dialog.CustomAnnounceModifyDialog
 import com.example.swith.ui.dialog.CustomConfirmDialog
 import com.example.swith.utils.CustomBinder.Companion.setVisibility
+import com.example.swith.utils.SwipeController
 import com.example.swith.utils.ToolBarManager
 import com.example.swith.utils.error.ErrorType
 import com.example.swith.utils.error.ScreenState
@@ -58,47 +61,67 @@ class AnnounceActivity : AppCompatActivity(){
 
     private fun initView() {
         with(binding){
-            rvAnnounce.adapter = AnnounceRVAdapter(isManager).apply {
-                setListener(object: AnnounceRVAdapter.CustomListener{
-                    override fun onDelete(announce: Announce) {
-                        CustomConfirmDialog("공지사항 삭제", "해당 공지사항을 삭제하시겠습니까?\n내용 : ${announce.announcementContent}").apply {
-                            setCustomListener(object: CustomConfirmDialog.CustomListener{
-                                override fun onConfirm() {
-                                    dismiss()
-                                    viewModel.deleteAnnounce(announce.announcementIdx)
-                                }
-                            })
-                        }.show(supportFragmentManager, "공지사항 삭제")
-                    }
-
-                    override fun onItemClick(announce: Announce) {
-                        // 매니저인 경우 수정 화면 뜨도록
-                        if (isManager) {
-                            CustomAnnounceModifyDialog(announce.announcementContent).apply {
-                                setCustomListener(object: CustomAnnounceModifyDialog.CustomListener{
-                                    override fun onConfirm(content: String) {
+            rvAnnounce.apply {
+                adapter = AnnounceRVAdapter(isManager).apply {
+                    setListener(object : AnnounceRVAdapter.CustomListener {
+                        override fun onDelete(announce: Announce) {
+                            CustomConfirmDialog(
+                                "공지사항 삭제",
+                                "해당 공지사항을 삭제하시겠습니까?\n내용 : ${announce.announcementContent}"
+                            ).apply {
+                                setCustomListener(object : CustomConfirmDialog.CustomListener {
+                                    override fun onConfirm() {
                                         dismiss()
-                                        CustomConfirmDialog("공지사항 수정", "공지사항 내용을 수정합니다.").apply {
-                                            setCustomListener(object: CustomConfirmDialog.CustomListener{
-                                                override fun onConfirm() {
-                                                    dismiss()
-                                                    viewModel.updateAnnounce(AnnounceModify(content, announce.announcementIdx))
-                                                }
-                                            })
-                                        }.show(supportFragmentManager, "수정 확인")
+                                        viewModel.deleteAnnounce(announce.announcementIdx)
                                     }
                                 })
-                            }.show(supportFragmentManager, "공지사항 수정")
-                        } else {
-                            // 매니저가 아닌 경우 내용 팝업 다이얼로그
-                            CustomAlertDialog("공지사항", "${announce.announcementContent}").apply {
-                                show(supportFragmentManager, "공지사항")
+                            }.show(supportFragmentManager, "공지사항 삭제")
+                        }
+
+                        override fun onItemClick(announce: Announce) {
+                            // 매니저인 경우 수정 화면 뜨도록
+                            if (isManager) {
+                                CustomAnnounceModifyDialog(announce.announcementContent).apply {
+                                    setCustomListener(object :
+                                        CustomAnnounceModifyDialog.CustomListener {
+                                        override fun onConfirm(content: String) {
+                                            dismiss()
+                                            CustomConfirmDialog(
+                                                "공지사항 수정",
+                                                "공지사항 내용을 수정합니다."
+                                            ).apply {
+                                                setCustomListener(object :
+                                                    CustomConfirmDialog.CustomListener {
+                                                    override fun onConfirm() {
+                                                        dismiss()
+                                                        viewModel.updateAnnounce(
+                                                            AnnounceModify(
+                                                                content,
+                                                                announce.announcementIdx
+                                                            )
+                                                        )
+                                                    }
+                                                })
+                                            }.show(supportFragmentManager, "수정 확인")
+                                        }
+                                    })
+                                }.show(supportFragmentManager, "공지사항 수정")
+                            } else {
+                                // 매니저가 아닌 경우 내용 팝업 다이얼로그
+                                CustomAlertDialog("공지사항", "${announce.announcementContent}").apply {
+                                    show(supportFragmentManager, "공지사항")
+                                }
                             }
                         }
-                    }
-                })
+                    })
+                }
+                layoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.VERTICAL, false)
+                if(isManager) {
+                    val itemTouchHelper =
+                        ItemTouchHelper(SwipeController(this.adapter as AnnounceRVAdapter))
+                    itemTouchHelper.attachToRecyclerView(this)
+                }
             }
-            rvAnnounce.layoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.VERTICAL, false)
             ivAnnounceCreate.apply {
                 visibility = if (isManager) View.VISIBLE else View.INVISIBLE
                 setOnClickListener { CustomAnnounceCreateDialog().apply {

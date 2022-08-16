@@ -101,7 +101,7 @@ class SwipeController() : ItemTouchHelper.Callback(){
         if (buttonsShowedState) {
             val rightButton = RectF(
                 itemView.right - buttonWidth + 1, (itemView.top).toFloat(),
-                (itemView.right - 10).toFloat(), (itemView.bottom).toFloat()
+                (itemView.right).toFloat(), (itemView.bottom).toFloat()
             )
             p.color = Color.parseColor("#ff0000")
             c.drawRoundRect(rightButton, corners, corners, p)
