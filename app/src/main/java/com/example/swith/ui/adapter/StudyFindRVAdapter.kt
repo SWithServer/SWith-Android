@@ -116,7 +116,8 @@ class StudyFindRVAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 if (pos != RecyclerView.NO_POSITION) {
                     if (itemClickListener != null) {
                         var groupIdx = studyList!!.groupIdx
-                        itemClickListener.onClick(v, pos,groupIdx)
+                        var applicationMethod = studyList!!.applicationMethod
+                        itemClickListener.onClick(v, pos,groupIdx,applicationMethod)
                     }
                 }
             }
@@ -130,7 +131,7 @@ class StudyFindRVAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private lateinit var itemClickListener: OnItemClickListener
 
     interface OnItemClickListener {
-        fun onClick(v:View, pos:Int,groupIdx:Int)
+        fun onClick(v:View, pos:Int,groupIdx:Int,applicationMethod:Int)
     }
     fun setItemClickListener(itemClickListener: OnItemClickListener) {
         this.itemClickListener = itemClickListener

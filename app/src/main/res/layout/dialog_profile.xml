@@ -80,7 +80,6 @@
             app:layout_constraintTop_toBottomOf="@id/tv_detail"
             android:layout_marginTop="27dp"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

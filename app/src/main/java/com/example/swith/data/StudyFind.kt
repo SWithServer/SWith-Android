@@ -30,7 +30,8 @@ data class Content (
     @SerializedName("recruitmentEndDate") val recruitmentEndDate : List<Int>,
     @SerializedName("memberLimit") val memberLimit : Int,
     @SerializedName("createdAt") val createdAt : List<Int>,
-    @SerializedName("numOfApplicants") val numOfApplicants : Int
+    @SerializedName("numOfApplicants") val numOfApplicants : Int,
+    @SerializedName("applicationMethod") val applicationMethod : Int
 )
 
 data class Pageable (
