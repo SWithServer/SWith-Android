@@ -3,17 +3,21 @@ package com.example.swith.ui.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.swith.R
 import com.example.swith.data.GetSessionRes
 import com.example.swith.databinding.ItemMangeRoundBinding
+import com.example.swith.utils.ItemTouchHelperListener
+import com.example.swith.utils.compareTimeWithNow
 
-class ManageRoundRVAdapter : RecyclerView.Adapter<ManageRoundRVAdapter.ViewHolder>() {
+class ManageRoundRVAdapter : RecyclerView.Adapter<ManageRoundRVAdapter.ViewHolder>(), ItemTouchHelperListener {
     private lateinit var binding: ItemMangeRoundBinding
     private var roundList = ArrayList<GetSessionRes>()
 
     interface CustomListener{
         fun onClick(round: GetSessionRes)
+        fun onDeleteClick(round: GetSessionRes)
     }
     private lateinit var customListener: CustomListener
 
@@ -28,7 +32,9 @@ class ManageRoundRVAdapter : RecyclerView.Adapter<ManageRoundRVAdapter.ViewHolde
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(roundList[position])
-        holder.itemView.setOnClickListener { customListener.onClick(roundList[position]) }
+        if (compareTimeWithNow(roundList[position].sessionStart)){
+            holder.itemView.setOnClickListener { customListener.onClick(roundList[position]) }
+        }
     }
 
     override fun getItemCount(): Int = roundList.size
@@ -45,6 +51,10 @@ class ManageRoundRVAdapter : RecyclerView.Adapter<ManageRoundRVAdapter.ViewHolde
                 tvItemManageRoundDate.text = "날짜 : ${round.sessionStart[0]}/${round.sessionStart[1]}/${round.sessionStart[2]}"
             }
         }
+    }
+
+    override fun onDeleteButtonClick(position: Int) {
+        customListener.onDeleteClick(roundList[position])
     }
 
 }
