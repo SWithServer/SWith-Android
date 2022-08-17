@@ -29,6 +29,8 @@
             android:exported="false"/>
         <activity android:name=".ui.manage.ManageStudyModifyActivity"
             android:exported="false"/>
+        <activity android:name=".ui.manage.ManageUserActivity"
+            android:exported="false"/>
         <activity
             android:name=".ui.study.create.RoundCreateActivity"
             android:exported="false" />
