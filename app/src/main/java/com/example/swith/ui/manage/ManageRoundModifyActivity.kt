@@ -2,6 +2,7 @@ package com.example.swith.ui.manage
 
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import com.example.swith.R
@@ -13,7 +14,7 @@ import com.example.swith.ui.dialog.CustomAlertDialog
 import com.example.swith.ui.dialog.CustomConfirmDialog
 import com.example.swith.ui.study.create.RoundCreateActivity
 
-class ManageRoundModifyActivity : RoundCreateActivity() {
+class ManageRoundModifyActivity : RoundCreateActivity(), View.OnClickListener {
     private val curRound: GetSessionRes by lazy{
         intent.getSerializableExtra("curRound") as GetSessionRes
     }
@@ -43,9 +44,9 @@ class ManageRoundModifyActivity : RoundCreateActivity() {
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-            android.R.id.home->{
+    override fun onClick(view: View?) {
+        when(view?.id){
+            R.id.ib_basic_toolbar_back -> {
                 CustomConfirmDialog("수정 취소", "변경 내용이 저장되지 않았습니다. 그래도 종료하시겠습니까?").apply {
                     setCustomListener(object : CustomConfirmDialog.CustomListener {
                         override fun onConfirm() {
@@ -55,8 +56,8 @@ class ManageRoundModifyActivity : RoundCreateActivity() {
                 }.show(supportFragmentManager, "회차 수정 취소")
             }
         }
-        return true
     }
+
 
     override fun onBackPressed() {
         CustomConfirmDialog("수정 취소", "변경 내용이 저장되지 않았습니다. 그래도 종료하시겠습니까?").apply {

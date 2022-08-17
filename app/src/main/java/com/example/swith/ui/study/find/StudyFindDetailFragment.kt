@@ -8,29 +8,16 @@ import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.viewModels
 import com.example.swith.R
-import com.example.swith.data.StudyFindResponse
-import com.example.swith.data.StudyGroup
-import com.example.swith.data.StudyResponse
 import com.example.swith.databinding.DialogCreateBinding
-import com.example.swith.databinding.DialogProfileBinding
 import com.example.swith.databinding.FragmentStudyFindDetailBinding
 import com.example.swith.repository.RetrofitApi
 import com.example.swith.repository.RetrofitService
 import com.example.swith.ui.MainActivity
 import com.example.swith.ui.dialog.CustomDialog
 import com.example.swith.utils.CustomBinder
-import com.example.swith.utils.ToolBarManager
 import com.example.swith.utils.base.BaseFragment
-import com.example.swith.viewmodel.StudyFindViewModel
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.time.LocalDateTime
 
 class StudyFindDetailFragment : BaseFragment<FragmentStudyFindDetailBinding>(R.layout.fragment_study_find_detail),MainActivity.onBackPressedListener {
     var groupIdx : Int? = -1

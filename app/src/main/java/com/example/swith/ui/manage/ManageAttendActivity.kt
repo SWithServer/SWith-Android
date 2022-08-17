@@ -1,24 +1,18 @@
 package com.example.swith.ui.manage
 
-import android.graphics.Typeface
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
-import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.swith.R
 import com.example.swith.databinding.ActivityManageAttendBinding
 import com.example.swith.databinding.ItemManageAttendSpinnerBinding
-import com.example.swith.utils.ToolBarManager
 
-class ManageAttendActivity : AppCompatActivity() {
+class ManageAttendActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityManageAttendBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +21,7 @@ class ManageAttendActivity : AppCompatActivity() {
     }
 
     private fun initView(){
-        ToolBarManager(this).initToolBar(binding.toolbarManageAttend, false, backVisible = true)
+        binding.clickListener = this
         val stringList = ArrayList<String>()
         stringList.apply {
             add("1회차")
@@ -81,11 +75,10 @@ class ManageAttendActivity : AppCompatActivity() {
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-            android.R.id.home -> finish()
+    override fun onClick(view: View?) {
+        when(view?.id){
+            R.id.ib_basic_toolbar_back -> finish()
         }
-        return super.onOptionsItemSelected(item)
     }
 
     private fun dipToPixels(dipValue: Float): Float {

@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
@@ -12,13 +11,10 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.example.swith.R
-import com.example.swith.data.StudyFindData
 import com.example.swith.databinding.ActivityMainBinding
 import com.example.swith.ui.home.HomeFragment
 import com.example.swith.ui.profile.ProfileFragment
-import com.example.swith.ui.study.find.StudyFindDetailFragment
 import com.example.swith.ui.study.find.StudyFindFragment
-import com.example.swith.utils.ToolBarManager
 
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {

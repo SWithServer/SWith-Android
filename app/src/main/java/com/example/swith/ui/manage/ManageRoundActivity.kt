@@ -1,36 +1,26 @@
 package com.example.swith.ui.manage
 
 import android.content.Intent
-import android.graphics.*
 import android.os.Bundle
-import android.util.Log
-import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.ItemTouchHelper.ACTION_STATE_SWIPE
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.swith.R
 import com.example.swith.data.GetSessionRes
 import com.example.swith.databinding.ActivityManageRoundBinding
 import com.example.swith.ui.adapter.ManageRoundRVAdapter
 import com.example.swith.ui.dialog.CustomAlertDialog
 import com.example.swith.ui.dialog.CustomConfirmDialog
-import com.example.swith.utils.ItemTouchHelperListener
 import com.example.swith.utils.SwipeController
-import com.example.swith.utils.ToolBarManager
 import com.example.swith.utils.error.ScreenState
 import com.example.swith.viewmodel.RoundUpdateViewModel
-import com.example.swith.viewmodel.RoundViewModel
-import java.lang.Float.max
-import java.lang.Float.min
 
 
-class ManageRoundActivity : AppCompatActivity(){
+class ManageRoundActivity : AppCompatActivity(), View.OnClickListener{
     private val viewModel : RoundUpdateViewModel by viewModels()
     private lateinit var binding: ActivityManageRoundBinding
     private val groupIdx by lazy{
@@ -49,7 +39,7 @@ class ManageRoundActivity : AppCompatActivity(){
     }
 
     private fun initView(){
-        ToolBarManager(this).initToolBar(binding.toolbarManageRound, false, backVisible = true)
+        binding.clickListener = this
         binding.rvManageRound.apply {
             adapter = ManageRoundRVAdapter().apply {
                 setCustomListener(object: ManageRoundRVAdapter.CustomListener{
@@ -117,10 +107,9 @@ class ManageRoundActivity : AppCompatActivity(){
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-            android.R.id.home-> finish()
+    override fun onClick(view: View?) {
+        when(view?.id){
+            R.id.ib_basic_toolbar_back -> finish()
         }
-        return super.onOptionsItemSelected(item)
     }
 }

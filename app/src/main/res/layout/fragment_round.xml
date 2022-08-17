@@ -69,6 +69,7 @@
                         android:layout_height="0dp"
                         android:src="@drawable/ic_notice"
                         android:scaleType="fitEnd"
+                        android:background="?attr/selectableItemBackground"
                         android:layout_marginEnd="10dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@id/round_notice_title_tv"
@@ -104,9 +105,11 @@
             </androidx.core.widget.NestedScrollView>
             <ImageView
                 android:id="@+id/round_add_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:padding="5dp"
                 android:scaleType="fitCenter"
+                android:background="?attr/selectableItemBackground"
                 android:src="@drawable/ic_add"
                 android:layout_marginBottom="20dp"
                 android:layout_marginEnd="20dp"

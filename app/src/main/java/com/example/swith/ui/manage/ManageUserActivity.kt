@@ -2,15 +2,15 @@ package com.example.swith.ui.manage
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.swith.R
 import com.example.swith.databinding.ActivityManageUserBinding
 import com.example.swith.ui.adapter.ManageUserTabVPAdapter
-import com.example.swith.utils.ToolBarManager
 import com.google.android.material.tabs.TabLayoutMediator
 
-class ManageUserActivity : AppCompatActivity(){
+class ManageUserActivity : AppCompatActivity(), View.OnClickListener{
     lateinit var binding : ActivityManageUserBinding
     var groupIdx : Int = -1
     private val tabTitleArray = arrayOf(
@@ -20,7 +20,7 @@ class ManageUserActivity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_manage_user)
-        ToolBarManager(this).initToolBar(binding.toolbarManageUser, false, backVisible = true)
+        binding.clickListener = this
         initData()
         viewPager()
     }
@@ -38,6 +38,12 @@ class ManageUserActivity : AppCompatActivity(){
     {
         (intent.hasExtra("groupIdx")).let { groupIdx = intent.getIntExtra("groupIdx", 0) }
         Log.e("summer","groupIdx = ${groupIdx}")
+    }
+
+    override fun onClick(view: View?) {
+        when(view?.id){
+            R.id.ib_basic_toolbar_back -> finish()
+        }
     }
 
 }

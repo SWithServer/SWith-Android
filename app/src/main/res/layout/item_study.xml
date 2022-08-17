@@ -136,7 +136,7 @@
             <LinearLayout
                 android:id="@+id/layout_item_notice"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="16dp"
                 android:layout_marginStart="14dp"
                 android:layout_marginEnd="14dp"
                 android:layout_marginTop="14dp"
@@ -145,16 +145,17 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
                     android:src="@drawable/ic_study_notice"/>
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="2dp"
+                    android:layout_height="14dp"
+                    android:layout_marginStart="3dp"
                     android:text="공지사항"
-                    android:textSize="9sp"
-                    android:textColor="@color/color_82B4FF"/>
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/color_82B4FF"
+                    android:textSize="10sp" />
             </LinearLayout>
             <TextView
                 android:id="@+id/study_notice_tv"
@@ -179,7 +180,7 @@
             <LinearLayout
                 android:id="@+id/layout_item_count"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="16dp"
                 android:layout_marginStart="14dp"
                 android:layout_marginEnd="14dp"
                 android:layout_marginTop="14dp"
@@ -188,16 +189,17 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
                     android:src="@drawable/ic_study_memo"/>
                 <TextView
                     android:id="@+id/study_count_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="2dp"
+                    android:layout_marginStart="3dp"
+                    android:layout_gravity="center_vertical"
                     android:text="n회차 학습 내용"
-                    android:textSize="9sp"
+                    android:textSize="10sp"
                     android:textColor="@color/color_82B4FF"/>
             </LinearLayout>
             <TextView

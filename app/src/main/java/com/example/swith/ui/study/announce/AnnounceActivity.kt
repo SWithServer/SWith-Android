@@ -1,15 +1,11 @@
 package com.example.swith.ui.study.announce
 
-import android.os.Build.VERSION_CODES.P
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
-import androidx.databinding.adapters.ViewGroupBindingAdapter.setListener
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,14 +19,11 @@ import com.example.swith.ui.dialog.CustomAlertDialog
 import com.example.swith.ui.dialog.CustomAnnounceCreateDialog
 import com.example.swith.ui.dialog.CustomAnnounceModifyDialog
 import com.example.swith.ui.dialog.CustomConfirmDialog
-import com.example.swith.utils.CustomBinder.Companion.setVisibility
 import com.example.swith.utils.SwipeController
-import com.example.swith.utils.ToolBarManager
-import com.example.swith.utils.error.ErrorType
 import com.example.swith.utils.error.ScreenState
 import com.example.swith.viewmodel.AnnounceViewModel
 
-class AnnounceActivity : AppCompatActivity(){
+class AnnounceActivity : AppCompatActivity(), View.OnClickListener{
     private val viewModel : AnnounceViewModel by viewModels()
     // 매니저
     private val isManager: Boolean by lazy {
@@ -50,17 +43,13 @@ class AnnounceActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_announce)
 
-        ToolBarManager(this).initToolBar(binding.tbAnnounce,
-            titleVisible = false,
-            backVisible = true
-        )
-
         initView()
         observeViewModel()
     }
 
     private fun initView() {
         with(binding){
+            clickListener = this@AnnounceActivity
             rvAnnounce.apply {
                 adapter = AnnounceRVAdapter(isManager).apply {
                     setListener(object : AnnounceRVAdapter.CustomListener {
@@ -198,10 +187,9 @@ class AnnounceActivity : AppCompatActivity(){
         viewModel.loadData(groupIdx)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-            android.R.id.home -> finish()
+    override fun onClick(view: View?) {
+        when(view?.id){
+            R.id.ib_basic_toolbar_back -> finish()
         }
-        return super.onOptionsItemSelected(item)
     }
 }

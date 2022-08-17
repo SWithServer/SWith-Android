@@ -14,10 +14,9 @@ import androidx.databinding.DataBindingUtil
 import com.example.swith.R
 import com.example.swith.databinding.ActivityManageStudyModifyBinding
 import com.example.swith.ui.study.create.SelectPlaceActivity
-import com.example.swith.utils.ToolBarManager
 import java.util.*
 
-class ManageStudyModifyActivity : AppCompatActivity() {
+class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var binding:ActivityManageStudyModifyBinding
     var groupIdx : Int = -1
 
@@ -54,13 +53,13 @@ class ManageStudyModifyActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this@ManageStudyModifyActivity, R.layout.activity_manage_study_modify)
-        ToolBarManager(this).initToolBar(binding.toolbarManageStudyModify, false, backVisible = true)
 
         initData()
         initView(groupIdx)
 
         with(binding)
         {
+            clickListener = this@ManageStudyModifyActivity
             etStudyContent.setOnKeyListener { view, code, event ->
                 if( (event.action == KeyEvent.ACTION_DOWN) && (code == KeyEvent.KEYCODE_ENTER) && !etStudyContent.text.equals("")){
                     group_content= etStudyContent.text.toString()
@@ -418,4 +417,10 @@ class ManageStudyModifyActivity : AppCompatActivity() {
                 0
             )
         }
+
+    override fun onClick(view: View?) {
+        when(view?.id){
+            R.id.ib_basic_toolbar_back -> finish()
+        }
+    }
 }

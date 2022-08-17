@@ -3,22 +3,15 @@ package com.example.swith.ui.study
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.findFragment
-import androidx.lifecycle.Observer
 import com.example.swith.R
 import com.example.swith.databinding.ActivityStudyBinding
-import com.example.swith.ui.home.HomeFragment
 import com.example.swith.ui.manage.ManageActivity
 import com.example.swith.ui.study.round.RoundFragment
 import com.example.swith.ui.study.round.RoundTabFragment
-import com.example.swith.utils.ToolBarManager
 import com.example.swith.viewmodel.RoundViewModel
 
 class StudyActivity : AppCompatActivity(), View.OnClickListener {

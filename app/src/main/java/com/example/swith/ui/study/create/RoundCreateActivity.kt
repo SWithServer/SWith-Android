@@ -23,7 +23,6 @@ import com.example.swith.databinding.ActivityRoundCreateBinding
 import com.example.swith.databinding.DialogTimepickerBinding
 import com.example.swith.ui.dialog.BottomSheet
 import com.example.swith.ui.dialog.CustomAlertDialog
-import com.example.swith.utils.ToolBarManager
 import com.example.swith.viewmodel.RoundUpdateViewModel
 import java.lang.Integer.max
 import java.time.ZoneId
@@ -31,7 +30,7 @@ import java.time.ZonedDateTime
 import java.util.*
 
 
-open class RoundCreateActivity : AppCompatActivity() {
+open class RoundCreateActivity : AppCompatActivity(), View.OnClickListener {
     protected val viewModel : RoundUpdateViewModel by viewModels()
     // 회차 최소시간(분단위)
     private val minuteMin by lazy {
@@ -56,10 +55,6 @@ open class RoundCreateActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_round_create)
 
-        ToolBarManager(this).initToolBar(binding.toolbarCreate,
-            titleVisible = false,
-            backVisible = true
-        )
         initCheckBox()
         initListener()
         observeViewModel()
@@ -683,5 +678,11 @@ open class RoundCreateActivity : AppCompatActivity() {
             }
         }
         return super.dispatchTouchEvent(ev)
+    }
+
+    override fun onClick(view: View?) {
+        when(view?.id){
+            R.id.ib_basic_toolbar_back -> finish()
+        }
     }
 }
