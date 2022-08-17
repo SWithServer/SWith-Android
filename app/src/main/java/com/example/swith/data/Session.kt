@@ -23,3 +23,12 @@ data class SessionResponse(
     val message: String,
     val result: String
 )
+
+data class SessionModify(
+    val online: Int,
+    val place: String,
+    val sessionContent: String,
+    val sessionEnd: String,
+    val sessionIdx: Int,
+    val sessionStart: String
+)

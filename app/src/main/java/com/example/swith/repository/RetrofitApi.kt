@@ -47,6 +47,10 @@ interface RetrofitApi {
     @PATCH("/groupinfo/session/admin/{sessionIdx}/status")
     suspend fun deleteRound(@Path("sessionIdx") sessionIdx: Int) : Response<SessionResponse>
 
+    // 회차 수정
+    @PATCH("/groupinfo/session/admin")
+    suspend fun modifyRound(@Body session: SessionModify) : Response<SessionResponse>
+
     //스터디 개설
     @POST("/groupinfo")
      fun createStudy(@Body body:StudyGroup) : Call<StudyResponse>

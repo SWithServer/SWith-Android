@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.swith.data.GetSessionRes
 import com.example.swith.data.Round
 import com.example.swith.data.Session
+import com.example.swith.data.SessionModify
 import com.example.swith.repository.round.update.RoundUpdateRemoteDataSource
 import com.example.swith.repository.round.update.RoundUpdateRepository
 import com.example.swith.utils.SingleLiveEvent
@@ -30,6 +31,7 @@ class RoundUpdateViewModel: BaseViewModel() {
 
     // private val userIdx = SharedPrefManager().getLoginData()?.userIdx
     private val userIdx = 1
+
 
     fun loadPostRound(groupIdx: Int){
         viewModelScope.launch {
@@ -62,6 +64,17 @@ class RoundUpdateViewModel: BaseViewModel() {
             withContext(Dispatchers.Main){
                 res?.let{
                     mutableScreenState.postValue(ScreenState.LOAD)
+                    _sessionLiveEvent.call()
+                }
+            }
+        }
+    }
+
+    fun modifyRound(session: SessionModify){
+        viewModelScope.launch {
+            val res = roundUpdateRepository.modifyRound(this@RoundUpdateViewModel, session)
+            withContext(Dispatchers.Main){
+                res?.let {
                     _sessionLiveEvent.call()
                 }
             }

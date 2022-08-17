@@ -50,7 +50,7 @@ class RoundSummaryFragment : BaseFragment<FragmentRoundSummaryBinding>(R.layout.
                 }
             }
             tvSummaryContent.text = "학습 내용 : ${session.sessionContent}"
-            tvSummaryPlace.text = String.format("장소 : %s", session.place ?: "온라인")
+            tvSummaryPlace.text = if (session.online == 0) String.format("장소 : %s", session.place) else "온라인"
 
             session.groupImgUrl?.let {
                 // Todo : 이미지 설정

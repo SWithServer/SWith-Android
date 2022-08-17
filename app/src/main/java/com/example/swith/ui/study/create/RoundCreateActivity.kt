@@ -554,6 +554,7 @@ open class RoundCreateActivity : AppCompatActivity() {
                                     btnCreateEndDate.text = "종료 시간"
                                     endTime = null
                                 }
+                                setAddButton()
                             }
                             else {
                                 btnCreateEndDate.text = String.format(
@@ -567,6 +568,7 @@ open class RoundCreateActivity : AppCompatActivity() {
                                     btnCreateStartDate.text = "시작 시간 "
                                     startTime = null
                                 }
+                                setAddButton()
                             }
                         }
                         .setNegativeButton("취소") { _, _

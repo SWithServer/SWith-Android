@@ -43,6 +43,11 @@ class ManageRoundActivity : AppCompatActivity(){
         observeViewModel()
     }
 
+    override fun onResume() {
+        super.onResume()
+        reloadData()
+    }
+
     private fun initView(){
         ToolBarManager(this).initToolBar(binding.toolbarManageRound, false, backVisible = true)
         binding.rvManageRound.apply {
@@ -74,16 +79,13 @@ class ManageRoundActivity : AppCompatActivity(){
     }
 
     private fun observeViewModel(){
-        setVisibility(true)
-        viewModel.loadPostRound(groupIdx)
-
         viewModel.roundLiveData.observe(this, Observer {
             (binding.rvManageRound.adapter as ManageRoundRVAdapter).setData(it.getSessionResList)
         })
 
         // 스크린 상태 변경
         viewModel.mutableScreenState.observe(this, Observer {
-            if(it == ScreenState.RENDER) setVisibility(false)
+            if(it == ScreenState.RENDER) setVisibility(false, viewModel.roundLiveData.value?.getSessionResList.isNullOrEmpty())
         })
 
         viewModel.mutableErrorMessage.observe(this, Observer {
@@ -97,14 +99,21 @@ class ManageRoundActivity : AppCompatActivity(){
     }
 
     private fun reloadData(){
-        setVisibility(true)
+        setVisibility(true, false)
         viewModel.loadPostRound(groupIdx)
     }
 
-    private fun setVisibility(beforeLoad: Boolean){
+    private fun setVisibility(beforeLoad: Boolean, isEmpty: Boolean){
         with(binding){
-            svManageRound.visibility = if (beforeLoad) View.INVISIBLE else View.VISIBLE
-            manageRoundCircularIndicator.visibility = if (beforeLoad) View.VISIBLE else View.INVISIBLE
+            if (beforeLoad) {
+                svManageRound.visibility = View.INVISIBLE
+                layoutManageNoRound.visibility = View.INVISIBLE
+                manageRoundCircularIndicator.visibility = View.VISIBLE
+            } else {
+                svManageRound.visibility = if (isEmpty) View.INVISIBLE else View.VISIBLE
+                layoutManageNoRound.visibility = if (isEmpty) View.VISIBLE else View.INVISIBLE
+                manageRoundCircularIndicator.visibility = View.INVISIBLE
+            }
         }
     }
 

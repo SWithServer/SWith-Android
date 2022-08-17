@@ -2,10 +2,14 @@ package com.example.swith.ui.manage
 
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.Toast
+import androidx.lifecycle.Observer
 import com.example.swith.R
 import com.example.swith.data.DateTime
 import com.example.swith.data.GetSessionRes
+import com.example.swith.data.SessionModify
 import com.example.swith.ui.dialog.BottomSheet
+import com.example.swith.ui.dialog.CustomAlertDialog
 import com.example.swith.ui.dialog.CustomConfirmDialog
 import com.example.swith.ui.study.create.RoundCreateActivity
 
@@ -17,6 +21,7 @@ class ManageRoundModifyActivity : RoundCreateActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initView()
+        observeViewModel()
     }
 
     private fun initView(){
@@ -69,10 +74,22 @@ class ManageRoundModifyActivity : RoundCreateActivity() {
             BottomSheet("${curRound.sessionNum}회차 수정", null, resources.getString(R.string.manage_round_modify), "수정 완료").apply {
                 setCustomListener(object: BottomSheet.customClickListener{
                     override fun onCheckClick() {
-                        finish()
-                        // Todo: ViewModel 에서 Patch
+                        val online = if (binding.cbCreateOnline.isChecked) 1 else 0
+                        val startTimeToString : String = String.format("%4d-%02d-%02dT%02d:%02d", startTime?.year, startTime?.month, startTime?.day, startTime?.hourOfDay, startTime?.minute)
+                        val endTimeToString : String = String.format("%4d-%02d-%02dT%02d:%02d", endTime?.year, endTime?.month, endTime?.day, endTime?.hourOfDay, endTime?.minute)
+                        viewModel.modifyRound(SessionModify(online, binding.etCreatePlace.text.toString(), binding.etCreateDetail.text.toString(), endTimeToString, curRound.sessionIdx, startTimeToString))
                     }
                 })
             }.show(supportFragmentManager, "회차 수정 취소") }
+    }
+
+    override fun observeViewModel() {
+        viewModel.sessionLiveEvent.observe(this, Observer {
+            Toast.makeText(applicationContext, "회차 수정이 완료되었습니다", Toast.LENGTH_SHORT).show()
+            finish()
+        })
+        viewModel.mutableErrorMessage.observe(this, Observer {
+            CustomAlertDialog("회차 수정 오류", it.toString()).show(supportFragmentManager, "회차 수정 오류")
+        })
     }
 }

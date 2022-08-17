@@ -38,4 +38,14 @@ class RoundUpdateRemoteDataSource : BaseRepository() {
             }
         }}
     }
+
+    suspend fun modifyRound(errorEmitter: RemoteErrorEmitter, session: SessionModify) : SessionResponse?{
+        return safeApiCall(errorEmitter) { retrofitApi.modifyRound(session).let {
+            if (it.body()?.isSuccess == true) it.body()
+            else {
+                errorEmitter.onError(it.body()?.message!!)
+                null
+            }
+        }}
+    }
 }

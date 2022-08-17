@@ -1,5 +1,6 @@
 package com.example.swith.ui.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -32,9 +33,7 @@ class ManageRoundRVAdapter : RecyclerView.Adapter<ManageRoundRVAdapter.ViewHolde
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(roundList[position])
-        if (compareTimeWithNow(roundList[position].sessionStart)){
-            holder.itemView.setOnClickListener { customListener.onClick(roundList[position]) }
-        }
+        holder.itemView.setOnClickListener { customListener.onClick(roundList[position])}
     }
 
     override fun getItemCount(): Int = roundList.size
@@ -44,7 +43,7 @@ class ManageRoundRVAdapter : RecyclerView.Adapter<ManageRoundRVAdapter.ViewHolde
         notifyDataSetChanged()
     }
 
-    inner class ViewHolder(binding: ItemMangeRoundBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(val binding: ItemMangeRoundBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(round: GetSessionRes){
             with(binding){
                 tvItemManageRoundCount.text = "${round.sessionNum}회차"
