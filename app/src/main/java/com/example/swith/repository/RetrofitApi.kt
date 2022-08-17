@@ -21,7 +21,7 @@ interface RetrofitApi {
 
     // 회차 생성
     @POST("/groupinfo/session")
-    suspend fun createRound(@Body session: Session): Response<SessionResponse>
+    suspend fun createRound(@Body session: Session): Response<SessionCreate>
 
     // 회차 정보(개요, 출석, 메모)
     @GET("/groupinfo/session/info")
@@ -42,6 +42,10 @@ interface RetrofitApi {
     // 공지사항 수정
     @PATCH("/groupinfo/announcement")
     suspend fun updateAnnounce(@Body announceModify: AnnounceModify) : Response<Any>
+
+    // 회차 삭제
+    @PATCH("/groupinfo/session/admin/{sessionIdx}/status")
+    suspend fun deleteRound(@Path("sessionIdx") sessionIdx: Int) : Response<SessionResponse>
 
     //스터디 개설
     @POST("/groupinfo")

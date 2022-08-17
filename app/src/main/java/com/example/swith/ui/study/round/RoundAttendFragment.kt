@@ -54,7 +54,7 @@ class RoundAttendFragment(private val curCount: Int) : BaseFragment<FragmentRoun
         with(binding){
             tvAttendMinTime.text = "출석 유효 시간 : ${viewModel.getAttendValidTime()}분"
             rvAttend.apply{
-                adapter = AttendRVAdapter(viewModel.curUserAttend?.userIdx!!)
+                adapter = AttendRVAdapter(viewModel.curUserAttend?.userIdx)
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             }
             btnAttend.setOnClickListener {

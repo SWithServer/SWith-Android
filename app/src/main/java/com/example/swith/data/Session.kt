@@ -1,7 +1,5 @@
 package com.example.swith.data
 
-import com.google.gson.annotations.SerializedName
-
 data class Session(
     val groupIdx: Int,
     val online: Int,
@@ -12,6 +10,16 @@ data class Session(
     val userIdx: Int
 )
 
-data class SessionResponse(
+data class SessionCreate(
+    val code: Int,
+    val isSuccess: Boolean,
+    val message: String,
     val result: Int?
+)
+
+data class SessionResponse(
+    val code: Int,
+    val isSuccess: Boolean,
+    val message: String,
+    val result: String
 )

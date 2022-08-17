@@ -24,7 +24,7 @@ import com.example.swith.databinding.DialogTimepickerBinding
 import com.example.swith.ui.dialog.BottomSheet
 import com.example.swith.ui.dialog.CustomAlertDialog
 import com.example.swith.utils.ToolBarManager
-import com.example.swith.viewmodel.RoundCreateViewModel
+import com.example.swith.viewmodel.RoundUpdateViewModel
 import java.lang.Integer.max
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -32,7 +32,7 @@ import java.util.*
 
 
 open class RoundCreateActivity : AppCompatActivity() {
-    private val viewModel : RoundCreateViewModel by viewModels()
+    protected val viewModel : RoundUpdateViewModel by viewModels()
     // 회차 최소시간(분단위)
     protected var minuteMin = 20
     // 회차 최대시간(시간단위)
@@ -44,7 +44,11 @@ open class RoundCreateActivity : AppCompatActivity() {
     protected var startTime: DateTime? = null
     protected var endTime: DateTime? = null
 
-    lateinit var binding: ActivityRoundCreateBinding
+    private val groupIdx by lazy {
+        intent.getIntExtra("groupIdx", 0)
+    }
+
+    protected lateinit var binding: ActivityRoundCreateBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_round_create)
@@ -55,6 +59,7 @@ open class RoundCreateActivity : AppCompatActivity() {
         )
         initCheckBox()
         initListener()
+        observeViewModel()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -102,11 +107,6 @@ open class RoundCreateActivity : AppCompatActivity() {
     }
 
     protected open fun initListener(){
-        viewModel.sessionLiveEvent.observe(this, Observer{
-            Toast.makeText(applicationContext, "회차 생성이 완료되었습니다", Toast.LENGTH_SHORT).show()
-            finish()
-        })
-
         // 시간 설정 후에 추가해줘야 함
         with(binding){
             btnCreateStartDate.setOnClickListener {
@@ -143,13 +143,23 @@ open class RoundCreateActivity : AppCompatActivity() {
                             override fun onCheckClick() {
                                 dismiss()
                                 viewModel.postRound(Session(
-                                    1, online, etCreatePlace.text.toString(), etCreateDetail.text.toString(), endTimeToString, startTimeToString, 1))
+                                    groupIdx, online, etCreatePlace.text.toString(), etCreateDetail.text.toString(), endTimeToString, startTimeToString, 1))
                             }
                         })
                     }.show(supportFragmentManager, "roundCreate")
                 }
             }
         }
+    }
+
+    protected open fun observeViewModel(){
+        viewModel.sessionLiveEvent.observe(this, Observer{
+            Toast.makeText(applicationContext, "회차 생성이 완료되었습니다", Toast.LENGTH_SHORT).show()
+            finish()
+        })
+        viewModel.mutableErrorMessage.observe(this, Observer {
+            CustomAlertDialog("생성 오류", it).show(supportFragmentManager, "회차 생성 오류")
+        })
     }
 
     private fun initDateTimePicker(isStart: Boolean){
