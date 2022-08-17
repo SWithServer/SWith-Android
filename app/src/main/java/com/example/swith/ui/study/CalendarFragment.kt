@@ -60,8 +60,15 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
             }
         }
 
-        binding.btnCreateCalendar.setOnClickListener { startActivity(Intent(activity, RoundCreateActivity::class.java)) }
-        binding.btnNoCreateCalendar.setOnClickListener { startActivity(Intent(activity, RoundCreateActivity::class.java)) }
+        binding.btnCreateCalendar.setOnClickListener { startRoundCreateActivity() }
+        binding.btnNoCreateCalendar.setOnClickListener { startRoundCreateActivity() }
+    }
+
+    private fun startRoundCreateActivity(){
+        startActivity(Intent(activity, RoundCreateActivity::class.java).apply {
+            putExtra("minuteMin", viewModel.roundLiveData.value?.attendanceValidTime)
+            putExtra("groupIdx", viewModel.groupIdx)
+        })
     }
 
     private fun observeViewModel(){

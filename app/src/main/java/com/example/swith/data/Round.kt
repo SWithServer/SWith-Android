@@ -23,6 +23,25 @@ data class GetSessionRes(
     val sessionStart: List<Int>
 ): Serializable
 
+
 data class RoundResponse(
     @SerializedName("result") val round: Round
+)
+
+data class GetUserAttendanceRes(
+    val attendanceRate: Int,
+    val nickname: String,
+    val userIdx: Int
+)
+
+data class UserAttend(
+    val attendanceValidTime: Int,
+    val getUserAttendanceResList: List<GetUserAttendanceRes>
+)
+
+data class UserAttendResponse(
+    val code: Int,
+    val isSuccess: Boolean,
+    val message: String,
+    @SerializedName("result") val attend: UserAttend
 )

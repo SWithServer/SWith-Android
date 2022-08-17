@@ -6,7 +6,9 @@ import android.util.Log
 import android.view.View
 import androidx.core.view.forEach
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import com.example.swith.R
+import com.example.swith.data.GetUserAttendanceRes
 import com.example.swith.databinding.FragmentStatsBinding
 import com.example.swith.utils.base.BaseFragment
 import com.example.swith.viewmodel.RoundViewModel
@@ -20,16 +22,26 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 
 class StatsFragment : BaseFragment<FragmentStatsBinding>(R.layout.fragment_stats) {
     private val viewModel : RoundViewModel by activityViewModels()
-    private val sessionList by lazy{
-        viewModel.getAllData()
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initChart()
+        observeViewModel()
     }
 
-    private fun initChart(){
+    private fun observeViewModel(){
+        setVisibility(true)
+        viewModel.loadUserAttend()
+
+        viewModel.userAttendLiveData.observe(viewLifecycleOwner, Observer {
+            initChart(it.getUserAttendanceResList)
+        })
+
+        viewModel.mutableScreenState.observe(viewLifecycleOwner, Observer {
+            setVisibility(false)
+        })
+    }
+
+    private fun initChart(attendList: List<GetUserAttendanceRes>){
         with(binding.chartAttend){
             description.isEnabled = false
             setTouchEnabled(false)
@@ -43,15 +55,15 @@ class StatsFragment : BaseFragment<FragmentStatsBinding>(R.layout.fragment_stats
             val xAxis = xAxis
             xAxis.position = XAxis.XAxisPosition.BOTTOM
             xAxis.isEnabled = true
-            xAxis.mAxisMinimum = 1f
-            xAxis.mAxisMaximum = sessionList.size.toFloat()
+            xAxis.mAxisMinimum = 0f
+            xAxis.mAxisMaximum = attendList.size.toFloat()
             xAxis.textSize = 14f
             xAxis.setDrawAxisLine(true)
             xAxis.setDrawGridLines(false)
             xAxis.granularity = 1f
             xAxis.valueFormatter = object: ValueFormatter(){
                 override fun getFormattedValue(value: Float): String {
-                    return "${value.toInt()}회차"
+                    return attendList[value.toInt()].nickname
                 }
             }
 
@@ -69,8 +81,8 @@ class StatsFragment : BaseFragment<FragmentStatsBinding>(R.layout.fragment_stats
 
             // 데이터 init
             val entries = ArrayList<BarEntry>()
-            for (i in sessionList.indices){
-                entries.add(BarEntry(sessionList[i].sessionNum.toFloat(), sessionList[i].attendanceRate.toFloat()))
+            for (i in attendList.indices){
+                entries.add(BarEntry(i.toFloat(), attendList[i].attendanceRate.toFloat()))
             }
 
             val barDataSet = BarDataSet(entries, "출석율")
@@ -93,6 +105,13 @@ class StatsFragment : BaseFragment<FragmentStatsBinding>(R.layout.fragment_stats
 
             data = barData
             invalidate()
+        }
+    }
+
+    private fun setVisibility(beforeLoad: Boolean){
+        with(binding){
+            statsLayout.visibility = if (beforeLoad) View.INVISIBLE else View.VISIBLE
+            statsCircularLayout.visibility = if(beforeLoad) View.VISIBLE else View.INVISIBLE
         }
     }
 }

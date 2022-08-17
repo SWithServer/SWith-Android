@@ -2,10 +2,7 @@ package com.example.swith.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.*
-import com.example.swith.data.GetAttendance
-import com.example.swith.data.GetSessionRes
-import com.example.swith.data.Round
-import com.example.swith.data.SessionInfo
+import com.example.swith.data.*
 import com.example.swith.repository.round.RoundRemoteDataSource
 import com.example.swith.repository.round.RoundRepository
 import com.example.swith.utils.SingleLiveEvent
@@ -39,6 +36,9 @@ class RoundViewModel() : BaseViewModel() {
     // 출석
     private var _attendLiveEvent = SingleLiveEvent<Any>()
 
+    // 통계 화면 (유저별 출석율)
+    private var _userAttendLiveData = MutableLiveData<UserAttend>()
+
 
     val roundLiveData : LiveData<Round>
         get() = _roundLiveData
@@ -51,6 +51,9 @@ class RoundViewModel() : BaseViewModel() {
 
     val attendLiveEvent: LiveData<Any>
         get() = _attendLiveEvent
+
+    val userAttendLiveData : LiveData<UserAttend>
+        get() = _userAttendLiveData
 
     // private val userIdx = SharedPrefManager().getLoginData()?.userIdx
     private val userIdx = 1
@@ -140,7 +143,6 @@ class RoundViewModel() : BaseViewModel() {
     }
 
     fun isUpdateAvailable() : Boolean{
-        // Todo: 시간 조건 비교하는 것 추가
         if (curUserAttend?.status == 0) return true
         return false
     }
@@ -155,6 +157,19 @@ class RoundViewModel() : BaseViewModel() {
                 }
                 else{
                     _attendLiveEvent.call()
+                }
+            }
+        }
+    }
+
+    fun loadUserAttend(){
+        viewModelScope.launch {
+            val res = repository.getUserAttend(this@RoundViewModel, groupIdx)
+            withContext(Dispatchers.Main){
+                if (res == null) mutableScreenState.postValue(ScreenState.RENDER)
+                res?.let {
+                    mutableScreenState.postValue(ScreenState.RENDER)
+                    _userAttendLiveData.value = res
                 }
             }
         }

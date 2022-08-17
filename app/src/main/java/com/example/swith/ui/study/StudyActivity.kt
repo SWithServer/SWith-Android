@@ -54,7 +54,7 @@ class StudyActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.ib_study_back -> {
                 with(supportFragmentManager){
-                    if (fragments[0] is RoundFragment || fragments[0] is CalendarFragment)
+                    if (fragments[0] is RoundFragment || fragments[0] is CalendarFragment || fragments[0] is StatsFragment)
                         finish()
                     else {
                         beginTransaction()

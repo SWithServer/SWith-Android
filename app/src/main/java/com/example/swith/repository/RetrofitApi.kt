@@ -27,6 +27,10 @@ interface RetrofitApi {
     @GET("/groupinfo/session/info")
     suspend fun getSessionInfo(@Query("userIdx") userIdx: Int, @Query("sessionIdx") sessionIdx: Int) : Response<SessionInfoResponse>
 
+    // 스터디, 유저별 출석율 조회
+    @GET("/groupinfo/attendance")
+    suspend fun getUserAttend(@Query("groupIdx") groupIdx: Int) : Response<UserAttendResponse>
+
     // 출석 업데이트
     @PATCH("/groupinfo/attendance")
     suspend fun updateAttend(@Query("userIdx") userIdx: Int, @Query("sessionIdx") sessionIdx: Int) : Response<AttendResponse>
