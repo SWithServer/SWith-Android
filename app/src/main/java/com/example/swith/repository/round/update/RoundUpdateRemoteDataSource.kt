@@ -30,6 +30,12 @@ class RoundUpdateRemoteDataSource : BaseRepository() {
 
     }
     suspend fun deleteRound(errorEmitter: RemoteErrorEmitter, sessionIdx: Int) : SessionResponse?{
-        return safeApiCall(errorEmitter) { retrofitApi.deleteRound(sessionIdx).body()}
+        return safeApiCall(errorEmitter) { retrofitApi.deleteRound(sessionIdx).let {
+            if (it.body()?.isSuccess == true) it.body()
+            else{
+                errorEmitter.onError(it.body()?.message!!)
+                null
+            }
+        }}
     }
 }

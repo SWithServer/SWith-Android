@@ -156,6 +156,10 @@ class AnnounceActivity : AppCompatActivity(){
             if(it == ScreenState.RENDER) setVisibility(false)
         })
 
+        viewModel.mutableErrorType.observe(this, Observer {
+            Toast.makeText(applicationContext, it.toString(), Toast.LENGTH_SHORT).show()
+        })
+
         viewModel.deleteLiveEvent.observe(this, Observer {
             CustomAlertDialog("삭제 완료", "공지사항이 삭제 되었습니다.").show(supportFragmentManager, "삭제 완료")
             reloadData()

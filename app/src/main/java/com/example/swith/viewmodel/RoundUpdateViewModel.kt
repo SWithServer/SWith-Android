@@ -61,6 +61,7 @@ class RoundUpdateViewModel: BaseViewModel() {
             val res = roundUpdateRepository.deleteRound(this@RoundUpdateViewModel, sessionIdx)
             withContext(Dispatchers.Main){
                 res?.let{
+                    mutableScreenState.postValue(ScreenState.LOAD)
                     _sessionLiveEvent.call()
                 }
             }

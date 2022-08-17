@@ -18,10 +18,12 @@ import com.example.swith.R
 import com.example.swith.data.GetSessionRes
 import com.example.swith.databinding.ActivityManageRoundBinding
 import com.example.swith.ui.adapter.ManageRoundRVAdapter
+import com.example.swith.ui.dialog.CustomAlertDialog
 import com.example.swith.ui.dialog.CustomConfirmDialog
 import com.example.swith.utils.ItemTouchHelperListener
 import com.example.swith.utils.SwipeController
 import com.example.swith.utils.ToolBarManager
+import com.example.swith.utils.error.ScreenState
 import com.example.swith.viewmodel.RoundUpdateViewModel
 import com.example.swith.viewmodel.RoundViewModel
 import java.lang.Float.max
@@ -57,7 +59,8 @@ class ManageRoundActivity : AppCompatActivity(){
                         CustomConfirmDialog("회차 삭제", "${round.sessionNum}회차를 삭제하시겠습니까?").apply {
                             setCustomListener(object: CustomConfirmDialog.CustomListener{
                                 override fun onConfirm() {
-                                    Log.e("delete complete", "${round.sessionNum}회차 삭제 완료")
+                                    dismiss()
+                                    viewModel.deleteRound(round.sessionIdx)
                                 }
                             })
                         }.show(supportFragmentManager, "roundDelete")
@@ -78,9 +81,24 @@ class ManageRoundActivity : AppCompatActivity(){
             (binding.rvManageRound.adapter as ManageRoundRVAdapter).setData(it.getSessionResList)
         })
 
+        // 스크린 상태 변경
         viewModel.mutableScreenState.observe(this, Observer {
-            setVisibility(false)
+            if(it == ScreenState.RENDER) setVisibility(false)
         })
+
+        viewModel.mutableErrorMessage.observe(this, Observer {
+            CustomAlertDialog("회차 삭제 실패", it.toString()).show(supportFragmentManager, "회차 삭제 실패")
+        })
+
+        viewModel.sessionLiveEvent.observe(this, Observer {
+            CustomAlertDialog("회차 삭제 완료", "해당 회차가 삭제되었습니다.").show(supportFragmentManager, "회차 삭제 완료")
+            reloadData()
+        })
+    }
+
+    private fun reloadData(){
+        setVisibility(true)
+        viewModel.loadPostRound(groupIdx)
     }
 
     private fun setVisibility(beforeLoad: Boolean){
