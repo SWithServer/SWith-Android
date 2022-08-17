@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
@@ -20,54 +21,38 @@ import com.example.swith.ui.study.round.RoundTabFragment
 import com.example.swith.utils.ToolBarManager
 import com.example.swith.viewmodel.RoundViewModel
 
-class StudyActivity : AppCompatActivity() {
+class StudyActivity : AppCompatActivity(), View.OnClickListener {
     private var groupId = 0
     lateinit var binding: ActivityStudyBinding
     // BottomNav 중 회차(연필)을 누르는 경우 가장 최근에 닫은 회차 프래그먼트로 이동
     private var prevRoundFragment: String = "fragment"
     private val viewModel: RoundViewModel by viewModels()
 
-    // 툴바 화면에 관련된 것
-    private lateinit var mainMenu: Menu
-    private var isManager = false
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_study)
 
         initData()
-
-        ToolBarManager(this).initToolBar(binding.studyToolbar,
-            titleVisible = false,
-            backVisible = true
-        )
         initBottomNavigation()
     }
 
     private fun initData(){
         intent.hasExtra("group")?.let { groupId = intent.getIntExtra("group", 0) }
+        binding.clickListener = this
         viewModel.groupIdx = groupId
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.toolbar_menu, menu)
-        mainMenu = menu
-        if (!isManager)
-            menu.findItem(R.id.toolbar_setting).isVisible = false
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-            R.id.toolbar_notification ->{
+    override fun onClick(view: View) {
+        when(view.id){
+            R.id.ib_study_notice ->{
                 Toast.makeText(applicationContext, "알림 버튼 Clicked", Toast.LENGTH_SHORT).show()
             }
-            R.id.toolbar_setting -> {
+            R.id.ib_study_setting -> {
                 startActivity(Intent(this, ManageActivity::class.java).apply {
                     putExtra("groupId", groupId)
                 })
             }
-            android.R.id.home -> {
+            R.id.ib_study_back -> {
                 with(supportFragmentManager){
                     if (fragments[0] is RoundFragment || fragments[0] is CalendarFragment)
                         finish()
@@ -77,15 +62,8 @@ class StudyActivity : AppCompatActivity() {
                             .commitAllowingStateLoss()
                     }
                 }
-
             }
         }
-        return super.onOptionsItemSelected(item)
-    }
-
-    fun getToolBarMenu(isManager: Boolean) : Menu{
-        this.isManager = isManager
-        return mainMenu
     }
 
     private fun initBottomNavigation(){
@@ -143,5 +121,9 @@ class StudyActivity : AppCompatActivity() {
             }
         }
     }
-
+    fun setVisibleBar(isManager: Boolean){
+        binding.studyToolbar.apply {
+            ibStudySetting.visibility = if (isManager) View.VISIBLE else View.GONE
+        }
+    }
 }

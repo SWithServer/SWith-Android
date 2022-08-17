@@ -50,7 +50,7 @@ class RoundFragment : BaseFragment<FragmentRoundBinding>(R.layout.fragment_round
         viewModel.roundLiveData.observe(viewLifecycleOwner, Observer {
             (binding.roundListRv.adapter as RoundRVAdapter).setData(it)
             binding.roundNoticeContentTv.text = it.announcementContent
-            (requireActivity() as StudyActivity).getToolBarMenu(it.admin).findItem(R.id.toolbar_setting).isVisible = it.admin
+            setManagerLayout(it.admin)
         })
 
         viewModel.mutableScreenState.observe(viewLifecycleOwner, Observer {

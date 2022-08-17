@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import com.example.swith.ui.MainActivity
+import com.example.swith.ui.study.StudyActivity
 
 abstract class BaseFragment<VB : ViewBinding>(@LayoutRes private val layoutRes: Int): Fragment(){
     private var _viewBinding: VB? = null
@@ -28,6 +29,14 @@ abstract class BaseFragment<VB : ViewBinding>(@LayoutRes private val layoutRes: 
         activity?.let {
             if (it is MainActivity) {
                 it.setVisibleBar(backButton,noticeButton,title)
+            }
+        }
+    }
+
+    fun setManagerLayout(isManager: Boolean){
+        activity?.let{
+            if (it is StudyActivity){
+                it.setVisibleBar(isManager)
             }
         }
     }
