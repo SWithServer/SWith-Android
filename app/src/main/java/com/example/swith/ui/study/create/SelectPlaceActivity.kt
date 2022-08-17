@@ -153,6 +153,7 @@ class SelectPlaceActivity :  AppCompatActivity(),View.OnClickListener {
                 })
             }
             2 -> {
+                binding.tvPlaceGu.visibility=View.VISIBLE
                 binding.rvGu.adapter = adapter
                 binding.rvGu.layoutManager = LinearLayoutManager(this@SelectPlaceActivity)
                 adapter.setItemClickListener(object : LocationAdapter.OnItemClickListener {
@@ -187,6 +188,7 @@ class SelectPlaceActivity :  AppCompatActivity(),View.OnClickListener {
                 })
             }
             3 -> {
+                binding.tvPlaceDong.visibility=View.VISIBLE
                 binding.rvDong.adapter = adapter
                 binding.rvDong.layoutManager = LinearLayoutManager(this@SelectPlaceActivity)
                 adapter.setItemClickListener(object : LocationAdapter.OnItemClickListener {
