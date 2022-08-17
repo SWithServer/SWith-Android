@@ -2,9 +2,11 @@ package com.example.swith.ui.profile
 
 import android.os.Bundle
 import android.view.View
+import android.view.View.INVISIBLE
 import android.widget.Toast
 import com.example.swith.R
 import com.example.swith.databinding.FragmentProfileBinding
+import com.example.swith.ui.MainActivity
 import com.example.swith.utils.base.BaseFragment
 
 class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_profile),
@@ -29,6 +31,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
     }
     private fun initView() {
         binding.clickListener=this@ProfileFragment
+        setVisiblebar(false,true,getString(R.string.profile))
     }
 
     override fun onClick(view: View?) {

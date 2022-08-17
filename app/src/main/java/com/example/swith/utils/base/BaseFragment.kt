@@ -8,6 +8,7 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
+import com.example.swith.ui.MainActivity
 
 abstract class BaseFragment<VB : ViewBinding>(@LayoutRes private val layoutRes: Int): Fragment(){
     private var _viewBinding: VB? = null
@@ -21,5 +22,13 @@ abstract class BaseFragment<VB : ViewBinding>(@LayoutRes private val layoutRes: 
     override fun onDestroyView() {
         super.onDestroyView()
         _viewBinding = null
+    }
+
+    fun setVisiblebar(backButton: Boolean,noticeButton: Boolean,title:String){
+        activity?.let {
+            if (it is MainActivity) {
+                it.setVisibleBar(backButton,noticeButton,title)
+            }
+        }
     }
 }

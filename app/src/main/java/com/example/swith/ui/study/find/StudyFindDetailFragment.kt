@@ -61,6 +61,8 @@ class StudyFindDetailFragment : BaseFragment<FragmentStudyFindDetailBinding>(R.l
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setVisiblebar(true,false,"")
+
         with(binding)
         {
             btnStudyApply.setOnClickListener {

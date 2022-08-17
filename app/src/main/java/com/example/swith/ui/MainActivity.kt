@@ -5,6 +5,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -18,7 +21,7 @@ import com.example.swith.ui.study.find.StudyFindFragment
 import com.example.swith.utils.ToolBarManager
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), View.OnClickListener {
     //뒤로가기 눌렀던 시간 저장
     private var backKeyPressedTime: Long = 0
     lateinit var binding: ActivityMainBinding
@@ -31,10 +34,10 @@ class MainActivity : AppCompatActivity() {
         initView()
 
 
-        ToolBarManager(this).initToolBar(binding.mainToolbar,
-            titleVisible = false,
-            backVisible = false
-        )
+//        ToolBarManager(this).initToolBar(binding.mainToolbar,
+//            titleVisible = false,
+//            backVisible = false
+//        )
     }
 
     private fun initView() {
@@ -45,6 +48,7 @@ class MainActivity : AppCompatActivity() {
                 binding.mainBnv.selectedItemId = R.id.bottom_nav_profile
             }
         }
+        binding.clickListener=this@MainActivity
     }
 
     private fun initData() {
@@ -78,17 +82,6 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-            R.id.toolbar_notification ->{
-                Toast.makeText(applicationContext, "알림 버튼 Clicked", Toast.LENGTH_SHORT).show()
-            }
-            R.id.toolbar_setting -> {
-                Toast.makeText(applicationContext, "설정 버튼 Clicked", Toast.LENGTH_SHORT).show()
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
 
     interface onBackPressedListener{
         fun onBackPressed()
@@ -151,5 +144,32 @@ class MainActivity : AppCompatActivity() {
             .replace(R.id.main_frm,fragment_)
             .addToBackStack(null)
             .commit()
+    }
+
+    override fun onClick(view: View?) {
+        when(view?.id){
+            R.id.ib_back ->{
+                onBackPressed()
+            }
+            R.id.ib_notice->{
+                Toast.makeText(this@MainActivity,"notice",Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    fun setVisibleBar(backButton: Boolean,noticeButton: Boolean,title:String){
+        binding.mainToolbar.apply {
+            if(backButton){
+                ibBack.visibility=VISIBLE
+            }else {
+                ibBack.visibility= INVISIBLE
+            }
+            if(noticeButton){
+                ibNotice.visibility= VISIBLE
+            }else{
+                ibNotice.visibility= INVISIBLE
+            }
+            tvTitle.text=title
+        }
     }
 }
