@@ -38,7 +38,7 @@ class AnnounceViewModel : BaseViewModel() {
             val res = repository.getAllAnnounce(this@AnnounceViewModel, groupIdx)
             if (res == null) mutableScreenState.postValue(ScreenState.RENDER) else{
                 mutableScreenState.postValue(ScreenState.RENDER)
-                _announceLiveData.value = res!!
+                _announceLiveData.value = res
             }
         }
     }

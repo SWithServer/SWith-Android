@@ -21,7 +21,6 @@ class ManageRoundModifyActivity : RoundCreateActivity() {
 
     private fun initView(){
         with(binding){
-            minuteMin = 30 // 임시
             tvCreateInfo.text = "* ${curRound.sessionNum}회차 수정"
             startTime = DateTime(curRound.sessionStart[0], curRound.sessionStart[1], curRound.sessionStart[2], curRound.sessionStart[3], curRound.sessionStart[4])
             endTime = DateTime(curRound.sessionEnd[0], curRound.sessionEnd[1], curRound.sessionEnd[2], curRound.sessionEnd[3], curRound.sessionEnd[4])

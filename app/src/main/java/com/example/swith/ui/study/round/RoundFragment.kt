@@ -78,8 +78,9 @@ class RoundFragment : BaseFragment<FragmentRoundBinding>(R.layout.fragment_round
         with(binding){
             roundNoticeIv.setOnClickListener { startActivity(Intent(activity, AnnounceActivity::class.java).apply { putExtra("manager", viewModel.roundLiveData.value?.admin)
                                                     putExtra("groupIdx", viewModel.groupIdx)})}
-            roundAddBtn.setOnClickListener { startActivity(Intent(activity, RoundCreateActivity::class.java).apply {
+            roundAddBtn.setOnClickListener { startActivity(Intent(activity, RoundCreateActivity::class.java).apply { putExtra("minuteMin", viewModel.roundLiveData.value?.attendanceValidTime)
                                                     putExtra("groupIdx", viewModel.groupIdx)
+
             }) }
             roundPreviousCb.setOnCheckedChangeListener { _, isChecked -> viewModel.roundLiveData.value?.let { viewModel.setPastData(isChecked) }}
             roundPullToRefresh.apply {

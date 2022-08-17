@@ -22,26 +22,23 @@ import com.example.swith.ui.dialog.CustomConfirmDialog
 import com.example.swith.utils.ItemTouchHelperListener
 import com.example.swith.utils.SwipeController
 import com.example.swith.utils.ToolBarManager
+import com.example.swith.viewmodel.RoundUpdateViewModel
 import com.example.swith.viewmodel.RoundViewModel
 import java.lang.Float.max
 import java.lang.Float.min
 
 
 class ManageRoundActivity : AppCompatActivity(){
-    private val viewModel : RoundViewModel by viewModels()
+    private val viewModel : RoundUpdateViewModel by viewModels()
     private lateinit var binding: ActivityManageRoundBinding
-    private var groupIdx  = 0
+    private val groupIdx by lazy{
+        intent.getIntExtra("groupId", 0)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_manage_round)
-        initData()
         initView()
         observeViewModel()
-    }
-
-    private fun initData(){
-        (intent.hasExtra("gropuId")).let { groupIdx = intent.getIntExtra("groupId", 0) }
-        viewModel.groupIdx = groupIdx
     }
 
     private fun initView(){
@@ -52,6 +49,7 @@ class ManageRoundActivity : AppCompatActivity(){
                     override fun onClick(round: GetSessionRes) {
                         startActivity(Intent(applicationContext, ManageRoundModifyActivity::class.java).apply {
                             putExtra("curRound", round)
+                            putExtra("minuteMin", viewModel.roundLiveData.value?.attendanceValidTime)
                         })
                     }
 
@@ -74,7 +72,7 @@ class ManageRoundActivity : AppCompatActivity(){
 
     private fun observeViewModel(){
         setVisibility(true)
-        viewModel.loadData()
+        viewModel.loadPostRound(groupIdx)
 
         viewModel.roundLiveData.observe(this, Observer {
             (binding.rvManageRound.adapter as ManageRoundRVAdapter).setData(it.getSessionResList)

@@ -34,7 +34,10 @@ import java.util.*
 open class RoundCreateActivity : AppCompatActivity() {
     protected val viewModel : RoundUpdateViewModel by viewModels()
     // 회차 최소시간(분단위)
-    protected var minuteMin = 20
+    private val minuteMin by lazy {
+        intent.getIntExtra("minuteMin", 10)
+    }
+
     // 회차 최대시간(시간단위)
     private val hourMax = 8
     private val calendar = Calendar.getInstance()

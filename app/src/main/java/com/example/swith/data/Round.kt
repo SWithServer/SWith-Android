@@ -5,6 +5,7 @@ import java.io.Serializable
 
 data class Round(
     val admin: Boolean,
+    val attendanceValidTime: Int,
     val announcementContent: String,
     val announcementDate: List<Int>,
     var getSessionResList: List<GetSessionRes>,

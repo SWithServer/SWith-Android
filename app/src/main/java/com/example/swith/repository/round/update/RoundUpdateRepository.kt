@@ -7,6 +7,7 @@ import com.example.swith.utils.error.RemoteErrorEmitter
 
 
 class RoundUpdateRepository(private val roundUpdateRemoteDataSource: RoundUpdateRemoteDataSource) {
-    suspend fun createRound(remoteErrorEmitter: RemoteErrorEmitter, session: Session) : SessionCreate? = roundUpdateRemoteDataSource.createRound(remoteErrorEmitter, session)
-    suspend fun deleteRound(remoteErrorEmitter: RemoteErrorEmitter, sessionIdx: Int) : SessionResponse? = roundUpdateRemoteDataSource.deleteRound(remoteErrorEmitter, sessionIdx)
+    suspend fun getPostRound(errorEmitter: RemoteErrorEmitter, userIdx: Int ,groupIdx: Int) = roundUpdateRemoteDataSource.getPostRound(errorEmitter, userIdx, groupIdx)
+    suspend fun createRound(remoteErrorEmitter: RemoteErrorEmitter, session: Session) = roundUpdateRemoteDataSource.createRound(remoteErrorEmitter, session)
+    suspend fun deleteRound(remoteErrorEmitter: RemoteErrorEmitter, sessionIdx: Int) = roundUpdateRemoteDataSource.deleteRound(remoteErrorEmitter, sessionIdx)
 }

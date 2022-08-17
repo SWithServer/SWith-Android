@@ -36,7 +36,9 @@ class RoundViewModel() : BaseViewModel() {
     // Tab 화면
     private var _sessionLiveData = MutableLiveData<SessionInfo>()
 
+    // 출석
     private var _attendLiveEvent = SingleLiveEvent<Any>()
+
 
     val roundLiveData : LiveData<Round>
         get() = _roundLiveData
@@ -109,10 +111,6 @@ class RoundViewModel() : BaseViewModel() {
     fun setPastData(pastVisible: Boolean){
         this.pastVisible = pastVisible
         _roundLiveData.value = _roundLiveData.value?.apply { getSessionResList = if(pastVisible) allData else postData }
-    }
-
-    fun setPastVisible(pastVisible: Boolean){
-        this.pastVisible = pastVisible
     }
 
      // 해당 날짜에 회차가 있는지 여부 체크

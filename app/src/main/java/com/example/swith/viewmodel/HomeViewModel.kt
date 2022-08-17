@@ -35,7 +35,7 @@ class HomeViewModel() : BaseViewModel() {
 //                            }
 //                        }
 //                    }
-                    _groupLiveData.value = res!!
+                    _groupLiveData.value = res
                     mutableScreenState.postValue(ScreenState.RENDER)
                 }
             }
