@@ -29,6 +29,7 @@
     <string name="logout">로그아웃</string>
     <string name="camera">카메라</string>
     <string name="gallery">갤러리</string>
+    <string name="save">저장</string>
 
 
     <!-- login, splash -->
@@ -54,6 +55,7 @@
 
     <!--resume-->
     <string name="resume_status">상태 : </string>
+    <string name="resume_detail">지원서 내용</string>
 
 
     <string name="study_confirm">제출하시겠습니까?</string>
