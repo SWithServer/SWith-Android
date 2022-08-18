@@ -246,7 +246,7 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
 
         // 활동 끝나는기간 설정
         binding.btnFinishDay.setOnClickListener {
-            if (binding.btnStartDay.text.toString() != "+") {
+            if (binding.btnStartDay.text.toString() != "시작 날짜") {
                 val datePickerDialog = DatePickerDialog(this, { _, year, month, day ->
                     if (month<10)
                     { binding.btnFinishDay.text =
