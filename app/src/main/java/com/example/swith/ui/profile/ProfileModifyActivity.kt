@@ -20,8 +20,11 @@ import androidx.annotation.DimenRes
 import androidx.annotation.Dimension
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.swith.R
+import com.example.swith.data.ProfileResponse
 import com.example.swith.databinding.ActivityProfileModifyBinding
 import com.example.swith.databinding.DialogImageBinding
 import com.example.swith.databinding.DialogInterestingBinding
@@ -31,8 +34,9 @@ import com.example.swith.ui.dialog.CustomDialog
 import com.example.swith.ui.dialog.CustomImageDialog
 import com.example.swith.ui.dialog.CustomInterestingDialog
 import com.example.swith.utils.CustomBinder
+import com.example.swith.viewmodel.ProfileViewModel
 
-class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener {
+class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener, Observer<ProfileResponse> {
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (isGranted) {
@@ -60,6 +64,7 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    private var mProfileViewModel: ProfileViewModel? = null
     lateinit var binding: ActivityProfileModifyBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,6 +76,12 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun initView() {
         binding.clickListener = this@ProfileModifyActivity
+        binding.apply {
+            mProfileViewModel = ViewModelProvider(this@ProfileModifyActivity, ProfileViewModel.Factory()).get(ProfileViewModel::class.java).apply {
+                profileViewModel = this
+                getCurrentProfile().observe(this@ProfileModifyActivity, this@ProfileModifyActivity)
+            }
+        }
     }
 
 
@@ -249,4 +260,9 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener {
             )
         }
     }
+
+    override fun onChanged(t: ProfileResponse?) {
+        TODO("Not yet implemented")
+    }
 }
+

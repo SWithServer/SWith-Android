@@ -4,6 +4,7 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.swith.data.ProfileResponse
 import com.example.swith.repository.profile.ProfileRepository
 import com.example.swith.repository.profile.ProfileRepositoryProvider
 
@@ -22,13 +23,13 @@ class ProfileViewModel: ViewModel(){
         isLoading.set(false)
     }
 
-//    fun requestCurrentProfile(): LiveData<ProfileResponse> {
-//        return mProfileRepository.requestCurrentProfile()
-//    }
-//
-//    fun getCurrentProfile(): LiveData<ProfileResponse> {
-//        return mProfileRepository.getCurrentProfile()
-//    }
+    fun requestCurrentProfile(email: String,jwt: String): LiveData<ProfileResponse> {
+        return mProfileRepository.requestCurrentProfile(email,jwt)
+    }
+
+    fun getCurrentProfile(): LiveData<ProfileResponse> {
+        return mProfileRepository.getCurrentProfile()
+    }
 
     class Factory : ViewModelProvider.NewInstanceFactory() {
 
