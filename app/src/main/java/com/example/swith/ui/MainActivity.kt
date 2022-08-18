@@ -129,19 +129,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             .replace(R.id.main_frm,StudyFindFragment())
             .commitAllowingStateLoss()
     }
-    fun goDeatailPage(groupIdx:Int,applicationMethod:Int,fragment: Fragment) {
+    fun goDeatailPage(groupIdx:Long,applicationMethod:Int,fragment: Fragment) {
         Log.e("summer","goDetailPage")
         var fragment_ = fragment
         var bundle = Bundle()
         fragment.arguments=bundle
-        bundle.putInt("groupIdx",groupIdx)
+        bundle.putLong("groupIdx",groupIdx)
         bundle.putInt("applicationMethod",applicationMethod)
         supportFragmentManager.beginTransaction()
             .replace(R.id.main_frm,fragment_)
             .addToBackStack(null)
             .commit()
     }
-
     override fun onClick(view: View?) {
         when(view?.id){
             R.id.ib_back ->{

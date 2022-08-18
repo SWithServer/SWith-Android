@@ -1,6 +1,7 @@
 package com.example.swith.data
 
 import com.google.gson.annotations.SerializedName
+import java.time.LocalDateTime
 
 data class StudyFindResponse(
     @SerializedName("code") val code: Int,
@@ -22,7 +23,7 @@ data class Result (
 )
 
 data class Content (
-    @SerializedName("groupIdx") val groupIdx : Int,
+    @SerializedName("groupIdx") val groupIdx : Long,
     @SerializedName("title") val title : String,
     @SerializedName("groupContent") val groupContent : String,
     @SerializedName("regionIdx1") val regionIdx1 : String,
@@ -47,4 +48,14 @@ data class Sort (
     @SerializedName("unsorted") val unsorted : Boolean,
     @SerializedName("sorted") val sorted : Boolean,
     @SerializedName("empty") val empty : Boolean
+)
+
+data class studyReqest(
+    @SerializedName("title") val title : String?,
+    @SerializedName("regionIdx") val regionIdx : String?,
+    @SerializedName("groupIdx") val groupIdx : Long?,
+    @SerializedName("interest1") val interest1 : Int?,
+    @SerializedName("interest2") val interest2 : Int?,
+    @SerializedName("sortCond") val sortCond : Int,
+    @SerializedName("ClientTime") val ClientTime : LocalDateTime
 )

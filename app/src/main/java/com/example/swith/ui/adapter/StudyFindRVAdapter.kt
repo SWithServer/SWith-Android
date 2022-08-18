@@ -131,7 +131,7 @@ class StudyFindRVAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private lateinit var itemClickListener: OnItemClickListener
 
     interface OnItemClickListener {
-        fun onClick(v:View, pos:Int,groupIdx:Int,applicationMethod:Int)
+        fun onClick(v:View, pos:Int,groupIdx:Long,applicationMethod:Int)
     }
     fun setItemClickListener(itemClickListener: OnItemClickListener) {
         this.itemClickListener = itemClickListener
