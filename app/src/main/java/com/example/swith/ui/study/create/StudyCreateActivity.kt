@@ -4,13 +4,17 @@ import android.app.DatePickerDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.ImageDecoder
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
+import android.view.Window
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -78,27 +82,21 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
     lateinit var dialog_ :Dialog
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_study_create)
         binding.clickListener = this@StudyCreateActivity
-
-
-        dialog_ = Dialog(this@StudyCreateActivity)
-        dialog_.setContentView(R.layout.fragment_dialog)
+        customDialog()
 
         Log.e("create","true")
         getSharedPreferences("result1",0).apply{
             if(this!=null) {
-                val shPref1 = this
                 val editor1 = this.edit()
                 editor1.clear()
                 editor1.apply()
             } }
         getSharedPreferences("result2",0).apply{
             if(this!=null){
-                val shPref2 = this
                 val editor2 =this.edit()
                 editor2.clear()
                 editor2.apply()
@@ -277,7 +275,7 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
             }
         }
 
-        setupSinner()
+        setupSpinner()
         with(binding)
         {
             //spinner
@@ -342,6 +340,9 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
                                         regionIdx2=null
                                         btnPlusPlace1.text="+"
                                         btnPlusPlace2.text="+"
+                                        binding.btnPlusPlace1.background = ContextCompat.getDrawable(this@StudyCreateActivity,R.drawable.bg_create_skyblue)
+                                        binding.btnPlusPlace2.background = ContextCompat.getDrawable(this@StudyCreateActivity,R.drawable.bg_create_skyblue)
+
                                         val pref1 = getSharedPreferences("result1", MODE_PRIVATE)
                                         val editor1 = pref1.edit()
                                         editor1.remove("이름1")
@@ -494,9 +495,10 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
             }
         }
     }
+
     fun createStudy(studyRequestData : StudyGroup,content_text:String){
         //레트로핏 부분
-        dialog_.findViewById<TextView>(R.id.tv_confirm).text = content_text
+        dialog_.findViewById<TextView>(R.id.tv_title).text = content_text
         dialog_.show()
 
         dialog_.findViewById<Button>(R.id.btn_no).setOnClickListener {
@@ -574,7 +576,7 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
         intent.setType("image/*")
         startActivityForResult(intent,GALLERY)
     }
-    fun setupSinner(){
+    fun setupSpinner(){
         val interest_spinner = binding.spinnerCategory
         val memberLimit_spinner = binding.spinnerPeople
         val attendanceVaildTime_spinner = binding.spinnerAttendTime
@@ -599,11 +601,24 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
             this.setDropDownViewResource(R.layout.item_create_spinner_dropdown)
         }
     }
+
     fun hideKeyboard(editText: EditText){
         val mInputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         mInputMethodManager.hideSoftInputFromWindow(
             editText.getWindowToken(),
             0
         )
+    }
+
+    fun customDialog()
+    {
+        dialog_ = Dialog(this@StudyCreateActivity)
+        dialog_.setContentView(R.layout.dialog_create)
+        var params = dialog_.window?.attributes
+        dialog_.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        params?.height = WindowManager.LayoutParams.MATCH_PARENT
+        params?.width=WindowManager.LayoutParams.MATCH_PARENT
+        params?.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
+        dialog_.window?.attributes=params
     }
 }

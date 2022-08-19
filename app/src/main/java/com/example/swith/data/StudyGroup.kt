@@ -27,3 +27,15 @@ data class StudyGroup(
     var attendanceValidTime:Int,
     var groupContent:String
 )
+
+data class StudyResult(
+    @SerializedName("groupIdx") val groupIdx:Long
+)
+//스터디 개설 retrofit post response data
+data class StudyResponse(
+    @SerializedName("code") val code: Int,
+    @SerializedName("isSuccess") val isSuccess: Boolean,
+    @SerializedName("message") val message: String,
+    @SerializedName("result") val result: StudyResult
+)
+

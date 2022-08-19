@@ -59,16 +59,15 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setVisiblebar(false,true,"")
+
+        firstLoad()
 
         adapter = StudyFindRVAdapter()
         binding.rvStudyFind.adapter = adapter
 
         Log.e("시간값",date.format(
             DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
-//        loadData(search_title,select_region, select_interest1, select_interest2, select_sort)
-//        initScrollListener()
 
         adapter.setItemClickListener(object:StudyFindRVAdapter.OnItemClickListener{
             override fun onClick(view: View, pos:Int,groupIdx:Long,applicationMethod:Int) {
@@ -138,6 +137,14 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
                             loadData(search_title,select_region, select_interest1, select_interest2, select_sort)
                             initScrollListener()
                         }
+                        else{
+                            if (const != 0) //최초 실행이 아닐때(const!=0)의 선택은 분류를 null처리해서 데이터 로드 실행하기.
+                            {
+                                select_interest1=null
+                                loadData(search_title,select_region, select_interest1, select_interest2, select_sort)
+                                initScrollListener()
+                            }
+                        } //무한스크롤 position 이슈 수정부분
                     }
                     override fun onNothingSelected(p0: AdapterView<*>?) {
                     }
@@ -156,7 +163,7 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
                             select_interest1=position
                             loadData(search_title,select_region, select_interest1, select_interest2, select_sort)
                             initScrollListener()
-                        }
+                        } //무한스크롤 position 이슈 수정 이전
                     }
                     override fun onNothingSelected(p0: AdapterView<*>?) {
                     }
@@ -179,6 +186,11 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
                 }
             }
         }
+    }
+
+    fun firstLoad()
+    {
+        //최초실행 확인 함수
         if (const<1)
         {
             const++
@@ -279,21 +291,18 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 val layoutManager = binding.rvStudyFind.layoutManager
-                // hasNextPage() -> 다음 페이지가 있는 경우
+
                 val lastVisibleItem = (layoutManager as LinearLayoutManager)
                     .findLastCompletelyVisibleItemPosition()
+
+                // hasNextPage() -> 다음 페이지가 있고, 마지막으로 보여지는 item이 리스트의 마지막일때 실행문.
                 if (hasNextPage()&&lastVisibleItem==adapter.getData().size-1) {
                     Log.e("hasNextPage()","true")
                     val last_groupIdx = adapter.getData()[adapter.getData().size-1]?.groupIdx
                     Log.e("last groupIdx","$last_groupIdx")
-
-                    // 마지막으로 보여진 아이템 position 이
-                    // 전체 아이템 개수보다 5개 모자란 경우, 데이터를 loadMore 한다
-//                    if (layoutManager.itemCount <= lastVisibleItem + 5) {
-                      Log.e("if문","true")
+                    Log.e("if문","true")
                         loadMoreData(search_title,select_region, select_interest1, select_interest2, select_sort,last_groupIdx)
                         setHasNextPage(false)
-                  //  }
                 }
             }
         })

@@ -9,6 +9,7 @@ import com.example.swith.databinding.FragmentManageApplicationBinding
 import com.example.swith.ui.adapter.StudyFindRVAdapter
 import com.example.swith.utils.base.BaseFragment
 
+// 신청서를 낸 사람들 목록 (지원)
 class ManageUserApplication1Fragment() :BaseFragment<FragmentManageApplicationBinding>(R.layout.fragment_manage_application) {
 
     // private lateinit var adapter :

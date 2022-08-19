@@ -45,7 +45,7 @@
                     android:layout_height="30dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
-                    android:layout_marginBottom="5dp"
+                    android:layout_marginBottom="6dp"
                     android:layout_gravity="center"
                     android:background="@drawable/bg_item_study_search_light_blue">
                     <TextView
@@ -80,7 +80,7 @@
                     android:layout_height="26dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
-                    android:layout_marginBottom="5dp"
+                    android:layout_marginBottom="6dp"
                     android:layout_gravity="center"
                     android:background="@drawable/bg_item_study_search_light_blue">
                     <TextView
@@ -107,7 +107,7 @@
                         android:layout_marginStart="10dp"
                         android:background="@drawable/bg_search_spinner"
                         android:text="서울시 동작구"
-                        android:textSize="10sp"
+                        android:textSize="11sp"
                         android:gravity="center"
                         app:layout_constraintBottom_toBottomOf="parent"
                         android:textColor="@color/white"
@@ -136,7 +136,7 @@
                     android:layout_height="26dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
-                    android:layout_marginBottom="5dp"
+                    android:layout_marginBottom="6dp"
                     android:layout_gravity="center"
                     android:background="@drawable/bg_item_study_search_light_blue">
                     <TextView
@@ -171,7 +171,7 @@
                     android:layout_height="26dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
-                    android:layout_marginBottom="5dp"
+                    android:layout_marginBottom="6dp"
                     android:layout_gravity="center"
                     android:background="@drawable/bg_item_study_search_light_blue">
                     <TextView
@@ -205,14 +205,14 @@
                     android:layout_height="26dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
-                    android:layout_marginBottom="5dp"
+                    android:layout_marginBottom="6dp"
                     android:layout_gravity="center"
                     android:background="@drawable/bg_item_study_search_light_blue">
                     <TextView
                         android:id="@+id/tv_study_playtime"
                         android:layout_width="70dp"
                         android:layout_height="wrap_content"
-                        android:text="활동기간"
+                        android:text="활동 기간"
                         android:textSize="11sp"
                         android:textColor="@color/color_82B4FF"
                         android:gravity="center"
@@ -239,14 +239,14 @@
                     android:layout_height="26dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
-                    android:layout_marginBottom="5dp"
+                    android:layout_marginBottom="6dp"
                     android:layout_gravity="center"
                     android:background="@drawable/bg_item_study_search_light_blue">
                     <TextView
                         android:id="@+id/tv_study_deadline"
                         android:layout_width="70dp"
                         android:layout_height="wrap_content"
-                        android:text="모집기간"
+                        android:text="모집 기간"
                         android:textSize="11sp"
                         android:textColor="@color/color_82B4FF"
                         android:gravity="center"
@@ -273,14 +273,14 @@
                     android:layout_height="26dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
-                    android:layout_marginBottom="5dp"
+                    android:layout_marginBottom="6dp"
                     android:layout_gravity="center"
                     android:background="@drawable/bg_item_study_search_light_blue">
                     <TextView
                         android:id="@+id/tv_study_apply_method"
                         android:layout_width="70dp"
                         android:layout_height="wrap_content"
-                        android:text="모집방식"
+                        android:text="모집 방식"
                         android:textSize="11sp"
                         android:textColor="@color/color_82B4FF"
                         android:gravity="center"
@@ -302,7 +302,40 @@
                         android:textColor="@color/black"
                         app:layout_constraintTop_toTopOf="parent"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="26dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="5dp"
+                android:layout_gravity="center"
+                android:background="@drawable/bg_item_study_search_light_blue">
+                <TextView
+                    android:id="@+id/tv_study_application_status"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:text="모집 현황"
+                    android:textSize="11sp"
+                    android:textColor="@color/color_82B4FF"
+                    android:gravity="center"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/tv_study_set_application_status"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+                <TextView
+                    android:id="@+id/tv_study_set_application_status"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toEndOf="@+id/tv_study_application_status"
+                    android:layout_marginStart="10dp"
+                    android:text="3 / 7"
+                    android:textSize="11sp"
+                    android:gravity="left"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:textColor="@color/black"
+                    app:layout_constraintTop_toTopOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"

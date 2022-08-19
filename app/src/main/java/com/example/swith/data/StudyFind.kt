@@ -15,8 +15,8 @@ data class Result (
     @SerializedName("pageable") val pageable : Pageable,
     @SerializedName("numberOfElements") val numberOfElements : Int, //리스트 개수
     @SerializedName("first") val first : Boolean,
-    @SerializedName("last") val last : Boolean, // 다음페이지 유무
-    @SerializedName("size") val size : Int,  //현재페이지?
+    @SerializedName("last") val last : Boolean, // 마지막인지 유무
+    @SerializedName("size") val size : Int,
     @SerializedName("number") val number : Int,
     @SerializedName("sort") val sort : Sort,
     @SerializedName("empty") val empty : Boolean
@@ -29,9 +29,9 @@ data class Content (
     @SerializedName("regionIdx1") val regionIdx1 : String,
     @SerializedName("regionIdx2") val regionIdx2 : String,
     @SerializedName("recruitmentEndDate") val recruitmentEndDate : List<Int>,
-    @SerializedName("memberLimit") val memberLimit : Int,
+    @SerializedName("memberLimit") val memberLimit : Int, //멤버 제한 수
     @SerializedName("createdAt") val createdAt : List<Int>,
-    @SerializedName("numOfApplicants") val numOfApplicants : Int,
+    @SerializedName("numOfApplicants") val numOfApplicants : Int, //지원자 수
     @SerializedName("applicationMethod") val applicationMethod : Int
 )
 

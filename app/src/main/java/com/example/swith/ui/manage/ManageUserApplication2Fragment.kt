@@ -6,6 +6,7 @@ import com.example.swith.R
 import com.example.swith.databinding.FragmentManageApplication2Binding
 import com.example.swith.utils.base.BaseFragment
 
+//신청서 불필요 (선착순 목록)
 class ManageUserApplication2Fragment() : BaseFragment<FragmentManageApplication2Binding>(R.layout.fragment_manage_application2) {
 
     override fun onCreate(savedInstanceState: Bundle?) {

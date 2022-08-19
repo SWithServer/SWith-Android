@@ -20,7 +20,7 @@ import com.example.swith.utils.CustomBinder
 import com.example.swith.utils.base.BaseFragment
 
 class StudyFindDetailFragment : BaseFragment<FragmentStudyFindDetailBinding>(R.layout.fragment_study_find_detail),MainActivity.onBackPressedListener {
-    var groupIdx : Int? = -1
+    var groupIdx : Long? = -1
     var activity_:MainActivity? =null
     lateinit var dialog_ :Dialog
     var applicationMethod : Int? = -1
@@ -31,7 +31,7 @@ class StudyFindDetailFragment : BaseFragment<FragmentStudyFindDetailBinding>(R.l
         dialog_ = Dialog(requireActivity())
         dialog_.setContentView(R.layout.fragment_dialog_application)
         Log.e("summer", "fragment이동 true")
-        groupIdx = arguments?.getInt("groupIdx",0)
+        groupIdx = arguments?.getLong("groupIdx",0)
         applicationMethod = arguments?.getInt("applicationMethod",0)
         Log.e("summer","groupIdx = $groupIdx")
         Log.e("summer","applicationMethod = $applicationMethod")
@@ -114,7 +114,7 @@ class StudyFindDetailFragment : BaseFragment<FragmentStudyFindDetailBinding>(R.l
     }
 
     //groupIdx로 study정보 가져오는 retrofit 부분 (API 나오면 작성하기)
-    fun setData(groupIdx: Int?)
+    fun setData(groupIdx: Long?)
     {
         Log.e("summer","데이터 set true")
         val retrofitService = RetrofitService.retrofit.create(RetrofitApi::class.java)
@@ -161,8 +161,9 @@ class StudyFindDetailFragment : BaseFragment<FragmentStudyFindDetailBinding>(R.l
     }
 
     // 신청서 내용 보내기 retrofit 부분 (API 나오면 작성)
-    fun postData(groupIdx:Int?, applyContent:String?, UserIdx:Int)
+    fun postData(groupIdx:Long?, applyContent:String?, UserIdx:Int)
     {
+
 
     }
 
