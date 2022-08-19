@@ -11,5 +11,5 @@
     android:layout_height="wrap_content"
     android:ellipsize="marquee"
     android:gravity="center"
-    android:textSize="11sp"
+    android:textSize="12sp"
     android:textColor="@color/black"/>

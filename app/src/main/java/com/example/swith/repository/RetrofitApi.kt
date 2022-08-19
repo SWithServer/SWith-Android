@@ -77,4 +77,8 @@ interface RetrofitApi {
     //스터디 삭제하기
     @DELETE("/groupinfo")
     fun delStudy(@Query("groupIdx") groupIdx : Int)
+
+    //프로필
+    @GET("/profile")
+    fun getProfileInfo() : Call<ProfileResponse>
 }
