@@ -41,7 +41,7 @@ class BottomSheet(private val title: String, private val alert: String?, private
             tvBottomGuide.text = content
             btnBottomCheck.text = buttonMessage
             btnBottomCheck.setOnClickListener { customListener.onCheckClick() }
-            tvBottomCancel.setOnClickListener { dismiss() }
+            btnBottomCancel.setOnClickListener { dismiss() }
         }
     }
 }

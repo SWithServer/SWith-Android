@@ -59,7 +59,7 @@ class RoundAttendFragment(private val curCount: Int) : BaseFragment<FragmentRoun
             }
             btnAttend.setOnClickListener {
                 BottomSheet("${curCount}회차 출석", "회차 시작 후 ${viewModel.getAttendValidTime()}분 까지 출석 가능", resources.getString(R.string.bottom_attend_guide)
-                , "출석 하기").apply {
+                , "출석").apply {
                     setCustomListener(object: BottomSheet.customClickListener{
                         override fun onCheckClick() {
                             dismiss()

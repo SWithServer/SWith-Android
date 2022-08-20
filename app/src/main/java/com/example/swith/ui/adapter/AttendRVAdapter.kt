@@ -44,11 +44,11 @@ class AttendRVAdapter(private val userId: Int?) : RecyclerView.Adapter<AttendRVA
                         }
                         1 -> {
                             text = "출석"
-                            setTextColor(Color.GREEN)
+                            setTextColor(resources.getColor(R.color.color_1363DF, null))
                         }
                         2 -> {
                             text = "지각"
-                            setTextColor(Color.MAGENTA)
+                            setTextColor(resources.getColor(R.color.color_ADA0FF, null))
                         }
                         3 -> {
                             text = "결석"

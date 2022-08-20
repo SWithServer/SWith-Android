@@ -23,7 +23,7 @@ class RoundViewModel() : BaseViewModel() {
     private var postData = ArrayList<GetSessionRes>()
 
     var groupIdx = 0
-    private var pastVisible = false
+    var pastVisible = false
     private var curSessionIdx = 0
     private var _roundLiveData = SingleLiveEvent<Round>()
 
@@ -111,8 +111,7 @@ class RoundViewModel() : BaseViewModel() {
         curSessionIdx = sessionIdx
     }
 
-    fun setPastData(pastVisible: Boolean){
-        this.pastVisible = pastVisible
+    fun setPastData(){
         _roundLiveData.value = _roundLiveData.value?.apply { getSessionResList = if(pastVisible) allData else postData }
     }
 

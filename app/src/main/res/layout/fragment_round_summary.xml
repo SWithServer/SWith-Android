@@ -8,25 +8,27 @@
         android:id="@+id/iv_summary_study"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="10dp"
         android:scaleType="fitXY"
-        android:src="@drawable/bg_study_create"
+        android:src="@color/color_d9d9d9"
         app:layout_constraintTop_toTopOf="parent"/>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@drawable/card_view"
-        android:backgroundTint="@color/light_grey"
-        android:layout_margin="10dp"
+        android:background="@drawable/bg_item_round"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="90dp"
         app:layout_constraintTop_toBottomOf="@id/iv_summary_study"
         app:layout_constraintBottom_toBottomOf="parent">
         <TextView
             android:id="@+id/tv_summary_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:layout_margin="10dp"
+            android:textColor="@color/color_1363DF"
+            android:textSize="14sp"
+            android:layout_margin="20dp"
             android:text="회차"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
@@ -34,35 +36,60 @@
             android:id="@+id/tv_summary_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:layout_margin="10dp"
+            android:textColor="@color/color_a4a4a4"
+            android:textSize="10sp"
             android:text="기간"
+            android:layout_marginEnd="20dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="@id/tv_summary_count"
+            app:layout_constraintBottom_toBottomOf="@id/tv_summary_count"/>
         <TextView
             android:id="@+id/tv_summary_content"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:textColor="@color/black"
-            android:textSize="16sp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="20dp"
+            android:textSize="12sp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="8dp"
             android:text="학습내용 :"
-            android:paddingEnd="10dp"
+            android:layout_marginBottom="8dp"
+            android:ellipsize="end"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_summary_count"/>
-        <TextView
-            android:id="@+id/tv_summary_place"
+            app:layout_constraintTop_toBottomOf="@id/tv_summary_count"
+            app:layout_constraintBottom_toTopOf="@id/layout_summary_place"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_summary_place"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:layout_marginStart="10dp"
-            android:layout_marginBottom="30dp"
-            android:text="장소 :"
+            android:layout_height="22dp"
+            android:gravity="center_vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            android:layout_margin="20dp"
+            android:background="@drawable/bg_item_round_detail">
+            <ImageView
+                android:id="@+id/iv_summary_place"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/ic_round_location"/>
+            <TextView
+                android:id="@+id/tv_summary_place"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="장소"
+                android:textSize="10sp"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="10dp"
+                app:layout_constraintStart_toEndOf="@id/iv_summary_place"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:textColor="@color/white"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

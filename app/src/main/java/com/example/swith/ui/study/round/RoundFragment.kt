@@ -18,7 +18,6 @@ import com.example.swith.ui.study.announce.AnnounceActivity
 import com.example.swith.viewmodel.RoundViewModel
 
 class RoundFragment : BaseFragment<FragmentRoundBinding>(R.layout.fragment_round) {
-    private var pastVisible = false
     private val viewModel: RoundViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -38,7 +37,6 @@ class RoundFragment : BaseFragment<FragmentRoundBinding>(R.layout.fragment_round
         }
 
         observeViewModel()
-
         initListener()
     }
 
@@ -46,6 +44,7 @@ class RoundFragment : BaseFragment<FragmentRoundBinding>(R.layout.fragment_round
         super.onResume()
         setViewVisibility(true)
         viewModel.loadData()
+        setPastText()
     }
 
     private fun observeViewModel(){
@@ -84,15 +83,9 @@ class RoundFragment : BaseFragment<FragmentRoundBinding>(R.layout.fragment_round
                                                     putExtra("groupIdx", viewModel.groupIdx)
             }) }
             roundPreviousTv.setOnClickListener {
-                pastVisible = !pastVisible
-                if (pastVisible){
-                    roundPreviousTv.text = "지난 회차 안보기"
-                    roundPreviousTv.setTextColor(resources.getColor(R.color.color_cdcdcd, null))
-                } else {
-                    roundPreviousTv.text = "지난 회차 보기"
-                    roundPreviousTv.setTextColor(resources.getColor(R.color.color_ADA0FF, null))
-                }
-                viewModel.roundLiveData.value?.let { viewModel.setPastData(pastVisible) }
+                viewModel.pastVisible = !viewModel.pastVisible
+                setPastText()
+                viewModel.roundLiveData.value?.let { viewModel.setPastData() }
             }
             roundPullToRefresh.apply {
                 setOnRefreshListener {
@@ -100,6 +93,18 @@ class RoundFragment : BaseFragment<FragmentRoundBinding>(R.layout.fragment_round
                     viewModel.loadData()
                 }
                 setColorSchemeResources(R.color.color_swith)
+            }
+        }
+    }
+
+    private fun setPastText(){
+        with(binding.roundPreviousTv) {
+            if (viewModel.pastVisible) {
+                text = "지난 회차 안보기"
+                setTextColor(resources.getColor(R.color.color_cdcdcd, null))
+            } else {
+                text = "지난 회차 보기"
+                setTextColor(resources.getColor(R.color.color_ADA0FF, null))
             }
         }
     }

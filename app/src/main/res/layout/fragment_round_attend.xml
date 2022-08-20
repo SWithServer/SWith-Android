@@ -9,8 +9,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="출석 유효 시간"
-        android:layout_margin="20dp"
-        android:textSize="18sp"
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="20dp"
+        android:textSize="14sp"
         android:textColor="@color/black"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -28,62 +29,42 @@
             <TableLayout
                 android:id="@+id/tl_attend_top_row"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:background="@color/light_grey"
+                android:layout_height="40dp"
+                android:gravity="center_horizontal|center_vertical"
+                android:background="@drawable/bg_attend_first_row"
                 app:layout_constraintTop_toTopOf="parent">
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/black"/>
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:weightSum="5">
-                    <View
-                        android:layout_width="1dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/black"/>
+                    android:weightSum="7">
                     <TextView
                         android:layout_width="0dp"
-                        android:layout_height="40dp"
-                        android:layout_weight="1"
-                        android:textSize="16dp"
-                        android:textStyle="bold"
-                        android:padding="3dp"
-                        android:textColor="@color/black"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:textSize="11sp"
+                        android:textColor="@color/color_82B4FF"
                         android:text="이름"
-                        android:layout_column="@integer/material_motion_duration_long_2"
                         android:gravity="center" />
-                    <View
-                        android:layout_width="1dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/black"/>
                     <TextView
                         android:layout_width="0dp"
-                        android:layout_height="40dp"
-                        android:text="출석"
-                        android:textSize="16dp"
-                        android:textStyle="bold"
-                        android:padding="3dp"
-                        android:layout_weight="4"
-                        android:textColor="@color/black"
-                        android:gravity="center" />
-                    <View
-                        android:layout_width="1dp"
                         android:layout_height="match_parent"
-                        android:background="@color/black"/>
+                        android:text="출석"
+                        android:textSize="11sp"
+                        android:textColor="@color/color_82B4FF"
+                        android:layout_weight="5"
+                        android:gravity="center" />
                 </TableRow>
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/black"/>
+
             </TableLayout>
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_attend"
+                android:paddingTop="12dp"
+                android:paddingBottom="4dp"
                 android:overScrollMode="never"
+                android:layout_marginTop="2dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/bg_attend_rv"
                 app:layout_constraintTop_toBottomOf="@id/tl_attend_top_row"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
@@ -108,7 +89,7 @@
         android:layout_margin="20dp"
         android:text="출석"
         android:textColor="@color/white"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         android:background="@drawable/attend_button_drawable"
         app:layout_constraintEnd_toEndOf="parent"
