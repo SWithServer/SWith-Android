@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
+import android.view.View.OnTouchListener
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -27,14 +28,13 @@ import com.example.swith.utils.base.BaseFragment
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 
 class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.fragment_study_find) {
 
-    private var const = 0
+    private var searchFilter = -1 // spinner 사용자 터치시에만 반응 flag
     private var totalCount = 0 // 전체 아이템 개수
     private var isNext = false // 다음 페이지 유무
     private var page =0 // 현재 페이지
@@ -43,7 +43,6 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
     private lateinit var adapter : StudyFindRVAdapter
 
     var activity_: MainActivity? = null
-    var regionCode: Long = -1
     var regionName: String = ""
 
     var search_title : String ?= null
@@ -60,8 +59,6 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setVisiblebar(false,true,"")
-
-        firstLoad()
 
         adapter = StudyFindRVAdapter()
         binding.rvStudyFind.adapter = adapter
@@ -84,9 +81,9 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
                 if (result.resultCode == AppCompatActivity.RESULT_OK) {
                     val data = result.data
                     val region = data!!.getCharSequenceExtra("지역")
-                    val code = data!!.getCharSequenceExtra("코드")
                     binding.btnSelectRegion.text = region
                     regionName = region.toString()
+                    Log.e("지역 data load","true")
                     select_region = regionName
                     loadData(search_title,select_region, select_interest1, select_interest2, select_sort)
                     initScrollListener()
@@ -98,6 +95,7 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
                     if( (event.action == KeyEvent.ACTION_DOWN) && (code == KeyEvent.KEYCODE_ENTER) && !etStudySearch.text.equals("")){
                         search_title = etStudySearch.text.toString()
                         hideKeyboard(etStudySearch)
+                        Log.e("키보드 data load","true")
                         loadData(search_title,select_region, select_interest1, select_interest2, select_sort)
                         initScrollListener()
                         true
@@ -110,6 +108,7 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
                 ivSearchIcon.setOnClickListener {
                     if (!etStudySearch.text.isNullOrBlank() && !etStudySearch.text.equals(""))
                     {
+                        Log.e("타이틀 data load","true")
                         search_title = etStudySearch.text.toString()
                         hideKeyboard(etStudySearch)
                         loadData(search_title,select_region, select_interest1, select_interest2, select_sort)
@@ -118,7 +117,7 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
                 }
 
                 btnSelectRegion.setOnClickListener {
-                    var intent = Intent(requireActivity(), SelectPlaceActivity::class.java)
+                    val intent = Intent(requireActivity(), SelectPlaceActivity::class.java)
                     intent.putExtra("번호", 3)
                     activityResultLauncher.launch(intent)
                 }
@@ -131,16 +130,17 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
                 }
                 spinnerInterest1.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
                     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
-                        if (position != 0)
+                        if (searchFilter == 1)
                         {
-                            select_interest1=position
-                            loadData(search_title,select_region, select_interest1, select_interest2, select_sort)
-                            initScrollListener()
-                        }
-                        else{
-                            if (const != 0)
+                            if (position == 0)
                             {
                                 select_interest1=null
+                                loadData(search_title,select_region, select_interest1, select_interest2, select_sort)
+                                initScrollListener()
+                            }
+                            else
+                            {
+                                select_interest1=position
                                 loadData(search_title,select_region, select_interest1, select_interest2, select_sort)
                                 initScrollListener()
                             }
@@ -149,6 +149,11 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
                     override fun onNothingSelected(p0: AdapterView<*>?) {
                     }
                 }
+                spinnerInterest1.setOnTouchListener(OnTouchListener{ v, event ->
+                    v.performClick()
+                    searchFilter =1
+                    false
+                })
                 spinnerInterest2.adapter = ArrayAdapter.createFromResource(
                     activity!!.applicationContext,
                     R.array.intersting,
@@ -158,16 +163,17 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
                 }
                 spinnerInterest2.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
                     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
-                        if (position != 0)
+                        if (searchFilter == 2)
                         {
-                            select_interest2=position
-                            loadData(search_title,select_region, select_interest1, select_interest2, select_sort)
-                            initScrollListener()
-                        }
-                        else{
-                            if (const != 0)
+                            if (position == 0)
                             {
                                 select_interest2=null
+                                loadData(search_title,select_region, select_interest1, select_interest2, select_sort)
+                                initScrollListener()
+                            }
+                            else
+                            {
+                                select_interest2=position
                                 loadData(search_title,select_region, select_interest1, select_interest2, select_sort)
                                 initScrollListener()
                             }
@@ -176,6 +182,11 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
                     override fun onNothingSelected(p0: AdapterView<*>?) {
                     }
                 }
+                spinnerInterest2.setOnTouchListener(OnTouchListener{ v, event ->
+                    v.performClick()
+                    searchFilter =2
+                    false
+                })
                 spinnerSort.adapter = ArrayAdapter.createFromResource(
                     activity!!.applicationContext,
                     R.array.deadLineOrLatest,
@@ -185,6 +196,7 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
                 }
                 spinnerSort.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
                     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
+                        Log.e("정렬 data load","true")
                         select_sort=position
                        loadData(search_title,select_region, select_interest1, select_interest2, select_sort)
                         initScrollListener()
@@ -196,19 +208,9 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
         }
     }
 
-    fun firstLoad()
-    {
-        //최초실행 확인 함수
-        if (const<1)
-        {
-            const++
-        }
-    }
-
     //최초로 넣어줄 데이터 load
     fun loadData(title:String?,region:String?, interest1:Int?, interest2:Int?, sort:Int){
-        lateinit var studyList: ArrayList<Content>
-        var req = studyReqest(title,region, null,interest1, interest2,sort, LocalDateTime.now())
+        val req = studyReqest(title,region, null,interest1, interest2,sort, LocalDateTime.now())
         val retrofitService = RetrofitService.retrofit.create(RetrofitApi::class.java)
         retrofitService.getSearchStudy(limit,title,region,interest1,interest2,null,sort,date.format(
             DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))).enqueue(object : Callback<StudyFindResponse> {
@@ -316,7 +318,7 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
         })
     }
 
-    fun hideKeyboard(editText: EditText){
+    private fun hideKeyboard(editText: EditText){
         val mInputMethodManager =
             context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         mInputMethodManager.hideSoftInputFromWindow(
@@ -327,8 +329,6 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
 
     override fun onResume() {
         super.onResume()
-        Log.e("resume", "True")
-        Log.e("regionCode", "${regionCode}")
     }
     override fun onAttach(context: Context) {
         super.onAttach(context)

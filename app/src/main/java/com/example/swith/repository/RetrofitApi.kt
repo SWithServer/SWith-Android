@@ -74,6 +74,11 @@ interface RetrofitApi {
     @GET("/groupinfo/search/{groupIdx}")
     fun getStudyDetail(@Path("groupIdx") groupIdx:Long):Call<StudyDetailResponse>
 
+    //스터디 가입신청
+    @POST("/application/apply/{groupIdx}/{applicationMethod}")
+    fun postApplication(@Path("groupIdx")groupIdx:Long,@Path("applicationMethod")applicationMethod:Int,@Body body : postApplicationReq) : Call<StudyApplicationResponse>
+
+
     //스터디 삭제하기
     @DELETE("/groupinfo")
     fun delStudy(@Query("groupIdx") groupIdx : Int)

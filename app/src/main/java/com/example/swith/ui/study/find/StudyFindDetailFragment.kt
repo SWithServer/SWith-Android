@@ -8,9 +8,13 @@ import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.example.swith.R
+import com.example.swith.data.StudyApplicationResponse
 import com.example.swith.data.StudyDetailResponse
+import com.example.swith.data.StudyResponse
+import com.example.swith.data.postApplicationReq
 import com.example.swith.databinding.DialogCreateBinding
 import com.example.swith.databinding.FragmentStudyFindDetailBinding
 import com.example.swith.repository.RetrofitApi
@@ -18,17 +22,20 @@ import com.example.swith.repository.RetrofitService
 import com.example.swith.ui.MainActivity
 import com.example.swith.ui.dialog.CustomDialog
 import com.example.swith.utils.CustomBinder
+import com.example.swith.utils.SharedPrefManager
 import com.example.swith.utils.base.BaseFragment
+import com.google.firebase.crashlytics.internal.model.CrashlyticsReport
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class StudyFindDetailFragment : BaseFragment<FragmentStudyFindDetailBinding>(R.layout.fragment_study_find_detail),MainActivity.onBackPressedListener {
     var groupIdx : Long? = -1
+//    val userid= SharedPrefManager(requireActivity()).getLoginData()
+//    val userIdx = userid?.userIdx
     var activity_:MainActivity? =null
     lateinit var dialog_ :Dialog
     var applicationMethod : Int? = -1
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +56,7 @@ class StudyFindDetailFragment : BaseFragment<FragmentStudyFindDetailBinding>(R.l
     ): View {
         return super.onCreateView(inflater, container, savedInstanceState)
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -60,10 +68,10 @@ class StudyFindDetailFragment : BaseFragment<FragmentStudyFindDetailBinding>(R.l
                  when(applicationMethod)
                 {
                      0->{
-                       showLastDialog(null) //선착순(신청서 필요 x)
+                       showLastDialog(0,null) //선착순(신청서 필요 x)
                      }
                      1->{
-                    createApplication() //지원(신청서 -> 최종 dialog)
+                        createApplication(1) //지원(신청서 -> 최종 dialog)
                     }
                  }
              }
@@ -71,12 +79,10 @@ class StudyFindDetailFragment : BaseFragment<FragmentStudyFindDetailBinding>(R.l
     }
 
     override fun onBackPressed() {
-        Log.e("뒤로가기 눌림","true")
         activity_?.goSearchPage()
     }
-
     //신청서 Dialog
-    fun createApplication (){
+    fun createApplication (applicationMethod: Int){
         dialog_.show()
         var dialog_et = dialog_.findViewById<EditText>(R.id.et_application)
         var applyContent = ""
@@ -91,13 +97,13 @@ class StudyFindDetailFragment : BaseFragment<FragmentStudyFindDetailBinding>(R.l
             }
         dialog_.findViewById<Button>(R.id.btn_application_apply).setOnClickListener {
            //신청서 작성 내용 변수
-            showLastDialog(applyContent)
+            showLastDialog(1,applyContent)
             dialog_.dismiss()
         }
     }
 
     //최종 제출하기 Dialog
-    fun showLastDialog(applyContent : String?){
+    fun showLastDialog(applicationMethod:Int,applyContent : String?){
         Log.e("신청서 내용","${applyContent}")
         DataBindingUtil.inflate<DialogCreateBinding>(
             LayoutInflater.from(requireActivity()), R.layout.dialog_create, null, false
@@ -111,7 +117,7 @@ class StudyFindDetailFragment : BaseFragment<FragmentStudyFindDetailBinding>(R.l
                     }
 
                     override fun onConfirm() {
-                        postData(groupIdx,applyContent,1)
+                        postData(applicationMethod,groupIdx,applyContent,1)
                     }
                 })
         }
@@ -189,9 +195,34 @@ class StudyFindDetailFragment : BaseFragment<FragmentStudyFindDetailBinding>(R.l
     }
 
     // 신청서 내용 보내기 retrofit 부분 (API 나오면 작성)
-    fun postData(groupIdx:Long?, applyContent:String?, UserIdx:Int)
+    fun postData(applicationMethod:Int,groupIdx:Long?, applyContent:String?, UserIdx:Long)
     {
-
+        var postApplicationReq = postApplicationReq(UserIdx,applyContent)
+        val retrofitService = RetrofitService.retrofit.create(RetrofitApi::class.java)
+        retrofitService.postApplication(groupIdx!!,applicationMethod,postApplicationReq).enqueue(object : Callback <StudyApplicationResponse> {
+            override fun onResponse(call: Call<StudyApplicationResponse>, response: Response<StudyApplicationResponse>) {
+                if (response.isSuccessful)
+                {
+                    Log.e("summer", "성공${response.toString()}")
+                    response.body()?.apply {
+                        Log.e("post data =","${groupIdx},${applicationMethod},${postApplicationReq.toString()}")
+                    }
+                }
+                else
+                {
+                    Log.e("summer", "전달실패 code = ${response.code()}")
+                    Log.e("summer", "전달실패 msg = ${response.message()}")
+                    Toast.makeText(requireActivity(),"다시 시도해주세요", Toast.LENGTH_SHORT).show()
+                    dialog_.dismiss()
+                }
+            }
+            override fun onFailure(call: Call<StudyApplicationResponse>, t: Throwable) {
+                Log.e("summer","onFailure t = ${t.toString()}")
+                Log.e("summer","onFailure msg = ${t.message}")
+                Toast.makeText(requireActivity(),"다시 시도해주세요", Toast.LENGTH_SHORT).show()
+                dialog_.dismiss()
+            }
+        })
     }
 
     override fun onAttach(context: Context) {
@@ -199,7 +230,7 @@ class StudyFindDetailFragment : BaseFragment<FragmentStudyFindDetailBinding>(R.l
         activity_ = activity as MainActivity
     }
 
-    fun hideKeyboard(editText: EditText){
+    private fun hideKeyboard(editText: EditText){
         val mInputMethodManager =
             context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         mInputMethodManager.hideSoftInputFromWindow(
