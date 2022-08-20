@@ -60,6 +60,10 @@
     <!--manage finish-->
     <string name="manage_study_finish">스터디를 종료하시겠습니까?\n*오늘 날짜 이후의 회차는 모두 삭제됩니다.</string>
 
+    <!--manage resume-->
+    <string name ="manage_resume_reject">반려</string>
+    <string name ="manage_resume_confirm">승인</string>
+
     <!--create-->
     <string name="create_editText">직접 입력해주세요</string>
     <string name="study_confirm">제출하시겠습니까?</string>
