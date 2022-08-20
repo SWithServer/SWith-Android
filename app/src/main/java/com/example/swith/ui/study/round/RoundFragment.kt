@@ -2,6 +2,7 @@ package com.example.swith.ui.study.round
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
@@ -17,6 +18,7 @@ import com.example.swith.ui.study.announce.AnnounceActivity
 import com.example.swith.viewmodel.RoundViewModel
 
 class RoundFragment : BaseFragment<FragmentRoundBinding>(R.layout.fragment_round) {
+    private var pastVisible = false
     private val viewModel: RoundViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -76,13 +78,22 @@ class RoundFragment : BaseFragment<FragmentRoundBinding>(R.layout.fragment_round
 
     private fun initListener(){
         with(binding){
-            roundNoticeIv.setOnClickListener { startActivity(Intent(activity, AnnounceActivity::class.java).apply { putExtra("manager", viewModel.roundLiveData.value?.admin)
+            roundNoticeLayout.setOnClickListener { startActivity(Intent(activity, AnnounceActivity::class.java).apply { putExtra("manager", viewModel.roundLiveData.value?.admin)
                                                     putExtra("groupIdx", viewModel.groupIdx)})}
             roundAddBtn.setOnClickListener { startActivity(Intent(activity, RoundCreateActivity::class.java).apply { putExtra("minuteMin", viewModel.roundLiveData.value?.attendanceValidTime)
                                                     putExtra("groupIdx", viewModel.groupIdx)
-
             }) }
-            roundPreviousCb.setOnCheckedChangeListener { _, isChecked -> viewModel.roundLiveData.value?.let { viewModel.setPastData(isChecked) }}
+            roundPreviousTv.setOnClickListener {
+                pastVisible = !pastVisible
+                if (pastVisible){
+                    roundPreviousTv.text = "지난 회차 안보기"
+                    roundPreviousTv.setTextColor(resources.getColor(R.color.color_cdcdcd, null))
+                } else {
+                    roundPreviousTv.text = "지난 회차 보기"
+                    roundPreviousTv.setTextColor(resources.getColor(R.color.color_ADA0FF, null))
+                }
+                viewModel.roundLiveData.value?.let { viewModel.setPastData(pastVisible) }
+            }
             roundPullToRefresh.apply {
                 setOnRefreshListener {
                     isRefreshing = false

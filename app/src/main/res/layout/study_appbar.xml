@@ -42,7 +42,7 @@
                     android:id="@+id/ib_study_setting"
                     android:layout_width="40dp"
                     android:layout_height="match_parent"
-                    android:src="@drawable/ic_setting"
+                    android:src="@drawable/ic_setting_black"
                     android:onClick="@{clickListener}"
                     android:visibility="gone"
                     android:layout_marginEnd="20dp"

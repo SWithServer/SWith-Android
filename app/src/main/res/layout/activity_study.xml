@@ -28,8 +28,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:itemBackground="@color/white"
-        app:menu="@menu/bottom_study_menu"
+        app:itemIconTint="@drawable/bottom_menu_selector_color"
         app:labelVisibilityMode="unlabeled"
+        app:menu="@menu/bottom_study_menu"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
