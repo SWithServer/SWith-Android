@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.databinding.DataBindingUtil
 import com.example.swith.R
+import com.example.swith.data.StudyDetailResponse
 import com.example.swith.databinding.DialogCreateBinding
 import com.example.swith.databinding.FragmentStudyFindDetailBinding
 import com.example.swith.repository.RetrofitApi
@@ -18,6 +19,9 @@ import com.example.swith.ui.MainActivity
 import com.example.swith.ui.dialog.CustomDialog
 import com.example.swith.utils.CustomBinder
 import com.example.swith.utils.base.BaseFragment
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class StudyFindDetailFragment : BaseFragment<FragmentStudyFindDetailBinding>(R.layout.fragment_study_find_detail),MainActivity.onBackPressedListener {
     var groupIdx : Long? = -1
@@ -118,52 +122,75 @@ class StudyFindDetailFragment : BaseFragment<FragmentStudyFindDetailBinding>(R.l
     {
         Log.e("summer","데이터 set true")
         val retrofitService = RetrofitService.retrofit.create(RetrofitApi::class.java)
-//        retrofitService.getStudyDetail(groupIdx).enqueue(object : Callback<StudyFindResponse> {
-//            override fun onResponse(
-//                call: Call<StudyFindResponse>,
-//                response: Response<StudyFindResponse>
-//            ) {
-//                if (response.isSuccessful) {
-//                    Log.e("summer", "성공${response.toString()}")
-//                    response.body()?.apply {
-//                        var response = this.result
-//                        with(binding)
-//                        {
-//                            tvStudyDetailTitle.text = response.title
-//                                when(response.meetIdx)
-//                                {
-//                                    0->{
-//                                        tvStudySetTime.text ="주"+"${response.frequency}"+"회"
-//                                    }
-//                                    1->{
-//                                        tvStudySetTime.text ="월"+"${response.frequency}"+"회"
-//                                    }
-//                                    2->{
-//                                        tvStudySetTime.text ="${response.periods_content}"
-//                                    }
-//                                }
-//                            tvStudySetDetail.text = response.topic_content
-        //                    tvStudySetDetailContent.text= response.groupContent
-//                            }
-//                        }
-//                    }
-//                }
-//                else {
-//                    Log.e("summer", "전달실패 code = ${response.code()}")
-//                    Log.e("summer", "전달실패 msg = ${response.message()}")
-//                }
-//            }
-//            override fun onFailure(call: Call<StudyFindResponse>, t: Throwable) {
-//                Log.e("summer", "onFailure t = ${t.toString()}")
-//                Log.e("summer", "onFailure msg = ${t.message}")
-//            }
-//        })
+        retrofitService.getStudyDetail(groupIdx!!).enqueue(object : Callback<StudyDetailResponse> {
+            override fun onResponse(
+                call: Call<StudyDetailResponse>,
+                response: Response<StudyDetailResponse>
+            ) {
+                if (response.isSuccessful) {
+                    Log.e("summer", "성공${response.toString()}")
+                    response.body()?.apply {
+                        var result = this.result
+                        with(binding)
+                        {
+                            tvStudyDetailTitle.text= result.title
+                            when(result.meet)
+                            {
+                                0->{
+                                    tvStudySetTime.text = "주 ${result.frequency}회"
+                                }
+                                1->{
+                                    tvStudySetTime.text = "월 ${result.frequency}회"
+                                }
+                                2->{
+                                    tvStudySetTime.text ="${result.periods}"
+                                }
+                            }
+                            when(result.online)
+                            {
+                                0->{ tvStudySetPlace1.text ="온라인"
+                                tvStudySetPlace2.visibility = View.GONE}
+                                1->{tvStudySetPlace1.text ="${result.regionIdx1}"
+                                    tvStudySetPlace2.text ="${result.regionIdx2}"
+                                tvStudySetPlace2.visibility=View.VISIBLE
+                                tvStudySetPlace1.visibility=View.VISIBLE}
+                            }
+                            when(result.interest)
+                            {
+                                1->{tvStudySetCategory.text ="자격증/시험"}
+                                2->{tvStudySetCategory.text ="어학"}
+                                3->{tvStudySetCategory.text ="청소년/입시"}
+                                4->{tvStudySetCategory.text ="취업/창업"}
+                                5->{tvStudySetCategory.text ="컴퓨터/IT"}
+                                6->{tvStudySetCategory.text ="취미/문화"}
+                                7->{tvStudySetCategory.text ="면접"}
+                            }
+                            tvStudySetPlaytime.text = result.groupStart + " ~ " + result.groupEnd
+                            when(result.applicationMethod)
+                            {
+                                0->{tvStudySetApplyMethod.text ="선착순"}
+                                1->{tvStudySetApplyMethod.text ="지원"}
+                            }
+                            tvStudySetApplicationStatus.text = "${result.numOfApplicants} / ${result.memberLimit}"
+                            tvStudySetDetailContent.text= result.groupContent
+                        }
+                    }
+                }
+                else {
+                    Log.e("summer", "전달실패 code = ${response.code()}")
+                    Log.e("summer", "전달실패 msg = ${response.message()}")
+                }
+            }
+            override fun onFailure(call: Call<StudyDetailResponse>, t: Throwable) {
+                Log.e("summer", "onFailure t = ${t.toString()}")
+                Log.e("summer", "onFailure msg = ${t.message}")
+            }
+        })
     }
 
     // 신청서 내용 보내기 retrofit 부분 (API 나오면 작성)
     fun postData(groupIdx:Long?, applyContent:String?, UserIdx:Int)
     {
-
 
     }
 

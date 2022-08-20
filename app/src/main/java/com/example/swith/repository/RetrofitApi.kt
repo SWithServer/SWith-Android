@@ -71,8 +71,8 @@ interface RetrofitApi {
                         @Query("ClientTime") ClientTime :String):Call<StudyFindResponse>
 
     //스터디 정보보기
-    @GET("/groupinfo")
-    fun getStudyDetail(@Query("groupIdx") groupIdx:Int)
+    @GET("/groupinfo/search/{groupIdx}")
+    fun getStudyDetail(@Path("groupIdx") groupIdx:Long):Call<StudyDetailResponse>
 
     //스터디 삭제하기
     @DELETE("/groupinfo")

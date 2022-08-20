@@ -138,13 +138,13 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
                             initScrollListener()
                         }
                         else{
-                            if (const != 0) //최초 실행이 아닐때(const!=0)의 선택은 분류를 null처리해서 데이터 로드 실행하기.
+                            if (const != 0)
                             {
                                 select_interest1=null
                                 loadData(search_title,select_region, select_interest1, select_interest2, select_sort)
                                 initScrollListener()
                             }
-                        } //무한스크롤 position 이슈 수정부분
+                        }
                     }
                     override fun onNothingSelected(p0: AdapterView<*>?) {
                     }
@@ -160,10 +160,18 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
                     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
                         if (position != 0)
                         {
-                            select_interest1=position
+                            select_interest2=position
                             loadData(search_title,select_region, select_interest1, select_interest2, select_sort)
                             initScrollListener()
-                        } //무한스크롤 position 이슈 수정 이전
+                        }
+                        else{
+                            if (const != 0)
+                            {
+                                select_interest2=null
+                                loadData(search_title,select_region, select_interest1, select_interest2, select_sort)
+                                initScrollListener()
+                            }
+                        }
                     }
                     override fun onNothingSelected(p0: AdapterView<*>?) {
                     }
@@ -315,20 +323,6 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
             editText.getWindowToken(),
             0
         )
-    }
-
-    //임시데이터
-    fun setData():List<Content>
-    {
-        var mDatas = ArrayList<Content>()
-        mDatas.apply{
-          add(Content(1,"인천 만수동 스터디","인원을 모집합니다","인천광역시 남동구","인천광역시 남동구",listOf(2022,8,21),0,listOf(0),0,1))
-            add(Content(2,"김해 스터디","인원을 모집합니다","인천광역시 남동구","인천광역시 남동구",listOf(2022,8,21),0,listOf(0),0,0))
-            add(Content(3,"서울 강서구 스터디","인원을 모집합니다","인천광역시 남동구","인천광역시 남동구",listOf(2022,8,21),0,listOf(0),0,1))
-            add(Content(4,"인천 용현동 스터디","인원을 모집합니다","인천광역시 남동구","인천광역시 남동구",listOf(2022,8,21),0,listOf(0),0,1))
-            add(Content(5,"미추홀구 스터디","인원을 모집합니다","인천광역시 남동구","인천광역시 남동구",listOf(2022,8,21),0,listOf(0),0,0))
-        }
-        return mDatas
     }
 
     override fun onResume() {
