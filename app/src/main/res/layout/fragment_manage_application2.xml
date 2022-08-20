@@ -5,7 +5,8 @@
     tools:context=".ui.manage.ManageUserActivity">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white">
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_application"
         app:layout_constraintTop_toTopOf="parent"
