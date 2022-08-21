@@ -63,6 +63,14 @@ interface RetrofitApi {
     @PATCH("/groupinfo/session/admin")
     suspend fun modifyRound(@Body session: SessionModify) : Response<SessionResponse>
 
+    // 관리자탭 - 출석 정보 얻기
+    @PATCH("/groupinfo/attendance/admin")
+    suspend fun getAttendData(@Query("groupIdx") groupIdx: Int) : Response<AttendList>
+
+    // 관리자탭 - 출석 정보 변경
+    @PATCH("/groupinfo/attendance/admin/status")
+    suspend fun updateAttendData(@Body attendList: List<UpdateAttend>) : Response<AttendResponse>
+
     //스터디 개설
     @POST("/groupinfo")
      fun createStudy(@Body body:StudyGroup) : Call<StudyResponse>

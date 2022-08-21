@@ -6,28 +6,85 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.swith.R
+import com.example.swith.data.AttendList
 import com.example.swith.databinding.ActivityManageAttendBinding
 import com.example.swith.databinding.ItemManageAttendSpinnerBinding
+import com.example.swith.ui.adapter.ManageAttendRVAdapter
+import com.example.swith.ui.dialog.BottomSheet
+import com.example.swith.ui.dialog.CustomAlertDialog
+import com.example.swith.utils.error.ScreenState
+import com.example.swith.viewmodel.AttendUpdateViewModel
 
 class ManageAttendActivity : AppCompatActivity(), View.OnClickListener {
+    private val viewModel : AttendUpdateViewModel by viewModels()
+    private val groupIdx by lazy{
+        intent.getIntExtra("groupId", 0)
+    }
     private lateinit var binding: ActivityManageAttendBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_manage_attend)
-        initView()
+        binding.clickListener = this
+        binding.btnAttendUpdate.setOnClickListener { updateAttend() }
+        observeViewModel()
     }
 
-    private fun initView(){
-        binding.clickListener = this
+    override fun onResume() {
+        super.onResume()
+        setViewVisibility(true)
+        viewModel.loadData(groupIdx)
+    }
+
+    private fun observeViewModel(){
+        viewModel.attendLiveData.observe(this, Observer {
+            initSpinnerView(it)
+        })
+        viewModel.mutableScreenState.observe(this, Observer {
+            if(it == ScreenState.RENDER) setViewVisibility(false) else setViewVisibility(true)
+        })
+        viewModel.mutableErrorType.observe(this, Observer {
+            CustomAlertDialog("출석 정보 수정 실패", it.toString()).show(supportFragmentManager, "출석 정보 수정 실패")
+        })
+        viewModel.mutableErrorMessage.observe(this, Observer {
+            CustomAlertDialog("출석 정보 수정 실패", it.toString()).show(supportFragmentManager, "출석 정보 수정 실패2")
+        })
+        viewModel.updateAttendLiveEvent.observe(this, Observer {
+            CustomAlertDialog("출석 정보 수정 성공", "출석 정보 수정이 완료되었습니다.").show(supportFragmentManager, "출석 정보 수정 성공")
+        })
+    }
+
+    private fun setViewVisibility(beforeLoad: Boolean){
+        with(binding){
+            manageAttendCircularIndicator.visibility = if (beforeLoad) View.VISIBLE else View.INVISIBLE
+            layoutManageAttendSpinner.visibility = if (beforeLoad) View.INVISIBLE else View.VISIBLE
+        }
+    }
+
+    private fun emptyLayoutVisible(empty: Boolean){
+        with(binding){
+            rvManageAttend.visibility = if (empty) View.INVISIBLE else View.VISIBLE
+            tvNoAttend.visibility = if (empty) View.VISIBLE else View.INVISIBLE
+            btnAttendUpdate.visibility = if (empty) View.INVISIBLE else View.VISIBLE
+        }
+    }
+
+    private fun initSpinnerView(attendList: AttendList){
         val stringList = ArrayList<String>()
-        stringList.apply {
-            add("1회차")
-            add("2회차")
-            add("3회차")
-            add("-- 회차 선택 --")
+        attendList.attend?.let {
+            it.forEach { a -> stringList.add("${a.sessionNum}회차") }
+        }
+        stringList.add("-- 회차 선택 --")
+
+        binding.rvManageAttend.apply {
+            adapter = ManageAttendRVAdapter()
+            layoutManager = LinearLayoutManager(this@ManageAttendActivity, LinearLayoutManager.VERTICAL, false)
         }
 
         binding.spinnerManageAttend.apply {
@@ -46,7 +103,6 @@ class ManageAttendActivity : AppCompatActivity(), View.OnClickListener {
                     }
                     return view
                 }
-
                 override fun getCount(): Int {
                     return super.getCount() - 1
                 }
@@ -64,7 +120,9 @@ class ManageAttendActivity : AppCompatActivity(), View.OnClickListener {
                     position: Int,
                     id: Long
                 ) {
-
+                    if(position != adapter.count) (binding.rvManageAttend.adapter as ManageAttendRVAdapter).setData(attendList.attend[position].getAttendanceInfos.apply {
+                        emptyLayoutVisible(this.isNullOrEmpty())
+                    })
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -73,6 +131,17 @@ class ManageAttendActivity : AppCompatActivity(), View.OnClickListener {
 
             }
         }
+    }
+
+    private fun updateAttend(){
+        BottomSheet("출석 정보 변경", null, resources.getString(R.string.bottom_manage_attend), "변경").apply {
+            setCustomListener(object: BottomSheet.customClickListener{
+                override fun onCheckClick() {
+                    dismiss()
+                    viewModel.updateData((binding.rvManageAttend.adapter as ManageAttendRVAdapter).getData())
+                }
+            })
+        }.show(supportFragmentManager, "출석 정보 변경")
     }
 
     override fun onClick(view: View?) {
