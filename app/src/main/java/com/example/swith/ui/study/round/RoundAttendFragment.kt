@@ -21,8 +21,8 @@ class RoundAttendFragment(private val curCount: Int) : BaseFragment<FragmentRoun
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        observeViewModel()
         initView()
+        observeViewModel()
     }
 
     private fun observeViewModel(){
@@ -41,8 +41,6 @@ class RoundAttendFragment(private val curCount: Int) : BaseFragment<FragmentRoun
                 .show(requireActivity().supportFragmentManager, "출석 오류")
         })
 
-    }
-    private fun initView(){
         viewModel.sessionLiveData.observe(viewLifecycleOwner, Observer {
             setVisibility(viewModel.isUpdateAvailable(), viewModel.curUserAttend == null)
             (binding.rvAttend.adapter as AttendRVAdapter).setData(it.getAttendanceList)
@@ -52,6 +50,8 @@ class RoundAttendFragment(private val curCount: Int) : BaseFragment<FragmentRoun
             Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
         })
 
+    }
+    private fun initView(){
         with(binding){
             tvAttendMinTime.text = "출석 유효 시간 : ${viewModel.getAttendValidTime()}분"
             rvAttend.apply{
