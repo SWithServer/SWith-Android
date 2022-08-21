@@ -3,6 +3,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/bg_round_create_detail"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <TextView
         android:id="@+id/tv_dialog_guide"

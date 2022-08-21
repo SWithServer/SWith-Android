@@ -2,17 +2,20 @@ package com.example.swith.ui.study.create
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
+import android.app.Dialog
+import android.content.Context
+import android.graphics.Color
 import android.graphics.Rect
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
-import android.view.MenuItem
-import android.view.MotionEvent
-import android.view.View
+import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.NumberPicker
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.doAfterTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -55,50 +58,29 @@ open class RoundCreateActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_round_create)
 
-        initCheckBox()
+        initPlaceCheck()
         initListener()
         observeViewModel()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-            android.R.id.home-> finish()
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
-    private fun initCheckBox(){
+    private fun initPlaceCheck(){
         with(binding){
             etCreatePlace.isEnabled = false
-            cbCreateOnline.setOnCheckedChangeListener{ _, isChecked ->
-                if (isChecked) {
-                    cbCreateOffline.isChecked = false
-                    etCreatePlace.apply {
-                        isEnabled = false
-                        setText("온라인")
-                    }
-                } else{
-                    etCreatePlace.apply{
-                        if (cbCreateOffline.isChecked) isEnabled = true
-                        hint = resources.getString(R.string.create_place_hint1)
-                        setText("")
-                    }
+            btnCreateOnline.setOnClickListener {
+                btnCreateOnline.isSelected = true
+                btnCreateOffline.isSelected = false
+                etCreatePlace.apply {
+                    isEnabled = false
+                    setText("온라인")
                 }
             }
-            cbCreateOffline.setOnCheckedChangeListener{ _, isChecked ->
-                if (isChecked) {
-                    cbCreateOnline.isChecked = false
-                    etCreatePlace.apply {
-                        hint = resources.getString(R.string.create_place_hint2)
-                        isEnabled = true
-                    }
-                }
-                else {
-                    etCreatePlace.apply{
-                        isEnabled = false
-                        hint = resources.getString(R.string.create_place_hint1)
-                        setText("")
-                    }
+            btnCreateOffline.setOnClickListener {
+                btnCreateOnline.isSelected = false
+                btnCreateOffline.isSelected = true
+                etCreatePlace.apply{
+                    isEnabled = true
+                    hint = resources.getString(R.string.create_place_hint2)
+                    setText("")
                 }
             }
         }
@@ -107,6 +89,7 @@ open class RoundCreateActivity : AppCompatActivity(), View.OnClickListener {
     protected open fun initListener(){
         // 시간 설정 후에 추가해줘야 함
         with(binding){
+            binding.clickListener = this@RoundCreateActivity
             btnCreateStartDate.setOnClickListener {
                 if (startTime != null && endTime != null) tvRoundCreateAlert.visibility = View.VISIBLE
                 else initDateTimePicker(true)
@@ -134,7 +117,7 @@ open class RoundCreateActivity : AppCompatActivity(), View.OnClickListener {
             btnCreateAdd.setOnClickListener {
                 val startTimeToString : String = String.format("%4d-%02d-%02dT%02d:%02d", startTime?.year, startTime?.month, startTime?.day, startTime?.hourOfDay, startTime?.minute)
                 val endTimeToString : String = String.format("%4d-%02d-%02dT%02d:%02d", endTime?.year, endTime?.month, endTime?.day, endTime?.hourOfDay, endTime?.minute)
-                val online : Int = if(cbCreateOnline.isChecked) 1 else 0
+                val online : Int = if(btnCreateOnline.isSelected) 1 else 0
                 if (checkCondition()) {
                     BottomSheet("회차 생성", null, resources.getString(R.string.bottom_round_create_guide), "생성 완료").apply {
                         setCustomListener(object: BottomSheet.customClickListener{
@@ -162,7 +145,7 @@ open class RoundCreateActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun initDateTimePicker(isStart: Boolean){
         with(binding) {
-            DatePickerDialog(this@RoundCreateActivity, { _, year, monthOfYear, dayOfMonth ->
+            DatePickerDialog(this@RoundCreateActivity, R.style.DatePickerTheme, { _, year, monthOfYear, dayOfMonth ->
                 calendar.set(year, monthOfYear, dayOfMonth)
             }, year, month, day).apply {
                 // 지금보다 이전 날짜(과거 날짜) 비활성화

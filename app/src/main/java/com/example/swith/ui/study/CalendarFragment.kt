@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.text.style.ForegroundColorSpan
 import android.text.style.LineBackgroundSpan
 import android.text.style.StyleSpan
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -48,7 +49,6 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
                 .setCalendarDisplayMode(CalendarMode.MONTHS)
                 .commit()
             addDecorators(RoundDecorator(), TodayDecorator())
-
             setHeaderTextAppearance(R.style.CustomHeader)
             setWeekDayTextAppearance(R.style.CustomWeekDay)
             setDateTextAppearance(R.style.CustomDate)
@@ -94,7 +94,6 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
         }
 
         override fun decorate(view: DayViewFacade?) {
-            view?.addSpan(object: ForegroundColorSpan(Color.rgb(255, 127, 0)) {})
             view?.addSpan(object: StyleSpan(Typeface.BOLD){} )
         }
     }
@@ -108,7 +107,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
     }
 
     inner class CustomDotSpan : LineBackgroundSpan{
-        private val radius : Float = 8f
+        private val radius : Float = 10f
         override fun drawBackground(
             canvas: Canvas,
             paint: Paint,
@@ -123,10 +122,9 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
             lineNumber: Int
         ) {
             // 원 그리고 색깔 칠하기
-            canvas.drawCircle(((left + right) / 2 ).toFloat(), bottom + radius, radius, paint.apply { color = Color.BLUE })
+            canvas.drawCircle(((left + right) / 2 ).toFloat(), bottom + radius, radius, paint.apply { color = resources.getColor(R.color.color_1363DF, null) })
             // 글짜 색만 다시 칠하기
-            // 현재 진한 하늘색
-            paint.color = Color.rgb(72, 180, 224)
+            paint.color = resources.getColor(R.color.color_003C99, null)
         }
     }
 

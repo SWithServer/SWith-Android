@@ -33,10 +33,10 @@ class ManageRoundModifyActivity : RoundCreateActivity(), View.OnClickListener {
             btnCreateStartDate.text = "시작 : ${startTime?.year}.${startTime?.month}.${startTime?.day} ${startTime?.hourOfDay}:${startTime?.minute}"
             btnCreateEndDate.text = "종료 : ${endTime?.year}.${endTime?.month}.${endTime?.day} ${endTime?.hourOfDay}:${endTime?.minute}"
             if (curRound.online == 1) {
-                cbCreateOnline.isChecked = true
+                btnCreateOnline.isSelected = true
             }
             else {
-                cbCreateOffline.isChecked = true
+                btnCreateOffline.isSelected = true
                 etCreatePlace.setText(curRound.place)
             }
             etCreateDetail.setText(curRound.sessionContent)
@@ -75,7 +75,7 @@ class ManageRoundModifyActivity : RoundCreateActivity(), View.OnClickListener {
             BottomSheet("${curRound.sessionNum}회차 수정", null, resources.getString(R.string.manage_round_modify), "수정 완료").apply {
                 setCustomListener(object: BottomSheet.customClickListener{
                     override fun onCheckClick() {
-                        val online = if (binding.cbCreateOnline.isChecked) 1 else 0
+                        val online = if (binding.btnCreateOnline.isSelected) 1 else 0
                         val startTimeToString : String = String.format("%4d-%02d-%02dT%02d:%02d", startTime?.year, startTime?.month, startTime?.day, startTime?.hourOfDay, startTime?.minute)
                         val endTimeToString : String = String.format("%4d-%02d-%02dT%02d:%02d", endTime?.year, endTime?.month, endTime?.day, endTime?.hourOfDay, endTime?.minute)
                         viewModel.modifyRound(SessionModify(online, binding.etCreatePlace.text.toString(), binding.etCreateDetail.text.toString(), endTimeToString, curRound.sessionIdx, startTimeToString))

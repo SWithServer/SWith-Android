@@ -33,7 +33,7 @@ class CalendarRoundRVAdapter() : RecyclerView.Adapter<CalendarRoundRVAdapter.Vie
         fun bind(round: GetSessionRes){
             with(binding){
                 tvItemCalendarRound.text = "${round.sessionNum}회차"
-                tvItemCalendarDetail.text = "내용 : ${round.sessionContent}"
+                tvItemCalendarDetail.text = "${round.sessionContent}"
             }
         }
     }

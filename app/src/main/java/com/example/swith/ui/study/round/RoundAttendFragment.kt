@@ -32,7 +32,8 @@ class RoundAttendFragment(private val curCount: Int) : BaseFragment<FragmentRoun
         })
 
         viewModel.attendLiveEvent.observe(viewLifecycleOwner, Observer {
-            // 출석이 완료되었습니다 Dialog 뜨도록!
+            CustomAlertDialog("출석 완료", "출석 처리되었습니다.")
+                .show(requireActivity().supportFragmentManager, "출석 완료")
         })
 
         viewModel.mutableErrorMessage.observe(viewLifecycleOwner, Observer {
@@ -78,7 +79,4 @@ class RoundAttendFragment(private val curCount: Int) : BaseFragment<FragmentRoun
             tvNoPeople.visibility = if (isNull) View.VISIBLE else View.INVISIBLE
         }
     }
-
-
-    // Todo : 10분 넘었을 때 지각으로 처리되는 로직도 추가해야함
 }
