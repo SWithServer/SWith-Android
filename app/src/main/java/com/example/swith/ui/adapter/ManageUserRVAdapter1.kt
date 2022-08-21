@@ -31,8 +31,17 @@ class ManageUserRVAdapter1 : RecyclerView.Adapter<ManageUserRVAdapter1.ViewHolde
         fun bind (userList: ManageUserResult?) {
             with(binding)
             {
-                tvName.text= userList?.nickname
+                tvName.text = userList?.nickname
                 Glide.with(itemView).load(userList?.profileImgUrl).into(ivProfile)
+                btnResume.setOnClickListener { v ->
+                    val pos = adapterPosition
+                    if (pos != RecyclerView.NO_POSITION) {
+                        if (itemClickListener != null) {
+                            var userIdx = userList!!.userIdx
+                            itemClickListener.resumeClick(v, pos, userIdx)
+                        }
+                    }
+                }
             }
 
             binding.clickUser.setOnClickListener { v ->
@@ -51,6 +60,7 @@ class ManageUserRVAdapter1 : RecyclerView.Adapter<ManageUserRVAdapter1.ViewHolde
 
     interface OnItemClickListener {
         fun onClick(v:View, pos:Int,userIdx:Long?)
+        fun resumeClick(v:View, pos:Int,userIdx:Long?)
     }
 
     fun setItemClickListener(itemClickListener:OnItemClickListener) {

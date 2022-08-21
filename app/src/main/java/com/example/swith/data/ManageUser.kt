@@ -6,7 +6,7 @@ data class ManageUserResponse(
     val isSuccess: Boolean,
     val code: Long,
     val message: String,
-    val result: ManageUserResult
+    val result: List<ManageUserResult>
 )
 
 data class ManageUserResult(
@@ -32,7 +32,7 @@ data class ManageUserProfileResult(
     val introduction: String,
     val interestIdx1: Long,
     val interestIdx2: Long,
-    val averageStar: Any? = null,
+    val averageStar: String,
     val role: String,
     val accessToken: Any? = null,
     val refreshToken: String,

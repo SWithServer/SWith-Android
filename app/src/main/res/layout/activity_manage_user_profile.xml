@@ -12,11 +12,16 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     tools:context=".ui.manage.ManageUserProfileActivity">
+    <include
+        android:id="@+id/toolbar_manage_profile"
+        layout="@layout/basic_appbar"
+        app:clickListener="@{clickListener}"/>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/toolbar_manage_profile">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

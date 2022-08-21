@@ -11,12 +11,12 @@
         android:layout_height="match_parent"
         android:background="@color/white">
         <include
-            android:id="@+id/toolbar_manage_finish"
+            android:id="@+id/toolbar_manage_resume"
             layout="@layout/basic_appbar"
             app:clickListener="@{clickListener}"/>
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_study_finish"
-            app:layout_constraintTop_toBottomOf="@id/toolbar_manage_finish"
+            android:id="@+id/layout_study_resume"
+            app:layout_constraintTop_toBottomOf="@id/toolbar_manage_resume"
             android:layout_marginTop="20dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
@@ -28,12 +28,12 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/tv_finish_title"
+                app:layout_constraintBottom_toTopOf="@id/tv_resume_content"
                 android:text="지원서 내용"
                 android:textSize="20sp"
                 android:layout_marginStart="10dp"/>
             <TextView
-                android:id="@+id/tv_finish_title"
+                android:id="@+id/tv_resume_content"
                 android:layout_width="match_parent"
                 android:layout_height="450dp"
                 android:background="@drawable/card_view"
@@ -55,7 +55,7 @@
                 android:textColor="@color/color_969696"
                 android:background="@drawable/btn_round_gray_selector"
                 android:text="@string/manage_resume_reject"
-                app:layout_constraintTop_toBottomOf="@id/tv_finish_title"
+                app:layout_constraintTop_toBottomOf="@id/tv_resume_content"
                 android:layout_marginTop="27dp"
                 app:layout_constraintStart_toStartOf="parent" />
             <Button
@@ -68,7 +68,7 @@
                 android:text="@string/manage_resume_confirm"
                 android:background="@drawable/btn_round_blue_selector"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_finish_title"
+                app:layout_constraintTop_toBottomOf="@id/tv_resume_content"
                 android:layout_marginTop="27dp"
                 android:layout_marginBottom="10dp"/>
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,11 +15,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.swith.R
-import com.example.swith.data.GetSessionRes
-import com.example.swith.data.ManageUserResult
+import com.example.swith.data.*
 import com.example.swith.databinding.ActivityManageUserResumeBinding
 import com.example.swith.databinding.FragmentManageApplicationBinding
 import com.example.swith.databinding.ItemMangeRoundBinding
+import com.example.swith.repository.RetrofitApi
+import com.example.swith.repository.RetrofitService
 import com.example.swith.ui.MainActivity
 import com.example.swith.ui.adapter.ManageUserRVAdapter1
 import com.example.swith.ui.adapter.StudyFindRVAdapter
@@ -27,6 +28,11 @@ import com.example.swith.ui.study.create.SelectPlaceActivity
 import com.example.swith.ui.study.find.StudyFindDetailFragment
 import com.example.swith.utils.ItemTouchHelperListener
 import com.example.swith.utils.base.BaseFragment
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 // 신청서를 낸 사람들 목록 (지원)
 class ManageUserApplication1Fragment() :BaseFragment<FragmentManageApplicationBinding>(R.layout.fragment_manage_application) {
@@ -49,8 +55,8 @@ class ManageUserApplication1Fragment() :BaseFragment<FragmentManageApplicationBi
         adapter = ManageUserRVAdapter1()
         binding.rvApplication.adapter = adapter
         setData()
+        loadData()
         binding.rvApplication.apply{
-            loadData()
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         }
 
@@ -62,6 +68,13 @@ class ManageUserApplication1Fragment() :BaseFragment<FragmentManageApplicationBi
                 intent.putExtra("userIdx", userIdx)
                 startActivity(intent)
             }
+
+            override fun resumeClick(v: View, pos: Int, userIdx: Long?) {
+                Log.e("resume 클릭 이벤트","true")
+                val intent = Intent(requireActivity(), ManageUserResumeActivity::class.java)
+                intent.putExtra("userIdx", userIdx)
+                startActivity(intent)
+            }
         })
     }
 
@@ -70,6 +83,7 @@ class ManageUserApplication1Fragment() :BaseFragment<FragmentManageApplicationBi
         adapter.setUser(userList)
     }
 
+    // 임시데이터
     fun setData()
     {
         userList = ArrayList<ManageUserResult>()
@@ -84,6 +98,36 @@ class ManageUserApplication1Fragment() :BaseFragment<FragmentManageApplicationBi
             add(ManageUserResult(7,"유저7", "https://lh3.googleusercontent.com/a/AItbvmmZTEhJKpZdLsPHSnT9XH2q469L0kulNTIFqjm2=s96-c",7,"열시미"))
             add(ManageUserResult(8,"유저8", "https://lh3.googleusercontent.com/a/AItbvmmZTEhJKpZdLsPHSnT9XH2q469L0kulNTIFqjm2=s96-c",8,"열시미"))
         }
+    }
+
+    fun setRetrofitData(groupIdx:Long?)
+    {
+        Log.e("groupIdx 레트로핏 값 ", "${groupIdx}")
+        val retrofitService = RetrofitService.retrofit.create(RetrofitApi::class.java)
+        //status가 0이면 지원했는데 아직 승인 안된사람들
+        retrofitService.getUserList(groupIdx!!,0).enqueue(object :
+            Callback<ManageUserResponse> {
+            override fun onResponse(
+                call: Call<ManageUserResponse>,
+                response: Response<ManageUserResponse>
+            ) {
+                if (response.isSuccessful) {
+                    Log.e("summer", "성공${response.toString()}")
+                    response.body()?.apply {
+                        Log.e("user들 목록",this.result.toString())
+                        adapter.setUser(this.result)
+                    }
+                }
+                else {
+                    Log.e("summer", "전달실패 code = ${response.code()}")
+                    Log.e("summer", "전달실패 msg = ${response.message()}")
+                }
+            }
+            override fun onFailure(call: Call<ManageUserResponse>, t: Throwable) {
+                Log.e("summer", "onFailure t = ${t.toString()}")
+                Log.e("summer", "onFailure msg = ${t.message}")
+            }
+        })
     }
 
     override fun onAttach(context: Context) {
