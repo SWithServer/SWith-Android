@@ -26,6 +26,7 @@ import com.example.swith.databinding.ActivityRoundCreateBinding
 import com.example.swith.databinding.DialogTimepickerBinding
 import com.example.swith.ui.dialog.BottomSheet
 import com.example.swith.ui.dialog.CustomAlertDialog
+import com.example.swith.ui.dialog.CustomTimePickerDialog
 import com.example.swith.viewmodel.RoundUpdateViewModel
 import java.lang.Integer.max
 import java.time.ZoneId
@@ -151,7 +152,9 @@ open class RoundCreateActivity : AppCompatActivity(), View.OnClickListener {
                 // 지금보다 이전 날짜(과거 날짜) 비활성화
                 // displayed value를 젤 먼저 바꿔야함!!
                 setOnDateSetListener { _, dateYear, monthOfYear, dayOfMonth ->
-                    val dialogBinding : DialogTimepickerBinding = DataBindingUtil.inflate(layoutInflater, R.layout.dialog_timepicker, null, false)
+                    val dialog = CustomTimePickerDialog(this@RoundCreateActivity)
+                    val dialogBinding = dialog.dialogBinding
+                    dialogBinding.tvTimePickerTitle.text = if (isStart) "시작시간" else "종료시간"
                     dialogBinding.tvDialogGuide.text = "해당 스터디의 회차 최소시간은 ${minuteMin}분 입니다."
                     dialogBinding.tvDialogTimelimitGuide.text = "최대 ${hourMax}시간 생성 가능"
                     dialogBinding.npHourPicker.apply {
@@ -368,8 +371,13 @@ open class RoundCreateActivity : AppCompatActivity(), View.OnClickListener {
                                     }
                                     else if (year == dateYear && monthValue == monthOfYear + 1 && day == dayOfMonth) {
                                         if (newVal.toString() == hour.toString()) {
-                                            displayedValues = arrayOf("0", "10", "20", "30", "40", "50").sliceArray(minuteIdx + 1..5)
-                                            minValue = minuteIdx + 1
+                                            if (minuteIdx == 4){
+                                                displayedValues = arrayOf("50")
+                                                minValue = 5
+                                            } else {
+                                                displayedValues = arrayOf("0", "10", "20", "30", "40", "50").sliceArray(minuteIdx + 1..5)
+                                                minValue = minuteIdx + 1
+                                            }
                                         } else {
                                             displayedValues = arrayOf("0", "10", "20", "30", "40", "50")
                                             value = 0
@@ -515,44 +523,41 @@ open class RoundCreateActivity : AppCompatActivity(), View.OnClickListener {
                             }
                         }
                     }
-                    AlertDialog.Builder(this@RoundCreateActivity)
-                        .setTitle(if (isStart) "시작 시간" else "종료 시간")
-                        .setView(dialogBinding.root)
-                        .setPositiveButton("확인") { dialog, which
-                            ->
-                            if (isStart) {
-                                btnCreateStartDate.text = String.format(
-                                    "시작 : ${dateYear}.${monthOfYear + 1}.${dayOfMonth} ${dialogBinding.npHourPicker.value}:%02d",
-                                    (dialogBinding.npMinutePicker.value) * 10
-                                )
-                                startTime = DateTime(dateYear, monthOfYear + 1, dayOfMonth, dialogBinding.npHourPicker.value, dialogBinding.npMinutePicker.value * 10)
+                    dialog.apply {
+                        setCustomListener(object: CustomTimePickerDialog.ClickListener{
+                            override fun roundCreate() {
+                                if (isStart) {
+                                    btnCreateStartDate.text = String.format(
+                                        "시작 : ${dateYear}.${monthOfYear + 1}.${dayOfMonth} ${dialogBinding.npHourPicker.value}:%02d",
+                                        (dialogBinding.npMinutePicker.value) * 10
+                                    )
+                                    startTime = DateTime(dateYear, monthOfYear + 1, dayOfMonth, dialogBinding.npHourPicker.value, dialogBinding.npMinutePicker.value * 10)
 
-                                // 종료 시간이 설정 되어 있을 때 새롭게 설정된 시작 시간이 종료 시간 보다 같거나 느린 경우(종료 시간이 더 빠름) 종료 시간 초기화
-                                if (compareStartEndTime() == 2 || compareStartEndTime() == 3){
-                                    btnCreateEndDate.text = "종료 시간"
-                                    endTime = null
-                                }
-                                setAddButton()
-                            }
-                            else {
-                                btnCreateEndDate.text = String.format(
-                                    "종료 : ${dateYear}.${monthOfYear + 1}.${dayOfMonth} ${dialogBinding.npHourPicker.value}:%02d",
-                                    (dialogBinding.npMinutePicker.value) * 10
-                                )
-                                endTime = DateTime(dateYear, monthOfYear + 1, dayOfMonth, dialogBinding.npHourPicker.value, dialogBinding.npMinutePicker.value * 10)
+                                    // 종료 시간이 설정 되어 있을 때 새롭게 설정된 시작 시간이 종료 시간 보다 같거나 느린 경우(종료 시간이 더 빠름) 종료 시간 초기화
+                                    if (compareStartEndTime() == 2 || compareStartEndTime() == 3) {
+                                        btnCreateEndDate.text = "종료 시간"
+                                        endTime = null
+                                    }
+                                    setAddButton()
+                                } else {
+                                    btnCreateEndDate.text = String.format(
+                                        "종료 : ${dateYear}.${monthOfYear + 1}.${dayOfMonth} ${dialogBinding.npHourPicker.value}:%02d",
+                                        (dialogBinding.npMinutePicker.value) * 10
+                                    )
+                                    endTime = DateTime(dateYear, monthOfYear + 1, dayOfMonth, dialogBinding.npHourPicker.value, dialogBinding.npMinutePicker.value * 10
+                                    )
 
-                                // 종료 시간이 설정 되어 있을 때 새롭게 설정된 시작 시간이 종료 시간 보다 같거나 느린 경우(종료 시간이 더 빠름) 종료 시간 초기화
-                                if (compareStartEndTime() == 2 || compareStartEndTime() == 3){
-                                    btnCreateStartDate.text = "시작 시간 "
-                                    startTime = null
+                                    // 종료 시간이 설정 되어 있을 때 새롭게 설정된 시작 시간이 종료 시간 보다 같거나 느린 경우(종료 시간이 더 빠름) 종료 시간 초기화
+                                    if (compareStartEndTime() == 2 || compareStartEndTime() == 3) {
+                                        btnCreateStartDate.text = "시작 시간 "
+                                        startTime = null
+                                    }
+                                    setAddButton()
                                 }
-                                setAddButton()
+                                dismiss()
                             }
-                        }
-                        .setNegativeButton("취소") { _, _
-                            -> this.show() }
-                        .create()
-                        .show()
+                        })
+                    }.show(supportFragmentManager, "timepicker")
                 }
                 if(isStart || startTime == null){
                     with(ZonedDateTime.now(ZoneId.of("Asia/Seoul"))) {

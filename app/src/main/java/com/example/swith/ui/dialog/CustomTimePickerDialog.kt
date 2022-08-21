@@ -1,26 +1,38 @@
 package com.example.swith.ui.dialog
 
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
+import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.example.swith.R
 import com.example.swith.databinding.DialogTimepickerBinding
 
-class CustomTimePickerDialog : DialogFragment() {
-    private lateinit var binding: DialogTimepickerBinding
+class CustomTimePickerDialog(context: Context): DialogFragment() {
+    val dialogBinding: DialogTimepickerBinding by lazy {
+        DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.dialog_timepicker, null, false)
+    }
+
+    interface ClickListener{
+        fun roundCreate()
+    }
+    private lateinit var customListener : ClickListener
+
+    fun setCustomListener(listener: ClickListener){
+        customListener = listener
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.dialog_timepicker, container, false)
-        return binding.root
+        // 모서리 직각 제거
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+        return dialogBinding.root
     }
 
     override fun onResume() {
@@ -31,14 +43,15 @@ class CustomTimePickerDialog : DialogFragment() {
         val size = windowManager.currentWindowMetrics
         val deviceWidth = size.bounds.width()
 
-        params?.width = deviceWidth - 40
+        params?.width = deviceWidth - 100
         dialog?.window?.attributes = params as WindowManager.LayoutParams
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        with(binding){
-
+        with(dialogBinding){
+            btnRoundCreateCancel.setOnClickListener { dismiss() }
+            btnRoundCreateConfirm.setOnClickListener { customListener.roundCreate() }
         }
     }
 

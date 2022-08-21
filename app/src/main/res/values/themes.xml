@@ -29,9 +29,9 @@
     </style>
 
     <style name="DatePickerTheme" parent="Theme.AppCompat.Light.Dialog">    <item name="colorAccent">@color/color_82B4FF</item></style>
-    <style name="MyNumberPicker">
-        <item name="colorControlNormal">@color/design_default_color_primary</item>
-        <item name="colorPrimary">@color/black</item>
+    <style name="ThemeOverlay.NumberPicker" parent="ThemeOverlay.AppCompat">
+        <item name="colorControlNormal">@color/black</item>
+        <item name="android:textSize">12sp</item>
     </style>
 
 <!--    CalendarView Style-->
