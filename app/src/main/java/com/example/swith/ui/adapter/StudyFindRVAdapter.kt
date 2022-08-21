@@ -93,7 +93,20 @@ class StudyFindRVAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             with(binding)
             {
                 tvStudyTitle.text = studyList?.title
-                tvSearchContent.text = studyList?.groupContent
+                if (studyList?.groupContent?.length?.compareTo(25)==0 ||studyList?.groupContent?.length?.compareTo(25)==-1 )
+                {
+                    tvSearchContent.text= studyList?.groupContent
+                }
+                else{
+                    if (studyList?.groupContent?.length?.compareTo(50)==1)
+                    {
+                        tvSearchContent.text = studyList?.groupContent?.substring(0,25) + "\n" + studyList?.groupContent?.substring(25,50) + "…"
+                    }
+                    else
+                    {
+                        tvSearchContent.text = studyList?.groupContent?.substring(0,25) + "\n" + studyList?.groupContent?.substring(25)
+                    }
+                }
                 val formatter = SimpleDateFormat("yyyy-MM-dd")
                 val year = studyList!!.recruitmentEndDate[0]
                 val month = studyList!!.recruitmentEndDate[1]
@@ -117,7 +130,7 @@ class StudyFindRVAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 }
                 else if (studyList?.regionIdx1 !=null && studyList?.regionIdx2!=null)
                 {
-                   tvSearchRegion.text= "${studyList?.regionIdx1}" + "," + "${studyList?.regionIdx2}"
+                   tvSearchRegion.text= "${studyList?.regionIdx1}" + "," + "${studyList?.regionIdx2}" + "…"
                 }
             }
             binding.root.setOnClickListener { v ->

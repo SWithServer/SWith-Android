@@ -1,13 +1,16 @@
 package com.example.swith.ui.manage
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.swith.R
+import com.example.swith.data.ManageUserResult
 import com.example.swith.databinding.ActivityManageUserBinding
 import com.example.swith.ui.adapter.ManageUserTabVPAdapter
+import com.example.swith.ui.profile.ProfileFragment
 import com.google.android.material.tabs.TabLayoutMediator
 
 class ManageUserActivity : AppCompatActivity(), View.OnClickListener{
@@ -28,7 +31,6 @@ class ManageUserActivity : AppCompatActivity(), View.OnClickListener{
     fun viewPager(){
         val viewPager = binding.applicationViewPager
         val tabLayout = binding.applicationTabLayout
-
         viewPager.adapter = ManageUserTabVPAdapter(supportFragmentManager,lifecycle)
         TabLayoutMediator(tabLayout,viewPager){ tab, position-> tab.text = tabTitleArray[position]
         }.attach()
@@ -45,5 +47,4 @@ class ManageUserActivity : AppCompatActivity(), View.OnClickListener{
             R.id.ib_basic_toolbar_back -> finish()
         }
     }
-
 }

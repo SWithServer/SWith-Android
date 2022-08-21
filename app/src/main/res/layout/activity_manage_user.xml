@@ -8,6 +8,7 @@
             type="android.view.View.OnClickListener" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/manage_user_layout"
         tools:context=".ui.manage.ManageUserActivity"
         android:layout_width="match_parent"
         android:layout_height="match_parent">

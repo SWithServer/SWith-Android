@@ -5,21 +5,22 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.swith.R
-import com.example.swith.databinding.ActivityManageUserProfileBinding
+import com.example.swith.databinding.ActivityManageFinishBinding
+import com.example.swith.databinding.ActivityManageUserResumeBinding
 
-class ManageUserProfileActivity : AppCompatActivity(){
+class ManageUserResumeActivity:AppCompatActivity() {
+    lateinit var binding:ActivityManageUserResumeBinding
     var userIdx : Long? = -1
-    lateinit var binding : ActivityManageUserProfileBinding
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_manage_user_profile)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_manage_user_resume)
+
         initData()
     }
 
     fun initData()
     {
         (intent.hasExtra("userIdx")).let { userIdx = intent.getLongExtra("userIdx", 0) }
-        Log.e("summer","userIdx = ${userIdx}")
+        Log.e("resume","userIdx = ${userIdx}")
     }
 }

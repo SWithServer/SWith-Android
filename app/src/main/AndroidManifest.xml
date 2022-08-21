@@ -31,6 +31,10 @@
             android:exported="false"/>
         <activity android:name=".ui.manage.ManageUserActivity"
             android:exported="false"/>
+        <activity android:name=".ui.manage.ManageUserProfileActivity"
+            android:exported="false"/>
+        <activity android:name=".ui.manage.ManageUserResumeActivity"
+            android:exported="false"/>
         <activity
             android:name=".ui.study.create.RoundCreateActivity"
             android:exported="false" />
