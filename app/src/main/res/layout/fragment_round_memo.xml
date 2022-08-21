@@ -48,6 +48,19 @@
             android:layout_marginBottom="7.5dp"
             android:backgroundTint="@color/color_swith"
             android:textColor="@color/white"
+            android:visibility="invisible"
+            app:layout_constraintTop_toTopOf="@id/tv_memo_guide"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/tv_memo_guide"/>
+        <Button
+            android:id="@+id/btn_memo_create"
+            android:text="메모 생성"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="7.5dp"
+            android:backgroundTint="@color/color_swith"
+            android:textColor="@color/white"
             app:layout_constraintTop_toTopOf="@id/tv_memo_guide"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="@id/tv_memo_guide"/>

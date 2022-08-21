@@ -14,10 +14,11 @@
     <string name="calendar_no_round_before">해당 날짜에 개설되었던 회차가 없습니다.</string>
     <string name="attend_no_people">스터디에 참석 중인 스터디 원이 없어요!\n스터디 원을 모집 해봐요!</string>
     <string name="bottom_attend_guide">- 해당 회차에 출석을 진행합니다. \n- 출석을 하게 되면 취소 할 수 없습니다.</string>
-    <string name="bottom_memo_guide">- 메모 내용이 수정됩니다. \n- 수정을 하게 되면 취소 할 수 없습니다.</string>
+    <string name="bottom_memo_create_guide">- 메모가 새롭게 생성됩니다. \n- 메모를 자유롭게 수정할 수 있습니다.</string>
+    <string name="bottom_memo_update_guide">- 메모 내용이 수정됩니다. \n- 수정을 하게 되면 취소 할 수 없습니다.</string>
     <string name="find_search_hint">"원하는 스터디를 찾아보세요!(제목)"</string>
     <string name="memo_hint">"회차별 자신만의 메모를 만들어보세요!"</string>
-    <string name="memo_guide">"화면을 터치해 메모를 수정하세요!"</string>
+    <string name="memo_guide">"화면을 터치해 메모를 작성하세요!"</string>
     <string name="bottom_round_create_guide">"- 생성되는 회차는 날짜 순으로 조정됩니다.\n- 회차 생성 후 수정 및 삭제는 관리자 탭에서 가능합니다."</string>
     <string name="manage_round_modify">"- 회차 내용이 작성한 대로 수정됩니다.\n- 회차 번호는 날짜 순으로 조정됩니다.</string>
     <string name="manage_round_no_round">"해당 그룹에는\n수정 가능한 회차가 없습니다."</string>

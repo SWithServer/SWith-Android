@@ -35,6 +35,14 @@ interface RetrofitApi {
     @PATCH("/groupinfo/attendance")
     suspend fun updateAttend(@Query("userIdx") userIdx: Int, @Query("sessionIdx") sessionIdx: Int) : Response<AttendResponse>
 
+    // 메모 생성
+    @POST("/groupinfo/memo")
+    suspend fun createMemo(@Body memo: Memo) : Response<MemoResponse>
+
+    // 메모 수정
+    @PATCH("/groupinfo/memo")
+    suspend fun updateMemo(@Body memoUpdate: MemoUpdate) : Response<MemoResponse>
+
     // 공지사항 삭제
     @PATCH("/groupinfo/announcement/{announcementIdx}/status")
     suspend fun deleteAnnounce(@Path("announcementIdx") announcementIdx: Int) : Response<AnnounceDelete>

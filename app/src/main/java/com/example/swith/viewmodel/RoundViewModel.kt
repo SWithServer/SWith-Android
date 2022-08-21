@@ -39,6 +39,8 @@ class RoundViewModel() : BaseViewModel() {
     // 통계 화면 (유저별 출석율)
     private var _userAttendLiveData = MutableLiveData<UserAttend>()
 
+    // 메모 화면
+    private var _memoLiveEvent = SingleLiveEvent<Any>()
 
     val roundLiveData : LiveData<Round>
         get() = _roundLiveData
@@ -54,6 +56,9 @@ class RoundViewModel() : BaseViewModel() {
 
     val userAttendLiveData : LiveData<UserAttend>
         get() = _userAttendLiveData
+
+    val memoLiveEvent: LiveData<Any>
+        get() = _memoLiveEvent
 
     // private val userIdx = SharedPrefManager().getLoginData()?.userIdx
     private val userIdx = 1
@@ -104,8 +109,6 @@ class RoundViewModel() : BaseViewModel() {
         }
         return 0
     }
-
-    fun getAllData() : ArrayList<GetSessionRes> = allData
 
     fun setCurrentData(sessionIdx: Int){
         curSessionIdx = sessionIdx
@@ -170,6 +173,28 @@ class RoundViewModel() : BaseViewModel() {
                     mutableScreenState.postValue(ScreenState.RENDER)
                     _userAttendLiveData.value = res
                 }
+            }
+        }
+    }
+
+    fun createMemo(content: String){
+        viewModelScope.launch {
+            val res = repository.createMemo(this@RoundViewModel, Memo(content, curSessionIdx, userIdx))
+            withContext(Dispatchers.Main){
+                if (res?.isSuccess == false)
+                    mutableErrorMessage.postValue(res.message)
+                else _memoLiveEvent.call()
+            }
+        }
+    }
+
+    fun updateMemo(content: String){
+        viewModelScope.launch {
+            val res = repository.updateMemo(this@RoundViewModel, MemoUpdate(content, sessionLiveData.value?.memoIdx!!))
+            withContext(Dispatchers.Main){
+                if (res?.isSuccess == false)
+                    mutableErrorMessage.postValue(res.message)
+                else _memoLiveEvent.call()
             }
         }
     }
