@@ -75,14 +75,14 @@ class ManageUserApplication1Fragment() :BaseFragment<FragmentManageApplicationBi
         userList = ArrayList<ManageUserResult>()
         Log.e("groupIdx 데이터로드", "${groupIdx}")
         userList.apply{
-            add(ManageUserResult(1,"서현", "https://lh3.googleusercontent.com/a/AItbvmmZTEhJKpZdLsPHSnT9XH2q469L0kulNTIFqjm2=s96-c",1,"화이팅"))
-            add(ManageUserResult(2,"석민", "https://lh3.googleusercontent.com/a/AItbvmmZTEhJKpZdLsPHSnT9XH2q469L0kulNTIFqjm2=s96-c",2,"아자아자"))
-            add(ManageUserResult(3,"성진", "https://lh3.googleusercontent.com/a/AItbvmmZTEhJKpZdLsPHSnT9XH2q469L0kulNTIFqjm2=s96-c",3,"열심히할게요"))
-            add(ManageUserResult(4,"나현", "https://lh3.googleusercontent.com/a/AItbvmmZTEhJKpZdLsPHSnT9XH2q469L0kulNTIFqjm2=s96-c",4,"스터디 화이팅"))
-            add(ManageUserResult(5,"가영", "https://lh3.googleusercontent.com/a/AItbvmmZTEhJKpZdLsPHSnT9XH2q469L0kulNTIFqjm2=s96-c",5,"야호~"))
-            add(ManageUserResult(6,"승현", "https://lh3.googleusercontent.com/a/AItbvmmZTEhJKpZdLsPHSnT9XH2q469L0kulNTIFqjm2=s96-c",6,"짱"))
-            add(ManageUserResult(7,"채은", "https://lh3.googleusercontent.com/a/AItbvmmZTEhJKpZdLsPHSnT9XH2q469L0kulNTIFqjm2=s96-c",7,"열시미"))
-            add(ManageUserResult(8,"쩡이", "https://lh3.googleusercontent.com/a/AItbvmmZTEhJKpZdLsPHSnT9XH2q469L0kulNTIFqjm2=s96-c",8,"열시미"))
+            add(ManageUserResult(1,"유저1", "https://lh3.googleusercontent.com/a/AItbvmmZTEhJKpZdLsPHSnT9XH2q469L0kulNTIFqjm2=s96-c",1,"화이팅"))
+            add(ManageUserResult(2,"유저2", "https://lh3.googleusercontent.com/a/AItbvmmZTEhJKpZdLsPHSnT9XH2q469L0kulNTIFqjm2=s96-c",2,"아자아자"))
+            add(ManageUserResult(3,"유저3", "https://lh3.googleusercontent.com/a/AItbvmmZTEhJKpZdLsPHSnT9XH2q469L0kulNTIFqjm2=s96-c",3,"열심히할게요"))
+            add(ManageUserResult(4,"유저4", "https://lh3.googleusercontent.com/a/AItbvmmZTEhJKpZdLsPHSnT9XH2q469L0kulNTIFqjm2=s96-c",4,"스터디 화이팅"))
+            add(ManageUserResult(5,"유저5", "https://lh3.googleusercontent.com/a/AItbvmmZTEhJKpZdLsPHSnT9XH2q469L0kulNTIFqjm2=s96-c",5,"야호~"))
+            add(ManageUserResult(6,"유저6", "https://lh3.googleusercontent.com/a/AItbvmmZTEhJKpZdLsPHSnT9XH2q469L0kulNTIFqjm2=s96-c",6,"짱"))
+            add(ManageUserResult(7,"유저7", "https://lh3.googleusercontent.com/a/AItbvmmZTEhJKpZdLsPHSnT9XH2q469L0kulNTIFqjm2=s96-c",7,"열시미"))
+            add(ManageUserResult(8,"유저8", "https://lh3.googleusercontent.com/a/AItbvmmZTEhJKpZdLsPHSnT9XH2q469L0kulNTIFqjm2=s96-c",8,"열시미"))
         }
     }
 
