@@ -8,6 +8,9 @@
         <variable
             name="clickListener"
             type="android.view.View.OnClickListener" />
+        <variable
+            name="loginViewModel"
+            type="com.example.swith.viewmodel.LoginViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -68,6 +71,21 @@
                 android:textSize="16dp"
                 android:textColor="@color/color_swith"/>
         </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/fl_loading_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#63595757"
+            android:clickable="true"
+            android:visibility="gone"
+            app:visibleGone="@{loginViewModel.isLoading()}">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+        </FrameLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

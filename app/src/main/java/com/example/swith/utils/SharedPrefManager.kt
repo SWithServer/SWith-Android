@@ -21,7 +21,7 @@ class SharedPrefManager (private val context: Context) {
     /**
      * 로그인 데이터 저장
      */
-    fun setLoginData(userIdx: String, jwt: String) {
+    fun setLoginData(userIdx: Int, jwt: String) {
         val prefs: SharedPreferences = context.getSharedPreferences(FILENAME, Context.MODE_PRIVATE)
 
         Gson().apply {

@@ -25,9 +25,9 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         //key값 가리기
-//        def kakao_api_key = properties.getProperty('kakao_api_key')
-//        buildConfigField "String", "KAKAO_API_KEY", properties['kakao_api_key']
-//        manifestPlaceholders["KAKAO_API_KEY"] = kakao_api_key
+        def kakao_api_key = properties.getProperty('kakao_api_key')
+        buildConfigField "String", "KAKAO_API_KEY", properties['kakao_api_key']
+        manifestPlaceholders["KAKAO_API_KEY"] = kakao_api_key
     }
 
     buildTypes {
@@ -107,4 +107,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-messaging-ktx'
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
+
+    // Logger
+    implementation "com.orhanobut:logger:2.2.0"
+
+    implementation 'com.squareup.retrofit2:converter-scalars:2.5.0'
 }

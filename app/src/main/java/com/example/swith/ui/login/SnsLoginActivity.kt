@@ -9,10 +9,15 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.swith.R
+import com.example.swith.data.LoginRequest
+import com.example.swith.data.LoginResponse
 import com.example.swith.databinding.ActivitySnsLoginBinding
 import com.example.swith.ui.profile.ProfileModifyActivity
 import com.example.swith.utils.SharedPrefManager
+import com.example.swith.viewmodel.LoginViewModel
 import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
@@ -20,8 +25,13 @@ import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.common.model.KakaoSdkError
 import com.kakao.sdk.user.UserApiClient
 
-class SnsLoginActivity : AppCompatActivity(), View.OnClickListener {
+class SnsLoginActivity : AppCompatActivity(), View.OnClickListener, Observer<LoginResponse> {
     lateinit var binding: ActivitySnsLoginBinding
+
+    //TODO 카카오비즈니스등록 후 이메일도 받아오는걸로 수정하자
+    //TODO api테스트 중이라 중복검사오류로 이메일 계속 바꿔줘야함
+    val emailTest: String = "dooooreeee@naver.com4"
+    private var mLoginViewModel: LoginViewModel? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_sns_login)
@@ -31,13 +41,17 @@ class SnsLoginActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun initView() {
-        binding.clickListener = this@SnsLoginActivity
-
-
+        binding.apply {
+            clickListener = this@SnsLoginActivity
+            mLoginViewModel= ViewModelProvider(this@SnsLoginActivity,LoginViewModel.Factory()).get(LoginViewModel::class.java).apply {
+                loginViewModel=this
+                getCurrentLogin().observe(this@SnsLoginActivity,this@SnsLoginActivity)
+            }
+        }
     }
 
     private fun initData() {
-        //TODO("Not yet implemented")
+
     }
 
     override fun onClick(view: View?) {
@@ -46,36 +60,24 @@ class SnsLoginActivity : AppCompatActivity(), View.OnClickListener {
                 Toast.makeText(this, "kakao", Toast.LENGTH_SHORT).show()
                 hasKakaoToken()
             }
-//            R.id.btn_logout -> {
-//                // 연결 끊기
-//                UserApiClient.instance.unlink { error ->
-//                    if (error != null) {
-//                        Log.e("doori", "연결 끊기 실패", error)
-//                        cautionDialog(error.message?:"연결끊기오류")
-//                    } else {
-//                        Log.i("doori", "연결 끊기 성공. SDK에서 토큰 삭제 됨")
-//                        SharedPrefManager(this@SnsLoginActivity).deleteLoginData()
-//                    }
-//                }
-//            }
-
         }
     }
+
+
 
     private fun hasKakaoToken() {
         if (AuthApiClient.instance.hasToken()) {
             UserApiClient.instance.accessTokenInfo { tokenInfo, error ->
                 if (error != null) {
-                    Log.e("doori", "토큰 정보 보기 실패", error)
+                    Log.e("doori", "토큰 정보 보기 실패,error =  $error")
                     if (error is KakaoSdkError && error.isInvalidTokenError()) {
                         //로그인 필요
                         kakaoLogin()
                     } else {
                         //기타 에러
-                        cautionDialog(error.message?:"hasKakaoToken()오류")
+                        cautionDialog(error.message ?: "hasKakaoToken()오류")
                     }
                 } else {
-                    //TODO 토큰 유효성 체크 && 서버에 사용자 정보 넘겨주기
                     Log.i(
                         "doori", "토큰 정보 보기 성공" +
                                 "\n회원번호: ${tokenInfo?.id}" +
@@ -94,10 +96,9 @@ class SnsLoginActivity : AppCompatActivity(), View.OnClickListener {
     private fun kakaoLogin() {
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
             if (error != null) {
-                Log.e("doori", "카카오계정으로 로그인 실패", error)
-                cautionDialog(error.message?:"kakaoLogin()오류")
+                Log.e("doori", "카카오계정으로 로그인 실패 , error =  $error")
+                cautionDialog(error.message ?: "kakaoLogin()오류")
             } else if (token != null) {
-                //TODO 서버에 사용자 정보 넘겨주기
                 Log.i("doori", "카카오계정으로 로그인 성공 ${token.accessToken}")
                 getUserInfo()
                 goProfileModifyPage()
@@ -113,17 +114,16 @@ class SnsLoginActivity : AppCompatActivity(), View.OnClickListener {
                     if (error != null) {
                         Log.e("doori", "카카오톡으로 로그인 실패", error)
 
+                        // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인 시도
+                        loginWithKakaoAccount(this@SnsLoginActivity, callback = callback)
+
                         // 사용자가 카카오톡 설치 후 디바이스 권한 요청 화면에서 로그인을 취소한 경우,
                         // 의도적인 로그인 취소로 보고 카카오계정으로 로그인 시도 없이 로그인 취소로 처리 (예: 뒤로 가기)
                         if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
                             cautionDialog(error.msg)
                             return@loginWithKakaoTalk
                         }
-
-                        // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인 시도
-                        loginWithKakaoAccount(this@SnsLoginActivity, callback = callback)
                     } else if (token != null) {
-                        //TODO 서버에 사용자 정보 넘겨주기
                         Log.e("doori", "카카오톡으로 로그인 성공 ${token.accessToken}")
                         getUserInfo()
                         goProfileModifyPage()
@@ -149,20 +149,28 @@ class SnsLoginActivity : AppCompatActivity(), View.OnClickListener {
                             "\n닉네임: ${user.kakaoAccount?.profile?.nickname}" +
                             "\n프로필사진url: ${user.kakaoAccount?.profile?.thumbnailImageUrl}"
                 )
+
+                //TODO 값이없을땐 어떡할까?
+                mLoginViewModel?.requestCurrentLogin(LoginRequest(emailTest, user.kakaoAccount?.profile?.nickname ?: "null", user.kakaoAccount?.profile?.thumbnailImageUrl ?: "no"))
+                setShowDimmed(true)
             }
         }
     }
 
-    private fun goProfileModifyPage(){
-        //TODO 자동로그인 테스트를 위한 임시데이터
-        SharedPrefManager(this@SnsLoginActivity).setLoginData("1234","asdasd")
+    private fun goProfileModifyPage() {
+        mLoginViewModel?.getCurrentLogin()?.value?.result?.apply {
+            Log.e("doori","goProfile = $this")
+            SharedPrefManager(this@SnsLoginActivity).setLoginData(userIdx, accessToken)
+        }
+
+        Log.e("doori","SharedPrefManage = ${SharedPrefManager(this@SnsLoginActivity).getLoginData()}")
         Intent(this@SnsLoginActivity, ProfileModifyActivity::class.java).run {
             startActivity(this)
             finishAffinity()
         }
     }
 
-    private fun cautionDialog(errorMsg: String){
+    private fun cautionDialog(errorMsg: String) {
         val builder = AlertDialog.Builder(this@SnsLoginActivity)
             .setTitle("카카오톡오류")
             .setMessage(errorMsg)
@@ -177,5 +185,35 @@ class SnsLoginActivity : AppCompatActivity(), View.OnClickListener {
                         .show()
                 })
         builder.show()
+    }
+
+    override fun onChanged(loginResponse: LoginResponse?) {
+        Log.e("doori","onChanged = $loginResponse")
+
+        loginResponse!!.isSuccess.apply {
+            setShowDimmed(false)
+            if(this){
+                goProfileModifyPage()
+            }else{
+                Toast.makeText(this@SnsLoginActivity,"잠시 후 다시 시작해주세요.",Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun setShowDimmed(isLoading: Boolean) {
+        mLoginViewModel?.apply {
+            if (isLoading) {
+                showLoading()
+            } else {
+                hideLoading()
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mLoginViewModel?.run {
+            getCurrentLogin().removeObserver(this@SnsLoginActivity)
+        }
     }
 }

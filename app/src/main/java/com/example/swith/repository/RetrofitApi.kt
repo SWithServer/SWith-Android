@@ -109,4 +109,7 @@ interface RetrofitApi {
     //프로필
     @GET("/profile")
     fun getProfileInfo() : Call<ProfileResponse>
+
+    @POST("/signUpAndIn")
+    fun login(@Body loginBody:LoginRequest): Call<LoginResponse>
 }
