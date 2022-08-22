@@ -27,7 +27,7 @@ class RoundAttendFragment(private val curCount: Int) : BaseFragment<FragmentRoun
 
     private fun observeViewModel(){
         viewModel.sessionLiveData.observe(viewLifecycleOwner, Observer {
-            setVisibility(viewModel.isUpdateAvailable(), viewModel.curUserAttend == null)
+            setVisibility(viewModel.isUpdateAvailable(), (viewModel.curUserAttend == null))
             (binding.rvAttend.adapter as AttendRVAdapter).setData(it.getAttendanceList)
         })
 

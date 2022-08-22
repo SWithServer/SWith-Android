@@ -92,7 +92,8 @@ class RoundViewModel() : BaseViewModel() {
             val res = repository.getSessionInfo(this@RoundViewModel, userIdx, curSessionIdx)
             if (res == null) mutableScreenState.postValue(ScreenState.RENDER)
             res?.let {
-                it.getAttendanceList.forEach { a ->
+                curUserAttend = null
+                it.getAttendanceList?.forEach { a ->
                     if (a.userIdx == userIdx) curUserAttend = a
                 }
                 mutableScreenState.postValue(ScreenState.RENDER)

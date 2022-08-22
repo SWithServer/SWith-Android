@@ -19,6 +19,7 @@ class RoundTabFragment() : BaseFragment<FragmentRoundTabBinding>(R.layout.fragme
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.vpRoundTab.adapter = RoundTabVPAdapter(this, 0)
         observeViewModel()
     }
 
