@@ -39,3 +39,10 @@ data class StudyResponse(
     @SerializedName("result") val result: StudyResult
 )
 
+data class StudyModifyResponse(
+    val isSuccess: Boolean,
+    val code: Long,
+    val message: String,
+    val result: Long
+)
+

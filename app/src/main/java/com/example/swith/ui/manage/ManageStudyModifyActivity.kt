@@ -1,19 +1,33 @@
 package com.example.swith.ui.manage
 
 import android.app.DatePickerDialog
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.example.swith.R
+import com.example.swith.data.StudyDetailResponse
+import com.example.swith.data.StudyGroup
+import com.example.swith.data.StudyModifyResponse
+import com.example.swith.data.StudyResponse
 import com.example.swith.databinding.ActivityManageStudyModifyBinding
+import com.example.swith.repository.RetrofitApi
+import com.example.swith.repository.RetrofitService
 import com.example.swith.ui.study.create.SelectPlaceActivity
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.*
 
 class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
@@ -49,6 +63,7 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
     private var year = calendar.get(Calendar.YEAR)
     private var month = calendar.get(Calendar.MONTH)
     private var day = calendar.get(Calendar.DAY_OF_MONTH)
+    lateinit var dialog_ :Dialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -349,8 +364,67 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
         with(binding)
         {
             btnStudyModify.setOnClickListener {
-                Log.e("title값","${title}")
-                modifyStudy(title)
+                with(binding)
+                { title = etStudyTitle.text.toString()
+                    group_content = etStudyContent.text.toString()
+                    topic_content = etCreateTopic.text.toString()
+                    recruitmentEndDate_ = btnDeadline.text.toString()
+                    groupStart_ = btnStartDay.text.toString()
+                    groupEnd_ = btnFinishDay.text.toString()
+                    when(meet_idx) {
+                        0->{if (!etStudyWeek.text.isNullOrBlank())
+                            frequency_content=etStudyWeek.text.toString().toIntOrNull()
+                        }
+                        1->{if (!etStudyMonth.text.isNullOrBlank())
+                            frequency_content=etStudyMonth.text.toString().toIntOrNull()}
+                        2->{if (!etStudyFree.text.isNullOrBlank())
+                            periods_content=etStudyFree.text.toString()}
+                    }
+
+                    var studyRequestData= StudyGroup(1,"2",title,meet_idx,frequency_content,periods_content,online_idx,regionIdx1,regionIdx2,interest_idx
+                        ,topic_content,memberLimit_content,applicationMethod_idx,recruitmentEndDate_,groupStart_,groupEnd_
+                        ,attendanceVaildTime_content,group_content)
+                    Log.e("summer", "USER DATA = ${studyRequestData.toString()}")
+
+                    //Toast Message 설정
+                    if (title.equals("")||meet_idx==-1||online_idx==-1||interest_idx==-1||topic_content.equals("")||recruitmentEndDate_.equals("+") ||groupStart_.equals("+") ||groupEnd_.equals("+") || attendanceVaildTime_content==-1 ||group_content.equals(""))
+                    {
+                        Toast.makeText(this@ManageStudyModifyActivity,"모든 항목을 작성해주세요!",Toast.LENGTH_SHORT).show()
+                    }
+                    else{
+                        when(meet_idx)
+                        {
+                            0,1->{
+                                if (online_idx==0 && regionIdx1==null&&regionIdx2==null)
+                                {
+                                    Toast.makeText(this@ManageStudyModifyActivity,"모든 항목을 작성해주세요!",Toast.LENGTH_SHORT).show()
+                                }
+                                else if (frequency_content==null)
+                                {
+                                    Toast.makeText(this@ManageStudyModifyActivity,"모든 항목을 작성해주세요!",Toast.LENGTH_SHORT).show()
+                                }
+                                else{
+                                    modifyStudy(studyRequestData,"수정하시겠습니까?")
+                                }
+                            }
+                            2->{
+                                if (online_idx==0 && (regionIdx1==null&&regionIdx2==null))
+                                {
+                                    Toast.makeText(this@ManageStudyModifyActivity,"모든 항목을 작성해주세요!",Toast.LENGTH_SHORT).show()
+                                }
+                                else if (periods_content==null)
+                                {
+                                    Toast.makeText(this@ManageStudyModifyActivity,"모든 항목을 작성해주세요!",Toast.LENGTH_SHORT).show()
+
+                                }
+                                else{
+                                    modifyStudy(studyRequestData,"수정하시겠습니까?")
+                                }
+                            }
+                        }
+                    }
+                }
+
             }
         }
     }
@@ -364,17 +438,145 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
     // 본래 스터디 정보 가져오기 retrofit 함수
     fun initView(groupIdx : Int)
     {
-        with(binding)
-        {
-            etStudyTitle.setText("알고리즘 스터디입니다")
-            title = etStudyTitle.text.toString()
-        }
+        Log.e("summer","데이터 set true")
+        val retrofitService = RetrofitService.retrofit.create(RetrofitApi::class.java)
+        retrofitService.getStudyDetail(groupIdx.toLong()).enqueue(object : Callback<StudyDetailResponse> {
+            override fun onResponse(
+                call: Call<StudyDetailResponse>,
+                response: Response<StudyDetailResponse>
+            ) {
+                if (response.isSuccessful) {
+                    Log.e("summer", "성공${response.toString()}")
+                    response.body()?.apply {
+                        var result = this.result
+                        with(binding)
+                        {
+                            etStudyTitle.setText(result.title)
+                            etCreateTopic.setText(result.topic)
+                            when(result.meet)
+                            {
+                                0->{
+                                   etStudyWeek.setText(result.frequency.toString())
+                                }
+                                1->{
+                                    etStudyMonth.setText(result.frequency.toString())
+                                }
+                                2->{
+                                    etStudyFree.setText(result.periods.toString())
+                                }
+                            }
+                            when(result.online)
+                            {
+                                0->{ btnOnline.isChecked= true
+                                btnOffline.isChecked=false
+                                    layoutCreateRegion.visibility=View.GONE
+                                    binding.btnPlusPlace1.background = ContextCompat.getDrawable(this@ManageStudyModifyActivity,R.drawable.bg_create_skyblue)
+                                    binding.btnPlusPlace2.background = ContextCompat.getDrawable(this@ManageStudyModifyActivity,R.drawable.bg_create_skyblue)}
+                                1->{btnOnline.isChecked= true
+                                    btnOffline.isChecked=false
+                                    layoutCreateRegion.visibility=View.VISIBLE
+                                    if (result.regionIdx1!= null)
+                                    {
+                                        btnPlusPlace1.text= result.regionIdx1
+                                        binding.btnPlusPlace1.background = ContextCompat.getDrawable(this@ManageStudyModifyActivity,R.drawable.bg_create_select_blue)
+                                    }
+                                    else
+                                    {
+                                        btnPlusPlace1.text = "+"
+                                        binding.btnPlusPlace1.background = ContextCompat.getDrawable(this@ManageStudyModifyActivity,R.drawable.bg_create_skyblue)
+                                    }
+
+                                    if (result.regionIdx2!= null)
+                                    {
+                                        btnPlusPlace2.text= result.regionIdx2
+                                        binding.btnPlusPlace2.background = ContextCompat.getDrawable(this@ManageStudyModifyActivity,R.drawable.bg_create_select_blue)
+                                    }
+                                    else
+                                    {
+                                        btnPlusPlace2.text = "+"
+                                        binding.btnPlusPlace2.background = ContextCompat.getDrawable(this@ManageStudyModifyActivity,R.drawable.bg_create_skyblue)
+                                    }
+                                }
+                            }
+                            when(result.interest)
+                            {
+                                1->{spinnerCategory.setSelection(1)}
+                                2->{spinnerCategory.setSelection(2)}
+                                3->{spinnerCategory.setSelection(3)}
+                                4->{spinnerCategory.setSelection(4)}
+                                5->{spinnerCategory.setSelection(5)}
+                                6->{spinnerCategory.setSelection(6)}
+                                7->{spinnerCategory.setSelection(7)}
+                            }
+                            btnDeadline.text = result.recruitmentEndDate
+                            btnStartDay.text = result.groupStart
+                            btnFinishDay.text = result.groupEnd
+                            when(result.applicationMethod)
+                            {
+                                0->{spinnerMethod.setSelection(0)}
+                                1->{spinnerMethod.setSelection(1)}
+                            }
+                            var selectedPeople = result.memberLimit
+                            spinnerPeople.setSelection(selectedPeople)
+                            var selectedTime = result.attendanceValidTime
+                            spinnerAttendTime.setSelection(selectedTime)
+                            etStudyContent.setText(result.groupContent)
+                        }
+                    }
+                }
+                else {
+                    Log.e("summer", "전달실패 code = ${response.code()}")
+                    Log.e("summer", "전달실패 msg = ${response.message()}")
+                }
+            }
+            override fun onFailure(call: Call<StudyDetailResponse>, t: Throwable) {
+                Log.e("summer", "onFailure t = ${t.toString()}")
+                Log.e("summer", "onFailure msg = ${t.message}")
+            }
+        })
     }
 
     //스터디 수정 값들 가져와서 전송 retrofit 함수
-    fun modifyStudy(title:String)
-    {
-        Log.e("title","${title}")
+    fun modifyStudy(studyRequestData : StudyGroup,content_text:String){
+        //레트로핏 부분
+        dialog_.findViewById<TextView>(R.id.tv_title).text = content_text
+        dialog_.show()
+
+        dialog_.findViewById<Button>(R.id.btn_no).setOnClickListener {
+            dialog_.dismiss()
+        }
+        dialog_.findViewById<Button>(R.id.btn_yes).setOnClickListener {
+            Log.e("summer","retrofit 함수 in")
+            Log.e("summer", "USER DATA = ${studyRequestData.toString()}")
+            val retrofitService = RetrofitService.retrofit.create(RetrofitApi::class.java)
+            retrofitService.modifyStudy(groupIdx.toLong(),studyRequestData).enqueue(object : Callback <StudyModifyResponse> {
+                override fun onResponse(call: Call<StudyModifyResponse>, response: Response<StudyModifyResponse>) {
+                    if (response.isSuccessful)
+                    {
+                        response.body()?.apply {
+                            if (this.result == groupIdx.toLong())
+                            {
+                                Log.e("summer","body = ${this.result}")
+                                finish()
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Log.e("summer", "전달실패 code = ${response.code()}")
+                        Log.e("summer", "전달실패 msg = ${response.message()}")
+                        Toast.makeText(this@ManageStudyModifyActivity,"다시 시도해주세요",Toast.LENGTH_SHORT).show()
+                        dialog_.dismiss()
+                    }
+                }
+                override fun onFailure(call: Call<StudyModifyResponse>, t: Throwable) {
+                    Log.e("summer","onFailure t = ${t.toString()}")
+                    Log.e("summer","onFailure msg = ${t.message}")
+                    Toast.makeText(this@ManageStudyModifyActivity,"다시 시도해주세요",Toast.LENGTH_SHORT).show()
+                    dialog_.dismiss()
+                }
+            })
+        }
     }
         fun setupSinner(){
             val interest_spinner = binding.spinnerCategory
@@ -422,5 +624,17 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
         when(view?.id){
             R.id.ib_basic_toolbar_back -> finish()
         }
+    }
+
+    fun customDialog()
+    {
+        dialog_ = Dialog(this@ManageStudyModifyActivity)
+        dialog_.setContentView(R.layout.dialog_create)
+        var params = dialog_.window?.attributes
+        dialog_.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        params?.height = WindowManager.LayoutParams.MATCH_PARENT
+        params?.width= WindowManager.LayoutParams.MATCH_PARENT
+        params?.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
+        dialog_.window?.attributes=params
     }
 }

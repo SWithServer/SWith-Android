@@ -2,6 +2,7 @@ package com.example.swith.ui.study.find
 
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -21,6 +22,7 @@ import com.example.swith.repository.RetrofitApi
 import com.example.swith.repository.RetrofitService
 import com.example.swith.ui.MainActivity
 import com.example.swith.ui.dialog.CustomDialog
+import com.example.swith.ui.manage.ManageUserProfileActivity
 import com.example.swith.utils.CustomBinder
 import com.example.swith.utils.SharedPrefManager
 import com.example.swith.utils.base.BaseFragment
@@ -33,6 +35,7 @@ class StudyFindDetailFragment : BaseFragment<FragmentStudyFindDetailBinding>(R.l
     var groupIdx : Long? = -1
 //    val userid= SharedPrefManager(requireActivity()).getLoginData()
 //    val userIdx = userid?.userIdx
+    var adminIdx : Long? = -1
     var activity_:MainActivity? =null
     lateinit var dialog_ :Dialog
     var applicationMethod : Int? = -1
@@ -75,6 +78,14 @@ class StudyFindDetailFragment : BaseFragment<FragmentStudyFindDetailBinding>(R.l
                     }
                  }
              }
+
+            btnAdmin.setOnClickListener {
+                Log.e("클릭이벤트 발생","true")
+                Log.e("userIdx 값","${adminIdx}")
+                val intent = Intent(requireActivity(), ManageUserProfileActivity::class.java)
+                intent.putExtra("userIdx", adminIdx)
+                startActivity(intent)
+            }
         }
     }
 
@@ -137,6 +148,7 @@ class StudyFindDetailFragment : BaseFragment<FragmentStudyFindDetailBinding>(R.l
                     Log.e("summer", "성공${response.toString()}")
                     response.body()?.apply {
                         var result = this.result
+                        adminIdx = result.adminIdx
                         with(binding)
                         {
                             tvStudyDetailTitle.text= result.title

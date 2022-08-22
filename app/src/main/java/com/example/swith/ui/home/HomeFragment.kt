@@ -10,7 +10,6 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.swith.R
 import com.example.swith.data.Group
-import com.example.swith.data.GroupRV
 import com.example.swith.databinding.FragmentHomeBinding
 import com.example.swith.utils.base.BaseFragment
 import com.example.swith.ui.adapter.HomeStudyRVAdapter

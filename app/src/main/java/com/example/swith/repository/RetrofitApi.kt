@@ -106,6 +106,15 @@ interface RetrofitApi {
     @POST("/application/manage/resume/{groupIdx}/{status}")
     fun postUserResume(@Path("groupIdx") groupIdx : Long, @Path("status") status:Int, @Body body: ManageUserResumeReq) : Call<ManageUserResumeResponse>
 
+    // 관리자탭 스터디 수정하기
+    @PATCH("/groupinfo/modify/{groupIdx}")
+    fun modifyStudy(@Path("groupIdx") groupIdx : Long,@Body body:StudyGroup) : Call<StudyModifyResponse>
+
+
+
+
+
+
     //스터디 삭제하기
     @DELETE("/groupinfo")
     fun delStudy(@Query("groupIdx") groupIdx : Int)
