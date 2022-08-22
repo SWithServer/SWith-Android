@@ -20,6 +20,7 @@
             android:id="@+id/application_tabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:tabIndicatorColor="@color/color_1363DF"
             app:layout_constraintTop_toBottomOf="@id/toolbar_manage_user"/>
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/application_viewPager"

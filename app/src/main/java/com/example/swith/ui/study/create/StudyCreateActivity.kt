@@ -190,7 +190,7 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
         // 모집 마감기간 설정
         binding.btnDeadline.setOnClickListener {
             //팝업 달력
-            val datePickerDialog = DatePickerDialog(this, { _, year, month, day ->
+            val datePickerDialog = DatePickerDialog(this, R.style.DatePickerTheme, { _, year, month, day ->
                 if (month<10)
                 { binding.tvDeadline.text =
                         year.toString() + "-0" + (month + 1).toString() + "-" + day.toString()
@@ -213,11 +213,12 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
                 datePicker.minDate= System.currentTimeMillis() - 1000;
             }
             datePickerDialog.show()
+
         }
 
         //활동 시작기간 설정
         binding.btnStartDay.setOnClickListener {
-            val datePickerDialog = DatePickerDialog(this, { _, year, month, day ->
+            val datePickerDialog = DatePickerDialog(this, R.style.DatePickerTheme, { _, year, month, day ->
                 if (month<10)
                 { binding.tvStartDay.text =
                     year.toString() + "-0" + (month + 1).toString() + "-" + day.toString()
@@ -247,7 +248,7 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
         // 활동 끝나는기간 설정
         binding.btnFinishDay.setOnClickListener {
             if (binding.tvStartDay.text.toString() != "시작 날짜") {
-                val datePickerDialog = DatePickerDialog(this, { _, year, month, day ->
+                val datePickerDialog = DatePickerDialog(this, R.style.DatePickerTheme,{ _, year, month, day ->
                     if (month<10)
                     { binding.tvFinishDay.text =
                         year.toString() + "-0" + (month + 1).toString() + "-" + day.toString()

@@ -72,6 +72,7 @@
                         android:scaleType="fitXY"
                         android:src="@drawable/bg_create_sample"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -814,7 +815,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="20dp"
                     android:layout_marginTop="6dp"
                     android:text="스터디 소개"
                     android:textColor="@color/black" />
@@ -822,12 +823,15 @@
                 <EditText
                     android:id="@+id/et_study_content"
                     android:layout_width="match_parent"
-                    android:layout_height="250dp"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginEnd="15dp"
+                    android:layout_height="120dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:textSize="12sp"
                     android:layout_marginBottom="15dp"
-                    android:background="@drawable/card_view"
-                    android:elevation="6dp"
+                    android:background="@drawable/bg_create_gray"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
                     android:hint="텍스트 입력" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
