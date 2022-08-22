@@ -2,9 +2,11 @@ package com.example.swith.ui.study.round
 
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import com.bumptech.glide.Glide
 import com.example.swith.R
 import com.example.swith.data.DateTime
 import com.example.swith.data.GetSessionRes
@@ -12,6 +14,7 @@ import com.example.swith.data.SessionInfo
 import com.example.swith.databinding.FragmentRoundSummaryBinding
 import com.example.swith.utils.base.BaseFragment
 import com.example.swith.viewmodel.RoundViewModel
+import java.net.URL
 
 
 class RoundSummaryFragment : BaseFragment<FragmentRoundSummaryBinding>(R.layout.fragment_round_summary) {
@@ -52,8 +55,9 @@ class RoundSummaryFragment : BaseFragment<FragmentRoundSummaryBinding>(R.layout.
             tvSummaryContent.text = "학습 내용 : ${session.sessionContent}"
             tvSummaryPlace.text = if (session.online == 0) session.place else "온라인"
 
+            Glide.with(requireContext()).load("http://morguefile.nyc3.cdn.digitaloceanspaces.com/pub/secretagency/images/8/large/9b302aa4-b77e-45e1-a5f1-0f203a127500.1660247695.jpg").into(ivSummaryStudy)
             session.groupImgUrl?.let {
-                // Todo : 이미지 설정
+                if (!it.isNullOrEmpty()) Glide.with(requireContext()).load(it).error(R.color.color_d9d9d9).into(ivSummaryStudy)
             }
         }
     }

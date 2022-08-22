@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.swith.R
 import com.example.swith.data.Group
 import com.example.swith.data.GroupList
@@ -60,6 +61,7 @@ class HomeStudyRVAdapter : RecyclerView.Adapter<HomeStudyRVAdapter.ViewHolder>()
                     if (group.regionIdx2.isNullOrEmpty()) tvItemStudyPlace.text = group.regionIdx1
                     else tvItemStudyPlace.text = "${group.regionIdx1} | ${group.regionIdx2}"
                 }
+                group.groupImageUrl?.let { if(!it.isNullOrEmpty()) Glide.with(itemView).load(it).error(R.drawable.bg_item_study_light_grey).into(ivItemStudy) }
             }
         }
     }

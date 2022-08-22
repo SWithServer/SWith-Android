@@ -3,14 +3,18 @@ package com.example.swith.ui.study
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
+import com.bumptech.glide.manager.SupportRequestManagerFragment
 import com.example.swith.R
 import com.example.swith.databinding.ActivityStudyBinding
 import com.example.swith.ui.manage.ManageActivity
+import com.example.swith.ui.study.round.RoundAttendFragment
 import com.example.swith.ui.study.round.RoundFragment
+import com.example.swith.ui.study.round.RoundMemoFragment
 import com.example.swith.ui.study.round.RoundTabFragment
 import com.example.swith.viewmodel.RoundViewModel
 
@@ -47,13 +51,10 @@ class StudyActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.ib_study_back -> {
                 with(supportFragmentManager){
-                    if (fragments[0] is RoundFragment || fragments[0] is CalendarFragment || fragments[0] is StatsFragment)
-                        finish()
-                    else {
-                        beginTransaction()
-                            .replace(R.id.study_frm, RoundFragment())
+                    if (fragments[0] is RoundTabFragment || (fragments.size > 1 && fragments[1] is RoundTabFragment))
+                        beginTransaction().replace(R.id.study_frm, RoundFragment())
                             .commitAllowingStateLoss()
-                    }
+                    else finish()
                 }
             }
         }
@@ -73,25 +74,30 @@ class StudyActivity : AppCompatActivity(), View.OnClickListener {
                                 replace(R.id.study_frm, RoundTabFragment())
                                     .commitAllowingStateLoss()
                             else{
-                                prevRoundFragment = fragments[0].toString()
-                                if (fragments[0] is RoundTabFragment)
+                                prevRoundFragment = if (fragments[0] is RoundTabFragment || (fragments.size > 2 && fragments[1] is RoundTabFragment)) {
                                     replace(R.id.study_frm, RoundTabFragment())
                                         .commitAllowingStateLoss()
-                                else replace(R.id.study_frm, RoundFragment())
-                                    .commitAllowingStateLoss()
+                                    "RoundTabFragment"
+                                } else {
+                                    replace(R.id.study_frm, RoundFragment())
+                                        .commitAllowingStateLoss()
+                                    "RoundFragment"
+                                }
                             }
                         }
                         return@setOnItemSelectedListener true
                     }
                     R.id.bottom_nav_calendar -> {
-                        if (fragments[0] is RoundTabFragment || fragments[0] is RoundFragment) prevRoundFragment = fragments[0].toString()
+                        if (fragments[0] is RoundTabFragment || fragments[0] is RoundFragment ) prevRoundFragment = fragments[0].toString()
+                        else if(fragments.size > 1 && (fragments[1] is RoundTabFragment || fragments[1] is RoundFragment)) prevRoundFragment = fragments[1].toString()
                         beginTransaction()
                             .replace(R.id.study_frm, CalendarFragment())
                             .commitAllowingStateLoss()
                         return@setOnItemSelectedListener true
                     }
                     else -> {
-                        if (fragments[0] is RoundTabFragment || fragments[0] is RoundFragment) prevRoundFragment = fragments[0].toString()
+                        if (fragments[0] is RoundTabFragment || fragments[0] is RoundFragment ) prevRoundFragment = fragments[0].toString()
+                        else if(fragments.size > 1 && (fragments[1] is RoundTabFragment || fragments[1] is RoundFragment)) prevRoundFragment = fragments[1].toString()
                         beginTransaction()
                             .replace(R.id.study_frm, StatsFragment())
                             .commitAllowingStateLoss()
@@ -106,12 +112,10 @@ class StudyActivity : AppCompatActivity(), View.OnClickListener {
     override fun onBackPressed() {
         with(supportFragmentManager) {
             // RoundTabFragment 위에 있으면 이전 키 누르면 RoundFragment로 돌아오기, 아닌 경우 activity 종료
-            if (fragments[0] is RoundTabFragment) {
+            if (fragments[0] is RoundTabFragment || (fragments.size > 1 && fragments[1] is RoundTabFragment))
                 beginTransaction().replace(R.id.study_frm, RoundFragment())
                     .commitAllowingStateLoss()
-            } else {
-                finish()
-            }
+            else finish()
         }
     }
     fun setVisibleBar(isManager: Boolean){
