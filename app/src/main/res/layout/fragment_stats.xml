@@ -5,9 +5,10 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:id="@+id/stats_layout"
             android:layout_width="match_parent"
+            android:overScrollMode="never"
             android:layout_height="match_parent">
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -15,28 +16,53 @@
                 <TextView
                     android:id="@+id/tv_stats"
                     android:text="유저별 출석율"
-                    android:textSize="20sp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_margin="20dp"/>
+                <Spinner
+                    android:id="@+id/spinner_stats_sort"
+                    android:layout_width="120dp"
+                    android:layout_height="30dp"
+                    android:dropDownWidth="120dp"
+                    app:layout_constraintTop_toTopOf="@id/tv_stats"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_stats"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="20dp"/>
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="400dp"
-                    android:background="@color/light_grey"
+                    android:layout_height="wrap_content"
                     android:layout_margin="20dp"
                     app:layout_constraintTop_toBottomOf="@id/tv_stats">
-                    <com.github.mikephil.charting.charts.HorizontalBarChart
-                        android:id="@+id/chart_attend"
+                    <TextView
+                        android:id="@+id/tv_no_people_stats"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:visibility="invisible"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginTop="50dp"
+                        android:text="@string/attend_no_people"/>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_stats"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:minHeight="400dp"
-                        android:layout_marginBottom="10dp"/>
+                        android:layout_height="wrap_content"
+                        android:overScrollMode="never"
+                        app:layout_constraintTop_toTopOf="parent"/>
+<!--                    <com.github.mikephil.charting.charts.HorizontalBarChart-->
+<!--                        android:id="@+id/chart_attend"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:minHeight="400dp"-->
+<!--                        android:layout_marginBottom="10dp"/>-->
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/stats_circular_layout"
             android:layout_width="match_parent"

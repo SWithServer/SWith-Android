@@ -72,7 +72,7 @@ class ManageRoundModifyActivity : RoundCreateActivity(), View.OnClickListener {
     override fun initListener() {
         super.initListener()
         binding.btnCreateAdd.setOnClickListener {
-            BottomSheet("${curRound.sessionNum}회차 수정", null, resources.getString(R.string.manage_round_modify), "수정 완료").apply {
+            BottomSheet("${curRound.sessionNum}회차 수정", null, resources.getString(R.string.manage_round_modify), "수정").apply {
                 setCustomListener(object: BottomSheet.customClickListener{
                     override fun onCheckClick() {
                         val online = if (binding.btnCreateOnline.isSelected) 1 else 0

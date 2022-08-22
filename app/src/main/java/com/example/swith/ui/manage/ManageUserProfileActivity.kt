@@ -6,6 +6,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.swith.R
+import com.example.swith.data.ManageUserIdx
 import com.example.swith.data.ManageUserProfileResponse
 import com.example.swith.data.StudyDetailResponse
 import com.example.swith.databinding.ActivityManageUserProfileBinding
@@ -37,8 +38,9 @@ class ManageUserProfileActivity : AppCompatActivity(), View.OnClickListener{
     {
         Log.e("userIdx 데이터 set ","${userIdx}")
         Log.e("summer","데이터 set true")
+        var reqUserIdx = ManageUserIdx(userIdx)
         val retrofitService = RetrofitService.retrofit.create(RetrofitApi::class.java)
-        retrofitService.getUserProfile(userIdx!!).enqueue(object : Callback<ManageUserProfileResponse> {
+        retrofitService.getUserProfile(reqUserIdx).enqueue(object : Callback<ManageUserProfileResponse> {
             override fun onResponse(
                 call: Call<ManageUserProfileResponse>,
                 response: Response<ManageUserProfileResponse>
@@ -61,7 +63,7 @@ class ManageUserProfileActivity : AppCompatActivity(), View.OnClickListener{
                                 7->{tvInteresting1.text ="면접"}
                             }
                             tvIntroduceDetail.text=result.introduction
-                            tvRating.text = result.averageStar
+                            tvRating.text= result.averageStar.toString()
                         }
                     }
                 }

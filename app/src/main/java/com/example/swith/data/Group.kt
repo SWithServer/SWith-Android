@@ -23,18 +23,3 @@ data class GroupList(
     val message: String,
     @SerializedName("result") val group: List<Group>
 )
-
-data class GroupRV(
-    val announcementContent: String,
-    val attendanceRate: Int,
-    val groupIdx: Int,
-    val groupImageUrl: String?,
-    val interestContent: String,
-    val memberLimit: Int,
-    val online: Int,
-    val place: String?,
-    val sessionContent: String,
-    val sessionNum: Int,
-    val sessionStart: List<Int>,
-    val title: String,
-)

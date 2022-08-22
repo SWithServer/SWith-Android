@@ -95,12 +95,16 @@ interface RetrofitApi {
     fun postApplication(@Path("groupIdx")groupIdx:Long,@Path("applicationMethod")applicationMethod:Int,@Body body : postApplicationReq) : Call<StudyApplicationResponse>
 
     // 관리자탭 유저목록 불러오기
-    @GET("/application/manage/{groupIdx}/{status}")
+    @GET("application/manage/show/{groupIdx}/{status}")
     fun getUserList(@Path("groupIdx") groupIdx : Long, @Path("status") status : Int) : Call <ManageUserResponse>
 
     // 관리자탭 유저 프로필 불러오기
-    @GET("/userInfo")
-    fun getUserProfile(@Query("userIdx") userIdx:Long) :Call<ManageUserProfileResponse>
+    @POST("/userInfo")
+    fun getUserProfile(@Body body : ManageUserIdx) :Call<ManageUserProfileResponse>
+
+    // 관리자탭 유저 지원서 승인 or 반려
+    @POST("/application/manage/resume/{groupIdx}/{status}")
+    fun postUserResume(@Path("groupIdx") groupIdx : Long, @Path("status") status:Int, @Body body: ManageUserResumeReq) : Call<ManageUserResumeResponse>
 
     //스터디 삭제하기
     @DELETE("/groupinfo")

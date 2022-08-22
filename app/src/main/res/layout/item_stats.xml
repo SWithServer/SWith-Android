@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:layout_marginBottom="10dp"
+    android:background="@drawable/bg_item_round">
+    <TextView
+        android:id="@+id/tv_item_stats_nickname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:layout_marginStart="20dp"
+        android:text="아이디 아이디"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_item_stats"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.3"/>
+    <ProgressBar
+        android:id="@+id/progress_item_stats"
+        android:layout_width="0dp"
+        android:layout_height="10dp"
+        android:progressDrawable="@drawable/drawable_progressbar"
+        android:progress="50"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        app:layout_constraintStart_toEndOf="@id/guideline_item_stats"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+    <TextView
+        android:id="@+id/tv_item_stats_ratio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="출석율"
+        android:textSize="12sp"
+        android:layout_marginBottom="5dp"
+        app:layout_constraintBottom_toTopOf="@id/progress_item_stats"
+        app:layout_constraintEnd_toEndOf="@id/progress_item_stats"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
