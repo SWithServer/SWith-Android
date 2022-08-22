@@ -116,6 +116,7 @@ class StudyActivity : AppCompatActivity(), View.OnClickListener {
     }
     fun setVisibleBar(isManager: Boolean){
         binding.studyToolbar.apply {
+            studyToolbar.visibility = View.VISIBLE
             ibStudySetting.visibility = if (isManager) View.VISIBLE else View.GONE
         }
     }

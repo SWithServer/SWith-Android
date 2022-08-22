@@ -52,6 +52,7 @@ class RoundFragment : BaseFragment<FragmentRoundBinding>(R.layout.fragment_round
             (binding.roundListRv.adapter as RoundRVAdapter).setData(it)
             binding.roundNoticeContentTv.text = it.announcementContent
             setManagerLayout(it.admin)
+            binding.roundAddBtn.visibility = if (it.admin) View.VISIBLE else View.INVISIBLE
         })
 
         viewModel.mutableScreenState.observe(viewLifecycleOwner, Observer {

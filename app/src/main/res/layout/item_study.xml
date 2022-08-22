@@ -22,11 +22,12 @@
     </androidx.cardview.widget.CardView>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_item_study_place"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginStart="10dp"
         app:layout_constraintStart_toEndOf="@id/cardview_item_study"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/cardview_item_study">
         <ImageView
             android:id="@+id/iv_item_study_place"
@@ -38,14 +39,17 @@
             app:layout_constraintBottom_toBottomOf="parent"/>
         <TextView
             android:id="@+id/tv_item_study_place"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
+            android:textSize="14dp"
             android:text="장소장소"
             android:textColor="@color/color_swith"
             android:layout_marginStart="1dp"
+            android:ellipsize="end"
+            android:maxLines="1"
             app:layout_constraintStart_toEndOf="@id/iv_item_study_place"
             app:layout_constraintTop_toTopOf="@id/iv_item_study_place"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="@id/iv_item_study_place"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
     <TextView
@@ -136,7 +140,7 @@
             <LinearLayout
                 android:id="@+id/layout_item_notice"
                 android:layout_width="match_parent"
-                android:layout_height="16dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="14dp"
                 android:layout_marginEnd="14dp"
                 android:layout_marginTop="14dp"
@@ -150,7 +154,7 @@
                     android:src="@drawable/ic_study_notice"/>
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="14dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="3dp"
                     android:text="공지사항"
                     android:layout_gravity="center_vertical"
@@ -181,7 +185,7 @@
             <LinearLayout
                 android:id="@+id/layout_item_count"
                 android:layout_width="match_parent"
-                android:layout_height="16dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="14dp"
                 android:layout_marginEnd="14dp"
                 android:layout_marginTop="14dp"

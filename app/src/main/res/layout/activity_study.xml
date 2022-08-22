@@ -15,7 +15,8 @@
     <include
         android:id="@+id/study_toolbar"
         layout="@layout/study_appbar"
-        app:clickListener="@{clickListener}"/>
+        app:clickListener="@{clickListener}"
+        android:visibility="invisible"/>
     <FrameLayout
         android:id="@+id/study_frm"
         android:layout_width="match_parent"

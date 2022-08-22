@@ -40,7 +40,6 @@ class StatsFragment : BaseFragment<FragmentStatsBinding>(R.layout.fragment_stats
             adapter = StatsRVAdapter()
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         }
-        initSpinner()
     }
 
     private fun initSpinner(){
@@ -78,6 +77,7 @@ class StatsFragment : BaseFragment<FragmentStatsBinding>(R.layout.fragment_stats
         viewModel.userAttendLiveData.observe(viewLifecycleOwner, Observer {
 //            initChart(it.getUserAttendanceResList)
             (binding.rvStats.adapter as StatsRVAdapter).setData(it.getUserAttendanceResList)
+            initSpinner()
         })
 
         viewModel.mutableScreenState.observe(viewLifecycleOwner, Observer {

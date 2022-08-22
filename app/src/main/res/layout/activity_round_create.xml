@@ -29,12 +29,13 @@
         app:layout_constraintStart_toStartOf="parent"/>
     <TextView
         android:id="@+id/tv_create_reset"
-        android:layout_width="100dp"
+        android:layout_width="wrap_content"
         android:layout_height="30dp"
-        android:gravity="end|center_vertical"
+        android:gravity="center_vertical"
         android:text="시간 초기화"
         android:textSize="12sp"
         android:textColor="@color/color_ADA0FF"
+        android:paddingStart="20dp"
         android:paddingEnd="20dp"
         app:layout_constraintTop_toTopOf="@id/tv_create_info"
         app:layout_constraintBottom_toBottomOf="@id/tv_create_info"
