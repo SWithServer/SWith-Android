@@ -91,7 +91,6 @@ class SwipeController() : ItemTouchHelper.Callback(){
         c: Canvas,
         viewHolder: RecyclerView.ViewHolder
     ) { //레이아웃이 아닌 클래스에서 직접 버튼 구현
-        val buttonWidthWithOutPadding = buttonWidth - 10
         val corners = 5f
         val itemView: View = viewHolder.itemView
         val p = Paint() //Paint 객체 p 생성
@@ -111,7 +110,7 @@ class SwipeController() : ItemTouchHelper.Callback(){
     }
 
     private fun drawText(text: String, c: Canvas, button: RectF, p: Paint) { //버튼 내에 글씨 삽입
-        val textSize = 45f
+        val textSize = 36f
         p.color = Color.WHITE
         p.isAntiAlias = true
         p.textSize = textSize

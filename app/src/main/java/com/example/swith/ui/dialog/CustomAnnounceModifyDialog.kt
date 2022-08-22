@@ -60,7 +60,6 @@ class CustomAnnounceModifyDialog(private val content: String) : DialogFragment()
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                Log.d("text change", "s : $s , content : $content")
                 binding.btnAnnounceModify.visibility = if (s.isNullOrEmpty() || s.toString() == content) View.INVISIBLE else View.VISIBLE
             }
 

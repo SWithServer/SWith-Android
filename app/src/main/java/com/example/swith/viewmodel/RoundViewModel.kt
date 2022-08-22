@@ -76,7 +76,7 @@ class RoundViewModel() : BaseViewModel() {
                 res?.let {
                     mutableScreenState.postValue(ScreenState.RENDER)
                     it.getSessionResList.forEach { s ->
-                        if (compareTimeWithNow(s.sessionStart)) postData.add(s)
+                        if (compareTimeWithNow(s.sessionEnd)) postData.add(s)
                         allData.add(s)
                     }
                     allData.sortBy { s -> s.sessionNum }
@@ -146,7 +146,8 @@ class RoundViewModel() : BaseViewModel() {
     }
 
     fun isUpdateAvailable() : Boolean{
-        if (curUserAttend?.status == 0) return true
+        if (curUserAttend?.status == 0)
+            _sessionLiveData.value?.let { return compareTimeWithNow(it.sessionEnd) }
         return false
     }
 

@@ -4,55 +4,48 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="@color/light_grey"
-        android:layout_marginBottom="10dp">
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/black"
-            app:layout_constraintTop_toTopOf="parent"/>
+        android:layout_height="wrap_content">
         <TextView
             android:id="@+id/tv_announce_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="12dp"
             android:layout_marginEnd="10dp"
             android:textColor="@color/black"
-            android:maxLines="2"
             android:ellipsize="end"
+            android:textSize="12sp"
+            android:layout_marginBottom="12dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:text="안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요"/>
-
+            app:layout_constraintBottom_toTopOf="@id/iv_announce_date"
+            android:text="안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요" />
+        <ImageView
+            android:id="@+id/iv_announce_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_announce_calendar"
+            android:layout_marginBottom="12dp"
+            app:layout_constraintStart_toStartOf="@id/tv_announce_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_announce_content"
+            app:layout_constraintBottom_toBottomOf="parent"/>
         <TextView
             android:id="@+id/tv_announce_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="날짜 : 22/06/03"
-            android:textColor="@color/black"
-            android:layout_marginStart="10dp"
-            android:layout_marginBottom="10dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-        <ImageButton
-            android:id="@+id/ib_announce_delete"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:scaleType="fitCenter"
-            android:background="@color/transparent"
-            android:src="@drawable/ic_remove"
-            android:padding="5dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            android:text="22/06/03"
+            android:textColor="@color/color_swith"
+            android:textSize="11sp"
+            android:layout_marginStart="3dp"
+            app:layout_constraintTop_toTopOf="@id/iv_announce_date"
+            app:layout_constraintBottom_toBottomOf="@id/iv_announce_date"
+            app:layout_constraintStart_toEndOf="@id/iv_announce_date"/>
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/black"
-            app:layout_constraintBottom_toBottomOf="parent" />
-
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="@color/color_F1F1F1"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

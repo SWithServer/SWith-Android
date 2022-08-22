@@ -54,14 +54,18 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
     <TextView
         android:id="@+id/study_title_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="스터디 제목"
         android:textColor="@color/black"
         android:textSize="14sp"
+        android:maxLines="2"
+        android:ellipsize="end"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/layout_item_study_place"
-        app:layout_constraintStart_toStartOf="@id/layout_item_study_place"/>
+        app:layout_constraintStart_toStartOf="@id/layout_item_study_place"
+        app:layout_constraintBottom_toTopOf="@id/layout_item_study_info"/>
     <LinearLayout
         android:id="@+id/layout_item_study_info"
         android:layout_width="wrap_content"

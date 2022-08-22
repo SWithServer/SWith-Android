@@ -38,11 +38,14 @@ class RoundMemoFragment(private val curCount: Int) : BaseFragment<FragmentRoundM
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                     // TextWatcher 구현
                     // 변동사항이 생긴 경우에만 수정 완료 버튼 생김
-                    if (beforeText.isNullOrEmpty() && !s.isNullOrEmpty() || beforeText != s.toString()) {
-                        if (beforeText.isNullOrEmpty()) btnMemoCreate.visibility = View.VISIBLE else btnEditFinish.visibility = View.VISIBLE
+                    if (beforeText.isNullOrEmpty() && !s.isNullOrEmpty() && beforeText != s.toString()) {
+                        btnMemoCreate.visibility = View.VISIBLE
                     }
-                    else if (beforeText.isNullOrEmpty() && s.isNullOrEmpty() || beforeText == s.toString()) {
-                        if (beforeText.isNullOrEmpty()) btnMemoCreate.visibility = View.INVISIBLE else btnEditFinish.visibility = View.INVISIBLE
+                    else if (!beforeText.isNullOrEmpty() && !s.isNullOrEmpty() && beforeText != s.toString()) {
+                        btnEditFinish.visibility = View.VISIBLE
+                    } else {
+                        btnEditFinish.visibility = View.INVISIBLE
+                        btnMemoCreate.visibility = View.INVISIBLE
                     }
                 }
 
@@ -93,9 +96,9 @@ class RoundMemoFragment(private val curCount: Int) : BaseFragment<FragmentRoundM
             it.userMemo?.let { memo -> binding.etMemo.setText(memo)
                 beforeText = memo
                 binding.btnEditFinish.visibility = View.INVISIBLE
-                binding.btnMemoCreate.visibility = View.INVISIBLE
-                binding.tvMemoGuide.visibility = View.VISIBLE
             }
+            binding.tvMemoGuide.visibility = View.VISIBLE
+            binding.btnMemoCreate.visibility = View.INVISIBLE
         })
         viewModel.memoLiveEvent.observe(viewLifecycleOwner, Observer {
             CustomAlertDialog("메모 생성 및 수정 완료", "생성 및 수정이 완료 되었습니다.")

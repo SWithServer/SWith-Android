@@ -46,15 +46,8 @@ class AnnounceRVAdapter(private val isManager: Boolean) : RecyclerView.Adapter<A
     inner class ViewHolder(binding: ItemAnnounceBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(announce: Announce){
             with(binding){
-                ibAnnounceDelete.apply {
-                    // 임시로 전부 안보이게 함
-                    visibility = View.INVISIBLE
-                    setOnClickListener { customListener.onDelete(announce) }
-                }
                 tvAnnounceContent.text = announce.announcementContent
-                tvAnnounceDate.text = "날짜 : ${announce.createdAt[0]}/${announce.createdAt[1]}/${announce.createdAt[2]}"
-
-
+                tvAnnounceDate.text = "${announce.createdAt[0]}/${announce.createdAt[1]}/${announce.createdAt[2]}"
             }
         }
     }
