@@ -130,7 +130,7 @@ class StudyFindRVAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 }
                 else if (studyList?.regionIdx1 !=null && studyList?.regionIdx2!=null)
                 {
-                   tvSearchRegion.text= "${studyList?.regionIdx1}" + "," + "${studyList?.regionIdx2}" + "…"
+                   tvSearchRegion.text= "${studyList?.regionIdx1}" + "," + "${studyList?.regionIdx2}"
                 }
             }
             binding.root.setOnClickListener { v ->

@@ -39,8 +39,9 @@ class ManageUserApplication1Fragment() :BaseFragment<FragmentManageApplicationBi
 
     var groupIdx : Int?  = -1
    var userActivity : ManageUserActivity? =null
+    var status :Int = 0
     private lateinit var adapter : ManageUserRVAdapter1
-    lateinit var userList : ArrayList<ManageUserResult>
+    lateinit var userList : List<ManageUserResult>
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -54,8 +55,7 @@ class ManageUserApplication1Fragment() :BaseFragment<FragmentManageApplicationBi
         setVisiblebar(false,true,"")
         adapter = ManageUserRVAdapter1()
         binding.rvApplication.adapter = adapter
-        setData()
-        loadData()
+        setRetrofitData(groupIdx?.toLong())
         binding.rvApplication.apply{
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         }
@@ -70,9 +70,12 @@ class ManageUserApplication1Fragment() :BaseFragment<FragmentManageApplicationBi
             }
 
             override fun resumeClick(v: View, pos: Int, userIdx: Long?) {
-                Log.e("resume 클릭 이벤트","true")
+                Log.e("frag1 resume 클릭 이벤트","true")
                 val intent = Intent(requireActivity(), ManageUserResumeActivity::class.java)
                 intent.putExtra("userIdx", userIdx)
+                intent.putExtra("status",status)
+                intent.putExtra("groupIdx",groupIdx)
+                intent.putExtra("resumeIdx",pos)
                 startActivity(intent)
             }
         })
@@ -81,23 +84,6 @@ class ManageUserApplication1Fragment() :BaseFragment<FragmentManageApplicationBi
     fun loadData()
     {
         adapter.setUser(userList)
-    }
-
-    // 임시데이터
-    fun setData()
-    {
-        userList = ArrayList<ManageUserResult>()
-        Log.e("groupIdx 데이터로드", "${groupIdx}")
-        userList.apply{
-            add(ManageUserResult(1,"유저1", "https://lh3.googleusercontent.com/a/AItbvmmZTEhJKpZdLsPHSnT9XH2q469L0kulNTIFqjm2=s96-c",1,"화이팅"))
-            add(ManageUserResult(2,"유저2", "https://lh3.googleusercontent.com/a/AItbvmmZTEhJKpZdLsPHSnT9XH2q469L0kulNTIFqjm2=s96-c",2,"아자아자"))
-            add(ManageUserResult(3,"유저3", "https://lh3.googleusercontent.com/a/AItbvmmZTEhJKpZdLsPHSnT9XH2q469L0kulNTIFqjm2=s96-c",3,"열심히할게요"))
-            add(ManageUserResult(4,"유저4", "https://lh3.googleusercontent.com/a/AItbvmmZTEhJKpZdLsPHSnT9XH2q469L0kulNTIFqjm2=s96-c",4,"스터디 화이팅"))
-            add(ManageUserResult(5,"유저5", "https://lh3.googleusercontent.com/a/AItbvmmZTEhJKpZdLsPHSnT9XH2q469L0kulNTIFqjm2=s96-c",5,"야호~"))
-            add(ManageUserResult(6,"유저6", "https://lh3.googleusercontent.com/a/AItbvmmZTEhJKpZdLsPHSnT9XH2q469L0kulNTIFqjm2=s96-c",6,"짱"))
-            add(ManageUserResult(7,"유저7", "https://lh3.googleusercontent.com/a/AItbvmmZTEhJKpZdLsPHSnT9XH2q469L0kulNTIFqjm2=s96-c",7,"열시미"))
-            add(ManageUserResult(8,"유저8", "https://lh3.googleusercontent.com/a/AItbvmmZTEhJKpZdLsPHSnT9XH2q469L0kulNTIFqjm2=s96-c",8,"열시미"))
-        }
     }
 
     fun setRetrofitData(groupIdx:Long?)

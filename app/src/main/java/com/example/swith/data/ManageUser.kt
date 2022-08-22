@@ -32,10 +32,14 @@ data class ManageUserProfileResult(
     val introduction: String,
     val interestIdx1: Long,
     val interestIdx2: Long,
-    val averageStar: String,
+    val averageStar: Double,
     val role: String,
     val accessToken: Any? = null,
     val refreshToken: String,
     val status: Long
+)
+
+data class ManageUserIdx(
+    val userIdx: Long?
 )
 

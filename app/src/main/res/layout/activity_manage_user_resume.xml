@@ -17,11 +17,11 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_study_resume"
             app:layout_constraintTop_toBottomOf="@id/toolbar_manage_resume"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="60dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:layout_width="match_parent"
-            android:layout_height="600dp">
+            android:layout_height="450dp">
             <TextView
                 android:id="@+id/tv_manage_user_resume"
                 android:layout_width="wrap_content"
@@ -35,7 +35,7 @@
             <TextView
                 android:id="@+id/tv_resume_content"
                 android:layout_width="match_parent"
-                android:layout_height="450dp"
+                android:layout_height="300dp"
                 android:background="@drawable/card_view"
                 android:elevation="6dp"
                 android:text="지원서의 내용 ㄴㅇㄹㄴㅇㄹㄴㅇㄹㄴㅇㄹ\nㄴㅇㄹㄴㅇㄹㄴㅇㄹㄴㅇㄹㄴㅇㄹㄴㅇㄹㄴㅇㄹ"
@@ -48,7 +48,7 @@
                 app:layout_constraintEnd_toEndOf="parent"/>
             <Button
                 android:id="@+id/btn_no"
-                android:layout_width="170dp"
+                android:layout_width="150dp"
                 android:layout_height="44dp"
                 android:fontFamily="@font/kr_regular"
                 android:textSize="14dp"
@@ -60,7 +60,7 @@
                 app:layout_constraintStart_toStartOf="parent" />
             <Button
                 android:id="@+id/btn_yes"
-                android:layout_width="170dp"
+                android:layout_width="150dp"
                 android:layout_height="44dp"
                 android:fontFamily="@font/kr_regular"
                 android:textColor="@color/white"
