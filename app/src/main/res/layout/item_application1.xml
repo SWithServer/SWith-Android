@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+   android:id="@+id/layout_item_userList"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -13,7 +14,7 @@
         app:layout_constraintStart_toStartOf="parent">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/click_user"
-            android:layout_width="wrap_content"
+            android:layout_width="170dp"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -23,7 +24,7 @@
             android:paddingEnd="10dp"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
-            android:background="@color/color_82B4FF">
+            android:background="@color/white">
             <androidx.cardview.widget.CardView
                 android:id="@+id/iv_profile_layout"
                 app:layout_constraintEnd_toStartOf="@id/tv_name"
@@ -37,7 +38,7 @@
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/bg_create_sample"/>
+                    android:src="@drawable/ic_profile_default"/>
             </androidx.cardview.widget.CardView>
             <TextView
                 android:id="@+id/tv_name"
@@ -47,17 +48,29 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
+                android:textSize="14sp"
                 android:text="김철수" />
         </androidx.constraintlayout.widget.ConstraintLayout>
         <Button
             android:id="@+id/btn_resume"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="65dp"
+            android:layout_height="20sp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:text="지원서"
+            android:text="지원서 확인"
+            android:textSize="10sp"
+            android:textColor="@color/white"
+            android:background="@drawable/btn_search_blue_selector"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="50dp"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/color_F1F1F1"
+        app:layout_constraintTop_toBottomOf="@+id/layout_item_userList"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

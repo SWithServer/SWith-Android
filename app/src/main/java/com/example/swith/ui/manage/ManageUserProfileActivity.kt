@@ -24,6 +24,7 @@ class ManageUserProfileActivity : AppCompatActivity(), View.OnClickListener{
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_manage_user_profile)
         binding.clickListener = this
+        binding.flLoadingLayout.visibility=View.VISIBLE
         initData()
         setData(userIdx)
     }
@@ -71,6 +72,7 @@ class ManageUserProfileActivity : AppCompatActivity(), View.OnClickListener{
                             tvRating.text= result.averageStar.toString()
                         }
                     }
+                    binding.flLoadingLayout.visibility=View.GONE
                 }
                 else {
                     Log.e("summer", "전달실패 code = ${response.code()}")

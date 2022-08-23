@@ -17,11 +17,11 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_study_resume"
             app:layout_constraintTop_toBottomOf="@id/toolbar_manage_resume"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="20dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:layout_width="match_parent"
-            android:layout_height="450dp">
+            android:layout_height="0dp">
             <TextView
                 android:id="@+id/tv_manage_user_resume"
                 android:layout_width="wrap_content"
@@ -30,47 +30,65 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/tv_resume_content"
                 android:text="지원서 내용"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 android:layout_marginStart="10dp"/>
             <TextView
                 android:id="@+id/tv_resume_content"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:background="@drawable/card_view"
-                android:elevation="6dp"
-                android:text="지원서의 내용 ㄴㅇㄹㄴㅇㄹㄴㅇㄹㄴㅇㄹ\nㄴㅇㄹㄴㅇㄹㄴㅇㄹㄴㅇㄹㄴㅇㄹㄴㅇㄹㄴㅇㄹ"
+                android:layout_height="500dp"
+                android:background="@drawable/bg_create_gray"
+                android:textColor="@color/color_525252"
+                android:text="지원서내용 부분"
                 app:layout_constraintTop_toBottomOf="@id/tv_manage_user_resume"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
-                android:gravity="center"
+                android:padding="20dp"
                 app:layout_constraintEnd_toEndOf="parent"/>
-            <Button
-                android:id="@+id/btn_no"
-                android:layout_width="150dp"
-                android:layout_height="44dp"
-                android:fontFamily="@font/kr_regular"
-                android:textSize="14dp"
-                android:textColor="@color/color_969696"
-                android:background="@drawable/btn_round_gray_selector"
-                android:text="@string/manage_resume_reject"
-                app:layout_constraintTop_toBottomOf="@id/tv_resume_content"
-                android:layout_marginTop="27dp"
-                app:layout_constraintStart_toStartOf="parent" />
-            <Button
-                android:id="@+id/btn_yes"
-                android:layout_width="150dp"
-                android:layout_height="44dp"
-                android:fontFamily="@font/kr_regular"
-                android:textColor="@color/white"
-                android:textSize="14dp"
-                android:text="@string/manage_resume_confirm"
-                android:background="@drawable/btn_round_blue_selector"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_resume_content"
-                android:layout_marginTop="27dp"
-                android:layout_marginBottom="10dp"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
+        <Button
+            android:id="@+id/btn_no"
+            android:layout_width="150dp"
+            android:layout_height="44dp"
+            android:fontFamily="@font/kr_regular"
+            android:textSize="14dp"
+            android:textColor="@color/color_969696"
+            android:background="@drawable/btn_round_gray_selector"
+            android:text="@string/manage_resume_reject"
+            app:layout_constraintTop_toBottomOf="@id/layout_study_resume"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="27dp"
+            app:layout_constraintStart_toStartOf="parent" />
+        <Button
+            android:id="@+id/btn_yes"
+            android:layout_width="150dp"
+            android:layout_height="44dp"
+            android:fontFamily="@font/kr_regular"
+            android:textColor="@color/white"
+            android:textSize="14dp"
+            android:text="@string/manage_resume_confirm"
+            android:background="@drawable/btn_round_blue_selector"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout_study_resume"
+            android:layout_marginTop="27dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="10dp"/>
+        <FrameLayout
+            android:id="@+id/fl_loading_layout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/white"
+            android:clickable="true"
+            android:visibility="visible"
+            app:layout_constraintTop_toBottomOf="@id/toolbar_manage_resume"
+            app:layout_constraintBottom_toBottomOf="parent">
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:indeterminateTint="@color/color_swith"/>
+        </FrameLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

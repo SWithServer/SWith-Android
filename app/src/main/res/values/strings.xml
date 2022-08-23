@@ -61,7 +61,8 @@
     <string name="resume_detail">지원서 내용</string>
 
     <!--manage finish-->
-    <string name="manage_study_finish">스터디를 종료하시겠습니까?\n*오늘 날짜 이후의 회차는 모두 삭제됩니다.</string>
+    <string name="manage_study_finish_title">스터디를 종료하시겠습니까?</string>
+    <string name="manage_study_finish">오늘 날짜 이후의 회차는 모두 삭제됩니다.</string>
 
     <!--manage resume-->
     <string name ="manage_resume_reject">반려</string>

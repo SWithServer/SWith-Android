@@ -41,7 +41,6 @@ class StudyFindDetailFragment : BaseFragment<FragmentStudyFindDetailBinding>(R.l
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        customDialog()
         Log.e("summer", "fragment이동 true")
         groupIdx = arguments?.getLong("groupIdx",0)
         applicationMethod = arguments?.getInt("applicationMethod",0)
@@ -60,7 +59,8 @@ class StudyFindDetailFragment : BaseFragment<FragmentStudyFindDetailBinding>(R.l
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        customDialog()
+        binding.flLoadingLayout.visibility=View.VISIBLE
         setVisiblebar(true,false,"")
 
         with(binding)
@@ -190,6 +190,7 @@ class StudyFindDetailFragment : BaseFragment<FragmentStudyFindDetailBinding>(R.l
                             tvStudySetApplicationStatus.text = "${result.numOfApplicants} / ${result.memberLimit}"
                             tvStudySetDetailContent.text= result.groupContent
                         }
+                        binding.flLoadingLayout.visibility=View.GONE
                     }
                 }
                 else {

@@ -57,6 +57,7 @@ class ManageUserApplication1Fragment():BaseFragment<FragmentManageApplicationBin
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setVisiblebar(false,true,"")
+        binding.flLoadingLayout.visibility=View.VISIBLE
         setRetrofitData(groupIdx?.toLong())
     }
 
@@ -76,6 +77,7 @@ class ManageUserApplication1Fragment():BaseFragment<FragmentManageApplicationBin
                     Log.e("유저들 정보","${response.body()?.result.toString()}")
                     response.body()?.apply {
                         initRV(this.result)
+                        binding.flLoadingLayout.visibility=View.GONE
                     }
                 }
                 else {

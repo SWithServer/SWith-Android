@@ -521,6 +521,7 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
                             val studyResp = this as StudyResponse
                             Log.e("summer","body = $studyResp")
                         }
+                        dialog_.dismiss()
                         finish()
                     }
                     else

@@ -72,6 +72,7 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
         binding = DataBindingUtil.setContentView(this@ManageStudyModifyActivity, R.layout.activity_manage_study_modify)
 
         initData()
+        binding.flLoadingLayout.visibility=View.VISIBLE
         initView(groupIdx)
         customDialog()
 
@@ -438,6 +439,7 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
                 if (response.isSuccessful) {
                     Log.e("summer", "성공${response.toString()}")
                     response.body()?.apply {
+                        binding.flLoadingLayout.visibility=View.GONE
                         var result = this.result
                         Log.e("user data = ", "${this.result.toString()}")
                         with(binding)
@@ -559,6 +561,7 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
                     if (response.isSuccessful)
                     {
                         response.body()?.apply {
+                            dialog_.dismiss()
                             finish()
                         }
                     }

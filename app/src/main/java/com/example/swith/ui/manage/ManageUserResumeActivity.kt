@@ -36,6 +36,7 @@ class ManageUserResumeActivity:AppCompatActivity(),View.OnClickListener {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_manage_user_resume)
         binding.clickListener = this
         initData()
+        binding.flLoadingLayout.visibility=View.VISIBLE
         setResume(applicationContent)
         clickButton()
     }
@@ -71,6 +72,7 @@ class ManageUserResumeActivity:AppCompatActivity(),View.OnClickListener {
                 response: Response<ManageUserResumeResponse>
             ) {
                 if (response.isSuccessful) {
+                    binding.flLoadingLayout.visibility=View.GONE
                     Log.e("summer", "성공${response.toString()}")
                     response.body()?.apply {
                         Log.e("resume 승인/반려 성공" ,"${this.toString()}")

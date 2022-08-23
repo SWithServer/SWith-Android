@@ -265,6 +265,22 @@
                 app:layout_constraintTop_toBottomOf="@id/cl_rating" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+    <FrameLayout
+        android:id="@+id/fl_loading_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/white"
+        android:clickable="true"
+        android:visibility="visible"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_manage_profile"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/color_swith"/>
+    </FrameLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 
     </layout>
