@@ -34,7 +34,7 @@ class RoundViewModel() : BaseViewModel() {
     private var _sessionLiveData = MutableLiveData<SessionInfo>()
 
     // 출석
-    private var _attendLiveEvent = SingleLiveEvent<Any>()
+    private var _attendLiveEvent = MutableLiveData<AttendResponse>()
 
     // 통계 화면 (유저별 출석율)
     private var _userAttendLiveData = MutableLiveData<UserAttend>()
@@ -51,7 +51,7 @@ class RoundViewModel() : BaseViewModel() {
     val sessionLiveData: LiveData<SessionInfo>
         get() = _sessionLiveData
 
-    val attendLiveEvent: LiveData<Any>
+    val attendLiveEvent: LiveData<AttendResponse>
         get() = _attendLiveEvent
 
     val userAttendLiveData : LiveData<UserAttend>
@@ -97,6 +97,7 @@ class RoundViewModel() : BaseViewModel() {
                     if (a.userIdx == userIdx) curUserAttend = a
                 }
                 mutableScreenState.postValue(ScreenState.RENDER)
+                _attendLiveEvent.value = null
                 _sessionLiveData.value = res
             }
         }
@@ -156,11 +157,13 @@ class RoundViewModel() : BaseViewModel() {
         viewModelScope.launch {
             val res = repository.updateAttend(this@RoundViewModel, userIdx, curSessionIdx)
             withContext(Dispatchers.Main){
-                if (res?.isSuccess == false) {
-                    mutableErrorMessage.postValue(res.message)
-                }
-                else{
-                    _attendLiveEvent.call()
+                res?.let {
+                    if (!it.isSuccess) {
+                        mutableErrorMessage.postValue(res.message)
+                    } else {
+                        curUserAttend?.status = it.result
+                        _attendLiveEvent.value = it
+                    }
                 }
             }
         }
@@ -185,7 +188,10 @@ class RoundViewModel() : BaseViewModel() {
             withContext(Dispatchers.Main){
                 if (res?.isSuccess == false)
                     mutableErrorMessage.postValue(res.message)
-                else _memoLiveEvent.call()
+                else {
+                    sessionLiveData.value?.memoIdx = res?.result
+                    _memoLiveEvent.call()
+                }
             }
         }
     }

@@ -31,10 +31,10 @@ class AttendRVAdapter(private val userId: Int?) : RecyclerView.Adapter<AttendRVA
         notifyDataSetChanged()
     }
 
-    fun updateUserStatus(){
+    fun updateUserStatus(status: Int){
         for (i in userAttendList.indices){
             if (userId == userAttendList[i].userIdx) {
-                userAttendList[i].status = 1
+                userAttendList[i].status = status
                 notifyItemChanged(i)
             }
         }
