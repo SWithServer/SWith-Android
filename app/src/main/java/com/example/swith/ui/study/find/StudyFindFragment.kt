@@ -81,10 +81,17 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
                 if (result.resultCode == AppCompatActivity.RESULT_OK) {
                     val data = result.data
                     val region = data!!.getCharSequenceExtra("지역")
-                    binding.btnSelectRegion.text = region
-                    regionName = region.toString()
-                    Log.e("지역 data load","true")
-                    select_region = regionName
+                    if (region!!.equals("선택안함"))
+                    {
+                        binding.btnSelectRegion.text= "지역선택"
+                        select_region = null
+                    }
+                    else{
+                        binding.btnSelectRegion.text = region
+                        regionName = region.toString()
+                        Log.e("지역 data load","true")
+                        select_region = regionName
+                    }
                     loadData(search_title,select_region, select_interest1, select_interest2, select_sort)
                     initScrollListener()
                 }

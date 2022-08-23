@@ -28,6 +28,11 @@ class ManageUserProfileActivity : AppCompatActivity(), View.OnClickListener{
         setData(userIdx)
     }
 
+    fun initView()
+    {
+
+    }
+
     fun initData()
     {
         (intent.hasExtra("userIdx")).let { userIdx = intent.getLongExtra("userIdx", 0) }

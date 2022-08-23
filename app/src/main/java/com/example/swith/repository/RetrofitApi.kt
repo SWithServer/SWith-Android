@@ -114,11 +114,9 @@ interface RetrofitApi {
     @PATCH("/application/manage/expel/{groupIdx}/{status}")
     fun deleteUser(@Path("groupIdx") groupIdx : Long, @Path ("status") status: Int, @Body body:ManageUserDelReq) : Call<ManageUserDelResponse>
 
-
-
-    //스터디 삭제하기
-    @DELETE("/groupinfo")
-    fun delStudy(@Query("groupIdx") groupIdx : Int)
+    // 관리자탭 스터디 종료하기
+    @PATCH("/groupinfo/end")
+    fun endStudy(@Body body : StudyFinishReq) :Call <StudyFinishResponse>
 
     //프로필
     @GET("/profile")

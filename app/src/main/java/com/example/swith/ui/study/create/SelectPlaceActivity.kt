@@ -57,7 +57,6 @@ class SelectPlaceActivity :  AppCompatActivity(),View.OnClickListener {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_select_place)
         initView()
-        initData()
         Log.e("번호","$placeNum")
         test("*00000000", 1)
     }
@@ -68,17 +67,14 @@ class SelectPlaceActivity :  AppCompatActivity(),View.OnClickListener {
         binding.clickListener = this@SelectPlaceActivity
     }
 
-    private fun initData() {
-        //TODO("Not yet implemented")
-    }
-
     override fun onClick(view: View?) {
         when (view?.id) {
-            R.id.ib_back -> {
+            R.id.ib_basic_toolbar_back -> {
                 finish()
             }
         }
     }
+
     fun test(code: String, num: Int) {
         var dataList : ArrayList<String> = arrayListOf()
         val retrofit = Retrofit.Builder()
@@ -100,6 +96,7 @@ class SelectPlaceActivity :  AppCompatActivity(),View.OnClickListener {
                     when (num) {
                         1 -> {
                             cityDataList.clear()
+                            cityDataList.add("선택안함")
                             for (a in regcodes) {
                                 Log.e("doori", "이름 : ${a.name} , 코드 : ${a.code}")
                                 cityDataList.add(a.name)
@@ -149,8 +146,18 @@ class SelectPlaceActivity :  AppCompatActivity(),View.OnClickListener {
                         Log.e("doori", "선택한 값은 $city")
                         code = cityHash.get(city)
                         Log.e("doori", "코드 값은 $code")
-                        binding.rvGu.visibility=View.VISIBLE
-                        test("${code}".substring(0,2)+"*000000",2)
+                        if (city.equals("선택안함"))
+                        {
+                            var intent = Intent()
+                            intent.putExtra("지역","선택안함")
+                            setResult(RESULT_OK,intent)
+                            finish()
+                        }
+                        else
+                        {
+                            binding.rvGu.visibility=View.VISIBLE
+                            test("${code}".substring(0,2)+"*000000",2)
+                        }
                     }
                 })
             }

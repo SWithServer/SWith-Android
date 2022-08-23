@@ -130,5 +130,7 @@
             android:textSize="14sp"
             tools:listitem="@layout/item_location"></androidx.recyclerview.widget.RecyclerView>
     </LinearLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
