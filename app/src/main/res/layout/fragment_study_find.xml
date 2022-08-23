@@ -113,7 +113,25 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintTop_toBottomOf="@id/layout_find_top">
+        app:layout_constraintTop_toBottomOf="@id/layout_find_top"
+        android:visibility="visible">
     </androidx.recyclerview.widget.RecyclerView>
+
+    <FrameLayout
+        android:id="@+id/fl_loading_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/white"
+        android:clickable="true"
+        android:visibility="visible"
+        app:layout_constraintTop_toBottomOf="@id/layout_find_top"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/color_swith"/>
+    </FrameLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -59,7 +59,7 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setVisiblebar(false,true,"")
-
+        binding.flLoadingLayout.visibility=View.VISIBLE
         adapter = StudyFindRVAdapter()
         binding.rvStudyFind.adapter = adapter
 
@@ -226,6 +226,7 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
                 response: Response<StudyFindResponse>
             ) {
                 if (response.isSuccessful) {
+                    binding.flLoadingLayout.visibility=View.GONE
                     Log.e("summer", "성공${response.toString()}")
                     response.body()?.apply {
                         Log.e("summer","${this.result.content.toString()}")
@@ -263,6 +264,7 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
                     override fun onResponse(call: Call<StudyFindResponse>, response: Response<StudyFindResponse>) {
                         val body = response.body()
                         if (body != null && response.isSuccessful) {
+                            binding.flLoadingLayout.visibility=View.GONE
                             Log.e("groupIdx 데이터 더 받을때","${groupIdx}")
                             Log.e("summer","load more data")
                             Log.e("summer","${body.result.content.toString()}")
