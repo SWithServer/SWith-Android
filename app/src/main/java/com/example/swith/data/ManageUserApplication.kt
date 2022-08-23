@@ -14,6 +14,6 @@ data class ManageUserResumeResult(
 
 data class ManageUserResumeReq(
     val applicationIdx : Long?,
-    val adminIdx : Long,
+    val adminIdx : Long?,
     val statusOfApplication : Int
 )

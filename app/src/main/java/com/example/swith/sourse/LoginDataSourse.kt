@@ -17,9 +17,14 @@ class LoginDataSourse {
     fun requestLogin(loginRequest: LoginRequest) : LiveData<LoginResponse> {
         RetrofitService.retrofitApi.login(loginRequest).enqueue(object : Callback<LoginResponse> {
             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
-                Log.e("doori","onResponse = $response")
-                response.body()?.apply {
-                    mLoginLiveData.postValue(this)
+                Log.e("doori","onResponseLogin = $response")
+                Log.e("doori","body = ${response.body()}")
+//                response.body().apply {
+//                    mLoginLiveData.postValue(this)
+//                }
+                if (response.body() != null) {
+                    Log.e("doori","body not null = ${response.body()}")
+                    mLoginLiveData.postValue(response.body())
                 }
             }
 

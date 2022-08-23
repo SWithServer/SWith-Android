@@ -423,7 +423,7 @@
                         android:layout_width="match_parent"
                         android:layout_marginTop="10dp"
                         android:layout_height="44dp"
-                        android:background="@drawable/bg_round_gray"
+                        android:background="@drawable/bg_create_white_blue"
                         app:layout_constraintTop_toBottomOf="@id/tv_study_category"
                         >
                         <Spinner
@@ -433,7 +433,9 @@
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            android:layout_marginStart="20dp" />
+                            android:layout_marginStart="20dp"
+                            android:backgroundTint="@color/color_82B4FF"
+                           />
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
                 <View
@@ -466,7 +468,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         app:layout_constraintTop_toBottomOf="@+id/tv_study_detail_interest"
-                        android:background="@drawable/bg_round_gray">
+                        android:background="@drawable/bg_create_white_blue">
                         <EditText
                             android:id="@+id/et_create_topic"
                             app:layout_constraintStart_toStartOf="parent"
@@ -475,8 +477,8 @@
                             android:layout_marginStart="20dp"
                             android:layout_marginEnd="20dp"
                             android:layout_height="44dp"
-                            android:background="@drawable/bg_round_gray"
-                            android:textColor="@color/black"
+                            android:background="@drawable/bg_create_white_blue"
+                            android:textColor="@color/color_82B4FF"
                             app:layout_constraintBottom_toBottomOf="parent"
                             android:textSize="12sp"/>
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -510,7 +512,7 @@
                         android:layout_width="match_parent"
                         android:layout_marginTop="10dp"
                         android:layout_height="44dp"
-                        android:background="@drawable/bg_round_gray"
+                        android:background="@drawable/bg_create_white_blue"
                         app:layout_constraintTop_toBottomOf="@id/tv_study_people"
                         >
                         <Spinner
@@ -520,7 +522,8 @@
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            android:layout_marginStart="20dp" />
+                            android:layout_marginStart="20dp"
+                            android:backgroundTint="@color/color_82B4FF"/>
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
                 <View
@@ -550,18 +553,38 @@
                         android:id="@+id/layout_spinner_method"
                         android:layout_width="match_parent"
                         android:layout_marginTop="10dp"
-                        android:layout_height="44dp"
-                        android:background="@drawable/bg_round_gray"
+                        android:layout_height="wrap_content"
                         app:layout_constraintTop_toBottomOf="@id/tv_study_method"
                         >
-                        <Spinner
-                            android:id="@+id/spinner_method"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                        <CheckBox
+                            android:id="@+id/btn_application_ff"
+                            app:layout_constraintHorizontal_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="36dp"
+                            android:button="@android:color/transparent"
+                            android:background="@drawable/create_online_checkbox"
+                            android:textColor="@color/white"
+                            android:gravity="center"
+                            android:text="선착순"
+                            android:layout_marginEnd="10dp"
+                            app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            android:layout_marginStart="20dp" />
+                            app:layout_constraintEnd_toStartOf="@id/btn_application_apply"/>
+                        <CheckBox
+                            android:id="@+id/btn_application_apply"
+                            app:layout_constraintHorizontal_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="36dp"
+                            android:button="@android:color/transparent"
+                            android:background="@drawable/create_online_checkbox"
+                            android:textColor="@color/white"
+                            android:gravity="center"
+                            android:text="지원"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/btn_application_ff"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"/>
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
                 <View
@@ -742,7 +765,7 @@
                         android:layout_width="match_parent"
                         android:layout_marginTop="10dp"
                         android:layout_height="44dp"
-                        android:background="@drawable/bg_round_gray"
+                        android:background="@drawable/bg_create_white_blue"
                         app:layout_constraintTop_toBottomOf="@id/tv_study_attend_time"
                         >
                         <Spinner
@@ -752,7 +775,8 @@
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            android:layout_marginStart="20dp" />
+                            android:layout_marginStart="20dp"
+                            android:backgroundTint="@color/color_82B4FF"/>
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -767,25 +791,31 @@
                 <EditText
                     android:id="@+id/et_study_content"
                     android:layout_width="match_parent"
-                    android:layout_height="250dp"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginEnd="15dp"
+                    android:layout_height="120dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:textSize="12sp"
                     android:layout_marginBottom="15dp"
-                    android:background="@drawable/card_view"
-                    android:elevation="6dp"
+                    android:background="@drawable/bg_create_gray"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
                     android:hint="텍스트 입력" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
+
         <Button
             android:id="@+id/btn_study_modify"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="100dp"
-            android:layout_marginEnd="100dp"
+            android:layout_width="320dp"
+            android:layout_height="44dp"
             android:text="수정완료"
+            android:textColor="@color/white"
+            android:background="@drawable/btn_round_blue_selector"
+            app:layout_constraintTop_toBottomOf="@+id/layout_create_scroll"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

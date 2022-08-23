@@ -21,6 +21,7 @@ import com.example.swith.ui.adapter.ManageRoundRVAdapter
 import com.example.swith.ui.adapter.ManageUserRVAdapter1
 import com.example.swith.ui.adapter.ManageUserRVAdapter2
 import com.example.swith.ui.dialog.CustomConfirmDialog
+import com.example.swith.utils.SharedPrefManager
 import com.example.swith.utils.SwipeController
 import com.example.swith.utils.base.BaseFragment
 import retrofit2.Call
@@ -33,6 +34,11 @@ class ManageUserApplication2Fragment() : BaseFragment<FragmentManageApplication2
     var groupIdx : Int?  = -1
     var userActivity : ManageUserActivity? =null
     var status :Int = 1
+//    val adminId = SharedPrefManager(requireActivity()).getLoginData()
+//    val adminIdx = adminId?.userIdx
+
+    val adminIdx = 1
+
     private lateinit var adapter : ManageUserRVAdapter2
     lateinit var userList : ArrayList<ManageUserResult>
     override fun onCreateView(
@@ -51,26 +57,41 @@ class ManageUserApplication2Fragment() : BaseFragment<FragmentManageApplication2
         setRetrofitData(groupIdx?.toLong())
         binding.rvApplication.apply{
             ManageUserRVAdapter2().apply {
+                adapter = ManageUserRVAdapter2().apply{
+                    this@apply.setItemClickListener(object: ManageUserRVAdapter2.OnItemClickListener{
+                        override fun onClick(view: View, pos:Int,userIdx:Long?) {
+                            Log.e("클릭이벤트 발생","true")
+                            Log.e("userIdx 값","${userIdx}")
+                            val intent = Intent(requireActivity(), ManageUserProfileActivity::class.java)
+                            intent.putExtra("userIdx", userIdx)
+                            startActivity(intent)
+                        }
+                        override fun resumeClick(v: View, pos: Int, userIdx: Long?) {
+                            Log.e("frag2 resume 클릭 이벤트","true")
+                            val intent = Intent(requireActivity(), ManageUserResumeActivity::class.java)
+                            intent.putExtra("userIdx", userIdx)
+                            intent.putExtra("status",status)
+                            startActivity(intent)
+                        }
+                    })
+
+                    this@apply.setCustomListener(object: ManageUserRVAdapter2.CustomListener{
+                        override fun onDeleteClick(userInfo: ManageUserResult , position:Int) {
+                            var applicationIdx = position.toLong()
+                            CustomConfirmDialog("회원 삭제", "${userInfo.nickname}님을 추방하시겠습니까?").apply {
+                                setCustomListener(object: CustomConfirmDialog.CustomListener{
+                                    override fun onConfirm() {
+                                        dismiss()
+                                        deleteUser(userInfo.userIdx,adminIdx?.toLong(),applicationIdx)
+                                    }
+                                })
+                            }.show(requireActivity().supportFragmentManager,"userDelete")
+                        }
+                    })
+                }
             }
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         }
-
-        adapter.setItemClickListener(object: ManageUserRVAdapter2.OnItemClickListener{
-            override fun onClick(view: View, pos:Int,userIdx:Long?) {
-                Log.e("클릭이벤트 발생","true")
-                Log.e("userIdx 값","${userIdx}")
-                val intent = Intent(requireActivity(), ManageUserProfileActivity::class.java)
-                intent.putExtra("userIdx", userIdx)
-                startActivity(intent)
-            }
-            override fun resumeClick(v: View, pos: Int, userIdx: Long?) {
-                Log.e("frag2 resume 클릭 이벤트","true")
-                val intent = Intent(requireActivity(), ManageUserResumeActivity::class.java)
-                intent.putExtra("userIdx", userIdx)
-                intent.putExtra("status",status)
-                startActivity(intent)
-            }
-        })
     }
 
     fun loadData()
@@ -111,5 +132,10 @@ class ManageUserApplication2Fragment() : BaseFragment<FragmentManageApplication2
     override fun onAttach(context: Context) {
         super.onAttach(context)
         userActivity = activity as ManageUserActivity
+    }
+
+    fun deleteUser(userIdx : Long?,adminIdx:Long?,applicationIdx:Long?)
+    {
+        // 추방 retrofit 부분
     }
 }

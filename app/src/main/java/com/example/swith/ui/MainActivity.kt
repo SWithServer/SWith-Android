@@ -101,17 +101,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-// 수정 전 코드
-//    override fun onBackPressed() {
-//        if (System.currentTimeMillis() <= backKeyPressedTime + 2000) {
-//            // 뒤로가기 두 번 누르면 종료
-//            finish()
-//        } else{
-//            backKeyPressedTime = System.currentTimeMillis()
-//            Toast.makeText(this, "뒤로 가기 한 번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
-//        }
-//    }
-
     private fun goProfilePage() {
         Log.e("doori","goProfilePage")
         supportFragmentManager.beginTransaction()

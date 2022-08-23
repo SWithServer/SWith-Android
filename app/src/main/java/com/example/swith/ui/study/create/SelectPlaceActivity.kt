@@ -52,6 +52,7 @@ class SelectPlaceActivity :  AppCompatActivity(),View.OnClickListener {
     lateinit var locationAdapter: LocationAdapter
     var placeNum:Int = -1
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_select_place)
@@ -60,6 +61,7 @@ class SelectPlaceActivity :  AppCompatActivity(),View.OnClickListener {
         Log.e("번호","$placeNum")
         test("*00000000", 1)
     }
+
 
     private fun initView() {
         placeNum = intent.getIntExtra("번호",-1)

@@ -26,6 +26,7 @@ import com.example.swith.data.StudyResponse
 import com.example.swith.databinding.ActivityStudyCreateBinding
 import com.example.swith.repository.RetrofitApi
 import com.example.swith.repository.RetrofitService
+import com.example.swith.utils.SharedPrefManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -55,8 +56,10 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
 
     //입력되는 값들 변수모음
     var title:String=""
-//    val userid= SharedPrefManager(this@StudyCreateActivity).getLoginData()
+//    val userid = SharedPrefManager(this@StudyCreateActivity).getLoginData()
 //    val userIdx = userid?.userIdx
+    val userIdx = 1
+
     var meet_idx:Int= -1
     var frequency_content:Int?=null
     var periods_content:String?=null
@@ -427,7 +430,7 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
                 periods_content=etStudyFree.text.toString()}
                 }
 
-                var studyRequestData=StudyGroup(1,"2",title,meet_idx,frequency_content,periods_content,online_idx,regionIdx1,regionIdx2,interest_idx
+                var studyRequestData=StudyGroup(userIdx?.toLong(),"2",title,meet_idx,frequency_content,periods_content,online_idx,regionIdx1,regionIdx2,interest_idx
                     ,topic_content,memberLimit_content,applicationMethod_idx,recruitmentEndDate_,groupStart_,groupEnd_
                     ,attendanceVaildTime_content,group_content)
                 Log.e("summer", "USER DATA = ${studyRequestData.toString()}")

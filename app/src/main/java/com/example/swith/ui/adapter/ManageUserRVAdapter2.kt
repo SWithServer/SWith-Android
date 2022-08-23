@@ -12,7 +12,7 @@ import com.example.swith.databinding.ItemApplication1Binding
 import com.example.swith.utils.ItemTouchHelperListener
 
 // 유저관리 선착순 목록(지원서 불필요)
-class ManageUserRVAdapter2 : RecyclerView.Adapter<ManageUserRVAdapter2.ViewHolder>(){
+class ManageUserRVAdapter2 : RecyclerView.Adapter<ManageUserRVAdapter2.ViewHolder>(), ItemTouchHelperListener{
 
     private lateinit var binding: ItemApplication1Binding
     private var userList = mutableListOf<ManageUserResult>()
@@ -72,10 +72,6 @@ class ManageUserRVAdapter2 : RecyclerView.Adapter<ManageUserRVAdapter2.ViewHolde
         fun resumeClick(v: View, pos:Int, userIdx:Long?)
     }
 
-//    interface CustomListener{
-//        fun onDeleteClick(userList: ManageUserResult)
-//    }
-
     fun setItemClickListener(itemClickListener:OnItemClickListener) {
         this.itemClickListener = itemClickListener
     }
@@ -88,15 +84,18 @@ class ManageUserRVAdapter2 : RecyclerView.Adapter<ManageUserRVAdapter2.ViewHolde
         notifyDataSetChanged()
     }
 
-//    private lateinit var customListener: CustomListener
-//
-//    fun setCustomListener(listener: CustomListener){
-//        customListener = listener
-//    }
-//
-//    override fun onDeleteButtonClick(position: Int) {
-//        customListener.onDeleteClick(userList[position])
-//    }
+    interface CustomListener{
+        fun onDeleteClick(userInfo: ManageUserResult,position:Int)
+    }
+    private lateinit var customListener: CustomListener
+
+    fun setCustomListener(listener: CustomListener){
+        customListener = listener
+    }
+
+    override fun onDeleteButtonClick(position: Int) {
+        customListener.onDeleteClick(userList[position],position)
+    }
 
 
 }

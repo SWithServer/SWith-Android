@@ -103,7 +103,7 @@ interface RetrofitApi {
     fun getUserProfile(@Body body : ManageUserIdx) :Call<ManageUserProfileResponse>
 
     // 관리자탭 유저 지원서 승인 or 반려
-    @POST("/application/manage/resume/{groupIdx}/{status}")
+    @PATCH("/application/manage/resume/{groupIdx}/{status}")
     fun postUserResume(@Path("groupIdx") groupIdx : Long, @Path("status") status:Int, @Body body: ManageUserResumeReq) : Call<ManageUserResumeResponse>
 
     // 관리자탭 스터디 수정하기
