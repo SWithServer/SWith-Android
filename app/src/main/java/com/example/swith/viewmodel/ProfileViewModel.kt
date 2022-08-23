@@ -4,6 +4,8 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
+import com.example.swith.data.ProfileRequest
 import com.example.swith.data.ProfileResponse
 import com.example.swith.repository.profile.ProfileRepository
 import com.example.swith.repository.profile.ProfileRepositoryProvider
@@ -23,12 +25,16 @@ class ProfileViewModel: ViewModel(){
         isLoading.set(false)
     }
 
-    fun requestCurrentProfile(email: String,jwt: String): LiveData<ProfileResponse> {
-        return mProfileRepository.requestCurrentProfile(email,jwt)
+    fun requestCurrentProfile(profileRequest: ProfileRequest): LiveData<ProfileResponse> {
+        return mProfileRepository.requestCurrentProfile(profileRequest)
     }
 
     fun getCurrentProfile(): LiveData<ProfileResponse> {
         return mProfileRepository.getCurrentProfile()
+    }
+
+    fun setImage(){
+
     }
 
     class Factory : ViewModelProvider.NewInstanceFactory() {

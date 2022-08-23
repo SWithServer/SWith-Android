@@ -4,8 +4,6 @@ import android.Manifest
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.graphics.BitmapFactory
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
@@ -16,14 +14,14 @@ import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.DimenRes
-import androidx.annotation.Dimension
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.swith.R
+import com.example.swith.data.ProfileModifyRequest
+import com.example.swith.data.ProfileRequest
 import com.example.swith.data.ProfileResponse
 import com.example.swith.databinding.ActivityProfileModifyBinding
 import com.example.swith.databinding.DialogImageBinding
@@ -34,7 +32,9 @@ import com.example.swith.ui.dialog.CustomDialog
 import com.example.swith.ui.dialog.CustomImageDialog
 import com.example.swith.ui.dialog.CustomInterestingDialog
 import com.example.swith.utils.CustomBinder
-import com.example.swith.viewmodel.ProfileViewModel
+import com.example.swith.utils.SharedPrefManager
+import com.example.swith.viewmodel.ProfileModifyViewModel
+import com.google.android.datatransport.cct.internal.LogEvent
 
 class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener, Observer<ProfileResponse> {
     private val requestPermissionLauncher =
@@ -64,7 +64,7 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener, Observe
         }
     }
 
-    private var mProfileViewModel: ProfileViewModel? = null
+    private var mProfileModifyViewModel: ProfileModifyViewModel? = null
     lateinit var binding: ActivityProfileModifyBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,18 +75,38 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener, Observe
     }
 
     private fun initView() {
+        setShowDimmed(true)
+
         binding.clickListener = this@ProfileModifyActivity
         binding.apply {
-            mProfileViewModel = ViewModelProvider(this@ProfileModifyActivity, ProfileViewModel.Factory()).get(ProfileViewModel::class.java).apply {
-                profileViewModel = this
-                getCurrentProfile().observe(this@ProfileModifyActivity, this@ProfileModifyActivity)
-            }
+            lifecycleOwner = this@ProfileModifyActivity
+            mProfileModifyViewModel =
+                ViewModelProvider(this@ProfileModifyActivity, ProfileModifyViewModel.Factory()).get(ProfileModifyViewModel::class.java).apply {
+                    profileModifyViewModel = this
+                    getCurrentProfile().observe(this@ProfileModifyActivity, this@ProfileModifyActivity)
+                    SharedPrefManager(this@ProfileModifyActivity).getLoginData()?.userIdx!!.apply {
+                        requestCurrentProfile(ProfileRequest(this))
+                    }
+                }
+            mProfileModifyViewModel?.getCurrentProfileModify()?.observe(this@ProfileModifyActivity, Observer {
+                Log.e("doori", "observer = $it")
+                //TODO 관심분야가 index4번이상부터 안되넹
+                setShowDimmed(false)
+                if (it != null) {
+                    if (it!!.isSuccess) {
+                        goProfilePage()
+                    } else {
+                        Toast.makeText(this@ProfileModifyActivity, "잠시 후 다시 시작해주세요.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            })
+
         }
     }
 
 
     private fun initData() {
-        //TODO("Not yet implemented")
+
     }
 
     override fun onClick(view: View?) {
@@ -205,9 +225,38 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener, Observe
                     }
 
                     override fun onConfirm() {
-                        goProfilePage()
+                        setShowDimmed(true)
+                        requestProfile()
                     }
                 })
+        }
+    }
+
+    private fun requestProfile() {
+        val email = mProfileModifyViewModel?.getCurrentProfile()?.value?.result!!.email
+
+        binding.apply {
+            Log.e(
+                "doori",
+                "${
+                    ProfileModifyRequest(
+                        email,
+                        getInterestringIndex(btnInteresting1.text.toString()),
+                        getInterestringIndex(btnInteresting2.text.toString()),
+                        etIntroduceDetail.text.toString(),
+                        etNickname.text.toString()
+                    )
+                }"
+            )
+            mProfileModifyViewModel?.requestCurrentProfileModify(
+                ProfileModifyRequest(
+                    email,
+                    getInterestringIndex(btnInteresting1.text.toString()),
+                    getInterestringIndex(btnInteresting2.text.toString()),
+                    etIntroduceDetail.text.toString(),
+                    etNickname.text.toString()
+                )
+            )
         }
     }
 
@@ -228,7 +277,7 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener, Observe
                 showDialog("관심분야를 선택해주세요.")
                 return false
             }
-            if (tvLocationDetail.text.toString() == "선택해주세요j.") {
+            if (tvLocationDetail.text.toString() == "선택해주세요.") {
                 showDialog("활동지역을 선택해주세요.")
                 return false
             }
@@ -247,8 +296,6 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener, Observe
 
             })
         builder.show()
-
-
     }
 
     fun hideKeyboard() {
@@ -261,8 +308,51 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener, Observe
         }
     }
 
-    override fun onChanged(t: ProfileResponse?) {
-        TODO("Not yet implemented")
+    override fun onChanged(profileResponse: ProfileResponse?) {
+        setShowDimmed(false)
+        Log.e("doori", "onChanged = ${profileResponse.toString()}")
+        //TODO 관심분야가 없다면?? 널값은 어떻게 처리해줘야할까?
+        profileResponse?.result?.apply {
+            binding.btnInteresting1.text = resources.getStringArray(R.array.intersting)[interestIdx1]
+            binding.btnInteresting2.text = resources.getStringArray(R.array.intersting)[interestIdx2]
+        }
+    }
+
+    private fun setShowDimmed(isLoading: Boolean) {
+        mProfileModifyViewModel?.apply {
+            if (isLoading) {
+                showLoading()
+            } else {
+                hideLoading()
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mProfileModifyViewModel?.run {
+            getCurrentProfile().removeObserver(this@ProfileModifyActivity)
+        }
+    }
+
+    private fun getInterestringIndex(interesting: String): Int {
+        if (interesting == "자격증/시험") {
+            return 1
+        } else if (interesting == "어학") {
+            return 2
+        } else if (interesting == "청소년/입시") {
+            return 3
+        } else if (interesting == "취업/창업") {
+            return 4
+        } else if (interesting == "컴퓨터/IT") {
+            return 5
+        } else if (interesting == "취미/문화") {
+            return 6
+        } else if (interesting == "면접") {
+            return 7
+        } else {
+            return 8
+        }
     }
 }
 

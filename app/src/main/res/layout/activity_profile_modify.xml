@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable
-            name="profileViewModel"
-            type="com.example.swith.viewmodel.ProfileViewModel" />
+            name="profileModifyViewModel"
+            type="com.example.swith.viewmodel.ProfileModifyViewModel" />
         <variable
             name="clickListener"
             type="android.view.View.OnClickListener" />
@@ -57,7 +57,8 @@
                     android:id="@+id/civ_profile"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
-                    android:src="@drawable/ic_profile_default"
+                    app:placeholder="@{@drawable/ic_profile_default}"
+                    app:imageUrl="@{profileModifyViewModel.currentProfile.result.profileImgUrl}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -99,10 +100,10 @@
                     android:layout_marginTop="8dp"
                     android:hint="@string/nickname_hint"
                     android:textColorHint="@color/color_9F9F9F"
-                    android:textColor="@color/black"
+                    android:textColor="@color/color_525252"
                     android:fontFamily="@font/kr_regular"
                     android:textSize="12dp"
-                    android:text="@{profileViewModel.currentProfile.result.name}"
+                    android:text="@{profileModifyViewModel.currentProfile.result.nickname}"
                     android:paddingStart="20dp"
                     android:background="@drawable/bg_round_gray"
                     app:layout_constraintTop_toBottomOf="@id/tv_nickname" />
@@ -226,8 +227,9 @@
                     android:background="@drawable/bg_round_gray"
                     android:onClick="@{clickListener}"
                     android:layout_marginEnd="20dp"
-                    android:text="@{profileViewModel.currentProfile.result.locale}"
+                    android:text="서버분에게 추가해달라고 요청"
                     android:textSize="15dp"
+                    android:textColor="@color/color_525252"
                     app:layout_constraintTop_toBottomOf="@id/tv_location" />
 
                 <TextView
@@ -251,12 +253,12 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="20dp"
                     android:padding="20dp"
-                    android:textColor="@color/black"
+                    android:textColor="@color/color_525252"
                     android:textSize="14dp"
                     android:hint="@string/introduce_hint"
-                    android:textColorHint="@color/color_F1F1F1"
+                    android:text="@{profileModifyViewModel.currentProfile.result.introduction}"
+                    android:textColorHint="@color/color_9F9F9F"
                     android:background="@drawable/bg_round_gray"
-                    android:text="안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안하세요"
                     app:layout_constraintTop_toBottomOf="@id/tv_introduce" />
 
 
@@ -280,6 +282,22 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </ScrollView>
+
+        <FrameLayout
+            android:id="@+id/fl_loading_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#63494848"
+            android:clickable="true"
+            android:visibility="visible"
+            app:visibleGone="@{profileModifyViewModel.isLoading()}">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:indeterminateTint="#54000000"/>
+        </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

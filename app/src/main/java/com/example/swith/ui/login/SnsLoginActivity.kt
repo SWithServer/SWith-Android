@@ -15,6 +15,7 @@ import com.example.swith.R
 import com.example.swith.data.LoginRequest
 import com.example.swith.data.LoginResponse
 import com.example.swith.databinding.ActivitySnsLoginBinding
+import com.example.swith.ui.MainActivity
 import com.example.swith.ui.profile.ProfileModifyActivity
 import com.example.swith.utils.SharedPrefManager
 import com.example.swith.viewmodel.LoginViewModel
@@ -30,7 +31,7 @@ class SnsLoginActivity : AppCompatActivity(), View.OnClickListener, Observer<Log
 
     //TODO 카카오비즈니스등록 후 이메일도 받아오는걸로 수정하자
     //TODO api테스트 중이라 중복검사오류로 이메일 계속 바꿔줘야함
-    val emailTest: String = "dooooreeee@naver.com4"
+    val emailTest: String = "dooooreeee@naver.com"
     private var mLoginViewModel: LoginViewModel? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,7 +85,6 @@ class SnsLoginActivity : AppCompatActivity(), View.OnClickListener, Observer<Log
                                 "\n만료시간: ${tokenInfo?.expiresIn} 초"
                     )
                     getUserInfo()
-                    goProfileModifyPage()
                 }
             }
         } else {
@@ -101,7 +101,6 @@ class SnsLoginActivity : AppCompatActivity(), View.OnClickListener, Observer<Log
             } else if (token != null) {
                 Log.i("doori", "카카오계정으로 로그인 성공 ${token.accessToken}")
                 getUserInfo()
-                goProfileModifyPage()
             }
         }
 
@@ -126,7 +125,6 @@ class SnsLoginActivity : AppCompatActivity(), View.OnClickListener, Observer<Log
                     } else if (token != null) {
                         Log.e("doori", "카카오톡으로 로그인 성공 ${token.accessToken}")
                         getUserInfo()
-                        goProfileModifyPage()
                     }
                 }
 
@@ -158,13 +156,14 @@ class SnsLoginActivity : AppCompatActivity(), View.OnClickListener, Observer<Log
     }
 
     private fun goProfileModifyPage() {
-        mLoginViewModel?.getCurrentLogin()?.value?.result?.apply {
-            Log.e("doori","goProfile = $this")
-            SharedPrefManager(this@SnsLoginActivity).setLoginData(userIdx, accessToken)
-        }
-
-        Log.e("doori","SharedPrefManage = ${SharedPrefManager(this@SnsLoginActivity).getLoginData()}")
         Intent(this@SnsLoginActivity, ProfileModifyActivity::class.java).run {
+            startActivity(this)
+            finishAffinity()
+        }
+    }
+
+    private fun goMainPage(){
+        Intent(this@SnsLoginActivity, MainActivity::class.java).run {
             startActivity(this)
             finishAffinity()
         }
@@ -189,13 +188,18 @@ class SnsLoginActivity : AppCompatActivity(), View.OnClickListener, Observer<Log
 
     override fun onChanged(loginResponse: LoginResponse?) {
         Log.e("doori","onChanged = $loginResponse")
-
-        loginResponse!!.isSuccess.apply {
-            setShowDimmed(false)
+        setShowDimmed(false)
+        //가입되어있으면 메인페이지,아니면 프로필관리
+        loginResponse?.result!!.isSignUp.apply {
             if(this){
-                goProfileModifyPage()
+                goMainPage()
             }else{
-                Toast.makeText(this@SnsLoginActivity,"잠시 후 다시 시작해주세요.",Toast.LENGTH_SHORT).show()
+                mLoginViewModel?.getCurrentLogin()?.value?.result?.apply {
+                    Log.e("doori","goProfile = $this")
+                    SharedPrefManager(this@SnsLoginActivity).setLoginData(userIdx, accessToken)
+                }
+                Log.e("doori","SharedPrefManage = ${SharedPrefManager(this@SnsLoginActivity).getLoginData()}")
+                goProfileModifyPage()
             }
         }
     }

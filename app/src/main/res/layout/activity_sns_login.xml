@@ -76,15 +76,16 @@
             android:id="@+id/fl_loading_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#63595757"
+            android:background="#63494848"
             android:clickable="true"
-            android:visibility="gone"
+            android:visibility="visible"
             app:visibleGone="@{loginViewModel.isLoading()}">
 
             <ProgressBar
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"
+                android:indeterminateTint="#54000000"/>
         </FrameLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

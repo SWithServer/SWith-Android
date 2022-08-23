@@ -125,4 +125,13 @@ interface RetrofitApi {
 
     @POST("/signUpAndIn")
     fun login(@Body loginBody:LoginRequest): Call<LoginResponse>
+
+    //프로필
+    @POST("/userInfo")
+    fun getProfileInfo(@Body profileBody: ProfileRequest) : Call<ProfileResponse>
+
+    //프로필update
+    @POST("/register")
+    fun setProfile(@Body profileModifyBody: ProfileModifyRequest): Call<ProfileModifyResponse>
+
 }
