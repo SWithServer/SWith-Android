@@ -85,7 +85,6 @@ class ManageUserApplication2Fragment() : BaseFragment<FragmentManageApplication2
                         override fun onConfirm() {
                             dismiss()
                             deleteUser(userInfo.userIdx,adminIdx?.toLong(),applicationIdx)
-                            setRetrofitData(groupIdx?.toLong())
                         }
                     })
                 }.show(requireActivity().supportFragmentManager,"userDelete")
@@ -147,6 +146,7 @@ class ManageUserApplication2Fragment() : BaseFragment<FragmentManageApplication2
                     Log.e("summer", "성공${response.toString()}")
                     response.body()?.apply {
                         Log.e("삭제한 applicationIdx 값",this.applicationIdx.toString())
+                        setRetrofitData(groupIdx?.toLong())
                     }
                 }
                 else {
