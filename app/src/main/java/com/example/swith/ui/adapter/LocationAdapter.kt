@@ -1,5 +1,6 @@
 package com.example.swith.ui.adapter
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +17,6 @@ class LocationAdapter(regionList: ArrayList<String>): RecyclerView.Adapter<Locat
     override fun onBindViewHolder(holder: LocationHolder, position: Int) {
         val region = list[position]
         holder.binding.tvCity.text=region
-
         //row 리스너
         holder.binding.root.setOnClickListener {
             itemClickListener.onClick(it,position)
@@ -41,6 +41,7 @@ class LocationAdapter(regionList: ArrayList<String>): RecyclerView.Adapter<Locat
         return list[position]
     }
 
-    class   LocationHolder(val binding: ItemLocationBinding): RecyclerView.ViewHolder(binding.root)
+    class  LocationHolder(val binding: ItemLocationBinding): RecyclerView.ViewHolder(binding.root)
+
 }
 

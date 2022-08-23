@@ -148,9 +148,11 @@ class SelectPlaceActivity :  AppCompatActivity(),View.OnClickListener {
                         Log.e("doori", "코드 값은 $code")
                         if (city.equals("선택안함"))
                         {
-                            var intent = Intent()
-                            intent.putExtra("지역","선택안함")
-                            setResult(RESULT_OK,intent)
+                            sharedPreference = getSharedPreferences("result${placeNum}",0)
+                            editor= sharedPreference.edit()
+                            editor.putString("이름${placeNum}", "+")
+                            editor.putString("코드${placeNum}","${code}")
+                            editor.apply()
                             finish()
                         }
                         else
@@ -180,18 +182,18 @@ class SelectPlaceActivity :  AppCompatActivity(),View.OnClickListener {
                         else{
                             if (placeNum == 3)
                             {
-                                var intent = Intent()
-                                intent.putExtra("지역","${city}")
-                                intent.putExtra("코드","${code}")
-                                setResult(RESULT_OK,intent)
-                                finish()
+                                    var intent = Intent()
+                                    intent.putExtra("지역","${city}")
+                                    intent.putExtra("코드","${code}")
+                                    setResult(RESULT_OK,intent)
+                                    finish()
                             }
-                            sharedPreference = getSharedPreferences("result${placeNum}",0)
-                            editor= sharedPreference.edit()
-                            editor.putString("이름${placeNum}", "${city}")
-                            editor.putString("코드${placeNum}","${code}")
-                            editor.apply()
-                            finish()
+                                sharedPreference = getSharedPreferences("result${placeNum}",0)
+                                editor= sharedPreference.edit()
+                                editor.putString("이름${placeNum}", "${city}")
+                                editor.putString("코드${placeNum}","${code}")
+                                editor.apply()
+                                finish()
                         }
                     }
                 })
@@ -208,19 +210,19 @@ class SelectPlaceActivity :  AppCompatActivity(),View.OnClickListener {
                         Log.e(" ", "코드 값은 $code")
                         if (placeNum == 3)
                         {
-                            var intent = Intent()
-                            intent.putExtra("지역","${city}")
-                            intent.putExtra("코드","${code}")
-                            setResult(RESULT_OK,intent)
-                            finish()
+                                var intent = Intent()
+                                intent.putExtra("지역","${city}")
+                                intent.putExtra("코드","${code}")
+                                setResult(RESULT_OK,intent)
+                                finish()
                         }
                         else{
-                        sharedPreference = getSharedPreferences("result${placeNum}",0)
-                        editor= sharedPreference.edit()
-                        editor.putString("이름${placeNum}", "${city}")
-                        editor.putString("코드${placeNum}","${code}")
-                        editor.apply()
-                            finish()
+                                sharedPreference = getSharedPreferences("result${placeNum}",0)
+                                editor= sharedPreference.edit()
+                                editor.putString("이름${placeNum}", "${city}")
+                                editor.putString("코드${placeNum}","${code}")
+                                editor.apply()
+                                finish()
                         }
                     }
                 })

@@ -310,42 +310,52 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
 
             //시간 선택
             val listener = CompoundButton.OnCheckedChangeListener { checkbox, isChecked ->
-                with(binding) {
-                    if (isChecked)
-                        when (checkbox.id) {
-                            R.id.check_week -> {
-                                etStudyFree.setText("")
-                                etStudyMonth.setText("")
-                                checkMonth.isChecked = false
-                                checkFree.isChecked = false
-                                etStudyWeek.isEnabled = true
-                                etStudyMonth.isEnabled = false
-                                etStudyFree.isEnabled = false
-                                meet_idx = 0
-                            }
-                            R.id.check_month -> {
-                                etStudyWeek.setText("")
-                                etStudyFree.setText("")
-                                checkWeek.isChecked = false
-                                checkFree.isChecked = false
-                                etStudyMonth.isEnabled = true
-                                etStudyWeek.isEnabled = false
-                                etStudyFree.isEnabled = false
-                                meet_idx = 1
-                            }
-                            R.id.check_free -> {
-                                etStudyWeek.setText("")
-                                etStudyMonth.setText("")
-                                checkMonth.isChecked = false
-                                checkWeek.isChecked = false
-                                etStudyFree.isEnabled = true
-                                etStudyWeek.isEnabled = false
-                                etStudyMonth.isEnabled = false
-                                meet_idx = 2
-                                periods_content = etStudyFree.text.toString()
-                            }
+                if (isChecked)
+                    when (checkbox.id) {
+                        R.id.check_week -> {
+                            etStudyFree.setText("")
+                            etStudyMonth.setText("")
+                            tvStudyMonth.setTextColor(Color.parseColor("#9F9F9F"))
+                            studyMonthTv2.setTextColor(Color.parseColor("#9F9F9F"))
+                            tvStudyWeek.setTextColor(Color.parseColor("#525252"))
+                            studyWeekTv2.setTextColor(Color.parseColor("#525252"))
+                            checkMonth.isChecked = false
+                            checkFree.isChecked = false
+                            etStudyWeek.isEnabled = true
+                            etStudyMonth.isEnabled = false
+                            etStudyFree.isEnabled = false
+                            meet_idx = 0
                         }
-                }
+                        R.id.check_month -> {
+                            etStudyWeek.setText("")
+                            etStudyFree.setText("")
+                            tvStudyMonth.setTextColor(Color.parseColor("#525252"))
+                            studyMonthTv2.setTextColor(Color.parseColor("#525252"))
+                            tvStudyWeek.setTextColor(Color.parseColor("#9F9F9F"))
+                            studyWeekTv2.setTextColor(Color.parseColor("#9F9F9F"))
+                            checkWeek.isChecked = false
+                            checkFree.isChecked = false
+                            etStudyMonth.isEnabled = true
+                            etStudyWeek.isEnabled = false
+                            etStudyFree.isEnabled = false
+                            meet_idx = 1
+                        }
+                        R.id.check_free -> {
+                            etStudyWeek.setText("")
+                            etStudyMonth.setText("")
+                            checkMonth.isChecked = false
+                            checkWeek.isChecked = false
+                            etStudyFree.isEnabled = true
+                            etStudyWeek.isEnabled = false
+                            etStudyMonth.isEnabled = false
+                            tvStudyMonth.setTextColor(Color.parseColor("#9F9F9F"))
+                            studyMonthTv2.setTextColor(Color.parseColor("#9F9F9F"))
+                            tvStudyWeek.setTextColor(Color.parseColor("#9F9F9F"))
+                            studyWeekTv2.setTextColor(Color.parseColor("#9F9F9F"))
+                            meet_idx = 2
+                            periods_content = etStudyFree.text.toString()
+                        }
+                    }
             }
             binding.checkWeek.setOnCheckedChangeListener(listener)
             binding.checkMonth.setOnCheckedChangeListener(listener)

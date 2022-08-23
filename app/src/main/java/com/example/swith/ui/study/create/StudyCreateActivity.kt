@@ -376,6 +376,10 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
                                 R.id.check_week -> {
                                     etStudyFree.setText("")
                                     etStudyMonth.setText("")
+                                    tvStudyMonth.setTextColor(Color.parseColor("#9F9F9F"))
+                                    studyMonthTv2.setTextColor(Color.parseColor("#9F9F9F"))
+                                    tvStudyWeek.setTextColor(Color.parseColor("#525252"))
+                                    studyWeekTv2.setTextColor(Color.parseColor("#525252"))
                                     checkMonth.isChecked = false
                                     checkFree.isChecked = false
                                     etStudyWeek.isEnabled = true
@@ -386,6 +390,10 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
                                 R.id.check_month -> {
                                     etStudyWeek.setText("")
                                     etStudyFree.setText("")
+                                    tvStudyMonth.setTextColor(Color.parseColor("#525252"))
+                                    studyMonthTv2.setTextColor(Color.parseColor("#525252"))
+                                    tvStudyWeek.setTextColor(Color.parseColor("#9F9F9F"))
+                                    studyWeekTv2.setTextColor(Color.parseColor("#9F9F9F"))
                                     checkWeek.isChecked = false
                                     checkFree.isChecked = false
                                     etStudyMonth.isEnabled = true
@@ -401,6 +409,10 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
                                     etStudyFree.isEnabled = true
                                     etStudyWeek.isEnabled = false
                                     etStudyMonth.isEnabled = false
+                                    tvStudyMonth.setTextColor(Color.parseColor("#9F9F9F"))
+                                    studyMonthTv2.setTextColor(Color.parseColor("#9F9F9F"))
+                                    tvStudyWeek.setTextColor(Color.parseColor("#9F9F9F"))
+                                    studyWeekTv2.setTextColor(Color.parseColor("#9F9F9F"))
                                     meet_idx = 2
                                     periods_content = etStudyFree.text.toString()
                                 }
@@ -485,17 +497,26 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
            val shPref1 = getSharedPreferences("result1",0)
             val editor1 = getSharedPreferences("result1",0).edit()
             binding.btnPlusPlace1.text = shPref1.getString("이름1", "")
-            if(!shPref1.getString("이름1","").toString().equals(""))
-            {regionIdx1 =shPref1.getString("이름1", "").toString()
+            if(!(shPref1.getString("이름1","").equals("")) && !(shPref1.getString("이름1","").equals("+")))
+            {Log.e("진입됨","true")
+                regionIdx1 =shPref1.getString("이름1", "").toString()
                 binding.btnPlusPlace1.background = ContextCompat.getDrawable(this,R.drawable.bg_create_select_blue) }
+            else{
+                regionIdx1 =null
+                binding.btnPlusPlace1.background = ContextCompat.getDrawable(this,R.drawable.bg_create_skyblue)
+            }
         }
         if(!getSharedPreferences("result2",0).getString("이름2","").toString().equals("")){
             val shPref2 = getSharedPreferences("result2",0)
             val editor2 = getSharedPreferences("result2",0).edit()
             binding.btnPlusPlace2.text = shPref2.getString("이름2", "")
-            if(!shPref2.getString("이름2","").toString().equals(""))
-            {regionIdx2 = shPref2.getString("이름2", "").toString()
-                binding.btnPlusPlace2.background = ContextCompat.getDrawable(this,R.drawable.bg_create_select_blue)
+            if(!(shPref2.getString("이름2","").equals("")) && !(shPref2.getString("이름2","").equals("+")))
+            {Log.e("진입됨","true")
+                regionIdx2 =shPref2.getString("이름2", "").toString()
+                binding.btnPlusPlace2.background = ContextCompat.getDrawable(this,R.drawable.bg_create_select_blue) }
+            else{
+                regionIdx2 =null
+                binding.btnPlusPlace2.background = ContextCompat.getDrawable(this,R.drawable.bg_create_skyblue)
             }
         }
     }
