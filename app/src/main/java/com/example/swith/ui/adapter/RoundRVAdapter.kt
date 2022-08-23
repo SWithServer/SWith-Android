@@ -1,6 +1,7 @@
 package com.example.swith.ui.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -8,7 +9,11 @@ import com.example.swith.R
 import com.example.swith.data.GetSessionRes
 import com.example.swith.data.Round
 import com.example.swith.databinding.ItemRoundBinding
+import com.example.swith.utils.compareTimeWithNow
 import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import kotlin.math.round
 
 class RoundRVAdapter() : RecyclerView.Adapter<RoundRVAdapter.ViewHolder>() {
     private var roundList = ArrayList<GetSessionRes>()
@@ -47,11 +52,16 @@ class RoundRVAdapter() : RecyclerView.Adapter<RoundRVAdapter.ViewHolder>() {
             with(binding){
                 roundTitleTv.text= "${round.sessionNum}회차"
                 roundDetailTv.text = round.sessionContent
-                roundDateTv.text = if (round.sessionStart[0] == LocalDateTime.now().year)
+                roundDateTv.text = if (round.sessionStart[0] == ZonedDateTime.now(ZoneId.of("Asia/Seoul")).year)
                         String.format("%d월 %d일 %d:%02d", round.sessionStart[1], round.sessionStart[2], round.sessionStart[3], round.sessionStart[4])
                     else
                         String.format("%2d년 %d월 %d일 %d:%02d", round.sessionStart[0] % 2000, round.sessionStart[1], round.sessionStart[2], round.sessionStart[3], round.sessionStart[4])
-                roundAttendTv.text = if(round.attendanceRate >=0)  "${round.attendanceRate} %" else "0 %"
+                if (!compareTimeWithNow(round.sessionEnd)){
+                    if (round.attendanceRate >= 0) roundAttendTv.text = "${round.attendanceRate} %"
+                    else roundAttendTv.text = "0 %"
+                    itemRoundAttendLayout.visibility = View.VISIBLE
+                }
+                else itemRoundAttendLayout.visibility = View.INVISIBLE
                 roundPlaceTv.text = if (round.online == 0) "${round.place}" else "온라인"
             }
         }
