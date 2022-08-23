@@ -40,4 +40,13 @@ abstract class BaseFragment<VB : ViewBinding>(@LayoutRes private val layoutRes: 
             }
         }
     }
+
+    fun goLoginPage(){
+        activity?.let{
+            if (it is MainActivity){
+                it.loginPage()
+            }
+        }
+    }
+
 }

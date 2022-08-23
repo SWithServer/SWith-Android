@@ -8,6 +8,9 @@
         <variable
             name="clickListener"
             type="android.view.View.OnClickListener" />
+        <variable
+            name="profileViewModel"
+            type="com.example.swith.viewmodel.ProfileViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -73,7 +76,8 @@
                         android:layout_height="88dp"
                         android:layout_marginStart="20dp"
                         android:layout_marginBottom="28dp"
-                        android:src="@drawable/ic_profile_default"
+                        app:imageUrl="@{profileViewModel.currentProfile.result.profileImgUrl}"
+                        app:placeholder="@{@drawable/ic_profile_default}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
 
@@ -153,7 +157,8 @@
                             android:id="@+id/tv_interesting1"
                             android:layout_width="wrap_content"
                             android:layout_height="32dp"
-                            android:text="test"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="20dp"
                             android:gravity="center"
                             android:fontFamily="@font/kr_bold"
                             android:textSize="13dp"
@@ -175,7 +180,8 @@
                             android:id="@+id/tv_interesting2"
                             android:layout_width="wrap_content"
                             android:layout_height="32dp"
-                            android:text="test"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="20dp"
                             android:fontFamily="@font/kr_bold"
                             android:textSize="13dp"
                             android:textColor="@color/white"
@@ -212,6 +218,7 @@
                         android:onClick="@{clickListener}"
                         android:layout_marginEnd="20dp"
                         android:text="test"
+                        android:textColor="@color/color_525252"
                         android:textSize="15dp"
                         app:layout_constraintTop_toBottomOf="@id/tv_location" />
                     <TextView
@@ -237,9 +244,9 @@
                         android:background="@drawable/bg_round_gray"
                         android:padding="20dp"
                         android:textSize="14dp"
-                        android:textColor="@color/black"
+                        android:textColor="@color/color_525252"
                         android:fontFamily="@font/kr_regular"
-                        android:text="testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest"
+                        android:text="@{profileViewModel.currentProfile.result.introduction}"
                         app:layout_constraintTop_toBottomOf="@id/tv_introduce" />
 
                     <View
@@ -292,7 +299,7 @@
                         android:textSize="20dp"
                         android:textColor="@color/color_9F9F9F"
                         android:fontFamily="@font/kr_bold"
-                        android:text="4.5"
+                        android:text="@{String.valueOf(profileViewModel.currentProfile.result.averageStar)}"
                         android:layout_marginStart="36dp"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -301,7 +308,7 @@
                         android:id="@+id/ratingbar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:rating="4.5"
+                        android:rating="@{profileViewModel.currentProfile.result.averageStar}"
                         android:numStars="5"
                         android:stepSize="0.1"
                         android:progressTint="@color/color_swith"
@@ -329,6 +336,7 @@
                     android:layout_width="123dp"
                     android:layout_height="42dp"
                     android:text="@string/logout"
+                    android:layout_marginBottom="50dp"
                     android:textColor="@color/white"
                     android:fontFamily="@font/kr_bold"
                     android:textSize="14dp"
@@ -337,9 +345,26 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginStart="20dp"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
                    app:layout_constraintTop_toBottomOf="@id/rc_badge"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
+
+        <FrameLayout
+            android:id="@+id/fl_loading_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#63494848"
+            android:clickable="true"
+            android:visibility="visible"
+            app:visibleGone="@{profileViewModel.isLoading()}">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:indeterminateTint="#54000000"/>
+        </FrameLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

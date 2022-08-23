@@ -8,7 +8,7 @@ data class ProfileResponse(
 )
 data class ProfileResult(
     val accessToken: Any,
-    val averageStar: Any,
+    val averageStar: Long,
     val email: String,
     val interestIdx1: Int,
     val interestIdx2: Int,
