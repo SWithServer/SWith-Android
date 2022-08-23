@@ -12,18 +12,16 @@ import com.example.swith.databinding.ItemApplication1Binding
 import com.example.swith.utils.ItemTouchHelperListener
 
 // 유저관리 선착순 목록(지원서 불필요)
-class ManageUserRVAdapter2 : RecyclerView.Adapter<ManageUserRVAdapter2.ViewHolder>(), ItemTouchHelperListener{
+class ManageUserRVAdapter2 : RecyclerView.Adapter<ManageUserRVAdapter2.CustomViewHolder>(), ItemTouchHelperListener{
 
-    private lateinit var binding: ItemApplication1Binding
-    private var userList = mutableListOf<ManageUserResult>()
+    var userList = mutableListOf<ManageUserResult>()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ManageUserRVAdapter2.ViewHolder {
-        val inflatedView = LayoutInflater.from(parent.context)
-        binding = ItemApplication1Binding.inflate(inflatedView,parent,false)
-        return ViewHolder(binding)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):CustomViewHolder {
+        val binding = ItemApplication1Binding.inflate(LayoutInflater.from(parent.context),parent,false)
+        return CustomViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: ManageUserRVAdapter2.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
         holder.bind(userList[position])
     }
 
@@ -31,13 +29,13 @@ class ManageUserRVAdapter2 : RecyclerView.Adapter<ManageUserRVAdapter2.ViewHolde
         return userList.size
     }
 
-    inner class ViewHolder(val binding: ItemApplication1Binding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind (userList: ManageUserResult?) {
+    inner class CustomViewHolder(val binding : ItemApplication1Binding) : RecyclerView.ViewHolder(binding.root){
+        fun bind (userInfo: ManageUserResult) {
             with(binding)
             {
-                tvName.text = userList?.nickname
-                Glide.with(itemView).load(userList?.profileImgUrl).into(ivProfile)
-                if (userList?.applicationContent==null)
+                tvName.text = userInfo?.nickname
+                Glide.with(itemView).load(userInfo?.profileImgUrl).into(ivProfile)
+                if (userInfo?.applicationContent==null)
                 {
                     btnResume.visibility=View.GONE
                 }
@@ -46,8 +44,8 @@ class ManageUserRVAdapter2 : RecyclerView.Adapter<ManageUserRVAdapter2.ViewHolde
                         val pos = adapterPosition
                         if (pos != RecyclerView.NO_POSITION) {
                             if (itemClickListener != null) {
-                                var userIdx = userList!!.userIdx
-                                itemClickListener.resumeClick(v, pos, userIdx)
+                                var applicationContent = userInfo!!.applicationContent
+                                itemClickListener.resumeClick(v, pos, applicationContent)
                             }
                         }
                     }
@@ -57,7 +55,7 @@ class ManageUserRVAdapter2 : RecyclerView.Adapter<ManageUserRVAdapter2.ViewHolde
                 val pos = adapterPosition
                 if (pos != RecyclerView.NO_POSITION) {
                     if (itemClickListener != null) {
-                        var userIdx = userList!!.userIdx
+                        var userIdx = userInfo!!.userIdx
                         itemClickListener.onClick(v,pos,userIdx)
                     }
                 }
@@ -69,23 +67,15 @@ class ManageUserRVAdapter2 : RecyclerView.Adapter<ManageUserRVAdapter2.ViewHolde
 
     interface OnItemClickListener {
         fun onClick(v: View, pos:Int, userIdx:Long?)
-        fun resumeClick(v: View, pos:Int, userIdx:Long?)
+        fun resumeClick(v:View, pos:Int,applicationContent:String?)
     }
 
     fun setItemClickListener(itemClickListener:OnItemClickListener) {
         this.itemClickListener = itemClickListener
     }
 
-    fun setUser(userList : List<ManageUserResult>) {
-        this.userList.apply {
-            clear()
-            addAll(userList)
-        }
-        notifyDataSetChanged()
-    }
-
     interface CustomListener{
-        fun onDeleteClick(userInfo: ManageUserResult,position:Int)
+        fun onDeleteClick(userInfo: ManageUserResult,applicationIdx:Long)
     }
     private lateinit var customListener: CustomListener
 
@@ -94,7 +84,7 @@ class ManageUserRVAdapter2 : RecyclerView.Adapter<ManageUserRVAdapter2.ViewHolde
     }
 
     override fun onDeleteButtonClick(position: Int) {
-        customListener.onDeleteClick(userList[position],position)
+        customListener.onDeleteClick(userList[position],userList[position].applicationIdx)
     }
 
 

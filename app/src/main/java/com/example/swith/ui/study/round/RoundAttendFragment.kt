@@ -32,8 +32,10 @@ class RoundAttendFragment(private val curCount: Int) : BaseFragment<FragmentRoun
         })
 
         viewModel.attendLiveEvent.observe(viewLifecycleOwner, Observer {
+            // 출석 혹은 지각에 따라 구분해야함
             CustomAlertDialog("출석 완료", "출석 처리되었습니다.")
                 .show(requireActivity().supportFragmentManager, "출석 완료")
+            (binding.rvAttend.adapter as AttendRVAdapter).updateUserStatus()
         })
 
         viewModel.mutableErrorMessage.observe(viewLifecycleOwner, Observer {
@@ -45,11 +47,6 @@ class RoundAttendFragment(private val curCount: Int) : BaseFragment<FragmentRoun
             setVisibility(viewModel.isUpdateAvailable(), viewModel.curUserAttend == null)
             (binding.rvAttend.adapter as AttendRVAdapter).setData(it.getAttendanceList)
         })
-
-        viewModel.attendLiveEvent.observe(viewLifecycleOwner, Observer {
-            Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
-        })
-
     }
     private fun initView(){
         with(binding){

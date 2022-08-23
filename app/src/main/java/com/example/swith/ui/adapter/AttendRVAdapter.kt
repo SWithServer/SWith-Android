@@ -31,6 +31,15 @@ class AttendRVAdapter(private val userId: Int?) : RecyclerView.Adapter<AttendRVA
         notifyDataSetChanged()
     }
 
+    fun updateUserStatus(){
+        for (i in userAttendList.indices){
+            if (userId == userAttendList[i].userIdx) {
+                userAttendList[i].status = 1
+                notifyItemChanged(i)
+            }
+        }
+    }
+
     inner class ViewHolder(private val binding: ItemAttendBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(userAttend: GetAttendance){
             with(binding){

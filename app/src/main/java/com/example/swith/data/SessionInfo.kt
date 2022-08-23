@@ -19,7 +19,7 @@ data class SessionInfo(
 
 data class GetAttendance(
     val nickname: String,
-    val status: Int,
+    var status: Int,
     val userIdx: Int
 )
 
