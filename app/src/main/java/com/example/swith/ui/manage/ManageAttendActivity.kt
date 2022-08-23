@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.swith.R
 import com.example.swith.data.AttendList
+import com.example.swith.data.GetAttendanceInfo
 import com.example.swith.databinding.ActivityManageAttendBinding
 import com.example.swith.databinding.ItemManageAttendSpinnerBinding
 import com.example.swith.ui.adapter.ManageAttendRVAdapter
@@ -63,11 +64,16 @@ class ManageAttendActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun emptyLayoutVisible(empty: Boolean){
+    private fun emptyLayoutVisible(empty: Boolean, attendList: List<GetAttendanceInfo>){
         with(binding){
             rvManageAttend.visibility = if (empty) View.INVISIBLE else View.VISIBLE
             tvNoAttend.visibility = if (empty) View.VISIBLE else View.INVISIBLE
-            btnAttendUpdate.visibility = if (empty) View.INVISIBLE else View.VISIBLE
+            if (empty)
+                btnAttendUpdate.visibility = View.INVISIBLE
+            else{
+                btnAttendUpdate.visibility = View.INVISIBLE
+                attendList.forEach { if (it.status != 0) btnAttendUpdate.visibility = View.VISIBLE}
+            }
         }
     }
 
@@ -118,7 +124,7 @@ class ManageAttendActivity : AppCompatActivity(), View.OnClickListener {
                     id: Long
                 ) {
                     if(position != adapter.count) (binding.rvManageAttend.adapter as ManageAttendRVAdapter).setData(attendList.attend[position].getAttendanceInfos.apply {
-                        emptyLayoutVisible(this.isNullOrEmpty())
+                        emptyLayoutVisible(this.isNullOrEmpty(), this)
                     })
                 }
 

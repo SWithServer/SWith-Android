@@ -1,5 +1,6 @@
 package com.example.swith.ui
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -13,6 +14,7 @@ import androidx.fragment.app.Fragment
 import com.example.swith.R
 import com.example.swith.databinding.ActivityMainBinding
 import com.example.swith.ui.home.HomeFragment
+import com.example.swith.ui.login.LoginActivity
 import com.example.swith.ui.profile.ProfileFragment
 import com.example.swith.ui.study.find.StudyFindFragment
 
@@ -154,6 +156,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 ibNotice.visibility= INVISIBLE
             }
             tvTitle.text=title
+        }
+    }
+
+    fun loginPage(){
+        Intent(this@MainActivity,LoginActivity::class.java).run {
+            startActivity(this)
+            finishAffinity()
         }
     }
 }
