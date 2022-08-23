@@ -43,3 +43,12 @@ data class ManageUserIdx(
     val userIdx: Long?
 )
 
+data class ManageUserDelReq(
+    val adminIdx:Long?,
+    val userIdx: Long?,
+    val applicationIdx:Long?
+)
+
+data class ManageUserDelResponse(
+    val applicationIdx:Long
+)

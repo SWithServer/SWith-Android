@@ -110,8 +110,9 @@ interface RetrofitApi {
     @PATCH("/groupinfo/modify/{groupIdx}")
     fun modifyStudy(@Path("groupIdx") groupIdx : Long,@Body body:StudyGroup) : Call<StudyModifyResponse>
 
-
-
+    // 관리자탭 유저 추방
+    @PATCH("/application/manage/expel/{groupIdx}/{status}")
+    fun deleteUser(@Path("groupIdx") groupIdx : Long, @Path ("status") status: Int, @Body body:ManageUserDelReq) : Call<ManageUserDelResponse>
 
 
 

@@ -22,8 +22,10 @@ class ManageUserResumeActivity:AppCompatActivity(),View.OnClickListener {
     lateinit var binding:ActivityManageUserResumeBinding
     var userIdx : Long?= -1
     var groupIdx : Long? = -1
+
 //    val adminId = SharedPrefManager(this@ManageUserResumeActivity).getLoginData()
 //    val adminIdx = adminId?.userIdx
+
     val adminIdx : Long = 1
     var applicationIdx : Long? = -1
 
@@ -125,7 +127,7 @@ class ManageUserResumeActivity:AppCompatActivity(),View.OnClickListener {
             Log.e("groupIdx값","${groupIdx}")
         })
         (intent.hasExtra("applicationIdx").let{
-          applicationIdx = intent.getLongExtra("applicationIdx",0)
+          applicationIdx = intent.getLongExtra("applicationIdx",-1)
             Log.e("applicationIdx값","${applicationIdx}")
         })
         (intent.hasExtra("applicationContent").let{

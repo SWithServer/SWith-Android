@@ -73,8 +73,8 @@ class ManageUserApplication1Fragment():BaseFragment<FragmentManageApplicationBin
             ) {
                 if (response.isSuccessful) {
                     Log.e("summer", "성공${response.toString()}")
+                    Log.e("유저들 정보","${response.body()?.result.toString()}")
                     response.body()?.apply {
-                        Log.e("user들 목록",this.result.toString())
                         initRV(this.result)
                     }
                 }
@@ -122,5 +122,8 @@ class ManageUserApplication1Fragment():BaseFragment<FragmentManageApplicationBin
         userActivity = activity as ManageUserActivity
     }
 
+    override fun onResume() {
+        super.onResume()
+    }
 
 }

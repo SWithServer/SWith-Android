@@ -70,13 +70,4 @@ class ManageUserRVAdapter1: RecyclerView.Adapter<ManageUserRVAdapter1.CustomView
     fun setItemClickListener(itemClickListener:OnItemClickListener) {
         this.itemClickListener = itemClickListener
     }
-
-    fun setUser(userList_:List<ManageUserResult>)
-    {
-        this.userList.apply{
-            clear()
-            addAll(userList_)
-        }
-        notifyDataSetChanged()
-    }
 }

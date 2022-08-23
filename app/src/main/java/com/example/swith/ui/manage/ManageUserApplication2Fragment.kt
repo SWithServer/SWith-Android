@@ -11,9 +11,7 @@ import androidx.core.view.GravityCompat.apply
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.swith.R
-import com.example.swith.data.GetSessionRes
-import com.example.swith.data.ManageUserResponse
-import com.example.swith.data.ManageUserResult
+import com.example.swith.data.*
 import com.example.swith.databinding.FragmentManageApplication2Binding
 import com.example.swith.repository.RetrofitApi
 import com.example.swith.repository.RetrofitService
@@ -52,52 +50,51 @@ class ManageUserApplication2Fragment() : BaseFragment<FragmentManageApplication2
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setVisiblebar(false,true,"")
-        adapter = ManageUserRVAdapter2()
-        binding.rvApplication.adapter = adapter
         setRetrofitData(groupIdx?.toLong())
-        binding.rvApplication.apply{
-            ManageUserRVAdapter2().apply {
-                adapter = ManageUserRVAdapter2().apply{
-                    this@apply.setItemClickListener(object: ManageUserRVAdapter2.OnItemClickListener{
-                        override fun onClick(view: View, pos:Int,userIdx:Long?) {
-                            Log.e("클릭이벤트 발생","true")
-                            Log.e("userIdx 값","${userIdx}")
-                            val intent = Intent(requireActivity(), ManageUserProfileActivity::class.java)
-                            intent.putExtra("userIdx", userIdx)
-                            startActivity(intent)
-                        }
-                        override fun resumeClick(v: View, pos: Int, userIdx: Long?) {
-                            Log.e("frag2 resume 클릭 이벤트","true")
-                            val intent = Intent(requireActivity(), ManageUserResumeActivity::class.java)
-                            intent.putExtra("userIdx", userIdx)
-                            intent.putExtra("status",status)
-                            startActivity(intent)
-                        }
-                    })
-
-                    this@apply.setCustomListener(object: ManageUserRVAdapter2.CustomListener{
-                        override fun onDeleteClick(userInfo: ManageUserResult , position:Int) {
-                            var applicationIdx = position.toLong()
-                            CustomConfirmDialog("회원 삭제", "${userInfo.nickname}님을 추방하시겠습니까?").apply {
-                                setCustomListener(object: CustomConfirmDialog.CustomListener{
-                                    override fun onConfirm() {
-                                        dismiss()
-                                        deleteUser(userInfo.userIdx,adminIdx?.toLong(),applicationIdx)
-                                    }
-                                })
-                            }.show(requireActivity().supportFragmentManager,"userDelete")
-                        }
-                    })
-                }
-            }
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        }
     }
 
-    fun loadData()
+    fun initRV(userList : List<ManageUserResult>)
     {
-        adapter.setUser(userList)
+        val adapter = ManageUserRVAdapter2()
+        adapter.userList.addAll(userList)
+        binding.rvApplication.adapter = adapter
+        binding.rvApplication.setLayoutManager(LinearLayoutManager(getActivity()))
+
+        adapter.setItemClickListener(object:ManageUserRVAdapter2.OnItemClickListener{
+            override fun onClick(view: View, pos:Int,userIdx:Long?) {
+                Log.e("클릭이벤트 발생","true")
+                Log.e("userIdx 값","${userIdx}")
+                val intent = Intent(requireActivity(), ManageUserProfileActivity::class.java)
+                intent.putExtra("userIdx", userIdx)
+                startActivity(intent)
+            }
+            override fun resumeClick(v:View, pos:Int,applicationContent:String?) {
+                Log.e("frag1 resume 클릭 이벤트","true")
+                val intent = Intent(requireActivity(), ManageUserResumeActivity::class.java)
+                intent.putExtra("status",status)
+                intent.putExtra("groupIdx",groupIdx)
+                intent.putExtra("applicationContent",applicationContent)
+                startActivity(intent)
+            }
+        })
+        adapter.setCustomListener(object: ManageUserRVAdapter2.CustomListener{
+            override fun onDeleteClick(userInfo: ManageUserResult,applicationIdx:Long) {
+                Log.e("스와이프 이벤트 발생","true")
+                CustomConfirmDialog("회원 삭제", "${userInfo.nickname}님을 추방하시겠습니까?").apply {
+                    setCustomListener(object: CustomConfirmDialog.CustomListener{
+                        override fun onConfirm() {
+                            dismiss()
+                            deleteUser(userInfo.userIdx,adminIdx?.toLong(),applicationIdx)
+                            setRetrofitData(groupIdx?.toLong())
+                        }
+                    })
+                }.show(requireActivity().supportFragmentManager,"userDelete")
+            }
+        })
+        val itemTouchHelper = ItemTouchHelper(SwipeController(adapter))
+        itemTouchHelper.attachToRecyclerView(binding.rvApplication)
     }
+
 
     fun setRetrofitData(groupIdx:Long?)
     {
@@ -114,7 +111,7 @@ class ManageUserApplication2Fragment() : BaseFragment<FragmentManageApplication2
                     Log.e("summer", "성공${response.toString()}")
                     response.body()?.apply {
                         Log.e("user들 목록",this.result.toString())
-                        adapter.setUser(this.result)
+                        initRV(this.result)
                     }
                 }
                 else {
@@ -136,6 +133,32 @@ class ManageUserApplication2Fragment() : BaseFragment<FragmentManageApplication2
 
     fun deleteUser(userIdx : Long?,adminIdx:Long?,applicationIdx:Long?)
     {
-        // 추방 retrofit 부분
+        val retrofitService = RetrofitService.retrofit.create(RetrofitApi::class.java)
+        //status가 1이면 지원해서 승인된 사람 or 선착순으로 바로 통과된 사람
+        Log.e("전달한 applicationIdx 값",applicationIdx.toString())
+        val deleteReq =ManageUserDelReq(adminIdx,userIdx,applicationIdx)
+        retrofitService.deleteUser(groupIdx!!.toLong(),1,deleteReq).enqueue(object :
+            Callback<ManageUserDelResponse> {
+            override fun onResponse(
+                call: Call<ManageUserDelResponse>,
+                response: Response<ManageUserDelResponse>
+            ) {
+                if (response.isSuccessful) {
+                    Log.e("summer", "성공${response.toString()}")
+                    response.body()?.apply {
+                        Log.e("삭제한 applicationIdx 값",this.applicationIdx.toString())
+                    }
+                }
+                else {
+                    Log.e("summer", "전달실패 code = ${response.code()}")
+                    Log.e("summer", "전달실패 msg = ${response.message()}")
+                }
+            }
+            override fun onFailure(call: Call<ManageUserDelResponse>, t: Throwable) {
+                Log.e("summer", "onFailure t = ${t.toString()}")
+                Log.e("summer", "onFailure msg = ${t.message}")
+            }
+        })
+
     }
 }
