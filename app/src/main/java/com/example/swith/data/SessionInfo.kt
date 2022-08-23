@@ -13,7 +13,7 @@ data class SessionInfo(
     val sessionIdx: Int,
     val sessionNum: Int,
     val sessionStart: List<Int>,
-    val memoIdx: Int?,
+    var memoIdx: Int?,
     val userMemo: String?
 )
 
