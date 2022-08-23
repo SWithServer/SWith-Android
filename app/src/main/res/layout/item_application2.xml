@@ -48,15 +48,8 @@
                 android:layout_marginStart="10dp"
                 android:text="김철수" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-        <Button
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:text="-"
-            android:background="@color/red"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="50dp"
-            />
+
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

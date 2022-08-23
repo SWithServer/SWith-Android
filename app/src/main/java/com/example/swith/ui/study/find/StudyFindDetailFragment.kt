@@ -3,6 +3,8 @@ package com.example.swith.ui.study.find
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -14,7 +16,6 @@ import androidx.databinding.DataBindingUtil
 import com.example.swith.R
 import com.example.swith.data.StudyApplicationResponse
 import com.example.swith.data.StudyDetailResponse
-import com.example.swith.data.StudyResponse
 import com.example.swith.data.postApplicationReq
 import com.example.swith.databinding.DialogCreateBinding
 import com.example.swith.databinding.FragmentStudyFindDetailBinding
@@ -24,9 +25,7 @@ import com.example.swith.ui.MainActivity
 import com.example.swith.ui.dialog.CustomDialog
 import com.example.swith.ui.manage.ManageUserProfileActivity
 import com.example.swith.utils.CustomBinder
-import com.example.swith.utils.SharedPrefManager
 import com.example.swith.utils.base.BaseFragment
-import com.google.firebase.crashlytics.internal.model.CrashlyticsReport
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -42,8 +41,7 @@ class StudyFindDetailFragment : BaseFragment<FragmentStudyFindDetailBinding>(R.l
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        dialog_ = Dialog(requireActivity())
-        dialog_.setContentView(R.layout.fragment_dialog_application)
+        customDialog()
         Log.e("summer", "fragment이동 true")
         groupIdx = arguments?.getLong("groupIdx",0)
         applicationMethod = arguments?.getInt("applicationMethod",0)
@@ -249,5 +247,17 @@ class StudyFindDetailFragment : BaseFragment<FragmentStudyFindDetailBinding>(R.l
             editText.getWindowToken(),
             0
         )
+    }
+
+    fun customDialog()
+    {
+        dialog_ = Dialog(requireActivity())
+        dialog_.setContentView(R.layout.dialog_application)
+        var params = dialog_.window?.attributes
+        dialog_.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        params?.height = WindowManager.LayoutParams.MATCH_PARENT
+        params?.width=WindowManager.LayoutParams.MATCH_PARENT
+        params?.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
+        dialog_.window?.attributes=params
     }
 }

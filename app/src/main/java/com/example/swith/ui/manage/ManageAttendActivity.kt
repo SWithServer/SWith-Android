@@ -34,10 +34,6 @@ class ManageAttendActivity : AppCompatActivity(), View.OnClickListener {
         binding.clickListener = this
         binding.btnAttendUpdate.setOnClickListener { updateAttend() }
         observeViewModel()
-    }
-
-    override fun onResume() {
-        super.onResume()
         setViewVisibility(true)
         viewModel.loadData(groupIdx)
     }
@@ -100,6 +96,7 @@ class ManageAttendActivity : AppCompatActivity(), View.OnClickListener {
                             hint = getItem(count)
                             text
                         }
+                        binding.btnAttendUpdate.visibility = View.INVISIBLE
                     }
                     return view
                 }

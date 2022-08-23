@@ -35,13 +35,16 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 // 신청서를 낸 사람들 목록 (지원)
-class ManageUserApplication1Fragment() :BaseFragment<FragmentManageApplicationBinding>(R.layout.fragment_manage_application) {
+class ManageUserApplication1Fragment():BaseFragment<FragmentManageApplicationBinding>(R.layout.fragment_manage_application) {
 
     var groupIdx : Int?  = -1
-   var userActivity : ManageUserActivity? =null
+    var userActivity : ManageUserActivity? =null
     var status :Int = 0
-    private lateinit var adapter : ManageUserRVAdapter1
+    var resumeContent : String = ""
+    var resumeIdx : Int? = -1
+    private  var adapter = ManageUserRVAdapter1()
     lateinit var userList : List<ManageUserResult>
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -50,40 +53,11 @@ class ManageUserApplication1Fragment() :BaseFragment<FragmentManageApplicationBi
         groupIdx = userActivity?.groupIdx
         return super.onCreateView(inflater, container, savedInstanceState)
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setVisiblebar(false,true,"")
-        adapter = ManageUserRVAdapter1()
-        binding.rvApplication.adapter = adapter
         setRetrofitData(groupIdx?.toLong())
-        binding.rvApplication.apply{
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        }
-
-        adapter.setItemClickListener(object:ManageUserRVAdapter1.OnItemClickListener{
-            override fun onClick(view: View, pos:Int,userIdx:Long?) {
-                Log.e("클릭이벤트 발생","true")
-                Log.e("userIdx 값","${userIdx}")
-                val intent = Intent(requireActivity(), ManageUserProfileActivity::class.java)
-                intent.putExtra("userIdx", userIdx)
-                startActivity(intent)
-            }
-
-            override fun resumeClick(v: View, pos: Int, userIdx: Long?) {
-                Log.e("frag1 resume 클릭 이벤트","true")
-                val intent = Intent(requireActivity(), ManageUserResumeActivity::class.java)
-                intent.putExtra("userIdx", userIdx)
-                intent.putExtra("status",status)
-                intent.putExtra("groupIdx",groupIdx)
-                intent.putExtra("resumeIdx",pos)
-                startActivity(intent)
-            }
-        })
-    }
-
-    fun loadData()
-    {
-        adapter.setUser(userList)
     }
 
     fun setRetrofitData(groupIdx:Long?)
@@ -101,7 +75,7 @@ class ManageUserApplication1Fragment() :BaseFragment<FragmentManageApplicationBi
                     Log.e("summer", "성공${response.toString()}")
                     response.body()?.apply {
                         Log.e("user들 목록",this.result.toString())
-                        adapter.setUser(this.result)
+                        initRV(this.result)
                     }
                 }
                 else {
@@ -116,8 +90,37 @@ class ManageUserApplication1Fragment() :BaseFragment<FragmentManageApplicationBi
         })
     }
 
+    fun initRV(userList : List<ManageUserResult>)
+    {
+        val adapter = ManageUserRVAdapter1()
+        adapter.userList.addAll(userList)
+        binding.rvApplication.adapter = adapter
+        binding.rvApplication.setLayoutManager(LinearLayoutManager(getActivity()))
+
+        adapter.setItemClickListener(object:ManageUserRVAdapter1.OnItemClickListener{
+            override fun onClick(view: View, pos:Int,userIdx:Long?) {
+                Log.e("클릭이벤트 발생","true")
+                Log.e("userIdx 값","${userIdx}")
+                val intent = Intent(requireActivity(), ManageUserProfileActivity::class.java)
+                intent.putExtra("userIdx", userIdx)
+                startActivity(intent)
+            }
+            override fun resumeClick(v: View, pos: Int, applicationContent: String?, applicationIdx:Long?) {
+                Log.e("frag1 resume 클릭 이벤트","true")
+                val intent = Intent(requireActivity(), ManageUserResumeActivity::class.java)
+                intent.putExtra("status",status)
+                intent.putExtra("groupIdx",groupIdx)
+                intent.putExtra("applicationContent",applicationContent)
+                intent.putExtra("applicationIdx",applicationIdx)
+                startActivity(intent)
+            }
+        })
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         userActivity = activity as ManageUserActivity
     }
+
+
 }

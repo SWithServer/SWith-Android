@@ -33,11 +33,6 @@ class ManageRoundActivity : AppCompatActivity(), View.OnClickListener{
         observeViewModel()
     }
 
-    override fun onResume() {
-        super.onResume()
-        reloadData()
-    }
-
     private fun initView(){
         binding.clickListener = this
         binding.rvManageRound.apply {
@@ -69,6 +64,8 @@ class ManageRoundActivity : AppCompatActivity(), View.OnClickListener{
     }
 
     private fun observeViewModel(){
+        reloadData()
+
         viewModel.roundLiveData.observe(this, Observer {
             (binding.rvManageRound.adapter as ManageRoundRVAdapter).setData(it.getSessionResList)
         })

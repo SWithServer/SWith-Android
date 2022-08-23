@@ -25,6 +25,7 @@ import com.example.swith.databinding.ActivityManageStudyModifyBinding
 import com.example.swith.repository.RetrofitApi
 import com.example.swith.repository.RetrofitService
 import com.example.swith.ui.study.create.SelectPlaceActivity
+import com.example.swith.utils.SharedPrefManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -35,8 +36,9 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
     var groupIdx : Int = -1
 
     var title:String=""
-    //    val userid= SharedPrefManager(this@StudyCreateActivity).getLoginData()
+//    val userid= SharedPrefManager(this@ManageStudyModifyActivity).getLoginData()
 //    val userIdx = userid?.userIdx
+
     var meet_idx:Int= -1
     var frequency_content:Int?=null
     var periods_content:String?=null
@@ -71,6 +73,7 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
 
         initData()
         initView(groupIdx)
+        customDialog()
 
         with(binding)
         {
@@ -243,7 +246,7 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
                     position: Int,
                     p3: Long
                 ) {
-                    interest_idx = position + 1
+                    interest_idx = position
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -257,19 +260,6 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
                     p3: Long
                 ) {
                     memberLimit_content = "${spinnerPeople.getItemAtPosition(position)}".toInt()
-                }
-
-                override fun onNothingSelected(p0: AdapterView<*>?) {
-                }
-            }
-            spinnerMethod.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    p0: AdapterView<*>?,
-                    p1: View?,
-                    position: Int,
-                    p3: Long
-                ) {
-                    applicationMethod_idx = position
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -449,6 +439,7 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
                     Log.e("summer", "성공${response.toString()}")
                     response.body()?.apply {
                         var result = this.result
+                        Log.e("user data = ", "${this.result.toString()}")
                         with(binding)
                         {
                             etStudyTitle.setText(result.title)
@@ -456,12 +447,21 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
                             when(result.meet)
                             {
                                 0->{
+                                    checkWeek.isChecked=true
+                                    checkFree.isChecked=false
+                                    checkMonth.isChecked=false
                                    etStudyWeek.setText(result.frequency.toString())
                                 }
                                 1->{
+                                    checkWeek.isChecked=false
+                                    checkMonth.isChecked=true
+                                    checkFree.isChecked=false
                                     etStudyMonth.setText(result.frequency.toString())
                                 }
                                 2->{
+                                    checkWeek.isChecked=false
+                                    checkFree.isChecked=true
+                                    checkMonth.isChecked=false
                                     etStudyFree.setText(result.periods.toString())
                                 }
                             }
@@ -513,18 +513,24 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
                             btnFinishDay.text = result.groupEnd
                             when(result.applicationMethod)
                             {
-                                0->{spinnerMethod.setSelection(0)}
-                                1->{spinnerMethod.setSelection(1)}
+                                0->{btnApplicationFf.isChecked=true
+                                btnApplicationApply.isChecked=false
+                                    applicationMethod_idx =0
+                                }
+                                1->{btnApplicationFf.isChecked=false
+                                    btnApplicationApply.isChecked=true
+                                    applicationMethod_idx =1}
                             }
                             var selectedPeople = result.memberLimit
-                            spinnerPeople.setSelection(selectedPeople)
+                            spinnerPeople.setSelection(selectedPeople-2)
                             var selectedTime = result.attendanceValidTime
-                            spinnerAttendTime.setSelection(selectedTime)
+                            spinnerAttendTime.setSelection((selectedTime/10)-1)
                             etStudyContent.setText(result.groupContent)
                         }
                     }
                 }
                 else {
+                    Log.e("summer init view ", "전달실패")
                     Log.e("summer", "전달실패 code = ${response.code()}")
                     Log.e("summer", "전달실패 msg = ${response.message()}")
                 }
@@ -541,7 +547,6 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
         //레트로핏 부분
         dialog_.findViewById<TextView>(R.id.tv_title).text = content_text
         dialog_.show()
-
         dialog_.findViewById<Button>(R.id.btn_no).setOnClickListener {
             dialog_.dismiss()
         }
@@ -554,11 +559,7 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
                     if (response.isSuccessful)
                     {
                         response.body()?.apply {
-                            if (this.result == groupIdx.toLong())
-                            {
-                                Log.e("summer","body = ${this.result}")
-                                finish()
-                            }
+                            finish()
                         }
                     }
                     else
@@ -578,10 +579,9 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
             })
         }
     }
-        fun setupSinner(){
+    fun setupSinner(){
             val interest_spinner = binding.spinnerCategory
             val memberLimit_spinner = binding.spinnerPeople
-            val applicationMethod_spinner = binding.spinnerMethod
             val attendanceVaildTime_spinner = binding.spinnerAttendTime
 
             interest_spinner.adapter = ArrayAdapter.createFromResource(
@@ -590,13 +590,6 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
                 this.setDropDownViewResource(R.layout.item_search_spinner_dropdown)
             }
 
-            applicationMethod_spinner.adapter = ArrayAdapter.createFromResource(
-                this.applicationContext,
-                R.array.methodList,
-                R.layout.item_create_spinner
-            ).apply{
-                this.setDropDownViewResource(R.layout.item_search_spinner_dropdown)
-            }
             attendanceVaildTime_spinner.adapter = ArrayAdapter.createFromResource(
                 this.applicationContext,
                 R.array.attendTimeList,
@@ -612,7 +605,7 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
                 this.setDropDownViewResource(R.layout.item_search_spinner_dropdown)
             }
         }
-        fun hideKeyboard(editText: EditText){
+    fun hideKeyboard(editText: EditText){
             val  mInputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             mInputMethodManager.hideSoftInputFromWindow(
                 editText.getWindowToken(),

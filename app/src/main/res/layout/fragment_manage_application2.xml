@@ -12,6 +12,6 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:listitem="@layout/item_application2"/>
+        tools:listitem="@layout/item_application1"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

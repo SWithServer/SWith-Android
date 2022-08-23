@@ -17,6 +17,7 @@ class ProfileDataSourse {
         retrofitApi.getProfileInfo(profileRequest).enqueue(object :Callback<ProfileResponse>{
             override fun onResponse(call: Call<ProfileResponse>, response: Response<ProfileResponse>) {
                 Log.e("doori","onResponse = $response")
+                Log.e("doori","body = ${response.body()}")
                 response.body()?.apply {
                     Log.e("doori","response body = ${response.body()}")
                     mProfileLiveData.postValue(this)

@@ -13,21 +13,28 @@ import com.example.swith.databinding.ActivityManageFinishBinding
 import com.example.swith.databinding.ActivityManageUserResumeBinding
 import com.example.swith.repository.RetrofitApi
 import com.example.swith.repository.RetrofitService
+import com.example.swith.utils.SharedPrefManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class ManageUserResumeActivity:AppCompatActivity(),View.OnClickListener {
     lateinit var binding:ActivityManageUserResumeBinding
+    var userIdx : Long?= -1
     var groupIdx : Long? = -1
-    var userIdx : Long? = -1
+//    val adminId = SharedPrefManager(this@ManageUserResumeActivity).getLoginData()
+//    val adminIdx = adminId?.userIdx
+    val adminIdx : Long = 1
+    var applicationIdx : Long? = -1
+
     var status : Int? = -1
-    var resumeIdx : Long?= -1
+    var applicationContent : String?=""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_manage_user_resume)
         binding.clickListener = this
         initData()
+        setResume(applicationContent)
         clickButton()
     }
 
@@ -36,10 +43,12 @@ class ManageUserResumeActivity:AppCompatActivity(),View.OnClickListener {
         with(binding)
         {
             btnYes.setOnClickListener {
+                //승인
                 postData(1)
                 finish()
             }
             btnNo.setOnClickListener {
+                //반려
                 postData(2)
                 finish()
             }
@@ -49,7 +58,9 @@ class ManageUserResumeActivity:AppCompatActivity(),View.OnClickListener {
     fun postData(statusOfApplication : Int)
     {
         Log.e("groupIdx 레트로핏 값 ", "${groupIdx}")
-        val resumeReq = ManageUserResumeReq(resumeIdx,1,statusOfApplication)
+        Log.e("applicationIdx 신청서 idx 값","${applicationIdx}")
+        val resumeReq = ManageUserResumeReq(applicationIdx,adminIdx?.toLong(),statusOfApplication)
+        Log.e("req 부분","${resumeReq}")
         val retrofitService = RetrofitService.retrofit.create(RetrofitApi::class.java)
         retrofitService.postUserResume(groupIdx!!,0,resumeReq).enqueue(object :
             Callback<ManageUserResumeResponse> {
@@ -75,15 +86,17 @@ class ManageUserResumeActivity:AppCompatActivity(),View.OnClickListener {
         })
     }
 
-    fun setResume()
+    // resume 값 가져오기
+    fun setResume(resumeContent: String?)
     {
-
+        with(binding)
+        {
+            tvResumeContent.text = resumeContent
+        }
     }
 
     fun initData()
     {
-        (intent.hasExtra("userIdx")).let { userIdx = intent.getLongExtra("userIdx", 0) }
-        Log.e("resume","userIdx = ${userIdx}")
         (intent.hasExtra("status").let{
             status = intent.getIntExtra("status",0)
             Log.e("status값","${status}")
@@ -111,9 +124,13 @@ class ManageUserResumeActivity:AppCompatActivity(),View.OnClickListener {
             groupIdx = intent.getIntExtra("groupIdx",0).toLong()
             Log.e("groupIdx값","${groupIdx}")
         })
-        (intent.hasExtra("resumeIdx").let{
-            groupIdx = intent.getIntExtra("resumeIdx",0).toLong()
-            Log.e("resumeIdx값","${resumeIdx}")
+        (intent.hasExtra("applicationIdx").let{
+          applicationIdx = intent.getLongExtra("applicationIdx",0)
+            Log.e("applicationIdx값","${applicationIdx}")
+        })
+        (intent.hasExtra("applicationContent").let{
+            applicationContent = intent.getStringExtra("applicationContent")
+            Log.e("지원서 내용:applicationContent 값","${applicationContent}")
         })
     }
 

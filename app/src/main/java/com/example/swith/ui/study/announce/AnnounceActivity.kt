@@ -51,7 +51,7 @@ class AnnounceActivity : AppCompatActivity(), View.OnClickListener{
         with(binding){
             clickListener = this@AnnounceActivity
             rvAnnounce.apply {
-                adapter = AnnounceRVAdapter(isManager).apply {
+                adapter = AnnounceRVAdapter().apply {
                     setListener(object : AnnounceRVAdapter.CustomListener {
                         override fun onDelete(announce: Announce) {
                             CustomConfirmDialog(
@@ -187,9 +187,17 @@ class AnnounceActivity : AppCompatActivity(), View.OnClickListener{
         viewModel.loadData(groupIdx)
     }
 
+    override fun onBackPressed() {
+        setResult(RESULT_OK)
+        finish()
+    }
+
     override fun onClick(view: View?) {
         when(view?.id){
-            R.id.ib_basic_toolbar_back -> finish()
+            R.id.ib_basic_toolbar_back -> {
+                setResult(RESULT_OK)
+                finish()
+            }
         }
     }
 }

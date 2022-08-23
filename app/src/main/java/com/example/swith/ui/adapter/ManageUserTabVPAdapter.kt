@@ -20,9 +20,11 @@ class ManageUserTabVPAdapter(fragmentManager: FragmentManager, lifecycle: Lifecy
     override fun createFragment(position: Int): Fragment {
         when (position) {
             0 -> {
+                Log.e("첫번째 프래그먼트","true")
                 return ManageUserApplication1Fragment()
             }
             else ->{
+                Log.e("두번째 프래그먼트","true")
                 return ManageUserApplication2Fragment()
             }
         }

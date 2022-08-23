@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.swith.data.LoginRequest
 import com.example.swith.data.LoginResponse
+import com.example.swith.data.ProfileResponse
 import com.example.swith.repository.RetrofitService
 import retrofit2.Call
 import retrofit2.Callback
@@ -17,7 +18,7 @@ class LoginDataSourse {
         RetrofitService.retrofitApi.login(loginRequest).enqueue(object : Callback<LoginResponse> {
             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
                 Log.e("doori","onResponse = $response")
-                response.body().apply {
+                response.body()?.apply {
                     mLoginLiveData.postValue(this)
                 }
             }
