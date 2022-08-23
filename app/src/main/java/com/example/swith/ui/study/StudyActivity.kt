@@ -1,17 +1,21 @@
 package com.example.swith.ui.study
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.manager.SupportRequestManagerFragment
 import com.example.swith.R
 import com.example.swith.databinding.ActivityStudyBinding
 import com.example.swith.ui.manage.ManageActivity
+import com.example.swith.ui.study.announce.AnnounceActivity
 import com.example.swith.ui.study.round.RoundAttendFragment
 import com.example.swith.ui.study.round.RoundFragment
 import com.example.swith.ui.study.round.RoundMemoFragment
@@ -20,6 +24,7 @@ import com.example.swith.viewmodel.RoundViewModel
 
 class StudyActivity : AppCompatActivity(), View.OnClickListener {
     private var groupId = 0
+    private lateinit var activityResultLauncher : ActivityResultLauncher<Intent>
     lateinit var binding: ActivityStudyBinding
     // BottomNav 중 회차(연필)을 누르는 경우 가장 최근에 닫은 회차 프래그먼트로 이동
     private var prevRoundFragment: String = "fragment"
@@ -37,6 +42,12 @@ class StudyActivity : AppCompatActivity(), View.OnClickListener {
         intent.hasExtra("group")?.let { groupId = intent.getIntExtra("group", 0) }
         binding.clickListener = this
         viewModel.groupIdx = groupId
+
+        activityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { it ->
+            if(it.resultCode == Activity.RESULT_OK){
+                viewModel.loadData()
+            }
+        }
     }
 
     override fun onClick(view: View) {
@@ -45,7 +56,7 @@ class StudyActivity : AppCompatActivity(), View.OnClickListener {
                 Toast.makeText(applicationContext, "알림 버튼 Clicked", Toast.LENGTH_SHORT).show()
             }
             R.id.ib_study_setting -> {
-                startActivity(Intent(this, ManageActivity::class.java).apply {
+                activityResultLauncher.launch(Intent(this, ManageActivity::class.java).apply {
                     putExtra("groupId", groupId)
                 })
             }
@@ -54,7 +65,10 @@ class StudyActivity : AppCompatActivity(), View.OnClickListener {
                     if (fragments[0] is RoundTabFragment || (fragments.size > 1 && fragments[1] is RoundTabFragment))
                         beginTransaction().replace(R.id.study_frm, RoundFragment())
                             .commitAllowingStateLoss()
-                    else finish()
+                    else {
+                        setResult(RESULT_OK)
+                        finish()
+                    }
                 }
             }
         }
@@ -115,7 +129,10 @@ class StudyActivity : AppCompatActivity(), View.OnClickListener {
             if (fragments[0] is RoundTabFragment || (fragments.size > 1 && fragments[1] is RoundTabFragment))
                 beginTransaction().replace(R.id.study_frm, RoundFragment())
                     .commitAllowingStateLoss()
-            else finish()
+            else {
+                setResult(RESULT_OK)
+                finish()
+            }
         }
     }
     fun setVisibleBar(isManager: Boolean){

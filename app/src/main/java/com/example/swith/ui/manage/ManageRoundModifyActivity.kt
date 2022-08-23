@@ -34,6 +34,7 @@ class ManageRoundModifyActivity : RoundCreateActivity(), View.OnClickListener {
             btnCreateEndDate.text = "종료 : ${endTime?.year}.${endTime?.month}.${endTime?.day} ${endTime?.hourOfDay}:${endTime?.minute}"
             if (curRound.online == 1) {
                 btnCreateOnline.isSelected = true
+                etCreatePlace.setText("온라인")
             }
             else {
                 btnCreateOffline.isSelected = true

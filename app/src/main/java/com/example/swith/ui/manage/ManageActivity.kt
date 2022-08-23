@@ -47,7 +47,15 @@ class ManageActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(view: View?) {
         when(view?.id){
-            R.id.ib_basic_toolbar_back -> finish()
+            R.id.ib_basic_toolbar_back -> {
+                setResult(RESULT_OK)
+                finish()
+            }
         }
+    }
+
+    override fun onBackPressed() {
+        setResult(RESULT_OK)
+        finish()
     }
 }

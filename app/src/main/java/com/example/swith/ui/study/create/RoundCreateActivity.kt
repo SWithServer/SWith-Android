@@ -1,5 +1,6 @@
 package com.example.swith.ui.study.create
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.Dialog
@@ -137,6 +138,7 @@ open class RoundCreateActivity : AppCompatActivity(), View.OnClickListener {
     protected open fun observeViewModel(){
         viewModel.sessionLiveEvent.observe(this, Observer{
             Toast.makeText(applicationContext, "회차 생성이 완료되었습니다", Toast.LENGTH_SHORT).show()
+            setResult(Activity.RESULT_OK)
             finish()
         })
         viewModel.mutableErrorMessage.observe(this, Observer {

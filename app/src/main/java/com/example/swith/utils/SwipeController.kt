@@ -99,8 +99,8 @@ class SwipeController() : ItemTouchHelper.Callback(){
         //rectF 클래스로 버튼 형태 구현
         if (buttonsShowedState) {
             val rightButton = RectF(
-                itemView.right - buttonWidth + 1, (itemView.top).toFloat(),
-                (itemView.right).toFloat(), (itemView.bottom).toFloat()
+                itemView.right - buttonWidth + 1, (itemView.top + 2).toFloat(),
+                (itemView.right).toFloat(), (itemView.bottom - 2).toFloat()
             )
             p.color = Color.parseColor("#ff0000")
             c.drawRoundRect(rightButton, corners, corners, p)

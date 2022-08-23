@@ -11,7 +11,7 @@ import com.example.swith.data.Announce
 import com.example.swith.databinding.ItemAnnounceBinding
 import com.example.swith.utils.ItemTouchHelperListener
 
-class AnnounceRVAdapter(private val isManager: Boolean) : RecyclerView.Adapter<AnnounceRVAdapter.ViewHolder>(), ItemTouchHelperListener{
+class AnnounceRVAdapter() : RecyclerView.Adapter<AnnounceRVAdapter.ViewHolder>(), ItemTouchHelperListener{
     private lateinit var binding: ItemAnnounceBinding
     private var announceList = ArrayList<Announce>()
 

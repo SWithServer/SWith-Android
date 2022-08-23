@@ -1,9 +1,12 @@
 package com.example.swith.ui.home
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -18,6 +21,7 @@ import com.example.swith.ui.study.create.StudyCreateActivity
 import com.example.swith.viewmodel.HomeViewModel
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home){
+    private lateinit var activityResultLauncher : ActivityResultLauncher<Intent>
     private val viewModel: HomeViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -26,13 +30,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home){
         //추가
         setVisiblebar(false,true,"")
 
+        activityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { it ->
+            if(it.resultCode == Activity.RESULT_OK){
+                setViewVisibility(isStudyNotExists = true, beforeDataLoad = true)
+                viewModel.loadData()
+            }
+        }
+
         observeViewModel()
 
         binding.homeStudyRv.apply {
             adapter = HomeStudyRVAdapter().apply {
                 setMyItemClickListener(object: HomeStudyRVAdapter.myItemClickListener{
                     override fun onItemClick(group: Group) {
-                        startActivity(Intent(activity, StudyActivity::class.java).apply {
+                        activityResultLauncher.launch(Intent(activity, StudyActivity::class.java).apply {
                             putExtra("group", group.groupIdx)
                         })
                     }
@@ -42,7 +53,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home){
         }
 
         binding.homeStudyAddIv.setOnClickListener{
-            startActivity(Intent(requireActivity(), StudyCreateActivity::class.java))
+            activityResultLauncher.launch(Intent(requireActivity(), StudyCreateActivity::class.java))
         }
 
         binding.homePullToRefresh.apply {
@@ -54,14 +65,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home){
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        // progress bar
+    private fun observeViewModel(){
         setViewVisibility(isStudyNotExists = true, beforeDataLoad = true)
         viewModel.loadData()
-    }
 
-    private fun observeViewModel(){
         viewModel.groupLiveData.observe(viewLifecycleOwner, Observer{ data ->
             // 스터디가 1개 이상 존재하면 스터디 리사이클러 뷰 보여줌
             data?.group.let{(binding.homeStudyRv.adapter as HomeStudyRVAdapter).setData(data)}
