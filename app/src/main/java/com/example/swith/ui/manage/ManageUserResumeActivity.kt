@@ -93,6 +93,7 @@ class ManageUserResumeActivity:AppCompatActivity(),View.OnClickListener {
     // resume 값 가져오기
     fun setResume(resumeContent: String?)
     {
+        binding.flLoadingLayout.visibility=View.GONE
         with(binding)
         {
             tvResumeContent.text = resumeContent

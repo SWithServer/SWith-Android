@@ -132,6 +132,10 @@ class StudyFindRVAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 {
                    tvSearchRegion.text= "${studyList?.regionIdx1}" + "," + "${studyList?.regionIdx2}"
                 }
+                else
+                {
+                    tvSearchRegion.text = "온라인"
+                }
             }
             binding.root.setOnClickListener { v ->
                 val pos = adapterPosition

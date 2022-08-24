@@ -13,6 +13,7 @@ import com.example.swith.data.StudyFinishResponse
 import com.example.swith.databinding.ActivityManageFinishBinding
 import com.example.swith.repository.RetrofitApi
 import com.example.swith.repository.RetrofitService
+import com.example.swith.utils.SharedPrefManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -21,7 +22,11 @@ import retrofit2.Response
 class ManageFinishActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var binding: ActivityManageFinishBinding
     var groupIdx : Int = -1
-    var adminIdx : Long = 1 //shared로 바꿔야하는 부분.
+//    val adminId = SharedPrefManager(this).getLoginData()
+//    val adminIdx = adminId?.userIdx
+
+    var adminIdx : Long = 1
+    // shared로 바꿔야하는 부분.
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +36,7 @@ class ManageFinishActivity : AppCompatActivity(), View.OnClickListener {
         with(binding)
         {
             btnYes.setOnClickListener{
-                finishStudy(adminIdx,groupIdx.toLong())
+                finishStudy(adminIdx!!.toLong(),groupIdx.toLong())
             }
             btnNo.setOnClickListener{
                 finish()
