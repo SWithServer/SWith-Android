@@ -83,6 +83,7 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
                     val region = data!!.getCharSequenceExtra("지역")
                     if (region!!.equals("선택안함"))
                     {
+                        Log.e("지역 data 선택안함","true")
                         binding.btnSelectRegion.text= "지역선택"
                         select_region = null
                     }
