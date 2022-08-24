@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.swith.data.ProfileRequest
 import com.example.swith.data.ProfileResponse
+import com.example.swith.data.ResumeResponse
 import com.example.swith.repository.resume.ResumeRepository
 import com.example.swith.repository.resume.ResumeRepositoryProvider
 
@@ -24,13 +25,13 @@ class ResumeViewModel:ViewModel() {
         isLoading.set(false)
     }
 
-//    fun requestCurrentResume(profileRequest: ProfileRequest): LiveData<> {
-//        return mResumeRepository.requestCurrentResume(profileRequest)
-//    }
-//
-//    fun getCurrentResume(): LiveData<> {
-//        return mResumeRepository.getCurrentResume()
-//    }
+    fun requestCurrentResume(userIdx:Int): LiveData<ResumeResponse> {
+        return mResumeRepository.requestCurrentResume(userIdx)
+    }
+
+    fun getCurrentResume(): LiveData<ResumeResponse> {
+        return mResumeRepository.getCurrentResume()
+    }
 
     class Factory : ViewModelProvider.NewInstanceFactory() {
 

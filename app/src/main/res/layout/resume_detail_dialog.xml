@@ -6,18 +6,47 @@
         <variable
             name="clickListener"
             type="android.view.View.OnClickListener" />
+
+        <variable
+            name="resume"
+            type="com.example.swith.data.ResumeResult" />
+        <variable
+            name="resumeDialog"
+            type="com.example.swith.ui.dialog.CustomDialog" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         tools:context=".ui.resume.ResumeDetailFragment">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_top"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+            <ImageButton
+                android:id="@+id/ib_back"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:onClick="@{clickListener}"
+                android:background="?android:attr/selectableItemBackground"
+                android:src="@drawable/ic_create_back"
+                app:layout_constraintStart_toStartOf="parent"/>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:background="@color/color_F1F1F1"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginTop="25dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/cl_top">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -28,10 +57,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:layout_marginTop="25dp"
+                    android:layout_marginTop="15dp"
                     android:fontFamily="@font/kr_bold"
                     android:textColor="@color/black"
                     android:textSize="16dp"
+                    android:textStyle="bold"
+                    android:text="@{resume.title}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -63,9 +94,10 @@
                 <TextView
                     android:id="@+id/tv_location"
                     android:layout_width="wrap_content"
-                    android:layout_height="22dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="8dp"
+                    android:padding="10dp"
                     android:background="@drawable/bg_round_blue"
                     android:drawableLeft="@drawable/ic_white_location"
                     android:drawablePadding="2dp"
@@ -73,15 +105,18 @@
                     android:paddingStart="12dp"
                     android:textColor="@color/white"
                     android:textSize="10dp"
+                    android:gravity="center_horizontal"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_title" />
 
                 <TextView
                     android:id="@+id/tv_date"
                     android:layout_width="wrap_content"
-                    android:layout_height="22dp"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
                     android:layout_marginStart="4dp"
                     android:layout_marginTop="8dp"
+                    android:gravity="center_vertical"
                     android:background="@drawable/bg_round_blue"
                     android:drawableLeft="@drawable/ic_white_calender"
                     android:drawablePadding="2dp"
@@ -118,17 +153,21 @@
                 <EditText
                     android:id="@+id/et_resume_detail"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="400dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="20dp"
+                    android:padding="20dp"
+                    android:gravity="left|start"
+                    android:text="@{resume.applicationContent}"
                     android:background="@drawable/bg_round_gray"
                     app:layout_constraintTop_toBottomOf="@id/tv_resume" />
 
                 <Button
                     android:id="@+id/btn_cancel"
                     android:layout_width="0dp"
-                    android:layout_height="44dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="10dp"
@@ -137,7 +176,8 @@
                     android:text="@string/cancel"
                     android:textColor="@color/color_969696"
                     android:textSize="14dp"
-                    android:onClick="@{clickListener}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:onClick="@{() -> resumeDialog.onClose()}"
                     app:layout_constraintEnd_toStartOf="@id/btn_save"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/et_resume_detail" />
@@ -145,17 +185,19 @@
                 <Button
                     android:id="@+id/btn_save"
                     android:layout_width="0dp"
-                    android:layout_height="44dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="10dp"
                     android:background="@drawable/btn_round_blue_selector"
                     android:fontFamily="@font/kr_regular"
                     android:text="@string/save"
                     android:textColor="@color/white"
                     android:textSize="14dp"
-                    android:onClick="@{clickListener}"
+                    android:onClick="@{() -> resumeDialog.onConfirm()}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/btn_cancel"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/et_resume_detail" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
