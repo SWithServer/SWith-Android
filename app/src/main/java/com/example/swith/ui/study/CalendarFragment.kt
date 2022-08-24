@@ -16,6 +16,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.swith.R
+import com.example.swith.data.GetSessionRes
 import com.example.swith.databinding.FragmentCalendarBinding
 import com.example.swith.utils.base.BaseFragment
 import com.example.swith.ui.adapter.CalendarRoundRVAdapter
@@ -37,6 +38,11 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
         initView()
         observeViewModel()
 
+        with(binding.rvCalendarRound){
+            adapter = CalendarRoundRVAdapter()
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        }
+
         activityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { it ->
             if(it.resultCode == Activity.RESULT_OK){
                 viewModel.loadData()
@@ -51,11 +57,6 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
     }
 
     private fun initView(){
-        with(binding.rvCalendarRound){
-            adapter = CalendarRoundRVAdapter()
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        }
-
         with(binding.calendarView) {
             state().edit()
                 .isCacheCalendarPositionEnabled(false)
@@ -102,6 +103,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
             binding.calendarView.selectedDate?.let { c ->
                 viewModel.setCalendarData(c.year, c.month, c.day)
                 initView()
+                binding.calendarView.setSelectedDate(c)
             }
         })
 
@@ -170,6 +172,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
                     tvNoRound.setText(R.string.calendar_no_round_default)
                     tvNoRound.visibility = if (isEmpty) View.VISIBLE else View.INVISIBLE
                     btnNoCreateCalendar.visibility = View.INVISIBLE
+                    rvCalendarRound.visibility = if (isEmpty) View.VISIBLE else View.INVISIBLE
                 }
             }
         }

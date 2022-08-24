@@ -41,8 +41,8 @@ class StatsRVAdapter : RecyclerView.Adapter<StatsRVAdapter.ViewHolder>() {
         fun bind(attend: GetUserAttendanceRes){
             with(binding){
                 tvItemStatsNickname.text = attend.nickname
-                tvItemStatsRatio.text = "${attend.attendanceRate} %"
-                progressItemStats.progress = attend.attendanceRate
+                tvItemStatsRatio.text = if(attend.attendanceRate >= 0) "${attend.attendanceRate} %" else "0 %"
+                progressItemStats.progress = if(attend.attendanceRate >= 0) attend.attendanceRate else 0
             }
         }
     }
