@@ -11,7 +11,6 @@ import androidx.core.app.NotificationCompat
 import com.example.swith.R
 import com.example.swith.ui.MainActivity
 import com.example.swith.ui.profile.ProfileModifyActivity
-import com.example.swith.ui.rating.RatingFragment
 import com.example.swith.ui.study.announce.AnnounceActivity
 
 
