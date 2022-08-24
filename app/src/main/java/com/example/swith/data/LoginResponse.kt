@@ -18,7 +18,8 @@ data class LoginResult(
     val nickname: String,
     val profileImgUrl: String,
     val refreshToken: String,
+    val noticeToken : String,
     val role: String,
     val status: Int,
-    val userIdx: Int
+    val userIdx: Long
 )

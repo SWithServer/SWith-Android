@@ -17,6 +17,7 @@ import com.example.swith.data.LoginResponse
 import com.example.swith.databinding.ActivitySnsLoginBinding
 import com.example.swith.ui.MainActivity
 import com.example.swith.ui.profile.ProfileModifyActivity
+import com.example.swith.utils.FirebaseMessageService
 import com.example.swith.utils.SharedPrefManager
 import com.example.swith.viewmodel.LoginViewModel
 import com.kakao.sdk.auth.AuthApiClient
@@ -144,14 +145,20 @@ class SnsLoginActivity : AppCompatActivity(), View.OnClickListener, Observer<Log
                             "\n프로필사진url: ${user.kakaoAccount?.profile?.thumbnailImageUrl}"
                 )
 
-                //TODO 값이없을땐 어떡할까?
                 mLoginViewModel?.requestCurrentLogin(
                     LoginRequest(
                         user.kakaoAccount?.email?:"null",
                         user.kakaoAccount?.profile?.nickname ?: "null",
-                        user.kakaoAccount?.profile?.thumbnailImageUrl ?: "no"
+                        user.kakaoAccount?.profile?.thumbnailImageUrl ?: "no",
+                        FirebaseMessageService().getFirebaseToken()
                     )
                 )
+                Log.i("doori","${LoginRequest(
+                    user.kakaoAccount?.email?:"null",
+                    user.kakaoAccount?.profile?.nickname ?: "null",
+                    user.kakaoAccount?.profile?.thumbnailImageUrl ?: "no",
+                    FirebaseMessageService().getFirebaseToken()
+                )}")
                 setShowDimmed(true)
             }
         }

@@ -85,7 +85,7 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener, Observe
                     profileModifyViewModel = this
                     getCurrentProfile().observe(this@ProfileModifyActivity, this@ProfileModifyActivity)
                     SharedPrefManager(this@ProfileModifyActivity).getLoginData()?.userIdx!!.apply {
-                        requestCurrentProfile(ProfileRequest(this))
+                        requestCurrentProfile(ProfileRequest(this as Long))
                     }
                 }
             mProfileModifyViewModel?.getCurrentProfileModify()?.observe(this@ProfileModifyActivity, Observer {

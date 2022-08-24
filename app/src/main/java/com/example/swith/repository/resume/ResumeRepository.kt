@@ -7,7 +7,7 @@ import com.example.swith.data.ResumeResponse
 import com.example.swith.sourse.ResumeDataSourse
 
 class ResumeRepository(private val resumeDataSource: ResumeDataSourse) {
-    fun requestCurrentResume(userIdx: Int): LiveData<ResumeResponse> {
+    fun requestCurrentResume(userIdx: Long): LiveData<ResumeResponse> {
         return resumeDataSource.requestResume(userIdx)
     }
 

@@ -25,7 +25,7 @@ class ResumeViewModel:ViewModel() {
         isLoading.set(false)
     }
 
-    fun requestCurrentResume(userIdx:Int): LiveData<ResumeResponse> {
+    fun requestCurrentResume(userIdx:Long): LiveData<ResumeResponse> {
         return mResumeRepository.requestCurrentResume(userIdx)
     }
 

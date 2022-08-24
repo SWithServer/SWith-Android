@@ -14,7 +14,7 @@ import retrofit2.Response
 class ResumeDataSourse {
     internal val mResumeData: MutableLiveData<ResumeResponse> = MutableLiveData<ResumeResponse>()
 
-    fun requestResume(userIdx:Int):LiveData<ResumeResponse>{
+    fun requestResume(userIdx:Long):LiveData<ResumeResponse>{
         RetrofitService.retrofitApi.getResume(userIdx).enqueue(object : Callback<ResumeResponse> {
             override fun onResponse(call: Call<ResumeResponse>, response: Response<ResumeResponse>) {
                 Log.e("doori","onResponse = $response")

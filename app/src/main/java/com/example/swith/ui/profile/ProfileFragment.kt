@@ -87,7 +87,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
 
     private fun getProfile(){
         setShowDimmed(true)
-        mProfileViewModel?.requestCurrentProfile(ProfileRequest(context?.let { SharedPrefManager(it).getLoginData() }!!.userIdx))
+        mProfileViewModel?.requestCurrentProfile(ProfileRequest(context?.let { SharedPrefManager(it).getLoginData() }!!.userIdx as Long))
     }
 
     private fun setShowDimmed(isLoading: Boolean) {
