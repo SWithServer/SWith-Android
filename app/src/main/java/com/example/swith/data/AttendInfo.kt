@@ -4,12 +4,12 @@ import com.google.gson.annotations.SerializedName
 
 data class AttendInfo(
     val getAttendanceInfos: List<GetAttendanceInfo>,
-    val sessionIdx: Int,
+    val sessionIdx: Long,
     val sessionNum: Int
 )
 
 data class GetAttendanceInfo(
-    val attendanceIdx: Int,
+    val attendanceIdx: Long,
     val nickname: String,
     var status: Int
 )
@@ -19,6 +19,6 @@ data class AttendList(
 )
 
 data class UpdateAttend(
-    val attendanceIdx: Int,
+    val attendanceIdx: Long,
     var status: Int
 )

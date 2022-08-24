@@ -2,18 +2,18 @@ package com.example.swith.data
 
 data class Memo(
     val memoContent: String,
-    val sessionIdx: Int,
-    val userIdx: Int
+    val sessionIdx: Long,
+    val userIdx: Long
 )
 
 data class MemoUpdate(
     val memoContent: String,
-    val memoIdx: Int
+    val memoIdx: Long
 )
 
 data class MemoResponse(
     val code: Int,
     val isSuccess: Boolean,
     val message: String,
-    val result: Int
+    val result: Long
 )

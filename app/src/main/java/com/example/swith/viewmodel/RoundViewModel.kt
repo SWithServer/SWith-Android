@@ -22,9 +22,9 @@ class RoundViewModel() : BaseViewModel() {
     private var allData = ArrayList<GetSessionRes>()
     private var postData = ArrayList<GetSessionRes>()
 
-    var groupIdx = 0
+    var groupIdx: Long = 0
     var pastVisible = false
-    private var curSessionIdx = 0
+    private var curSessionIdx : Long = 0
     private var _roundLiveData = SingleLiveEvent<Round>()
 
     // 캘린더 화면에 관한 것
@@ -61,7 +61,7 @@ class RoundViewModel() : BaseViewModel() {
         get() = _memoLiveEvent
 
     // private val userIdx = SharedPrefManager().getLoginData()?.userIdx
-    private val userIdx = 1
+    private val userIdx: Long = 1
     var curUserAttend: GetAttendance? = null
 
     fun loadData(){
@@ -112,7 +112,7 @@ class RoundViewModel() : BaseViewModel() {
         return 0
     }
 
-    fun setCurrentData(sessionIdx: Int){
+    fun setCurrentData(sessionIdx: Long){
         curSessionIdx = sessionIdx
     }
 

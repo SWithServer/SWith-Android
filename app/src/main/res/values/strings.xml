@@ -25,6 +25,7 @@
     <string name="manage_round_no_round">"해당 그룹에는\n수정 가능한 회차가 없습니다."</string>
     <string name="manage_no_attend">"해당 회차에는\n출석 정보가 없습니다.</string>
     <string name="bottom_manage_attend">"- 해당 회차의 출석 정보가 변경됩니다.\n- 출석 정보가 선택한 대로 일괄 변경됩니다."</string>
+    <string name="manage_attend_guide">출석 정보를 관리할 회차를 선택하세요.</string>
 
     <!-- common -->
     <string name="complete">완료</string>

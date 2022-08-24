@@ -52,7 +52,7 @@ open class RoundCreateActivity : AppCompatActivity(), View.OnClickListener {
     protected var endTime: DateTime? = null
 
     private val groupIdx by lazy {
-        intent.getIntExtra("groupIdx", 0)
+        intent.getLongExtra("groupIdx", 0)
     }
 
     protected lateinit var binding: ActivityRoundCreateBinding

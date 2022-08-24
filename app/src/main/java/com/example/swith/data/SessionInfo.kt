@@ -10,17 +10,17 @@ data class SessionInfo(
     val place: String?,
     val sessionContent: String,
     val sessionEnd: List<Int>,
-    val sessionIdx: Int,
+    val sessionIdx: Long,
     val sessionNum: Int,
     val sessionStart: List<Int>,
-    var memoIdx: Int?,
+    var memoIdx: Long?,
     val userMemo: String?
 )
 
 data class GetAttendance(
     val nickname: String,
     var status: Int,
-    val userIdx: Int
+    val userIdx: Long
 )
 
 data class SessionInfoResponse(

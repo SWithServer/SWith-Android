@@ -21,7 +21,7 @@ class HomeViewModel() : BaseViewModel() {
 
     fun loadData(){
         // val userId = SharedPrefManager().getLoginData()?.userIdx
-        val userId = 1
+        val userId: Long = 1
         viewModelScope.launch{
             val res = repository.getAllStudy(this@HomeViewModel, userId)
             withContext(Dispatchers.Main) {

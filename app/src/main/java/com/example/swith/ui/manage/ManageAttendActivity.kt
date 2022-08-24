@@ -2,12 +2,15 @@ package com.example.swith.ui.manage
 
 import android.os.Bundle
 import android.util.TypedValue
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,7 +28,7 @@ import com.example.swith.viewmodel.AttendUpdateViewModel
 class ManageAttendActivity : AppCompatActivity(), View.OnClickListener {
     private val viewModel : AttendUpdateViewModel by viewModels()
     private val groupIdx by lazy{
-        intent.getIntExtra("groupId", 0)
+        intent.getLongExtra("groupId", 0)
     }
     private lateinit var binding: ActivityManageAttendBinding
 
@@ -82,7 +85,7 @@ class ManageAttendActivity : AppCompatActivity(), View.OnClickListener {
         attendList.attend?.let {
             it.forEach { a -> stringList.add("${a.sessionNum}회차") }
         }
-        stringList.add("-- 회차 선택 --")
+        stringList.add("회차 선택")
 
         binding.rvManageAttend.apply {
             adapter = ManageAttendRVAdapter()
@@ -92,19 +95,13 @@ class ManageAttendActivity : AppCompatActivity(), View.OnClickListener {
         binding.spinnerManageAttend.apply {
             adapter = object: ArrayAdapter<String>(this@ManageAttendActivity, R.layout.item_manage_attend_spinner){
                 override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-                    val view = super.getView(position, convertView, parent)
-
-                    val spinnerBinding: ItemManageAttendSpinnerBinding = DataBindingUtil.inflate(layoutInflater, R.layout.item_manage_attend_spinner, parent, false)
+                    val textView = super.getView(position, convertView, parent) as TextView
                     // 마지막 포지션의 텍스트를 hint로 사용
                     if (position == count){
-                        with(spinnerBinding.spinnerSessionNum) {
-                            text = ""
-                            hint = getItem(count)
-                            text
-                        }
                         binding.btnAttendUpdate.visibility = View.INVISIBLE
                     }
-                    return view
+                    textView.gravity = Gravity.START or Gravity.CENTER_VERTICAL
+                    return textView
                 }
                 override fun getCount(): Int {
                     return super.getCount() - 1
@@ -125,6 +122,7 @@ class ManageAttendActivity : AppCompatActivity(), View.OnClickListener {
                 ) {
                     if(position != adapter.count) (binding.rvManageAttend.adapter as ManageAttendRVAdapter).setData(attendList.attend[position].getAttendanceInfos.apply {
                         emptyLayoutVisible(this.isNullOrEmpty(), this)
+                        binding.tvManageAttendGuide.visibility = View.INVISIBLE
                     })
                 }
 

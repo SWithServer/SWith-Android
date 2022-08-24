@@ -30,10 +30,10 @@ class RoundUpdateViewModel: BaseViewModel() {
     private val roundUpdateRepository = RoundUpdateRepository(RoundUpdateRemoteDataSource())
 
     // private val userIdx = SharedPrefManager().getLoginData()?.userIdx
-    private val userIdx = 1
+    private val userIdx : Long = 1
 
 
-    fun loadPostRound(groupIdx: Int){
+    fun loadPostRound(groupIdx: Long){
         viewModelScope.launch {
             val res = roundUpdateRepository.getPostRound(this@RoundUpdateViewModel, userIdx, groupIdx)
             withContext(Dispatchers.Main){
@@ -57,7 +57,7 @@ class RoundUpdateViewModel: BaseViewModel() {
         }
     }
 
-    fun deleteRound(sessionIdx: Int){
+    fun deleteRound(sessionIdx: Long){
         viewModelScope.launch {
             val res = roundUpdateRepository.deleteRound(this@RoundUpdateViewModel, sessionIdx)
             withContext(Dispatchers.Main){

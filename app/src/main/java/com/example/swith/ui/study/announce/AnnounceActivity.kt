@@ -32,9 +32,9 @@ class AnnounceActivity : AppCompatActivity(), View.OnClickListener{
         else false
     }
     // group Idx
-    private val groupIdx: Int by lazy {
+    private val groupIdx: Long by lazy {
         if (intent.hasExtra("groupIdx"))
-            intent.getIntExtra("groupIdx", 0)
+            intent.getLongExtra("groupIdx", 0)
         else 0
     }
 

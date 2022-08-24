@@ -26,7 +26,7 @@ class AttendUpdateViewModel : BaseViewModel() {
     val updateAttendLiveEvent : LiveData<Any>
         get() = _updateAttendLiveEvent
 
-    fun loadData(groupIdx: Int){
+    fun loadData(groupIdx: Long){
         viewModelScope.launch {
             val res = repository.getAttendData(this@AttendUpdateViewModel, groupIdx)
             withContext(Dispatchers.Main){

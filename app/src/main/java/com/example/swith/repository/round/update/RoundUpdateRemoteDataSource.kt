@@ -8,7 +8,7 @@ import com.example.swith.utils.compareTimeWithNow
 import com.example.swith.utils.error.RemoteErrorEmitter
 
 class RoundUpdateRemoteDataSource : BaseRepository() {
-    suspend fun getPostRound(errorEmitter: RemoteErrorEmitter, userIdx: Int, groupIdx: Int) : Round? {
+    suspend fun getPostRound(errorEmitter: RemoteErrorEmitter, userIdx: Long, groupIdx: Long) : Round? {
         val tempList = ArrayList<GetSessionRes>()
         return safeApiCall(errorEmitter){ retrofitApi.getAllRound(userIdx, groupIdx).body().let {
             it?.round?.getSessionResList?.forEach { s ->
@@ -29,7 +29,7 @@ class RoundUpdateRemoteDataSource : BaseRepository() {
         }}
 
     }
-    suspend fun deleteRound(errorEmitter: RemoteErrorEmitter, sessionIdx: Int) : SessionResponse?{
+    suspend fun deleteRound(errorEmitter: RemoteErrorEmitter, sessionIdx: Long) : SessionResponse?{
         return safeApiCall(errorEmitter) { retrofitApi.deleteRound(sessionIdx).let {
             if (it.body()?.isSuccess == true) it.body()
             else{

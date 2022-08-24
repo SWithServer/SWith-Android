@@ -23,7 +23,7 @@ import com.example.swith.ui.study.round.RoundTabFragment
 import com.example.swith.viewmodel.RoundViewModel
 
 class StudyActivity : AppCompatActivity(), View.OnClickListener {
-    private var groupId = 0
+    private var groupId: Long = 0
     private lateinit var activityResultLauncher : ActivityResultLauncher<Intent>
     lateinit var binding: ActivityStudyBinding
     // BottomNav 중 회차(연필)을 누르는 경우 가장 최근에 닫은 회차 프래그먼트로 이동
@@ -39,7 +39,7 @@ class StudyActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun initData(){
-        intent.hasExtra("group")?.let { groupId = intent.getIntExtra("group", 0) }
+        intent.hasExtra("group")?.let { groupId = intent.getLongExtra("group", 0) }
         binding.clickListener = this
         viewModel.groupIdx = groupId
 

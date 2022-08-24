@@ -11,8 +11,8 @@ import com.example.swith.databinding.ActivityManageBinding
 
 class ManageActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityManageBinding
-    private val groupIdx: Int by lazy{
-        if(intent.hasExtra("groupId")) intent.getIntExtra("groupId", 0)
+    private val groupIdx: Long by lazy{
+        if(intent.hasExtra("groupId")) intent.getLongExtra("groupId", 0)
         else 0
     }
 

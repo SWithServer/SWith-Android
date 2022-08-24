@@ -24,7 +24,7 @@ class ManageRoundActivity : AppCompatActivity(), View.OnClickListener{
     private val viewModel : RoundUpdateViewModel by viewModels()
     private lateinit var binding: ActivityManageRoundBinding
     private val groupIdx by lazy{
-        intent.getIntExtra("groupId", 0)
+        intent.getLongExtra("groupId", 0)
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

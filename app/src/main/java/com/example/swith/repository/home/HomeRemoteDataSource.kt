@@ -10,14 +10,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class HomeRemoteDataSource() : BaseRepository(){
-//    private val regService by lazy{
-//        Retrofit.Builder()
-//        .baseUrl(REG_CODE)
-//        .addConverterFactory(GsonConverterFactory.create())
-//        .build()
-//        .create(ApiService::class.java) }
-
-    suspend fun getAllStudy(errorEmitter: RemoteErrorEmitter, userId: Int) : GroupList? {
+    suspend fun getAllStudy(errorEmitter: RemoteErrorEmitter, userId: Long) : GroupList? {
         return safeApiCall(errorEmitter) {
             retrofitApi.getAllStudy(userId).let {
                 if (it.body()?.isSuccess == true) it.body()
@@ -28,9 +21,5 @@ class HomeRemoteDataSource() : BaseRepository(){
             }
         }
     }
-
-//    suspend fun getRegPlace(emitter: RemoteErrorEmitter, regionIdx: Long) : String?{
-//        return safeApiCall(emitter){regService.getCityCode2(regionIdx).body()?.name}
-//    }
 }
 

@@ -8,11 +8,11 @@ import com.example.swith.utils.base.BaseRepository
 import com.example.swith.utils.error.RemoteErrorEmitter
 
 class AnnounceRemoteDataSource : BaseRepository(){
-    suspend fun getAllAnnounce(errorEmitter: RemoteErrorEmitter, groupIdx: Int) : AnnounceList? {
+    suspend fun getAllAnnounce(errorEmitter: RemoteErrorEmitter, groupIdx: Long) : AnnounceList? {
         return safeApiCall(errorEmitter){retrofitApi.getAllAnnounce(groupIdx).body()}
     }
 
-    suspend fun deleteAnnounce(emitter: RemoteErrorEmitter, announcementIdx: Int) : String?{
+    suspend fun deleteAnnounce(emitter: RemoteErrorEmitter, announcementIdx: Long) : String?{
         return safeApiCall(emitter){retrofitApi.deleteAnnounce(announcementIdx).let {
             if (it.body()?.isSuccess == true) it.body()?.result
             else {

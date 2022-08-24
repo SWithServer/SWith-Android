@@ -7,19 +7,19 @@ import com.example.swith.repository.RetrofitService.retrofitApi
 import com.example.swith.utils.error.RemoteErrorEmitter
 
 class RoundRemoteDataSource : BaseRepository() {
-    suspend fun getAllRound(errorEmitter: RemoteErrorEmitter, userIdx: Int, groupIdx: Int) : Round?{
+    suspend fun getAllRound(errorEmitter: RemoteErrorEmitter, userIdx: Long, groupIdx: Long) : Round?{
         return safeApiCall(errorEmitter) { retrofitApi.getAllRound(userIdx, groupIdx).body()?.round }
     }
 
-    suspend fun getSessionInfo(emitter: RemoteErrorEmitter, userIdx: Int, sessionIdx: Int) : SessionInfo? {
+    suspend fun getSessionInfo(emitter: RemoteErrorEmitter, userIdx: Long, sessionIdx: Long) : SessionInfo? {
         return safeApiCall(emitter){retrofitApi.getSessionInfo(userIdx, sessionIdx).body()?.session}
     }
 
-    suspend fun updateAttend(emitter: RemoteErrorEmitter, userIdx: Int, sessionIdx: Int) : AttendResponse? {
+    suspend fun updateAttend(emitter: RemoteErrorEmitter, userIdx: Long, sessionIdx: Long) : AttendResponse? {
         return safeApiCall(emitter){ retrofitApi.updateAttend(userIdx, sessionIdx).body()}
     }
 
-    suspend fun getUserAttend(emitter: RemoteErrorEmitter, groupIdx: Int) : UserAttend? {
+    suspend fun getUserAttend(emitter: RemoteErrorEmitter, groupIdx: Long) : UserAttend? {
         return safeApiCall(emitter){ retrofitApi.getUserAttend(groupIdx).body()?.attend}
     }
 

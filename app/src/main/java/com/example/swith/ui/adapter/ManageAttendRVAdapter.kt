@@ -1,5 +1,6 @@
 package com.example.swith.ui.adapter
 
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.util.TypedValue
 import android.view.LayoutInflater
@@ -61,7 +62,7 @@ class ManageAttendRVAdapter : RecyclerView.Adapter<ManageAttendRVAdapter.ViewHol
                         add("결석")
                     }
                     spinnerItemManageAttend.apply {
-                        adapter = object: ArrayAdapter<String>(context, R.layout.item_manage_attend_spinner) {
+                        adapter = object: ArrayAdapter<String>(context, R.layout.item_manage_attend_status_spinner) {
                             override fun getView(
                                 position: Int,
                                 convertView: View?,
@@ -76,7 +77,6 @@ class ManageAttendRVAdapter : RecyclerView.Adapter<ManageAttendRVAdapter.ViewHol
                                 return textView
                             }
                         }.apply { addAll(stringList) }
-
                         setSelection(attendance.status - 1)
                         // droplist를 spinner와 간격을 두고 나오도록
                         dropDownVerticalOffset = 90
@@ -89,6 +89,11 @@ class ManageAttendRVAdapter : RecyclerView.Adapter<ManageAttendRVAdapter.ViewHol
                                 id: Long
                             ) {
                                 attendList[adapterPos].status = position + 1
+                                when(position){
+                                    0 -> background.setTint(resources.getColor(R.color.color_1363DF, null))
+                                    1 -> background.setTint(resources.getColor(R.color.color_ADA0FF, null))
+                                    2 -> background.setTint(Color.RED)
+                                }
                             }
                             override fun onNothingSelected(parent: AdapterView<*>?) {
 

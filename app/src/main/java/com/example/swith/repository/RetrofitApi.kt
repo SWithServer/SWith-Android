@@ -10,15 +10,15 @@ import java.time.LocalDateTime
 interface RetrofitApi {
     // 홈화면 정보 받기
     @GET("/groupinfo/home")
-    suspend fun getAllStudy(@Query("userIdx") userIdx: Int) : Response<GroupList>
+    suspend fun getAllStudy(@Query("userIdx") userIdx: Long) : Response<GroupList>
 
     // 회차 화면 정보 받기
     @GET("/groupinfo/session")
-    suspend fun getAllRound(@Query("userIdx") userIdx: Int, @Query("groupIdx") groupIdx: Int) : Response<RoundResponse>
+    suspend fun getAllRound(@Query("userIdx") userIdx: Long, @Query("groupIdx") groupIdx: Long) : Response<RoundResponse>
 
     // 공지사항 받기
     @GET("/groupinfo/announcement/{groupIdx}")
-    suspend fun getAllAnnounce(@Path("groupIdx") groupIdx: Int) : Response<AnnounceList>
+    suspend fun getAllAnnounce(@Path("groupIdx") groupIdx: Long) : Response<AnnounceList>
 
     // 회차 생성
     @POST("/groupinfo/session")
@@ -26,15 +26,15 @@ interface RetrofitApi {
 
     // 회차 정보(개요, 출석, 메모)
     @GET("/groupinfo/session/info")
-    suspend fun getSessionInfo(@Query("userIdx") userIdx: Int, @Query("sessionIdx") sessionIdx: Int) : Response<SessionInfoResponse>
+    suspend fun getSessionInfo(@Query("userIdx") userIdx: Long, @Query("sessionIdx") sessionIdx: Long) : Response<SessionInfoResponse>
 
     // 스터디, 유저별 출석율 조회
     @GET("/groupinfo/attendance")
-    suspend fun getUserAttend(@Query("groupIdx") groupIdx: Int) : Response<UserAttendResponse>
+    suspend fun getUserAttend(@Query("groupIdx") groupIdx: Long) : Response<UserAttendResponse>
 
     // 출석 업데이트
     @PATCH("/groupinfo/attendance")
-    suspend fun updateAttend(@Query("userIdx") userIdx: Int, @Query("sessionIdx") sessionIdx: Int) : Response<AttendResponse>
+    suspend fun updateAttend(@Query("userIdx") userIdx: Long, @Query("sessionIdx") sessionIdx: Long) : Response<AttendResponse>
 
     // 메모 생성
     @POST("/groupinfo/memo")
@@ -46,7 +46,7 @@ interface RetrofitApi {
 
     // 공지사항 삭제
     @PATCH("/groupinfo/announcement/{announcementIdx}/status")
-    suspend fun deleteAnnounce(@Path("announcementIdx") announcementIdx: Int) : Response<AnnounceDelete>
+    suspend fun deleteAnnounce(@Path("announcementIdx") announcementIdx: Long) : Response<AnnounceDelete>
 
     // 공지사항 생성
     @POST("/groupinfo/announcement")
@@ -58,7 +58,7 @@ interface RetrofitApi {
 
     // 회차 삭제
     @PATCH("/groupinfo/session/admin/{sessionIdx}/status")
-    suspend fun deleteRound(@Path("sessionIdx") sessionIdx: Int) : Response<SessionResponse>
+    suspend fun deleteRound(@Path("sessionIdx") sessionIdx: Long) : Response<SessionResponse>
 
     // 회차 수정
     @PATCH("/groupinfo/session/admin")
@@ -66,7 +66,7 @@ interface RetrofitApi {
 
     // 관리자탭 - 출석 정보 얻기
     @PATCH("/groupinfo/attendance/admin")
-    suspend fun getAttendData(@Query("groupIdx") groupIdx: Int) : Response<AttendList>
+    suspend fun getAttendData(@Query("groupIdx") groupIdx: Long) : Response<AttendList>
 
     // 관리자탭 - 출석 정보 변경
     @PATCH("/groupinfo/attendance/admin/status")

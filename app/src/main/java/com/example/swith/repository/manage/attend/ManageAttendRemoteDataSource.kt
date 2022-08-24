@@ -8,7 +8,7 @@ import com.example.swith.utils.base.BaseRepository
 import com.example.swith.utils.error.RemoteErrorEmitter
 
 class ManageAttendRemoteDataSource : BaseRepository() {
-    suspend fun getAttendData(emitter: RemoteErrorEmitter, groupIdx: Int) : AttendList? {
+    suspend fun getAttendData(emitter: RemoteErrorEmitter, groupIdx: Long) : AttendList? {
         return safeApiCall(emitter) { retrofitApi.getAttendData(groupIdx).body()}
     }
 

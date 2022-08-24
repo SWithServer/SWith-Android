@@ -35,14 +35,24 @@
             android:layout_height="match_parent">
             <Spinner
                 android:id="@+id/spinner_manage_attend"
-                android:layout_width="150dp"
+                android:layout_width="95dp"
                 android:layout_height="40dp"
-                android:dropDownWidth="150dp"
-                android:layout_margin="20dp"
-                android:textSize="14sp"
-                android:hint="회차 선택"
+                android:dropDownWidth="95dp"
+                android:paddingEnd="3dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="25dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
+            <TextView
+                android:id="@+id/tv_manage_attend_guide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:text="@string/manage_attend_guide"
+                android:layout_marginTop="60dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/spinner_manage_attend"/>
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_manage_attend"
                 android:layout_width="match_parent"

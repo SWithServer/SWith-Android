@@ -4,13 +4,13 @@ import com.google.gson.annotations.SerializedName
 
 data class Announce(
     val announcementContent: String,
-    val announcementIdx: Int,
+    val announcementIdx: Long,
     val createdAt: List<Int>
 )
 
 data class AnnounceCreate(
     val announcementContent: String,
-    val groupIdx: Int
+    val groupIdx: Long
 )
 
 data class AnnounceDelete(
@@ -22,7 +22,7 @@ data class AnnounceDelete(
 
 data class AnnounceModify(
     val announcementContent: String,
-    val announcementIdx: Int
+    val announcementIdx: Long
 )
 
 data class AnnounceList(

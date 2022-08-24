@@ -33,7 +33,7 @@ class AnnounceViewModel : BaseViewModel() {
     val updateLiveEvent : LiveData<Any>
         get() = _updateLiveEvent
 
-    fun loadData(groupIdx: Int){
+    fun loadData(groupIdx: Long){
         viewModelScope.launch {
             val res = repository.getAllAnnounce(this@AnnounceViewModel, groupIdx)
             if (res == null) mutableScreenState.postValue(ScreenState.RENDER) else{
@@ -43,7 +43,7 @@ class AnnounceViewModel : BaseViewModel() {
         }
     }
 
-    fun deleteAnnounce(announceIdx: Int){
+    fun deleteAnnounce(announceIdx: Long){
         viewModelScope.launch {
             val res = repository.deleteAnnounce(this@AnnounceViewModel, announceIdx)
             res?.let {

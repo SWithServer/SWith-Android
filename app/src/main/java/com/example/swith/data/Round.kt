@@ -18,7 +18,7 @@ data class GetSessionRes(
     val place: String?,
     val sessionContent: String,
     val sessionEnd: List<Int>,
-    val sessionIdx: Int,
+    val sessionIdx: Long,
     val sessionNum: Int,
     val sessionStart: List<Int>
 ): Serializable
@@ -31,7 +31,7 @@ data class RoundResponse(
 data class GetUserAttendanceRes(
     val attendanceRate: Int,
     val nickname: String,
-    val userIdx: Int
+    val userIdx: Long
 )
 
 data class UserAttend(

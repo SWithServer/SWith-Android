@@ -72,17 +72,17 @@ class SwipeController() : ItemTouchHelper.Callback(){
                     isCurrentlyActive
                 )
             }
-
-        } else {
-            super.onChildDraw(
-                c,
-                recyclerView,
-                viewHolder,
-                dX,
-                dY,
-                actionState,
-                isCurrentlyActive
-            )
+            if (!buttonsShowedState) {
+                super.onChildDraw(
+                    c,
+                    recyclerView,
+                    viewHolder,
+                    dX,
+                    dY,
+                    actionState,
+                    isCurrentlyActive
+                )
+            }
         }
         currentItemViewHolder = viewHolder
         drawButtons(c, currentItemViewHolder!!)
@@ -197,7 +197,7 @@ class SwipeController() : ItemTouchHelper.Callback(){
                 isCurrentlyActive
             )
             recyclerView.setOnTouchListener { v, event ->
-                event.action == MotionEvent.ACTION_UP
+                false
             }
             setItemClickable(recyclerView, true)
             swipeBack = false
