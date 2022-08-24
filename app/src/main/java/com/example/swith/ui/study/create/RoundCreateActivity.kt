@@ -106,6 +106,7 @@ open class RoundCreateActivity : AppCompatActivity(), View.OnClickListener {
             etCreatePlace.doAfterTextChanged {
                 setAddButton()
             }
+            toolbarCreate.tvRoundTitle.visibility = View.INVISIBLE
             tvCreateReset.setOnClickListener {
                 // 입력 데이터 초기화
                 startTime = null
@@ -672,7 +673,7 @@ open class RoundCreateActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(view: View?) {
         when(view?.id){
-            R.id.ib_basic_toolbar_back -> finish()
+            R.id.ib_round_toolbar_back -> finish()
         }
     }
 }

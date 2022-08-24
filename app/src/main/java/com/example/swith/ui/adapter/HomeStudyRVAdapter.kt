@@ -61,6 +61,7 @@ class HomeStudyRVAdapter : RecyclerView.Adapter<HomeStudyRVAdapter.ViewHolder>()
                     if (group.regionIdx2.isNullOrEmpty()) tvItemStudyPlace.text = group.regionIdx1
                     else tvItemStudyPlace.text = "${group.regionIdx1} | ${group.regionIdx2}"
                 }
+                //Glide.with(itemView).load("https://0m1n-bucket.s3.ap-northeast-2.amazonaws.com/5ca3e429-749c-4d43-8b3b-400170b3b947.jpg").error(R.drawable.bg_item_study_light_grey).into(ivItemStudy)
                 group.groupImageUrl?.let { if(!it.isNullOrEmpty()) Glide.with(itemView).load(it).error(R.drawable.bg_item_study_light_grey).into(ivItemStudy) }
             }
         }

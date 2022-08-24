@@ -49,7 +49,6 @@ class RoundUpdateViewModel: BaseViewModel() {
     fun postRound(session: Session){
         viewModelScope.launch {
             val value = roundUpdateRepository.createRound(this@RoundUpdateViewModel, session)
-            Log.e("RoundCreateViewModel", value.toString())
             withContext(Dispatchers.Main) {
                 value?.let {
                     _sessionLiveEvent.call()

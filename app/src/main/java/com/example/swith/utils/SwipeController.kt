@@ -5,6 +5,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -71,17 +72,17 @@ class SwipeController() : ItemTouchHelper.Callback(){
                     isCurrentlyActive
                 )
             }
-            if (!buttonsShowedState) {
-                super.onChildDraw(
-                    c,
-                    recyclerView,
-                    viewHolder,
-                    dX,
-                    dY,
-                    actionState,
-                    isCurrentlyActive
-                )
-            }
+
+        } else {
+            super.onChildDraw(
+                c,
+                recyclerView,
+                viewHolder,
+                dX,
+                dY,
+                actionState,
+                isCurrentlyActive
+            )
         }
         currentItemViewHolder = viewHolder
         drawButtons(c, currentItemViewHolder!!)
@@ -99,8 +100,8 @@ class SwipeController() : ItemTouchHelper.Callback(){
         //rectF 클래스로 버튼 형태 구현
         if (buttonsShowedState) {
             val rightButton = RectF(
-                itemView.right - buttonWidth + 1, (itemView.top + 2).toFloat(),
-                (itemView.right).toFloat(), (itemView.bottom - 2).toFloat()
+                itemView.right - buttonWidth + 1, (itemView.top + 1).toFloat(),
+                (itemView.right).toFloat(), (itemView.bottom - 1).toFloat()
             )
             p.color = Color.parseColor("#ff0000")
             c.drawRoundRect(rightButton, corners, corners, p)
@@ -195,7 +196,9 @@ class SwipeController() : ItemTouchHelper.Callback(){
                 actionState,
                 isCurrentlyActive
             )
-            recyclerView.setOnTouchListener { v, event -> false }
+            recyclerView.setOnTouchListener { v, event ->
+                event.action == MotionEvent.ACTION_UP
+            }
             setItemClickable(recyclerView, true)
             swipeBack = false
             if (buttonInstance != null && buttonInstance!!.contains(event.x, event.y)) {

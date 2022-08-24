@@ -47,7 +47,7 @@ class ManageActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(view: View?) {
         when(view?.id){
-            R.id.ib_basic_toolbar_back -> {
+            R.id.ib_manage_toolbar_back -> {
                 setResult(RESULT_OK)
                 finish()
             }

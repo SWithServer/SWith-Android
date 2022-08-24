@@ -558,6 +558,7 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
                             uploadImage(file)
                         }
                         dialog_.dismiss()
+                        setResult(RESULT_OK)
                         finish()
                     }
                     else

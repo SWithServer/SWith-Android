@@ -27,7 +27,11 @@ class ManageRoundModifyActivity : RoundCreateActivity(), View.OnClickListener {
 
     private fun initView(){
         with(binding){
-            tvCreateInfo.text = "* ${curRound.sessionNum}회차 수정"
+            tvCreateInfo.visibility = View.INVISIBLE
+            binding.toolbarCreate.tvRoundTitle.apply {
+                visibility = View.VISIBLE
+                text = "${curRound.sessionNum}회차"
+            }
             startTime = DateTime(curRound.sessionStart[0], curRound.sessionStart[1], curRound.sessionStart[2], curRound.sessionStart[3], curRound.sessionStart[4])
             endTime = DateTime(curRound.sessionEnd[0], curRound.sessionEnd[1], curRound.sessionEnd[2], curRound.sessionEnd[3], curRound.sessionEnd[4])
             btnCreateStartDate.text = "시작 : ${startTime?.year}.${startTime?.month}.${startTime?.day} ${startTime?.hourOfDay}:${startTime?.minute}"
@@ -47,7 +51,7 @@ class ManageRoundModifyActivity : RoundCreateActivity(), View.OnClickListener {
 
     override fun onClick(view: View?) {
         when(view?.id){
-            R.id.ib_basic_toolbar_back -> {
+            R.id.ib_round_toolbar_back -> {
                 CustomConfirmDialog("수정 취소", "변경 내용이 저장되지 않았습니다. 그래도 종료하시겠습니까?").apply {
                     setCustomListener(object : CustomConfirmDialog.CustomListener {
                         override fun onConfirm() {

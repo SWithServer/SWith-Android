@@ -42,7 +42,6 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="확인"
-                android:layout_marginStart="4dp"
                 android:textSize="14sp"
                 android:stateListAnimator="@null"
                 android:background="@drawable/btn_round_blue_selector"

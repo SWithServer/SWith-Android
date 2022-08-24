@@ -14,7 +14,7 @@
     tools:context=".ui.study.create.RoundCreateActivity">
     <include
         android:id="@+id/toolbar_create"
-        layout="@layout/basic_appbar"
+        layout="@layout/round_appbar"
         app:clickListener="@{clickListener}"/>
     <TextView
         android:id="@+id/tv_create_info"

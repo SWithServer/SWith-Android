@@ -1,17 +1,18 @@
 package com.example.swith.ui.study
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Typeface
 import androidx.lifecycle.Observer
 import android.os.Bundle
-import android.text.style.ForegroundColorSpan
 import android.text.style.LineBackgroundSpan
 import android.text.style.StyleSpan
 import android.util.Log
 import android.view.View
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.swith.R
@@ -26,6 +27,7 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 
 class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment_calendar){
+    private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
     private val viewModel : RoundViewModel by activityViewModels()
     private val nowTimezone by lazy {
         ZonedDateTime.now(ZoneId.of("Asia/Seoul"))
@@ -34,6 +36,17 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initView()
         observeViewModel()
+
+        activityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { it ->
+            if(it.resultCode == Activity.RESULT_OK){
+                viewModel.loadData()
+                binding.calendarView.selectedDate?.let{
+                    binding.calendarView.removeDecorators()
+                    binding.calendarView.addDecorators(TodayDecorator(), RoundDecorator())
+                }
+            }
+        }
+
         super.onViewCreated(view, savedInstanceState)
     }
 
@@ -58,6 +71,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
                 binding.tvCalendarDate.text = "${date.year % 1000}/${date.month}/${date.day}"
                 viewModel.setCalendarData(date.year, date.month, date.day)
             }
+
         }
 
         binding.btnCreateCalendar.setOnClickListener { startRoundCreateActivity() }
@@ -65,7 +79,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
     }
 
     private fun startRoundCreateActivity(){
-        startActivity(Intent(activity, RoundCreateActivity::class.java).apply {
+        activityResultLauncher.launch(Intent(activity, RoundCreateActivity::class.java).apply {
             putExtra("minuteMin", viewModel.roundLiveData.value?.attendanceValidTime)
             putExtra("groupIdx", viewModel.groupIdx)
         })
@@ -80,9 +94,17 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
         with(viewModel.calendarLiveData){
             observe(viewLifecycleOwner, Observer {
                 (binding.rvCalendarRound.adapter as CalendarRoundRVAdapter).setData(it)
-                value?.isEmpty()?.let { e -> setRVVisibility(e) }
+                value?.isEmpty()?.let { e -> setRVVisibility(e)}
             })
         }
+
+        viewModel.roundLiveData.observe(viewLifecycleOwner, Observer {
+            binding.calendarView.selectedDate?.let { c ->
+                viewModel.setCalendarData(c.year, c.month, c.day)
+                initView()
+            }
+        })
+
     }
 
     inner class TodayDecorator: DayViewDecorator{
@@ -137,10 +159,18 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
                 btnNoCreateCalendar.visibility = View.INVISIBLE
                 btnCreateCalendar.visibility = View.INVISIBLE
             } else {
-                btnCreateCalendar.visibility = if(isEmpty) View.INVISIBLE else View.VISIBLE
-                tvNoRound.setText(R.string.calendar_no_round)
-                tvNoRound.visibility = if (isEmpty) View.VISIBLE else View.INVISIBLE
-                btnNoCreateCalendar.visibility = if (isEmpty) View.VISIBLE else View.INVISIBLE
+                // manager 인 경우
+                if (viewModel.roundLiveData.value?.admin == true){
+                    btnCreateCalendar.visibility = if(isEmpty) View.INVISIBLE else View.VISIBLE
+                    tvNoRound.setText(R.string.calendar_no_round_manage)
+                    tvNoRound.visibility = if (isEmpty) View.VISIBLE else View.INVISIBLE
+                    btnNoCreateCalendar.visibility = if (isEmpty) View.VISIBLE else View.INVISIBLE
+                } else {
+                    btnCreateCalendar.visibility = View.INVISIBLE
+                    tvNoRound.setText(R.string.calendar_no_round_default)
+                    tvNoRound.visibility = if (isEmpty) View.VISIBLE else View.INVISIBLE
+                    btnNoCreateCalendar.visibility = View.INVISIBLE
+                }
             }
         }
     }

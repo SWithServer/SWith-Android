@@ -18,6 +18,7 @@
             android:id="@+id/iv_item_study"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:scaleType="fitXY"
             android:background="@drawable/bg_item_study_light_grey"/>
     </androidx.cardview.widget.CardView>
     <androidx.constraintlayout.widget.ConstraintLayout

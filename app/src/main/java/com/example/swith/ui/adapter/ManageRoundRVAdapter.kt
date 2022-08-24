@@ -47,7 +47,7 @@ class ManageRoundRVAdapter : RecyclerView.Adapter<ManageRoundRVAdapter.ViewHolde
         fun bind(round: GetSessionRes){
             with(binding){
                 tvItemManageRoundCount.text = "${round.sessionNum}회차"
-                tvItemManageRoundDate.text = "날짜 : ${round.sessionStart[0]}/${round.sessionStart[1]}/${round.sessionStart[2]}"
+                tvItemManageRoundDate.text = "${round.sessionStart[0]}/${round.sessionStart[1]}/${round.sessionStart[2]}"
             }
         }
     }

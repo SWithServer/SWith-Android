@@ -12,128 +12,89 @@
     android:background="@color/white">
     <include
         android:id="@+id/manage_toolbar"
-        layout="@layout/basic_appbar"
+        layout="@layout/manage_appbar"
         app:clickListener="@{clickListener}"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="25dp"
+        app:layout_constraintTop_toBottomOf="@id/manage_toolbar">
         <LinearLayout
             android:id="@+id/layout_manage_study"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:orientation="vertical"
-            android:background="@color/light_grey">
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/black"/>
+            android:layout_height="wrap_content"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:orientation="vertical">
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="58dp"
-                android:padding="5dp"
-                android:text="스터디 관리(수정)"
+                android:layout_height="wrap_content"
+                android:text="스터디 관리"
                 android:gravity="center_vertical"
-                android:textSize="20sp"/>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/black"/>
+                android:textSize="16sp"
+                android:textStyle="bold"/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/layout_manage_round"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="20dp"
-            android:orientation="vertical"
-            android:background="@color/light_grey">
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/black"/>
+            android:layout_height="wrap_content"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:orientation="vertical">
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="58dp"
-                android:padding="5dp"
+                android:layout_height="wrap_content"
                 android:text="회차별 관리"
                 android:gravity="center_vertical"
-                android:textSize="20sp"/>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/black"/>
+                android:textSize="16sp"
+                android:textStyle="bold"/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/layout_manage_attend"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="20dp"
-            android:orientation="vertical"
-            android:background="@color/light_grey">
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/black"/>
+            android:layout_height="wrap_content"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:orientation="vertical">
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="58dp"
-                android:padding="5dp"
+                android:layout_height="wrap_content"
                 android:text="출석 관리"
                 android:gravity="center_vertical"
-                android:textSize="20sp"/>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/black"/>
+                android:textSize="16sp"
+                android:textStyle="bold"/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/layout_manage_user"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="20dp"
-            android:orientation="vertical"
-            android:background="@color/light_grey">
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/black"/>
+            android:layout_height="wrap_content"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:orientation="vertical">
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="58dp"
-                android:padding="5dp"
+                android:layout_height="wrap_content"
                 android:text="유저 관리"
                 android:gravity="center_vertical"
-                android:textSize="20sp"/>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/black"/>
+                android:textSize="16sp"
+                android:textStyle="bold"/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/layout_manage_finish"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="40dp"
-            android:orientation="vertical"
-            android:background="@color/light_grey">
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/black"/>
+            android:layout_height="wrap_content"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:orientation="vertical">
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="58dp"
-                android:padding="5dp"
+                android:layout_height="wrap_content"
                 android:text="스터디 종료"
-                android:textStyle="bold"
                 android:gravity="center_vertical"
-                android:textSize="20sp"/>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/black"/>
+                android:textSize="16sp"
+                android:textStyle="bold"/>
         </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
