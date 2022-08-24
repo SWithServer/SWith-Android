@@ -27,11 +27,13 @@
                     android:id="@+id/spinner_stats_sort"
                     android:layout_width="120dp"
                     android:layout_height="30dp"
+                    android:paddingEnd="2dp"
                     android:dropDownWidth="120dp"
+                    android:backgroundTint="@color/color_82B4FF"
                     app:layout_constraintTop_toTopOf="@id/tv_stats"
                     app:layout_constraintBottom_toBottomOf="@id/tv_stats"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginEnd="20dp"/>
+                    android:layout_marginEnd="5dp"/>
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -54,12 +56,6 @@
                         android:layout_height="wrap_content"
                         android:overScrollMode="never"
                         app:layout_constraintTop_toTopOf="parent"/>
-<!--                    <com.github.mikephil.charting.charts.HorizontalBarChart-->
-<!--                        android:id="@+id/chart_attend"-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="match_parent"-->
-<!--                        android:minHeight="400dp"-->
-<!--                        android:layout_marginBottom="10dp"/>-->
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
