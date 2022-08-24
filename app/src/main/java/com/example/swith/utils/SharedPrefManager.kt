@@ -9,6 +9,8 @@ class SharedPrefManager (private val context: Context) {
     companion object {
         private const val FILENAME = ""
         private const val LOGIN_DATA: String = "login_data"
+        private const val FCM_NAME="fcm"
+        private const val FCM_DATA: String="fcm_data"
     }
 
     fun clearAll() {
@@ -48,5 +50,18 @@ class SharedPrefManager (private val context: Context) {
     fun deleteLoginData() {
         val prefs: SharedPreferences = context.getSharedPreferences(FILENAME, Context.MODE_PRIVATE)
         prefs.edit().remove(LOGIN_DATA).apply()
+    }
+
+    /**
+     * fcm토큰저장
+     */
+    fun setFcmToken(token:String){
+        val prefs:SharedPreferences=context.getSharedPreferences(FCM_NAME,Context.MODE_PRIVATE)
+        prefs.edit().putString(FCM_DATA,token).apply()
+    }
+
+    fun getFcmToken():String?{
+        val prefs:SharedPreferences=context.getSharedPreferences(FCM_NAME,Context.MODE_PRIVATE)
+        return prefs.getString(FCM_DATA,"")
     }
 }

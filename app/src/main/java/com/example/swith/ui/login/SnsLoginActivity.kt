@@ -150,14 +150,14 @@ class SnsLoginActivity : AppCompatActivity(), View.OnClickListener, Observer<Log
                         user.kakaoAccount?.email?:"null",
                         user.kakaoAccount?.profile?.nickname ?: "null",
                         user.kakaoAccount?.profile?.thumbnailImageUrl ?: "no",
-                        FirebaseMessageService().getFirebaseToken()
+                        SharedPrefManager(this@SnsLoginActivity).getFcmToken()?:"null"
                     )
                 )
                 Log.i("doori","${LoginRequest(
                     user.kakaoAccount?.email?:"null",
                     user.kakaoAccount?.profile?.nickname ?: "null",
                     user.kakaoAccount?.profile?.thumbnailImageUrl ?: "no",
-                    FirebaseMessageService().getFirebaseToken()
+                    SharedPrefManager(this@SnsLoginActivity).getFcmToken()?:"null"
                 )}")
                 setShowDimmed(true)
             }
