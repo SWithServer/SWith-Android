@@ -43,7 +43,7 @@ class CustomTimePickerDialog(context: Context): DialogFragment() {
         val size = windowManager.currentWindowMetrics
         val deviceWidth = size.bounds.width()
 
-        params?.width = deviceWidth - 100
+        params?.width = (deviceWidth * 0.9).toInt()
         dialog?.window?.attributes = params as WindowManager.LayoutParams
     }
 

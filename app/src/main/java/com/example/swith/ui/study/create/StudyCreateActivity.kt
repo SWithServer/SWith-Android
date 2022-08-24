@@ -30,6 +30,7 @@ import com.example.swith.utils.SharedPrefManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 import java.time.format.DateTimeFormatter
 import java.util.*
 
@@ -572,15 +573,13 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
                 try{
                     currentImageUri?.let{
                         if(Build.VERSION.SDK_INT < 28) {
-                            val bitmap = MediaStore.Images.Media.getBitmap(
-                                this.contentResolver,
-                                currentImageUri
-                            )
-                            imageView?.setImageBitmap(bitmap)
-                        } else {
-                            val source = ImageDecoder.createSource(this.contentResolver, currentImageUri)
-                            val bitmap = ImageDecoder.decodeBitmap(source)
-                            imageView?.setImageBitmap(bitmap)
+
+
+                        }
+                        else {
+
+
+
                         }
                     }
                 }
@@ -602,6 +601,17 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
         intent.setType("image/*")
         startActivityForResult(intent,GALLERY)
     }
+
+
+
+
+
+
+
+
+
+
+
     fun setupSpinner(){
         val interest_spinner = binding.spinnerCategory
         val memberLimit_spinner = binding.spinnerPeople

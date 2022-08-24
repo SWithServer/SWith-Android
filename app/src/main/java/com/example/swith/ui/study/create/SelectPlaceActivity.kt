@@ -148,12 +148,23 @@ class SelectPlaceActivity :  AppCompatActivity(),View.OnClickListener {
                         Log.e("doori", "코드 값은 $code")
                         if (city.equals("선택안함"))
                         {
-                            sharedPreference = getSharedPreferences("result${placeNum}",0)
-                            editor= sharedPreference.edit()
-                            editor.putString("이름${placeNum}", "+")
-                            editor.putString("코드${placeNum}","${code}")
-                            editor.apply()
-                            finish()
+                            if (placeNum == 3)
+                            {
+                                var intent = Intent()
+                                intent.putExtra("지역","${city}")
+                                intent.putExtra("코드","${code}")
+                                setResult(RESULT_OK,intent)
+                                finish()
+                            }
+                            else
+                            {
+                                sharedPreference = getSharedPreferences("result${placeNum}",0)
+                                editor= sharedPreference.edit()
+                                editor.putString("이름${placeNum}", "+")
+                                editor.putString("코드${placeNum}","${code}")
+                                editor.apply()
+                                finish()
+                            }
                         }
                         else
                         {

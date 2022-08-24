@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.util.Log
 import android.util.TypedValue
 import android.view.View
+import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import androidx.core.view.forEach
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -49,7 +51,13 @@ class StatsFragment : BaseFragment<FragmentStatsBinding>(R.layout.fragment_stats
             add("이름순")
         }
         binding.spinnerStatsSort.apply {
-            adapter = object: ArrayAdapter<String>(requireContext(), R.layout.item_manage_attend_spinner){
+            adapter = object: ArrayAdapter<String>(requireContext(), R.layout.item_stats_spinner){
+                override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                    // spinner 로 텍스트 설정
+                    val textView = super.getView(position, convertView, parent) as TextView
+                    textView.setTextColor(resources.getColor(R.color.color_82B4FF, null))
+                    return textView
+                }
             }.apply { addAll(stringList) }
             dropDownVerticalOffset = dipToPixels(31f).toInt()
             onItemSelectedListener = object: AdapterView.OnItemSelectedListener{

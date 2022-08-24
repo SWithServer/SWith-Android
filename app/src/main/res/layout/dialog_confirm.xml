@@ -3,53 +3,61 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@drawable/bg_application_dialog_white">
         <TextView
             android:id="@+id/tv_confirm_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
             android:text="제목제목제목제목"
             android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
             android:textStyle="bold"
-            android:textSize="18sp"/>
+            android:textSize="16sp"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/color_F1F1F1"/>
         <TextView
             android:id="@+id/tv_confirm_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
+            android:textSize="12sp"
             android:text="내용내용"
-            android:layout_margin="20dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginStart="20dp"
             android:lineSpacingExtra="5dp"/>
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="20dp">
-            <TextView
-                android:id="@+id/tv_dialog_cancel"
-                android:layout_width="60dp"
-                android:layout_height="40dp"
-                android:paddingStart="20dp"
+            android:layout_height="41dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="25dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="22dp">
+            <Button
+                android:id="@+id/btn_dialog_cancel"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:text="취소"
-                android:textSize="16dp"
-                android:textColor="#F44336"
-                android:gravity="center_vertical"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/btn_dialog_confirm"
-                app:layout_constraintBottom_toBottomOf="@id/btn_dialog_confirm"/>
+                android:textSize="14sp"
+                android:textColor="@color/color_969696"
+                android:stateListAnimator="@null"
+                android:background="@drawable/btn_round_gray_selector"
+                android:layout_marginEnd="4dp"/>
             <Button
                 android:id="@+id/btn_dialog_confirm"
-                android:layout_width="100dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center_horizontal"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:text="확인"
-                android:textColor="@color/white"
-                android:layout_marginEnd="20dp"
-                android:backgroundTint="@color/color_swith"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
+                android:layout_marginStart="4dp"
+                android:textSize="14sp"
+                android:stateListAnimator="@null"
+                android:background="@drawable/btn_round_blue_selector"
+                android:textColor="@color/white" />
+        </LinearLayout>
     </LinearLayout>
 </layout>
