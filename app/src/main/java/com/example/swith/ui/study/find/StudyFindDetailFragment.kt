@@ -189,6 +189,7 @@ class StudyFindDetailFragment : BaseFragment<FragmentStudyFindDetailBinding>(R.l
                                 0->{tvStudySetApplyMethod.text ="선착순"}
                                 1->{tvStudySetApplyMethod.text ="지원"}
                             }
+                            tvStudySetDeadline.text = "${result.recruitmentEndDate} " + "까지"
                             tvStudySetApplicationStatus.text = "${result.numOfApplicants} / ${result.memberLimit}"
                             tvStudySetDetailContent.text= result.groupContent
                         }
@@ -210,6 +211,7 @@ class StudyFindDetailFragment : BaseFragment<FragmentStudyFindDetailBinding>(R.l
     // 신청서 내용 보내기 retrofit 부분 (API 나오면 작성)
     fun postData(applicationMethod:Int,groupIdx:Long?, applyContent:String?, UserIdx:Long)
     {
+        Log.e("신청서 내용 보내는 부분","${applyContent.toString()}")
         var postApplicationReq = postApplicationReq(UserIdx,applyContent)
         val retrofitService = RetrofitService.retrofit.create(RetrofitApi::class.java)
         retrofitService.postApplication(groupIdx!!,applicationMethod,postApplicationReq).enqueue(object : Callback <StudyApplicationResponse> {

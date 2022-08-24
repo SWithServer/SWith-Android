@@ -592,10 +592,6 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
         })
     }
 
-
-
-
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == GALLERY)
         {
@@ -618,10 +614,7 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
                         }
                         path= getRealPathFromURI(currentImageUri)
                         Log.e("path 값","${path}")
-                        if (!(path.equals("")))
-                        {
-                            file = File(path)
-                        }
+                        file = File(path)
                     }
 
                 }
@@ -685,12 +678,6 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
         })
     }
 
-
-
-
-
-
-
     //스터디 수정 값들 가져와서 전송 retrofit 함수
     fun modifyStudy(studyRequestData : StudyGroup,content_text:String){
         //레트로핏 부분
@@ -700,6 +687,7 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
             dialog_.dismiss()
         }
         dialog_.findViewById<Button>(R.id.btn_yes).setOnClickListener {
+            uploadImage(file)
             Log.e("summer","retrofit 함수 in")
             Log.e("summer", "USER DATA = ${studyRequestData.toString()}")
             val retrofitService = RetrofitService.retrofit.create(RetrofitApi::class.java)
@@ -711,7 +699,6 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
                             dialog_.dismiss()
                             finish()
                         }
-                        uploadImage(file)
                     }
                     else
                     {
@@ -730,6 +717,7 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
             })
         }
     }
+
     fun setupSinner(){
             val interest_spinner = binding.spinnerCategory
             val memberLimit_spinner = binding.spinnerPeople
@@ -756,6 +744,7 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
                 this.setDropDownViewResource(R.layout.item_search_spinner_dropdown)
             }
         }
+
     fun hideKeyboard(editText: EditText){
             val  mInputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             mInputMethodManager.hideSoftInputFromWindow(
@@ -769,7 +758,6 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
             R.id.ib_basic_toolbar_back -> finish()
         }
     }
-
 
     fun customDialog()
     {

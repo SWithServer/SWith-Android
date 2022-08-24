@@ -555,7 +555,6 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
                         response.body()?.apply {
                             val studyResp = this as StudyResponse
                             Log.e("summer","body = $studyResp")
-                            uploadImage(file)
                         }
                         dialog_.dismiss()
                         setResult(RESULT_OK)
@@ -601,12 +600,8 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
                         }
                         path= getRealPathFromURI(currentImageUri)
                         Log.e("path 값","${path}")
-                        if (!(path.equals("")))
-                        {
-                            file = File(path)
-                        }
+                        file = File(path)
                     }
-
                 }
                 catch (e:Exception)
                 {
@@ -654,6 +649,7 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
                     response.body()?.apply {
                         Log.e("summer 결과값","${this.imageUrls}")
                         ImgUri = this.imageUrls[0]
+                        Log.e("Img Uri 값 변경한 부분","${ImgUri}")
                     }
                 }
                 else {

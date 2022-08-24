@@ -11,7 +11,7 @@ data class StudyDetailResponse(
 
 data class StudyDetailResult(
     val adminIdx: Long,
-    @SerializedName("groupImgUrl") val groupImgURL : String,
+    @SerializedName("groupImgUrl") val groupImgURL : String?,
     val title: String,
     val meet: Int,
     val frequency: Int?,
