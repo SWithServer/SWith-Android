@@ -49,7 +49,7 @@ class ManageUserApplication2Fragment() : BaseFragment<FragmentManageApplication2
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setVisiblebar(false,true,"")
+        setVisiblebar(false,true,"","")
         binding.flLoadingLayout.visibility=View.VISIBLE
         setRetrofitData(groupIdx?.toLong())
     }

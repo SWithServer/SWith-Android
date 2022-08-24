@@ -9,6 +9,9 @@ import android.content.Intent
 import android.graphics.Color
 import androidx.core.app.NotificationCompat
 import com.example.swith.R
+import com.example.swith.ui.MainActivity
+import com.example.swith.ui.profile.ProfileModifyActivity
+import com.example.swith.ui.rating.RatingFragment
 import com.example.swith.ui.study.announce.AnnounceActivity
 
 
@@ -47,8 +50,24 @@ class NoticeManager(private val context: Context) {
 
     }
 
-    fun runNotice(title: String,content: String){
+    fun runAnnounceNotice(title: String,content: String){
         val actionIntent = Intent(context,AnnounceActivity::class.java)
+        val actionPendingIntent = PendingIntent.getActivity(context, CHANNEL_NUMBER,actionIntent,PendingIntent.FLAG_IMMUTABLE)
+
+        builder.run {
+            setSmallIcon(R.drawable.ic_stat_notification)
+            setWhen(System.currentTimeMillis())
+            setContentTitle(title)
+            setContentText(content)
+            setContentIntent(actionPendingIntent)
+
+            manager.notify(CHANNEL_NUMBER,build())
+        }
+    }
+
+    fun runRatingNotice(title: String,content: String){
+        val actionIntent = Intent(context,MainActivity::class.java)
+        actionIntent.putExtra("RatingFragment","RatingFragment")
         val actionPendingIntent = PendingIntent.getActivity(context, CHANNEL_NUMBER,actionIntent,PendingIntent.FLAG_IMMUTABLE)
 
         builder.run {

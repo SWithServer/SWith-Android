@@ -37,7 +37,7 @@ class ResumeDetailFragment : BaseFragment<FragmentResumeDetailBinding>(R.layout.
 
     }
     fun initView(){
-        setVisiblebar(true,false,"")
+        setVisiblebar(true,false,"","")
         binding.clickListener=this@ResumeDetailFragment
 
         mResumeDetailViewModel = activity?.let {

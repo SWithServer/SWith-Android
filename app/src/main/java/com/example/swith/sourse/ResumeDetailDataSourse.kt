@@ -6,4 +6,5 @@ class ResumeDetailDataSourse {
     fun requestResumeDetail(){
 
     }
+
 }

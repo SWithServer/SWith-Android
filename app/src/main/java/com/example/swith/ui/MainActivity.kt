@@ -16,6 +16,7 @@ import com.example.swith.databinding.ActivityMainBinding
 import com.example.swith.ui.home.HomeFragment
 import com.example.swith.ui.login.LoginActivity
 import com.example.swith.ui.profile.ProfileFragment
+import com.example.swith.ui.rating.RatingFragment
 import com.example.swith.ui.resume.ResumeDetailFragment
 import com.example.swith.ui.resume.ResumeFragment
 import com.example.swith.ui.study.find.StudyFindFragment
@@ -46,6 +47,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             if(it==ProfileFragment.TAG){
                 //특정 프레그먼트로 이동
                 binding.mainBnv.selectedItemId = R.id.bottom_nav_profile
+            }
+        }
+        intent.getStringExtra("RatingFragment")?.let {
+            Log.e("doori","main tag=$it")
+            if(it==RatingFragment.TAG){
+                //특정 프레그먼트로 이동
+                goRatingPage()
             }
         }
         binding.clickListener=this@MainActivity
@@ -133,6 +141,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             .replace(R.id.main_frm,StudyFindFragment())
             .commitAllowingStateLoss()
     }
+    fun goRatingPage(){
+        Log.e("summer","goRatingPage")
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.main_frm,RatingFragment())
+            .commitAllowingStateLoss()
+    }
     fun goDeatailPage(groupIdx:Long,applicationMethod:Int,fragment: Fragment) {
         Log.e("summer","goDetailPage")
         var fragment_ = fragment
@@ -156,7 +170,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    fun setVisibleBar(backButton: Boolean,noticeButton: Boolean,title:String){
+    fun setVisibleBar(backButton: Boolean,noticeButton: Boolean,title:String,midTitle:String){
         binding.mainToolbar.apply {
             if(backButton){
                 ibBack.visibility=VISIBLE
@@ -169,6 +183,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 ibNotice.visibility= INVISIBLE
             }
             tvTitle.text=title
+            tvMidTitle.text=midTitle
         }
     }
 

@@ -58,7 +58,7 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setVisiblebar(false,true,"")
+        setVisiblebar(false,true,"","")
         binding.flLoadingLayout.visibility=View.VISIBLE
         adapter = StudyFindRVAdapter()
         binding.rvStudyFind.adapter = adapter

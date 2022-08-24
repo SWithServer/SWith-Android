@@ -61,7 +61,7 @@ class StudyFindDetailFragment : BaseFragment<FragmentStudyFindDetailBinding>(R.l
         super.onViewCreated(view, savedInstanceState)
         customDialog()
         binding.flLoadingLayout.visibility=View.VISIBLE
-        setVisiblebar(true,false,"")
+        setVisiblebar(true,false,"","")
 
         with(binding)
         {

@@ -28,7 +28,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home){
         super.onViewCreated(view, savedInstanceState)
 
         //추가
-        setVisiblebar(false,true,"")
+        setVisiblebar(false,true,"","")
 
         activityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { it ->
             if(it.resultCode == Activity.RESULT_OK){

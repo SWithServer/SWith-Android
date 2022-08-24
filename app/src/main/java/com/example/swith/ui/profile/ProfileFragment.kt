@@ -47,7 +47,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
         setShowDimmed(false)
 
         binding.clickListener = this@ProfileFragment
-        setVisiblebar(false, true, getString(R.string.profile))
+        setVisiblebar(false, true, getString(R.string.profile),"")
         mProfileViewModel = activity?.let {
             ViewModelProvider(it, ProfileViewModel.Factory())[ProfileViewModel::class.java].apply {
                 binding.profileViewModel = this

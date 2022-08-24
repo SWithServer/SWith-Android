@@ -25,10 +25,10 @@ abstract class BaseFragment<VB : ViewBinding>(@LayoutRes private val layoutRes: 
         _viewBinding = null
     }
 
-    fun setVisiblebar(backButton: Boolean,noticeButton: Boolean,title:String){
+    fun setVisiblebar(backButton: Boolean,noticeButton: Boolean,title:String,midTitle:String){
         activity?.let {
             if (it is MainActivity) {
-                it.setVisibleBar(backButton,noticeButton,title)
+                it.setVisibleBar(backButton,noticeButton,title,midTitle)
             }
         }
     }

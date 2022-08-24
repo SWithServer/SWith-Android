@@ -37,7 +37,7 @@ class ResumeFragment : BaseFragment<FragmentResumeBinding>(R.layout.fragment_res
     }
     fun initView(){
 
-        setVisiblebar(true,false,"")
+        setVisiblebar(true,false,"","")
         mResumeViewModel = activity?.let {
             ViewModelProvider(it, ResumeViewModel.Factory())[ResumeViewModel::class.java]
         }
