@@ -93,9 +93,9 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
     var placeNum: String="-1"
     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
-    var ImgUri : String? =""
+    var ImgUri : String? = null
     var path : String? = ""
-    lateinit var file :File
+    var file =File("")
 
     lateinit var dialog_ :Dialog
 
@@ -544,37 +544,8 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
             dialog_.dismiss()
         }
         dialog_.findViewById<Button>(R.id.btn_yes).setOnClickListener {
-            Log.e("summer","retrofit 함수 in")
+            uploadImage(file,studyRequestData)
             Log.e("summer", "USER DATA = ${studyRequestData.toString()}")
-            val retrofitService = RetrofitService.retrofit.create(RetrofitApi::class.java)
-            retrofitService.createStudy(studyRequestData).enqueue(object : Callback <StudyResponse> {
-                override fun onResponse(call: Call<StudyResponse>, response: Response<StudyResponse>) {
-                    if (response.isSuccessful)
-                    {
-                        Log.e("summer", "성공${response.toString()}")
-                        response.body()?.apply {
-                            val studyResp = this as StudyResponse
-                            Log.e("summer","body = $studyResp")
-                        }
-                        dialog_.dismiss()
-                        setResult(RESULT_OK)
-                        finish()
-                    }
-                    else
-                    {
-                        Log.e("summer", "전달실패 code = ${response.code()}")
-                        Log.e("summer", "전달실패 msg = ${response.message()}")
-                        Toast.makeText(this@StudyCreateActivity,"다시 시도해주세요",Toast.LENGTH_SHORT).show()
-                        dialog_.dismiss()
-                    }
-                }
-                override fun onFailure(call: Call<StudyResponse>, t: Throwable) {
-                    Log.e("summer","onFailure t = ${t.toString()}")
-                    Log.e("summer","onFailure msg = ${t.message}")
-                    Toast.makeText(this@StudyCreateActivity,"다시 시도해주세요",Toast.LENGTH_SHORT).show()
-                    dialog_.dismiss()
-                }
-            })
         }
     }
 
@@ -599,6 +570,7 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
                             imageView?.setImageBitmap(bitmap)
                         }
                         path= getRealPathFromURI(currentImageUri)
+                        Log.e("ImgUri 값","${ImgUri}")
                         Log.e("path 값","${path}")
                         file = File(path)
                     }
@@ -632,37 +604,82 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
         startActivityForResult(intent,GALLERY)
     }
 
-    fun uploadImage(file:File)
+    fun uploadImage(file:File,studyRequestData: StudyGroup)
     {
         Log.e("업로드 함수","진입")
-        var requestFile =  RequestBody.create("image"?.toMediaTypeOrNull(), file)
-        var body  = MultipartBody.Part.createFormData("image", file.name, requestFile)
-        val retrofitService = RetrofitService.retrofit.create(RetrofitApi::class.java)
-        retrofitService.uploadImg(body).enqueue(object :
-            Callback<StudyImageRes> {
-            override fun onResponse(
-                call: Call<StudyImageRes>,
-                response: Response<StudyImageRes>
-            ) {
-                if (response.isSuccessful) {
-                    Log.e("summer", "성공${response.toString()}")
-                    response.body()?.apply {
-                        Log.e("summer 결과값","${this.imageUrls}")
-                        ImgUri = this.imageUrls[0]
-                        Log.e("Img Uri 값 변경한 부분","${ImgUri}")
+        if (!(file.name.equals("")))
+        {
+            var requestFile =  RequestBody.create("image"?.toMediaTypeOrNull(), file)
+            var body  = MultipartBody.Part.createFormData("image", file.name, requestFile)
+            val retrofitService = RetrofitService.retrofit.create(RetrofitApi::class.java)
+            retrofitService.uploadImg(body).enqueue(object :
+                Callback<StudyImageRes> {
+                override fun onResponse(
+                    call: Call<StudyImageRes>,
+                    response: Response<StudyImageRes>
+                ) {
+                    if (response.isSuccessful) {
+                        Log.e("summer", "성공${response.toString()}")
+                        response.body()?.apply {
+                            Log.e("summer 결과값","${this.imageUrls}")
+                            ImgUri = this.imageUrls[0]
+                            Log.e("Img Uri 값 변경한 부분","${ImgUri}")
+                            studyRequestData.groupImgUrl=ImgUri
+                            postStudy(studyRequestData)
+
+                        }
+                    }
+                    else {
+                        Log.e("summer", "전달실패 code = ${response.code()}")
+                        Log.e("summer", "전달실패 msg = ${response.message()}")
                     }
                 }
-                else {
+                override fun onFailure(call: Call<StudyImageRes>, t: Throwable) {
+                    Log.e("summer", "onFailure t = ${t.toString()}")
+                    Log.e("summer", "onFailure msg = ${t.message}")
+                }
+            })
+        }
+        else
+        {
+            postStudy(studyRequestData)
+        }
+    }
+
+    fun postStudy(studyRequestData: StudyGroup)
+    {
+        Log.e("StudyReq 최종", "${studyRequestData.toString()}")
+        val retrofitService = RetrofitService.retrofit.create(RetrofitApi::class.java)
+        retrofitService.createStudy(studyRequestData).enqueue(object : Callback <StudyResponse> {
+            override fun onResponse(call: Call<StudyResponse>, response: Response<StudyResponse>) {
+                if (response.isSuccessful)
+                {
+                    Log.e("summer", "성공${response.toString()}")
+                    response.body()?.apply{
+                        val studyResp = this as StudyResponse
+                        Log.e("summer","body = $studyResp")
+                    }
+                    dialog_.dismiss()
+                    setResult(RESULT_OK)
+                    finish()
+                }
+                else
+                {
                     Log.e("summer", "전달실패 code = ${response.code()}")
                     Log.e("summer", "전달실패 msg = ${response.message()}")
+                    Toast.makeText(this@StudyCreateActivity,"다시 시도해주세요",Toast.LENGTH_SHORT).show()
+                    dialog_.dismiss()
                 }
             }
-            override fun onFailure(call: Call<StudyImageRes>, t: Throwable) {
-                Log.e("summer", "onFailure t = ${t.toString()}")
-                Log.e("summer", "onFailure msg = ${t.message}")
+            override fun onFailure(call: Call<StudyResponse>, t: Throwable) {
+                Log.e("summer","onFailure t = ${t.toString()}")
+                Log.e("summer","onFailure msg = ${t.message}")
+                Toast.makeText(this@StudyCreateActivity,"다시 시도해주세요",Toast.LENGTH_SHORT).show()
+                dialog_.dismiss()
             }
         })
     }
+
 
     fun setupSpinner(){
         val interest_spinner = binding.spinnerCategory

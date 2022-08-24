@@ -44,7 +44,7 @@ import java.util.*
 
 class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var binding:ActivityManageStudyModifyBinding
-    var groupIdx : Int = -1
+    var groupIdx : Long = -1
 
     var title:String=""
 //    val userid= SharedPrefManager(this@ManageStudyModifyActivity).getLoginData()
@@ -84,7 +84,7 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
     private var imageView: ImageView? = null
     var ImgUri : String? ="" // 이미지 uri 받아오는 변수
     var path : String? = "" // 파일로 변환할때 필요한 변수
-    lateinit var file : File // ㄹㅇ 파일
+    var file=File("")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -458,12 +458,12 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
 
     fun initData()
     {
-        (intent.hasExtra("groupIdx")).let { groupIdx = intent.getIntExtra("groupIdx", 0) }
+        (intent.hasExtra("groupIdx")).let { groupIdx = intent.getLongExtra("groupIdx", 0) }
         Log.e("summer","groupIdx = ${groupIdx}")
     }
 
     // 본래 스터디 정보 가져오기 retrofit 함수
-    fun initView(groupIdx : Int)
+    fun initView(groupIdx : Long)
     {
         Log.e("summer","데이터 set true")
         val retrofitService = RetrofitService.retrofit.create(RetrofitApi::class.java)
@@ -647,9 +647,11 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
         startActivityForResult(intent,GALLERY)
     }
 
-    fun uploadImage(file:File)
+    fun uploadImage(file:File,studyRequestData: StudyGroup)
     {
         Log.e("업로드 함수","진입")
+        if (!(file.name.equals("")))
+        {
         var requestFile =  RequestBody.create("image"?.toMediaTypeOrNull(), file)
         var body  = MultipartBody.Part.createFormData("image", file.name, requestFile)
         val retrofitService = RetrofitService.retrofit.create(RetrofitApi::class.java)
@@ -664,6 +666,9 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
                     response.body()?.apply {
                         Log.e("summer 결과값","${this.imageUrls}")
                         ImgUri = this.imageUrls[0]
+                        Log.e("Img Uri 값 변경한 부분","${ImgUri}")
+                        studyRequestData.groupImgUrl=ImgUri
+                        retrofitModify(studyRequestData)
                     }
                 }
                 else {
@@ -676,6 +681,10 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
                 Log.e("summer", "onFailure msg = ${t.message}")
             }
         })
+        }
+        else{
+            retrofitModify(studyRequestData)
+        }
     }
 
     //스터디 수정 값들 가져와서 전송 retrofit 함수
@@ -687,37 +696,41 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
             dialog_.dismiss()
         }
         dialog_.findViewById<Button>(R.id.btn_yes).setOnClickListener {
-            uploadImage(file)
+            uploadImage(file,studyRequestData)
             Log.e("summer","retrofit 함수 in")
             Log.e("summer", "USER DATA = ${studyRequestData.toString()}")
-            val retrofitService = RetrofitService.retrofit.create(RetrofitApi::class.java)
-            retrofitService.modifyStudy(groupIdx.toLong(),studyRequestData).enqueue(object : Callback <StudyModifyResponse> {
-                override fun onResponse(call: Call<StudyModifyResponse>, response: Response<StudyModifyResponse>) {
-                    if (response.isSuccessful)
-                    {
-                        response.body()?.apply {
-                            dialog_.dismiss()
-                            finish()
-                        }
-                    }
-                    else
-                    {
-                        Log.e("summer", "전달실패 code = ${response.code()}")
-                        Log.e("summer", "전달실패 msg = ${response.message()}")
-                        Toast.makeText(this@ManageStudyModifyActivity,"다시 시도해주세요",Toast.LENGTH_SHORT).show()
-                        dialog_.dismiss()
-                    }
-                }
-                override fun onFailure(call: Call<StudyModifyResponse>, t: Throwable) {
-                    Log.e("summer","onFailure t = ${t.toString()}")
-                    Log.e("summer","onFailure msg = ${t.message}")
-                    Toast.makeText(this@ManageStudyModifyActivity,"다시 시도해주세요",Toast.LENGTH_SHORT).show()
-                    dialog_.dismiss()
-                }
-            })
         }
     }
 
+    fun retrofitModify(studyRequestData: StudyGroup)
+    {
+        Log.e("StudyReq 최종", "${studyRequestData.toString()}")
+        val retrofitService = RetrofitService.retrofit.create(RetrofitApi::class.java)
+        retrofitService.modifyStudy(groupIdx.toLong(),studyRequestData).enqueue(object : Callback <StudyModifyResponse> {
+            override fun onResponse(call: Call<StudyModifyResponse>, response: Response<StudyModifyResponse>) {
+                if (response.isSuccessful)
+                {
+                    response.body()?.apply {
+                        dialog_.dismiss()
+                        finish()
+                    }
+                }
+                else
+                {
+                    Log.e("summer", "전달실패 code = ${response.code()}")
+                    Log.e("summer", "전달실패 msg = ${response.message()}")
+                    Toast.makeText(this@ManageStudyModifyActivity,"다시 시도해주세요",Toast.LENGTH_SHORT).show()
+                    dialog_.dismiss()
+                }
+            }
+            override fun onFailure(call: Call<StudyModifyResponse>, t: Throwable) {
+                Log.e("summer","onFailure t = ${t.toString()}")
+                Log.e("summer","onFailure msg = ${t.message}")
+                Toast.makeText(this@ManageStudyModifyActivity,"다시 시도해주세요",Toast.LENGTH_SHORT).show()
+                dialog_.dismiss()
+            }
+        })
+    }
     fun setupSinner(){
             val interest_spinner = binding.spinnerCategory
             val memberLimit_spinner = binding.spinnerPeople
