@@ -59,6 +59,8 @@
     <!--resume-->
     <string name="resume_status">상태 : </string>
     <string name="resume_detail">지원서 내용</string>
+    <string name="resume_save">수정하시겠습니까?</string>
+    <string name="resume_cancel">신청을 취소하시겠습니까?</string>
 
     <!--manage finish-->
     <string name="manage_study_finish_title">스터디를 종료하시겠습니까?</string>

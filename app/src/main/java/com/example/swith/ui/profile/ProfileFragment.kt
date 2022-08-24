@@ -75,7 +75,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
                 }
             }
             R.id.btn_resume -> {
-                Toast.makeText(context, "resume", Toast.LENGTH_SHORT).show()
+                goResumePage()
             }
             R.id.btn_logout -> {
                 context?.let { SharedPrefManager(it).deleteLoginData() }

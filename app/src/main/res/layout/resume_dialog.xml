@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="resumeDialog"
+            type="com.example.swith.ui.dialog.CustomResumeDialog" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="137dp"
+            android:background="@drawable/bg_top_round_white"
+            app:layout_constraintBottom_toBottomOf="parent">
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/kr_bold"
+                android:textStyle="bold"
+                android:textSize="16dp"
+                android:text="@{resumeDialog.title}"
+                android:textColor="@color/black"/>
+            <View
+                android:id="@+id/view"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="16dp"
+                android:background="@color/color_F1F1F1"
+                app:layout_constraintTop_toBottomOf="@id/tv_title"/>
+            <Button
+                android:id="@+id/btn_no"
+                android:layout_width="170dp"
+                android:layout_height="44dp"
+                android:fontFamily="@font/kr_regular"
+                android:textSize="14dp"
+                android:textColor="@color/color_969696"
+                android:background="@drawable/btn_round_gray_selector"
+                android:text="@string/cancel"
+                android:onClick="@{() -> resumeDialog.onClose()}"
+                app:layout_constraintTop_toBottomOf="@id/tv_title"
+                android:layout_marginTop="27dp"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="20dp"/>
+            <Button
+                android:id="@+id/btn_yes"
+                android:layout_width="170dp"
+                android:layout_height="44dp"
+                android:fontFamily="@font/kr_regular"
+                android:textColor="@color/white"
+                android:textSize="14dp"
+                android:text="@string/confirm"
+                android:onClick="@{() -> resumeDialog.onConfirm()}"
+                android:background="@drawable/btn_round_blue_selector"
+                android:layout_marginEnd="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_title"
+                android:layout_marginTop="27dp"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

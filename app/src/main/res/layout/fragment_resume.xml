@@ -8,6 +8,7 @@
         android:layout_height="match_parent"
         tools:context=".ui.resume.ResumeActivity">
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rc_resume"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:listitem="@layout/item_resume"

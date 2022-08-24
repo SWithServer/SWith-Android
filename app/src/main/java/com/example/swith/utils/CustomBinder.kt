@@ -12,6 +12,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.swith.ui.dialog.CustomDialog
 import com.example.swith.ui.dialog.CustomImageDialog
 import com.example.swith.ui.dialog.CustomInterestingDialog
+import com.example.swith.ui.dialog.CustomResumeDialog
 import de.hdodenhof.circleimageview.CircleImageView
 
 class CustomBinder {
@@ -63,6 +64,14 @@ class CustomBinder {
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .apply(RequestOptions().fitCenter())
                 .into(imageView)
+        }
+
+        @JvmStatic
+        fun showResumemDialog(title:String,context: Context, view: View, width: Int = WindowManager.LayoutParams.WRAP_CONTENT, height: Int = WindowManager.LayoutParams.WRAP_CONTENT, listener: CustomResumeDialog.DialogClickListener?): CustomResumeDialog {
+            return CustomResumeDialog(title,context, view, width, height).apply {
+                setClickListener(listener)
+                show()
+            }
         }
     }
 }

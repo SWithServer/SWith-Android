@@ -16,6 +16,8 @@ import com.example.swith.databinding.ActivityMainBinding
 import com.example.swith.ui.home.HomeFragment
 import com.example.swith.ui.login.LoginActivity
 import com.example.swith.ui.profile.ProfileFragment
+import com.example.swith.ui.resume.ResumeDetailFragment
+import com.example.swith.ui.resume.ResumeFragment
 import com.example.swith.ui.study.find.StudyFindFragment
 
 
@@ -112,6 +114,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private fun goMainPage() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.main_frm, HomeFragment())
+            .commitAllowingStateLoss()
+    }
+    fun goResumePage(){
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.main_frm, ResumeFragment())
+            .commitAllowingStateLoss()
+    }
+
+    fun goResumeDetailPage(){
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.main_frm, ResumeDetailFragment())
             .commitAllowingStateLoss()
     }
     fun goSearchPage() {

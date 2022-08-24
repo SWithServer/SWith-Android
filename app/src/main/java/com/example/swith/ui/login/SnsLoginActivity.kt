@@ -31,7 +31,7 @@ class SnsLoginActivity : AppCompatActivity(), View.OnClickListener, Observer<Log
 
     //TODO 카카오비즈니스등록 후 이메일도 받아오는걸로 수정하자
     //TODO api테스트 중이라 중복검사오류로 이메일 계속 바꿔줘야함
-    val emailTest: String = "dooooreeee@naver.com"
+    val emailTest: String = "dooooreeee@naver.com07"
     private var mLoginViewModel: LoginViewModel? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,9 +44,9 @@ class SnsLoginActivity : AppCompatActivity(), View.OnClickListener, Observer<Log
     private fun initView() {
         binding.apply {
             clickListener = this@SnsLoginActivity
-            mLoginViewModel= ViewModelProvider(this@SnsLoginActivity,LoginViewModel.Factory()).get(LoginViewModel::class.java).apply {
-                loginViewModel=this
-                getCurrentLogin().observe(this@SnsLoginActivity,this@SnsLoginActivity)
+            mLoginViewModel = ViewModelProvider(this@SnsLoginActivity, LoginViewModel.Factory()).get(LoginViewModel::class.java).apply {
+                loginViewModel = this
+                getCurrentLogin().observe(this@SnsLoginActivity, this@SnsLoginActivity)
             }
         }
     }
@@ -63,7 +63,6 @@ class SnsLoginActivity : AppCompatActivity(), View.OnClickListener, Observer<Log
             }
         }
     }
-
 
 
     private fun hasKakaoToken() {
@@ -149,7 +148,13 @@ class SnsLoginActivity : AppCompatActivity(), View.OnClickListener, Observer<Log
                 )
 
                 //TODO 값이없을땐 어떡할까?
-                mLoginViewModel?.requestCurrentLogin(LoginRequest(emailTest, user.kakaoAccount?.profile?.nickname ?: "null", user.kakaoAccount?.profile?.thumbnailImageUrl ?: "no"))
+                mLoginViewModel?.requestCurrentLogin(
+                    LoginRequest(
+                        emailTest,
+                        user.kakaoAccount?.profile?.nickname ?: "null",
+                        user.kakaoAccount?.profile?.thumbnailImageUrl ?: "no"
+                    )
+                )
                 setShowDimmed(true)
             }
         }
@@ -162,7 +167,7 @@ class SnsLoginActivity : AppCompatActivity(), View.OnClickListener, Observer<Log
         }
     }
 
-    private fun goMainPage(){
+    private fun goMainPage() {
         Intent(this@SnsLoginActivity, MainActivity::class.java).run {
             startActivity(this)
             finishAffinity()
@@ -187,19 +192,19 @@ class SnsLoginActivity : AppCompatActivity(), View.OnClickListener, Observer<Log
     }
 
     override fun onChanged(loginResponse: LoginResponse?) {
-        Log.e("doori","onChanged = $loginResponse")
+        Log.e("doori", "onChanged = $loginResponse")
         setShowDimmed(false)
         //가입되어있으면 메인페이지,아니면 프로필관리
         loginResponse?.result!!.isSignUp.apply {
-            if(this){
-                goMainPage()
-            }else{
-                mLoginViewModel?.getCurrentLogin()?.value?.result?.apply {
-                    Log.e("doori","goProfile = $this")
-                    SharedPrefManager(this@SnsLoginActivity).setLoginData(userIdx, accessToken)
-                }
-                Log.e("doori","SharedPrefManage = ${SharedPrefManager(this@SnsLoginActivity).getLoginData()}")
+            mLoginViewModel?.getCurrentLogin()?.value?.result?.apply {
+                Log.e("doori", "goProfile = $this")
+                SharedPrefManager(this@SnsLoginActivity).setLoginData(userIdx, accessToken)
+            }
+            Log.e("doori", "SharedPrefManage = ${SharedPrefManager(this@SnsLoginActivity).getLoginData()}")
+            if (this) {
                 goProfileModifyPage()
+            } else {
+                goMainPage()
             }
         }
     }
