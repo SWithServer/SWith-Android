@@ -53,8 +53,8 @@ class ResumeFragment : BaseFragment<FragmentResumeBinding>(R.layout.fragment_res
             Log.e("doori","observer = $it")
             setAdaper(it.result)
         })
-        //mResumeViewModel?.requestCurrentResume(context?.let { SharedPrefManager(it).getLoginData() }!!.userIdx)
-        mResumeViewModel?.requestCurrentResume(1)
+        mResumeViewModel?.requestCurrentResume(context?.let { SharedPrefManager(it).getLoginData() }!!.userIdx)
+        //mResumeViewModel?.requestCurrentResume(1)
 
     }
 
