@@ -133,4 +133,8 @@ interface RetrofitApi {
     @POST("/register")
     fun setProfile(@Body profileModifyBody: ProfileModifyRequest): Call<ProfileModifyResponse>
 
+    //지원서 조회
+    @GET("/user/Application")
+    fun getResume(@Query("userIdx")userIdx:Int):Call<ResumeResponse>
+
 }

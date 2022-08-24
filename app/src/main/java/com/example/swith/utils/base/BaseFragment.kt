@@ -57,12 +57,4 @@ abstract class BaseFragment<VB : ViewBinding>(@LayoutRes private val layoutRes: 
         }
     }
 
-    fun goResumeDetailPage(){
-        activity?.let{
-            if (it is MainActivity){
-                it.goResumeDetailPage()
-            }
-        }
-    }
-
 }

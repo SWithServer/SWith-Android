@@ -17,7 +17,6 @@ import com.example.swith.ui.home.HomeFragment
 import com.example.swith.ui.login.LoginActivity
 import com.example.swith.ui.profile.ProfileFragment
 import com.example.swith.ui.rating.RatingFragment
-import com.example.swith.ui.resume.ResumeDetailFragment
 import com.example.swith.ui.resume.ResumeFragment
 import com.example.swith.ui.study.find.StudyFindFragment
 
@@ -130,11 +129,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             .commitAllowingStateLoss()
     }
 
-    fun goResumeDetailPage(){
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.main_frm, ResumeDetailFragment())
-            .commitAllowingStateLoss()
-    }
     fun goSearchPage() {
         Log.e("summer","goSearchPage")
         supportFragmentManager.beginTransaction()
