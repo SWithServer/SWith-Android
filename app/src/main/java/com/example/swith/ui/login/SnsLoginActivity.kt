@@ -29,9 +29,6 @@ import com.kakao.sdk.user.UserApiClient
 class SnsLoginActivity : AppCompatActivity(), View.OnClickListener, Observer<LoginResponse> {
     lateinit var binding: ActivitySnsLoginBinding
 
-    //TODO 카카오비즈니스등록 후 이메일도 받아오는걸로 수정하자
-    //TODO api테스트 중이라 중복검사오류로 이메일 계속 바꿔줘야함
-    val emailTest: String = "dooooreeee@naver.com07"
     private var mLoginViewModel: LoginViewModel? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -150,7 +147,7 @@ class SnsLoginActivity : AppCompatActivity(), View.OnClickListener, Observer<Log
                 //TODO 값이없을땐 어떡할까?
                 mLoginViewModel?.requestCurrentLogin(
                     LoginRequest(
-                        emailTest,
+                        user.kakaoAccount?.email?:"null",
                         user.kakaoAccount?.profile?.nickname ?: "null",
                         user.kakaoAccount?.profile?.thumbnailImageUrl ?: "no"
                     )
