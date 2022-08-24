@@ -32,6 +32,7 @@ data class ManageUserProfileResult(
     val introduction: String,
     val interestIdx1: Long,
     val interestIdx2: Long,
+    val region:String?,
     val averageStar: Double,
     val role: String,
     val accessToken: Any? = null,

@@ -14,7 +14,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 object RetrofitService {
-    const val baseUrl = "http://3.34.31.255:9000/"
+    const val baseUrl = "http://192.168.69.85:9000/"
     const val REG_CODE="https://grpc-proxy-server-mkvo6j4wsq-du.a.run.app/v1/"
 
     private val httpLoggingInterceptor = HttpLoggingInterceptor().apply {

@@ -72,6 +72,7 @@ class ManageUserProfileActivity : AppCompatActivity(), View.OnClickListener{
                             }
                             tvIntroduceDetail.text=result.introduction
                             tvRating.text= result.averageStar.toString()
+                            tvLocationDetail.text= result.region.toString()
                         }
                     }
                     binding.flLoadingLayout.visibility=View.GONE

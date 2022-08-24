@@ -2,11 +2,15 @@ package com.example.swith.ui.manage
 
 import android.app.DatePickerDialog
 import android.app.Dialog
+import android.content.ContentUris
 import android.content.Context
 import android.content.Intent
+import android.database.Cursor
 import android.graphics.Color
+import android.graphics.ImageDecoder
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -18,13 +22,16 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import com.bumptech.glide.Glide
 import com.example.swith.R
-import com.example.swith.data.*
+import com.example.swith.data.StudyDetailResponse
+import com.example.swith.data.StudyGroup
+import com.example.swith.data.StudyImageRes
+import com.example.swith.data.StudyModifyResponse
 import com.example.swith.databinding.ActivityManageStudyModifyBinding
 import com.example.swith.repository.RetrofitApi
 import com.example.swith.repository.RetrofitService
 import com.example.swith.ui.study.create.SelectPlaceActivity
-import com.example.swith.utils.SharedPrefManager
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -33,6 +40,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 import java.util.*
+
 
 class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var binding:ActivityManageStudyModifyBinding
@@ -43,12 +51,6 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
 //    val userIdx = userid?.userIdx
 
     val userIdx = 1
-
-    private val GALLERY=1
-    private var imageView: ImageView? = null
-    var ImgUri : String? =""
-    var path : String? = ""
-    lateinit var file : File
 
     var meet_idx:Int= -1
     var frequency_content:Int?=null
@@ -77,6 +79,12 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
     private var month = calendar.get(Calendar.MONTH)
     private var day = calendar.get(Calendar.DAY_OF_MONTH)
     lateinit var dialog_ :Dialog
+
+    private val GALLERY=1
+    private var imageView: ImageView? = null
+    var ImgUri : String? ="" // 이미지 uri 받아오는 변수
+    var path : String? = "" // 파일로 변환할때 필요한 변수
+    lateinit var file : File // ㄹㅇ 파일
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -372,7 +380,6 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
             binding.checkMonth.setOnCheckedChangeListener(listener)
             binding.checkFree.setOnCheckedChangeListener(listener)
         }
-
         with(binding)
         {
             btnStudyModify.setOnClickListener {
@@ -393,7 +400,7 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
                             periods_content=etStudyFree.text.toString()}
                     }
 
-                    var studyRequestData= StudyGroup(userIdx?.toLong(),"2",title,meet_idx,frequency_content,periods_content,online_idx,regionIdx1,regionIdx2,interest_idx
+                    var studyRequestData= StudyGroup(userIdx?.toLong(),ImgUri,title,meet_idx,frequency_content,periods_content,online_idx,regionIdx1,regionIdx2,interest_idx
                         ,topic_content,memberLimit_content,applicationMethod_idx,recruitmentEndDate_,groupStart_,groupEnd_
                         ,attendanceVaildTime_content,group_content)
                     Log.e("summer", "USER DATA = ${studyRequestData.toString()}")
@@ -439,6 +446,14 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
 
             }
         }
+
+        val imageBtn: Button = binding.btnImage
+        imageBtn.setOnClickListener {
+            //스터디 개설 이미지뷰 갤러리 연동
+            imageView = binding.ivStudyCreate
+            openGallery()
+        }
+
     }
 
     fun initData()
@@ -462,7 +477,19 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
                     response.body()?.apply {
                         binding.flLoadingLayout.visibility=View.GONE
                         var result = this.result
+                        ImgUri = this.result.groupImgURL
                         Log.e("user data = ", "${this.result.toString()}")
+
+                        if (ImgUri == null || ImgUri.equals(""))
+                        {
+                            Log.e("주소 없음 진입","true")
+                            binding.ivStudyCreate.setImageDrawable(getDrawable(R.drawable.bg_create_sample))
+                        }
+                        else
+                        {
+                            Log.e("주소 있음 진입","true")
+                            Glide.with(this@ManageStudyModifyActivity).load(ImgUri).into(binding.ivStudyCreate)
+                        }
                         with(binding)
                         {
                             etStudyTitle.setText(result.title)
@@ -549,7 +576,6 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
                             var selectedTime = result.attendanceValidTime
                             spinnerAttendTime.setSelection((selectedTime/10)-1)
                             etStudyContent.setText(result.groupContent)
-                            //ivStudyCreate.drawable
                         }
                     }
                 }
@@ -565,6 +591,105 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
             }
         })
     }
+
+
+
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == GALLERY)
+        {
+            if(resultCode == RESULT_OK)
+            {
+                var currentImageUri = data?.data
+                Log.e("현재 이미지 url", "${currentImageUri}")
+                try{
+                    currentImageUri?.let{
+                        if(Build.VERSION.SDK_INT < 28) {
+                            val bitmap = MediaStore.Images.Media.getBitmap(
+                                this.contentResolver,
+                                currentImageUri
+                            )
+                            imageView?.setImageBitmap(bitmap)
+                        } else {
+                            val source = ImageDecoder.createSource(this.contentResolver, currentImageUri)
+                            val bitmap = ImageDecoder.decodeBitmap(source)
+                            imageView?.setImageBitmap(bitmap)
+                        }
+                        path= getRealPathFromURI(currentImageUri)
+                        Log.e("path 값","${path}")
+                        if (!(path.equals("")))
+                        {
+                            file = File(path)
+                        }
+                    }
+
+                }
+                catch (e:Exception)
+                {
+                    e.printStackTrace()
+                }
+            }
+            else if(resultCode == RESULT_CANCELED)
+            {
+                Toast.makeText(this, "사진 선택 취소", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    fun getRealPathFromURI(contentUri: Uri?): String? {
+        val proj = arrayOf(MediaStore.Images.Media.DATA)
+        val cursor = contentResolver.query(contentUri!!, proj, null, null, null)
+        cursor!!.moveToNext()
+        val path = cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.DATA))
+        val uri = Uri.fromFile(File(path))
+        cursor.close()
+        return path
+    }
+
+    //갤러리에서 이미지 선택
+    private fun openGallery(){
+        val intent: Intent = Intent(Intent.ACTION_PICK)
+        intent.setType("image/*")
+        startActivityForResult(intent,GALLERY)
+    }
+
+    fun uploadImage(file:File)
+    {
+        Log.e("업로드 함수","진입")
+        var requestFile =  RequestBody.create("image"?.toMediaTypeOrNull(), file)
+        var body  = MultipartBody.Part.createFormData("image", file.name, requestFile)
+        val retrofitService = RetrofitService.retrofit.create(RetrofitApi::class.java)
+        retrofitService.uploadImg(body).enqueue(object :
+            Callback<StudyImageRes> {
+            override fun onResponse(
+                call: Call<StudyImageRes>,
+                response: Response<StudyImageRes>
+            ) {
+                if (response.isSuccessful) {
+                    Log.e("summer", "성공${response.toString()}")
+                    response.body()?.apply {
+                        Log.e("summer 결과값","${this.imageUrls}")
+                        ImgUri = this.imageUrls[0]
+                    }
+                }
+                else {
+                    Log.e("summer", "전달실패 code = ${response.code()}")
+                    Log.e("summer", "전달실패 msg = ${response.message()}")
+                }
+            }
+            override fun onFailure(call: Call<StudyImageRes>, t: Throwable) {
+                Log.e("summer", "onFailure t = ${t.toString()}")
+                Log.e("summer", "onFailure msg = ${t.message}")
+            }
+        })
+    }
+
+
+
+
+
+
 
     //스터디 수정 값들 가져와서 전송 retrofit 함수
     fun modifyStudy(studyRequestData : StudyGroup,content_text:String){
@@ -586,6 +711,7 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
                             dialog_.dismiss()
                             finish()
                         }
+                        uploadImage(file)
                     }
                     else
                     {
@@ -644,6 +770,7 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+
     fun customDialog()
     {
         dialog_ = Dialog(this@ManageStudyModifyActivity)
@@ -656,52 +783,4 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
         dialog_.window?.attributes=params
     }
 
-
-    fun getRealPathFromURI(contentUri: Uri?): String? {
-        val proj = arrayOf(MediaStore.Images.Media.DATA)
-        val cursor = contentResolver.query(contentUri!!, proj, null, null, null)
-        cursor!!.moveToNext()
-        val path = cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.DATA))
-        val uri = Uri.fromFile(File(path))
-        cursor.close()
-        return path
-    }
-
-    //갤러리에서 이미지 선택
-    private fun openGallery(){
-        val intent: Intent = Intent(Intent.ACTION_PICK)
-        intent.setType("image/*")
-        startActivityForResult(intent,GALLERY)
-    }
-
-    fun uploadImage(file:File)
-    {
-        Log.e("업로드 함수","진입")
-        var requestFile =  RequestBody.create("image"?.toMediaTypeOrNull(), file)
-        var body  = MultipartBody.Part.createFormData("image", file.name, requestFile)
-        val retrofitService = RetrofitService.retrofit.create(RetrofitApi::class.java)
-        retrofitService.uploadImg(body).enqueue(object :
-            Callback<StudyImageRes> {
-            override fun onResponse(
-                call: Call<StudyImageRes>,
-                response: Response<StudyImageRes>
-            ) {
-                if (response.isSuccessful) {
-                    Log.e("summer", "성공${response.toString()}")
-                    response.body()?.apply {
-                        Log.e("summer 결과값","${this.imageUrls}")
-                        ImgUri = this.imageUrls[0]
-                    }
-                }
-                else {
-                    Log.e("summer", "전달실패 code = ${response.code()}")
-                    Log.e("summer", "전달실패 msg = ${response.message()}")
-                }
-            }
-            override fun onFailure(call: Call<StudyImageRes>, t: Throwable) {
-                Log.e("summer", "onFailure t = ${t.toString()}")
-                Log.e("summer", "onFailure msg = ${t.message}")
-            }
-        })
-    }
 }
