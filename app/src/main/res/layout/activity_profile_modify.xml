@@ -224,12 +224,14 @@
                     android:layout_marginTop="8dp"
                     android:gravity="center_vertical"
                     android:paddingStart="20dp"
-                    android:background="@drawable/bg_round_gray"
+                    android:background="@drawable/btn_round_skyblue_selector"
                     android:onClick="@{clickListener}"
                     android:layout_marginEnd="20dp"
-                    android:text="서버분에게 추가해달라고 요청"
+                    android:hint="지역을 선택해주세요."
+                    android:textColorHint="@color/white"
+                    android:text="@{profileModifyViewModel.currentProfile.result.region}"
                     android:textSize="15dp"
-                    android:textColor="@color/color_525252"
+                    android:textColor="@color/white"
                     app:layout_constraintTop_toBottomOf="@id/tv_location" />
 
                 <TextView

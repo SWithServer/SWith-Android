@@ -12,6 +12,7 @@ data class ProfileResult(
     val email: String,
     val interestIdx1: Int,
     val interestIdx2: Int,
+    val region:String,
     val introduction: String,
     val nickname: String,
     val profileImgUrl: String,

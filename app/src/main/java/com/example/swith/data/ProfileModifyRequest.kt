@@ -5,5 +5,6 @@ data class ProfileModifyRequest(
     val interest1: Int,
     val interest2: Int,
     val introduction: String,
-    val nickname: String
+    val nickname: String,
+    val region: String
 )

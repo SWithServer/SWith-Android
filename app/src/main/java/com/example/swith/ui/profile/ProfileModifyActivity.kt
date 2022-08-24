@@ -31,12 +31,16 @@ import com.example.swith.ui.MainActivity
 import com.example.swith.ui.dialog.CustomDialog
 import com.example.swith.ui.dialog.CustomImageDialog
 import com.example.swith.ui.dialog.CustomInterestingDialog
+import com.example.swith.ui.study.create.SelectPlaceActivity
 import com.example.swith.utils.CustomBinder
 import com.example.swith.utils.SharedPrefManager
 import com.example.swith.viewmodel.ProfileModifyViewModel
 import com.google.android.datatransport.cct.internal.LogEvent
 
 class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener, Observer<ProfileResponse> {
+    //TODO 임시데이터
+    val regionTest="서울시 은평구"
+
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (isGranted) {
@@ -116,7 +120,11 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener, Observe
                 showImageDialog()
             }
             R.id.tv_location_detail -> {
-                //TODO
+                //TODO 서머님께 부탁 ㅜㅜ
+//                Intent(this@ProfileModifyActivity,SelectPlaceActivity::class.java).run {
+//                    this.putExtra("번호",1)
+//                    startActivity(this)
+//                }
                 hideKeyboard()
             }
             R.id.btn_save -> {
@@ -244,7 +252,8 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener, Observe
                         getInterestringIndex(btnInteresting1.text.toString()),
                         getInterestringIndex(btnInteresting2.text.toString()),
                         etIntroduceDetail.text.toString(),
-                        etNickname.text.toString()
+                        etNickname.text.toString(),
+                        regionTest
                     )
                 }"
             )
@@ -254,7 +263,8 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener, Observe
                     getInterestringIndex(btnInteresting1.text.toString()),
                     getInterestringIndex(btnInteresting2.text.toString()),
                     etIntroduceDetail.text.toString(),
-                    etNickname.text.toString()
+                    etNickname.text.toString(),
+                    regionTest
                 )
             )
         }
