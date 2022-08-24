@@ -12,12 +12,14 @@ import com.example.swith.data.StudyDetailResponse
 import com.example.swith.databinding.ActivityManageUserProfileBinding
 import com.example.swith.repository.RetrofitApi
 import com.example.swith.repository.RetrofitService
+import com.example.swith.utils.SharedPrefManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class ManageUserProfileActivity : AppCompatActivity(), View.OnClickListener{
     var userIdx : Long? = -1
+
     lateinit var binding : ActivityManageUserProfileBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {

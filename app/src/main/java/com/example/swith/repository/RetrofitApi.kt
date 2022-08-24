@@ -1,6 +1,7 @@
 package com.example.swith.repository
 
 import com.example.swith.data.*
+import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
@@ -74,6 +75,11 @@ interface RetrofitApi {
     //스터디 개설
     @POST("/groupinfo")
      fun createStudy(@Body body:StudyGroup) : Call<StudyResponse>
+
+     //스터디 개설 이미지 전송하기
+     @Multipart
+     @POST("/uploadImage")
+     fun uploadImg (@Part file: MultipartBody.Part) : Call<StudyImageRes>
 
      //임시 스터디 찾기 - 스터디 불러오기 부분
      @GET("/groupinfo/search")
