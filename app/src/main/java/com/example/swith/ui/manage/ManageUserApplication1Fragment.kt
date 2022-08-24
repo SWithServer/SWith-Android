@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -37,7 +38,7 @@ import java.time.format.DateTimeFormatter
 // 신청서를 낸 사람들 목록 (지원)
 class ManageUserApplication1Fragment():BaseFragment<FragmentManageApplicationBinding>(R.layout.fragment_manage_application) {
 
-    var groupIdx : Int?  = -1
+    var groupIdx : Long?  = -1
     var userActivity : ManageUserActivity? =null
     var status :Int = 0
     var resumeContent : String = ""
@@ -78,6 +79,10 @@ class ManageUserApplication1Fragment():BaseFragment<FragmentManageApplicationBin
                     response.body()?.apply {
                         initRV(this.result)
                         binding.flLoadingLayout.visibility=View.GONE
+                    }
+                    if (response.body() == null)
+                    {
+                        binding.flLoadingLayout.visibility=View.VISIBLE
                     }
                 }
                 else {

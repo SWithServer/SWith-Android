@@ -128,7 +128,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_detail_region"
             android:layout_width="0dp"
-            android:layout_weight="0.8"
+            android:layout_weight="0.9"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_gravity="center"
@@ -139,6 +139,7 @@
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:src="@drawable/ic_region"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginEnd="5dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -149,8 +150,8 @@
                 android:layout_height="wrap_content"
                 android:text="인천광역시 남동구"
                 android:textSize="9sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="5dp"
+                app:layout_constraintStart_toEndOf="@id/iv_search_region"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:textColor="@color/color_82B4FF"/>

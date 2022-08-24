@@ -21,7 +21,7 @@ import retrofit2.Response
 
 class ManageFinishActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var binding: ActivityManageFinishBinding
-    var groupIdx : Int = -1
+    var groupIdx : Long = -1
 //    val adminId = SharedPrefManager(this).getLoginData()
 //    val adminIdx = adminId?.userIdx
 
@@ -47,7 +47,7 @@ class ManageFinishActivity : AppCompatActivity(), View.OnClickListener {
 
     fun initData()
     {
-        (intent.hasExtra("groupIdx")).let { groupIdx = intent.getIntExtra("groupIdx", 0) }
+        (intent.hasExtra("groupIdx")).let { groupIdx = intent.getLongExtra("groupIdx", 0) }
         Log.e("summer","groupIdx = ${groupIdx}")
     }
 

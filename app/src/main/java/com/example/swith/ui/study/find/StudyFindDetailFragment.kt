@@ -97,7 +97,7 @@ class StudyFindDetailFragment : BaseFragment<FragmentStudyFindDetailBinding>(R.l
         var dialog_et = dialog_.findViewById<EditText>(R.id.et_application)
         var applyContent = ""
         dialog_et.setOnKeyListener { view, code, event ->
-            if( (event.action == KeyEvent.ACTION_DOWN) && (code == KeyEvent.KEYCODE_ENTER) && !dialog_et.text.equals("")){
+            if( (event.action == KeyEvent.ACTION_DOWN) && (code == KeyEvent.KEYCODE_ENTER)){
                 applyContent = dialog_et.text.toString()
                 hideKeyboard(dialog_et)
                 true
@@ -107,6 +107,7 @@ class StudyFindDetailFragment : BaseFragment<FragmentStudyFindDetailBinding>(R.l
             }
         dialog_.findViewById<Button>(R.id.btn_application_apply).setOnClickListener {
            //신청서 작성 내용 변수
+            applyContent = dialog_et.text.toString()
             showLastDialog(1,applyContent)
             dialog_.dismiss()
         }

@@ -265,7 +265,6 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
                     override fun onResponse(call: Call<StudyFindResponse>, response: Response<StudyFindResponse>) {
                         val body = response.body()
                         if (body != null && response.isSuccessful) {
-                            binding.flLoadingLayout.visibility=View.GONE
                             Log.e("groupIdx 데이터 더 받을때","${groupIdx}")
                             Log.e("summer","load more data")
                             Log.e("summer","${body.result.content.toString()}")

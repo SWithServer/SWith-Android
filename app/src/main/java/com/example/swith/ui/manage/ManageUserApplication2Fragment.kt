@@ -29,7 +29,7 @@ import retrofit2.Response
 //신청서 불필요 (선착순 목록)
 class ManageUserApplication2Fragment() : BaseFragment<FragmentManageApplication2Binding>(R.layout.fragment_manage_application2) {
 
-    var groupIdx : Int?  = -1
+    var groupIdx : Long?  = -1
     var userActivity : ManageUserActivity? =null
     var status :Int = 1
 //    val adminId = SharedPrefManager(requireActivity()).getLoginData()
