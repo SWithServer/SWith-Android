@@ -2,16 +2,10 @@ package com.example.swith
 
 import android.app.Application
 import android.util.Log
-<<<<<<< Updated upstream
 import com.example.swith.utils.FirebaseMessageService
 import com.example.swith.utils.NoticeManager
 import com.google.firebase.messaging.FirebaseMessaging
-=======
 import com.example.swith.utils.SharedPrefManager
->>>>>>> Stashed changes
-//import com.example.swith.BuildConfig.KAKAO_API_KEY
-//import com.example.swith.BuildConfig.KAKAO_API_KEY
-// import com.example.swith.BuildConfig.KAKAO_API_KEY
 import com.kakao.sdk.common.KakaoSdk
 
 

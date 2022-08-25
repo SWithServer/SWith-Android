@@ -143,5 +143,8 @@ interface RetrofitApi {
     @GET("/application/user")
     fun getResume(@Query("userIdx")userIdx:Long):Call<ResumeResponse>
 
+    //rating
+    @POST("/rating/list/{groupIdx}")
+    fun getRating(@Path("groupIdx")groupIdx: String,@Body ratingBody:ProfileRequest):Call<RatingResponse>
 
 }
