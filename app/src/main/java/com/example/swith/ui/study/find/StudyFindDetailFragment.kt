@@ -13,6 +13,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import com.bumptech.glide.Glide
 import com.example.swith.R
 import com.example.swith.data.StudyApplicationResponse
 import com.example.swith.data.StudyDetailResponse
@@ -150,6 +151,19 @@ class StudyFindDetailFragment : BaseFragment<FragmentStudyFindDetailBinding>(R.l
                         var result = this.result
                         Log.e("스터디 정보 값들",result.toString())
                         adminIdx = result.adminIdx
+                        with(binding)
+                        {
+                            var ImgUri: String? = ""
+                            ImgUri = result.groupImgURL
+                            if (ImgUri == null || ImgUri.equals("")) {
+                                Log.e("주소 없음 진입", "true")
+                                ivStudyDetailImage.setImageDrawable(resources.getDrawable(R.drawable.bg_create_sample))
+                            } else {
+                                Log.e("주소 있음 진입", "true")
+                                Glide.with(this@StudyFindDetailFragment).load(ImgUri)
+                                    .into(ivStudyDetailImage)
+                            }
+                        }
                         with(binding)
                         {
                             tvStudyDetailTitle.text= result.title

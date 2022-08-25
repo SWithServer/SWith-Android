@@ -42,7 +42,7 @@
             android:id="@+id/tv_item_study_place"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="14dp"
+            android:textSize="11dp"
             android:text="장소장소"
             android:textColor="@color/color_swith"
             android:layout_marginStart="1dp"

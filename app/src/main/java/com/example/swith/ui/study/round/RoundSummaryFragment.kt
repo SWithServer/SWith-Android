@@ -55,7 +55,6 @@ class RoundSummaryFragment : BaseFragment<FragmentRoundSummaryBinding>(R.layout.
             tvSummaryContent.text = "학습 내용 : ${session.sessionContent}"
             tvSummaryPlace.text = if (session.online == 0) session.place else "온라인"
 
-            Glide.with(requireContext()).load("http://morguefile.nyc3.cdn.digitaloceanspaces.com/pub/secretagency/images/8/large/9b302aa4-b77e-45e1-a5f1-0f203a127500.1660247695.jpg").into(ivSummaryStudy)
             session.groupImgUrl?.let {
                 if (!it.isNullOrEmpty()) Glide.with(requireContext()).load(it).error(R.color.color_d9d9d9).into(ivSummaryStudy)
             }
