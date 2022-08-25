@@ -122,7 +122,7 @@ open class RoundCreateActivity : AppCompatActivity(), View.OnClickListener {
                 val endTimeToString : String = String.format("%4d-%02d-%02dT%02d:%02d", endTime?.year, endTime?.month, endTime?.day, endTime?.hourOfDay, endTime?.minute)
                 val online : Int = if(btnCreateOnline.isSelected) 1 else 0
                 if (checkCondition()) {
-                    BottomSheet("회차 생성", null, resources.getString(R.string.bottom_round_create_guide), "생성 완료").apply {
+                    BottomSheet("회차 생성", null, resources.getString(R.string.bottom_round_create_guide), "생성").apply {
                         setCustomListener(object: BottomSheet.customClickListener{
                             override fun onCheckClick() {
                                 dismiss()

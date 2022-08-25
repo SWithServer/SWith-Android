@@ -2,9 +2,12 @@ package com.example.swith.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.*
+import com.example.swith.SwithApplication
+import com.example.swith.SwithApplication.Companion.spfManager
 import com.example.swith.data.*
 import com.example.swith.repository.round.RoundRemoteDataSource
 import com.example.swith.repository.round.RoundRepository
+import com.example.swith.utils.SharedPrefManager
 import com.example.swith.utils.SingleLiveEvent
 import com.example.swith.utils.base.BaseViewModel
 import com.example.swith.utils.compareTimeWithNow
@@ -61,7 +64,7 @@ class RoundViewModel() : BaseViewModel() {
         get() = _memoLiveEvent
 
     // private val userIdx = SharedPrefManager().getLoginData()?.userIdx
-    private val userIdx: Long = 1
+    private val userIdx: Long = if (spfManager.getLoginData() != null) spfManager.getLoginData()?.userIdx!! else 1
     var curUserAttend: GetAttendance? = null
 
     fun loadData(){

@@ -1,6 +1,7 @@
 package com.example.swith.viewmodel
 
 import androidx.lifecycle.*
+import com.example.swith.SwithApplication
 import com.example.swith.data.Group
 import com.example.swith.data.GroupList
 import com.example.swith.repository.home.HomeRemoteDataSource
@@ -20,8 +21,7 @@ class HomeViewModel() : BaseViewModel() {
         get() = _groupLiveData
 
     fun loadData(){
-        // val userId = SharedPrefManager().getLoginData()?.userIdx
-        val userId: Long = 1
+        val userId: Long = if (SwithApplication.spfManager.getLoginData() != null) SwithApplication.spfManager.getLoginData()?.userIdx!! else 1
         viewModelScope.launch{
             val res = repository.getAllStudy(this@HomeViewModel, userId)
             withContext(Dispatchers.Main) {
