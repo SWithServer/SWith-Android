@@ -22,8 +22,8 @@ import retrofit2.Response
 class ManageFinishActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var binding: ActivityManageFinishBinding
     var groupIdx : Long = -1
-    val adminId = SharedPrefManager(this).getLoginData()
-    val adminIdx = adminId?.userIdx
+//    val adminId = SharedPrefManager(this).getLoginData()
+//    val adminIdx = adminId?.userIdx
 
 //    var adminIdx : Long = 1
     // shared로 바꿔야하는 부분.
@@ -36,7 +36,7 @@ class ManageFinishActivity : AppCompatActivity(), View.OnClickListener {
         with(binding)
         {
             btnYes.setOnClickListener{
-                finishStudy(adminIdx!!.toLong(),groupIdx.toLong())
+                finishStudy(groupIdx)
             }
             btnNo.setOnClickListener{
                 finish()
@@ -51,8 +51,8 @@ class ManageFinishActivity : AppCompatActivity(), View.OnClickListener {
         Log.e("summer","groupIdx = ${groupIdx}")
     }
 
-    fun finishStudy(adminIdx:Long,groupIdx:Long){
-        var reqBody = StudyFinishReq(adminIdx,groupIdx)
+    fun finishStudy(groupIdx:Long){
+        var reqBody = StudyFinishReq(SharedPrefManager(this@ManageFinishActivity).getLoginData()!!.userIdx,groupIdx)
         Log.e("req 값","${reqBody.toString()}")
         val retrofitService = RetrofitService.retrofit.create(RetrofitApi::class.java)
         retrofitService.endStudy(reqBody).enqueue(object :
