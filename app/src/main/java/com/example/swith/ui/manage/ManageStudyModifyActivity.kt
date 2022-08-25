@@ -48,10 +48,6 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
     var groupIdx : Long = -1
 
     var title:String=""
-    val userid= SharedPrefManager(this@ManageStudyModifyActivity).getLoginData()
-    val userIdx = userid?.userIdx
-
-//    val userIdx = 1
 
     var meet_idx:Int= -1
     var frequency_content:Int?=null
@@ -401,7 +397,7 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
                             periods_content=etStudyFree.text.toString()}
                     }
 
-                    var studyRequestData= StudyGroup(userIdx?.toLong(),ImgUri,title,meet_idx,frequency_content,periods_content,online_idx,regionIdx1,regionIdx2,interest_idx
+                    var studyRequestData= StudyGroup(SharedPrefManager(this@ManageStudyModifyActivity).getLoginData()!!.userIdx,ImgUri,title,meet_idx,frequency_content,periods_content,online_idx,regionIdx1,regionIdx2,interest_idx
                         ,topic_content,memberLimit_content,applicationMethod_idx,recruitmentEndDate_,groupStart_,groupEnd_
                         ,attendanceVaildTime_content,group_content)
                     Log.e("summer", "USER DATA = ${studyRequestData.toString()}")

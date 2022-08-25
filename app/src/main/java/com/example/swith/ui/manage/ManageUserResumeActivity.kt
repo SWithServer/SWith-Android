@@ -23,8 +23,8 @@ class ManageUserResumeActivity:AppCompatActivity(),View.OnClickListener {
     var userIdx : Long?= -1
     var groupIdx : Long? = -1
 
-    val adminId = SharedPrefManager(this@ManageUserResumeActivity).getLoginData()
-    val adminIdx = adminId?.userIdx
+//    val adminId = SharedPrefManager(this@ManageUserResumeActivity).getLoginData()
+//    val adminIdx = adminId?.userIdx
 
 //    val adminIdx : Long = 1
     var applicationIdx : Long? = -1
@@ -62,7 +62,7 @@ class ManageUserResumeActivity:AppCompatActivity(),View.OnClickListener {
     {
         Log.e("groupIdx 레트로핏 값 ", "${groupIdx}")
         Log.e("applicationIdx 신청서 idx 값","${applicationIdx}")
-        val resumeReq = ManageUserResumeReq(applicationIdx,adminIdx?.toLong(),statusOfApplication)
+        val resumeReq = ManageUserResumeReq(applicationIdx,SharedPrefManager(this@ManageUserResumeActivity).getLoginData()!!.userIdx,statusOfApplication)
         Log.e("req 부분","${resumeReq}")
         val retrofitService = RetrofitService.retrofit.create(RetrofitApi::class.java)
         retrofitService.postUserResume(groupIdx!!,0,resumeReq).enqueue(object :

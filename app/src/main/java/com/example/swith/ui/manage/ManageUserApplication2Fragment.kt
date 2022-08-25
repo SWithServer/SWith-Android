@@ -35,7 +35,7 @@ class ManageUserApplication2Fragment() : BaseFragment<FragmentManageApplication2
 //    val adminId = SharedPrefManager(requireActivity()).getLoginData()
 //    val adminIdx = adminId?.userIdx
 
-    val adminIdx = 1
+//    val adminIdx = 1
 
     private lateinit var adapter : ManageUserRVAdapter2
     lateinit var userList : ArrayList<ManageUserResult>
@@ -85,7 +85,7 @@ class ManageUserApplication2Fragment() : BaseFragment<FragmentManageApplication2
                     setCustomListener(object: CustomConfirmDialog.CustomListener{
                         override fun onConfirm() {
                             dismiss()
-                            deleteUser(userInfo.userIdx,adminIdx?.toLong(),applicationIdx)
+                            deleteUser(userInfo.userIdx,SharedPrefManager(requireActivity()).getLoginData()!!.userIdx,applicationIdx)
                         }
                     })
                 }.show(requireActivity().supportFragmentManager,"userDelete")
