@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.example.swith.R
+import com.example.swith.SwithApplication.Companion.spfManager
 import com.example.swith.data.StudyGroup
 import com.example.swith.data.StudyImageReq
 import com.example.swith.data.StudyImageRes
@@ -64,8 +65,8 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
     //입력되는 값들 변수모음
     var title:String=""
 
-    val userid = SharedPrefManager(this@StudyCreateActivity).getLoginData()
-    val userIdx = userid?.userIdx
+    //val userid = SharedPrefManager(this@StudyCreateActivity).getLoginData()
+    val userIdx = spfManager.getLoginData()?.userIdx
 
 //    val userIdx = 1
 
