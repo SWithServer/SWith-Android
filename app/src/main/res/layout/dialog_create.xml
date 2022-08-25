@@ -36,7 +36,7 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_title"/>
             <Button
                 android:id="@+id/btn_no"
-                android:layout_width="170dp"
+                android:layout_width="140dp"
                 android:layout_height="44dp"
                 android:fontFamily="@font/kr_regular"
                 android:textSize="14dp"
@@ -50,7 +50,7 @@
                 android:layout_marginStart="20dp"/>
             <Button
                 android:id="@+id/btn_yes"
-                android:layout_width="170dp"
+                android:layout_width="140dp"
                 android:layout_height="44dp"
                 android:fontFamily="@font/kr_regular"
                 android:textColor="@color/white"
