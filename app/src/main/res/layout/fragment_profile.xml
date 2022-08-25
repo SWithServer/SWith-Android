@@ -90,7 +90,7 @@
                         android:fontFamily="@font/kr_bold"
                         android:textColor="@color/black"
                         android:textSize="15dp"
-                        android:text="김두리"
+                        android:text="@{profileViewModel.currentProfile.result.nickname}"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toEndOf="@id/ci_profile"/>
 

@@ -32,6 +32,7 @@ import com.example.swith.databinding.ActivityManageStudyModifyBinding
 import com.example.swith.repository.RetrofitApi
 import com.example.swith.repository.RetrofitService
 import com.example.swith.ui.study.create.SelectPlaceActivity
+import com.example.swith.utils.SharedPrefManager
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -47,10 +48,10 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
     var groupIdx : Long = -1
 
     var title:String=""
-//    val userid= SharedPrefManager(this@ManageStudyModifyActivity).getLoginData()
-//    val userIdx = userid?.userIdx
+    val userid= SharedPrefManager(this@ManageStudyModifyActivity).getLoginData()
+    val userIdx = userid?.userIdx
 
-    val userIdx = 1
+//    val userIdx = 1
 
     var meet_idx:Int= -1
     var frequency_content:Int?=null

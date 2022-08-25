@@ -23,10 +23,10 @@ class ManageUserResumeActivity:AppCompatActivity(),View.OnClickListener {
     var userIdx : Long?= -1
     var groupIdx : Long? = -1
 
-//    val adminId = SharedPrefManager(this@ManageUserResumeActivity).getLoginData()
-//    val adminIdx = adminId?.userIdx
+    val adminId = SharedPrefManager(this@ManageUserResumeActivity).getLoginData()
+    val adminIdx = adminId?.userIdx
 
-    val adminIdx : Long = 1
+//    val adminIdx : Long = 1
     var applicationIdx : Long? = -1
 
     var status : Int? = -1

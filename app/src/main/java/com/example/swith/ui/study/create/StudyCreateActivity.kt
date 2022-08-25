@@ -64,10 +64,10 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
     //입력되는 값들 변수모음
     var title:String=""
 
-//    val userid = SharedPrefManager(this@StudyCreateActivity).getLoginData()
-//    val userIdx = userid?.userIdx
+    val userid = SharedPrefManager(this@StudyCreateActivity).getLoginData()
+    val userIdx = userid?.userIdx
 
-    val userIdx = 1
+//    val userIdx = 1
 
     var meet_idx:Int= -1
     var frequency_content:Int?=null

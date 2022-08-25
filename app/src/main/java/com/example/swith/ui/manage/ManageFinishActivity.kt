@@ -22,10 +22,10 @@ import retrofit2.Response
 class ManageFinishActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var binding: ActivityManageFinishBinding
     var groupIdx : Long = -1
-//    val adminId = SharedPrefManager(this).getLoginData()
-//    val adminIdx = adminId?.userIdx
+    val adminId = SharedPrefManager(this).getLoginData()
+    val adminIdx = adminId?.userIdx
 
-    var adminIdx : Long = 1
+//    var adminIdx : Long = 1
     // shared로 바꿔야하는 부분.
 
     override fun onCreate(savedInstanceState: Bundle?) {
