@@ -52,12 +52,18 @@ class ResumeFragment : BaseFragment<FragmentResumeBinding>(R.layout.fragment_res
         }
         mResumeViewModel?.getCurrentResume()?.observe(viewLifecycleOwner, Observer {
             Log.e("doori","observer = $it")
-            if(it.isSuccess) {
-                setAdaper(it.result)
+            if(it!=null){
+                if(it.isSuccess) {
+                    setAdaper(it.result)
+                }else{
+                    Toast.makeText(context,"지원서가 없습니다.",Toast.LENGTH_SHORT).show()
+                    goProfilePage()
+                }
             }else{
                 Toast.makeText(context,"지원서가 없습니다.",Toast.LENGTH_SHORT).show()
                 goProfilePage()
             }
+
         })
         mResumeViewModel?.requestCurrentResume(context?.let { SharedPrefManager(it).getLoginData() }!!.userIdx)
         //mResumeViewModel?.requestCurrentResume(1)
