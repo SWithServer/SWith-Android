@@ -2,6 +2,9 @@ package com.example.swith
 
 import android.app.Application
 import android.util.Log
+import com.example.swith.utils.FirebaseMessageService
+import com.example.swith.utils.NoticeManager
+import com.google.firebase.messaging.FirebaseMessaging
 //import com.example.swith.BuildConfig.KAKAO_API_KEY
 //import com.example.swith.BuildConfig.KAKAO_API_KEY
 // import com.example.swith.BuildConfig.KAKAO_API_KEY
@@ -13,7 +16,10 @@ class SwithApplication:Application() {
         super.onCreate()
 
         // Kakao SDK 초기화
-//        KakaoSdk.init(this,"1cdb9c58056551e093411bcab081a6b4" )
-        //Log.e("doori", "kakao1cdb9c58056551e093411bcab081a6b4")
+        KakaoSdk.init(this,"1cdb9c58056551e093411bcab081a6b4" )
+        FirebaseMessageService().getFirebaseToken()
+
+        //NoticeManager(this@SwithApplication).runRatingNotice("asdasd","aaaaa","2")
+
     }
 }

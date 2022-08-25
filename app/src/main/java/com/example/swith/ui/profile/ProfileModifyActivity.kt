@@ -15,6 +15,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -38,8 +39,6 @@ import com.example.swith.viewmodel.ProfileModifyViewModel
 import com.google.android.datatransport.cct.internal.LogEvent
 
 class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener, Observer<ProfileResponse> {
-    //TODO 임시데이터
-    val regionTest="서울시 은평구"
 
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
@@ -113,6 +112,14 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener, Observe
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        if(!getSharedPreferences("result4",0).getString("이름4","").toString().equals("")) {
+            val shPref1 = getSharedPreferences("result4",0)
+            val editor1 = getSharedPreferences("result4",0).edit()
+            binding.tvLocationDetail.text = shPref1.getString("이름4", "")
+        }
+    }
     override fun onClick(view: View?) {
         when (view?.id) {
             R.id.civ_image -> {
@@ -121,10 +128,11 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener, Observe
             }
             R.id.tv_location_detail -> {
                 //TODO 서머님께 부탁 ㅜㅜ
-//                Intent(this@ProfileModifyActivity,SelectPlaceActivity::class.java).run {
-//                    this.putExtra("번호",1)
-//                    startActivity(this)
-//                }
+                Log.e("doori","tv_location_click")
+                Intent(this@ProfileModifyActivity,SelectPlaceActivity::class.java).run {
+                    this.putExtra("번호",4)
+                    startActivity(this)
+              }
                 hideKeyboard()
             }
             R.id.btn_save -> {
@@ -253,7 +261,7 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener, Observe
                         getInterestringIndex(btnInteresting2.text.toString()),
                         etIntroduceDetail.text.toString(),
                         etNickname.text.toString(),
-                        regionTest
+                        tvLocationDetail.text.toString()
                     )
                 }"
             )
@@ -264,7 +272,7 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener, Observe
                     getInterestringIndex(btnInteresting2.text.toString()),
                     etIntroduceDetail.text.toString(),
                     etNickname.text.toString(),
-                    regionTest
+                    tvLocationDetail.text.toString()
                 )
             )
         }
@@ -287,7 +295,7 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener, Observe
                 showDialog("관심분야를 선택해주세요.")
                 return false
             }
-            if (tvLocationDetail.text.toString() == "선택해주세요.") {
+            if (tvLocationDetail.text.toString() == "지역을 선택해주세요.") {
                 showDialog("활동지역을 선택해주세요.")
                 return false
             }

@@ -57,9 +57,13 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
         mProfileViewModel?.getCurrentProfile()?.observe(viewLifecycleOwner, Observer {
             Log.e("doori", "observer = $it")
             setShowDimmed(false)
-            if(it!=null) {
-                binding.tvInteresting1.text= resources.getStringArray(R.array.intersting)[it.result.interestIdx1]
-                binding.tvInteresting2.text= resources.getStringArray(R.array.intersting)[it.result.interestIdx2]
+            if(it.isSuccess) {
+                it.result.interestIdx1?.apply {
+                    binding.tvInteresting1.text= resources.getStringArray(R.array.intersting)[this]
+                }
+                it.result.interestIdx2?.apply {
+                    binding.tvInteresting2.text= resources.getStringArray(R.array.intersting)[this]
+                }
             }else{
                 Toast.makeText(context, "잠시 후 다시 시작해주세요", Toast.LENGTH_SHORT).show()
             }

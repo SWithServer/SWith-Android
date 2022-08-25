@@ -140,7 +140,7 @@ interface RetrofitApi {
     fun setProfile(@Body profileModifyBody: ProfileModifyRequest): Call<ProfileModifyResponse>
 
     //지원서 조회
-    @GET("/user/Application")
+    @GET("/application/user")
     fun getResume(@Query("userIdx")userIdx:Long):Call<ResumeResponse>
 
     //rating

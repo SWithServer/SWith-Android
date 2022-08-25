@@ -18,6 +18,30 @@
         android:theme="@style/Theme.SWith"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ui.study.announce.AlertActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.rating.RatingActivity"
+            android:exported="false" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_app" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/black" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="fcm_default_channel" />
+
+        <service
+            android:name=".utils.FirebaseMessageService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <activity
             android:name=".ui.manage.ManageRoundActivity"
             android:exported="false" />
         <activity
@@ -48,7 +72,13 @@
             android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".ui.SplashActivity"
-            android:exported="true" />
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.login.SnsLoginActivity"
             android:exported="true" >
@@ -60,11 +90,7 @@
         <activity
             android:name=".ui.MainActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".ui.study.StudyActivity"

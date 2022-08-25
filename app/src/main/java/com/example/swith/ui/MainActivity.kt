@@ -104,7 +104,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun goProfilePage() {
+    fun goProfilePage() {
         Log.e("doori","goProfilePage")
         supportFragmentManager.beginTransaction()
             .replace(R.id.main_frm, ProfileFragment())

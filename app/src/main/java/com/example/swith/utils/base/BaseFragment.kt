@@ -49,6 +49,14 @@ abstract class BaseFragment<VB : ViewBinding>(@LayoutRes private val layoutRes: 
         }
     }
 
+    fun goProfilePage(){
+        activity?.let{
+            if (it is MainActivity){
+                it.goProfilePage()
+            }
+        }
+    }
+
     fun goResumePage(){
         activity?.let{
             if (it is MainActivity){

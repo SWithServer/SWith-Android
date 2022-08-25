@@ -7,10 +7,10 @@ import android.content.Context
 import android.content.Context.NOTIFICATION_SERVICE
 import android.content.Intent
 import android.graphics.Color
+import android.os.Bundle
 import androidx.core.app.NotificationCompat
 import com.example.swith.R
-import com.example.swith.ui.MainActivity
-import com.example.swith.ui.profile.ProfileModifyActivity
+import com.example.swith.ui.rating.RatingActivity
 import com.example.swith.ui.study.announce.AnnounceActivity
 
 
@@ -64,10 +64,10 @@ class NoticeManager(private val context: Context) {
         }
     }
 
-    fun runRatingNotice(title: String,content: String){
-        val actionIntent = Intent(context,MainActivity::class.java)
-        actionIntent.putExtra("RatingFragment","RatingFragment")
-        val actionPendingIntent = PendingIntent.getActivity(context, CHANNEL_NUMBER,actionIntent,PendingIntent.FLAG_IMMUTABLE)
+    fun runRatingNotice(title: String, content: String, groupId:String){
+        val actionIntent = Intent(context,RatingActivity::class.java)
+        actionIntent.putExtra("Rating",groupId)
+        val actionPendingIntent = PendingIntent.getActivity(context, CHANNEL_NUMBER,actionIntent,PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_CANCEL_CURRENT)
 
         builder.run {
             setSmallIcon(R.drawable.ic_stat_notification)
