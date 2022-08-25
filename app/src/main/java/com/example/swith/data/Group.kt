@@ -6,7 +6,7 @@ data class Group(
     val announcementContent: String,
     val attendanceRate: Int,
     val groupIdx: Long,
-    val groupImageUrl: String?,
+    val groupImgUrl: String?,
     val interestContent: String,
     val memberLimit: Int,
     val online: Int,

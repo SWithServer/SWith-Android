@@ -106,6 +106,7 @@
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:padding="5dp"
+                android:visibility="invisible"
                 android:scaleType="fitCenter"
                 android:src="@drawable/ic_add"
                 android:layout_marginEnd="20dp"

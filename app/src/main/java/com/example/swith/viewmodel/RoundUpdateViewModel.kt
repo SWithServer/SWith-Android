@@ -3,6 +3,7 @@ package com.example.swith.viewmodel
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
+import com.example.swith.SwithApplication
 import com.example.swith.data.GetSessionRes
 import com.example.swith.data.Round
 import com.example.swith.data.Session
@@ -30,7 +31,7 @@ class RoundUpdateViewModel: BaseViewModel() {
     private val roundUpdateRepository = RoundUpdateRepository(RoundUpdateRemoteDataSource())
 
     // private val userIdx = SharedPrefManager().getLoginData()?.userIdx
-    private val userIdx : Long = 1
+    private val userIdx: Long = if (SwithApplication.spfManager.getLoginData() != null) SwithApplication.spfManager.getLoginData()?.userIdx!! else 1
 
 
     fun loadPostRound(groupIdx: Long){

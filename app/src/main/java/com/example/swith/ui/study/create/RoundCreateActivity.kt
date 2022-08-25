@@ -21,6 +21,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.example.swith.R
+import com.example.swith.SwithApplication
 import com.example.swith.data.DateTime
 import com.example.swith.data.Session
 import com.example.swith.databinding.ActivityRoundCreateBinding
@@ -121,13 +122,14 @@ open class RoundCreateActivity : AppCompatActivity(), View.OnClickListener {
                 val startTimeToString : String = String.format("%4d-%02d-%02dT%02d:%02d", startTime?.year, startTime?.month, startTime?.day, startTime?.hourOfDay, startTime?.minute)
                 val endTimeToString : String = String.format("%4d-%02d-%02dT%02d:%02d", endTime?.year, endTime?.month, endTime?.day, endTime?.hourOfDay, endTime?.minute)
                 val online : Int = if(btnCreateOnline.isSelected) 1 else 0
+                val userId: Long = if (SwithApplication.spfManager.getLoginData() != null) SwithApplication.spfManager.getLoginData()?.userIdx!! else 1
                 if (checkCondition()) {
                     BottomSheet("회차 생성", null, resources.getString(R.string.bottom_round_create_guide), "생성").apply {
                         setCustomListener(object: BottomSheet.customClickListener{
                             override fun onCheckClick() {
                                 dismiss()
                                 viewModel.postRound(Session(
-                                    groupIdx, online, etCreatePlace.text.toString(), etCreateDetail.text.toString(), endTimeToString, startTimeToString, 1))
+                                    groupIdx, online, etCreatePlace.text.toString(), etCreateDetail.text.toString(), endTimeToString, startTimeToString, userId))
                             }
                         })
                     }.show(supportFragmentManager, "roundCreate")
