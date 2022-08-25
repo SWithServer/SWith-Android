@@ -64,8 +64,8 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
     //입력되는 값들 변수모음
     var title:String=""
 
-    val userid = SharedPrefManager(this@StudyCreateActivity).getLoginData()
-    val userIdx = userid?.userIdx
+    //val userid = SharedPrefManager(this@StudyCreateActivity).getLoginData()
+   // val userIdx = userid?.userIdx
 
 //    val userIdx = 1
 
@@ -105,6 +105,7 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
         binding.clickListener = this@StudyCreateActivity
         customDialog()
 
+        //Log.e("유저 idx","${userIdx}")
         Log.e("create","true")
         getSharedPreferences("result1",0).apply{
             if(this!=null) {
@@ -456,7 +457,7 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
                 periods_content=etStudyFree.text.toString()}
                 }
 
-                var studyRequestData=StudyGroup(userIdx?.toLong(),ImgUri,title,meet_idx,frequency_content,periods_content,online_idx,regionIdx1,regionIdx2,interest_idx
+                var studyRequestData=StudyGroup(SharedPrefManager(this@StudyCreateActivity).getLoginData()!!.userIdx,ImgUri,title,meet_idx,frequency_content,periods_content,online_idx,regionIdx1,regionIdx2,interest_idx
                     ,topic_content,memberLimit_content,applicationMethod_idx,recruitmentEndDate_,groupStart_,groupEnd_
                     ,attendanceVaildTime_content,group_content)
                 Log.e("summer", "USER DATA = ${studyRequestData.toString()}")

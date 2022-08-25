@@ -3,6 +3,7 @@ package com.example.swith.ui.home
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -18,6 +19,7 @@ import com.example.swith.utils.base.BaseFragment
 import com.example.swith.ui.adapter.HomeStudyRVAdapter
 import com.example.swith.ui.study.StudyActivity
 import com.example.swith.ui.study.create.StudyCreateActivity
+import com.example.swith.utils.SharedPrefManager
 import com.example.swith.viewmodel.HomeViewModel
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home){
@@ -53,6 +55,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home){
         }
 
         binding.homeStudyAddIv.setOnClickListener{
+            Log.i("doori","shared = ${SharedPrefManager(requireActivity()).getLoginData().toString()}")
             activityResultLauncher.launch(Intent(requireActivity(), StudyCreateActivity::class.java))
         }
 
