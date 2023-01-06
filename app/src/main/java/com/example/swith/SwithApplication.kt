@@ -17,13 +17,10 @@ class SwithApplication:Application() {
     override fun onCreate() {
         super.onCreate()
         val keyHash = Utility.getKeyHash(this)
-        Log.e("doori", "HashKey: ${keyHash}")
+        Log.e("keyHash", "HashKey: ${keyHash}")
         spfManager = SharedPrefManager(applicationContext)
         // Kakao SDK 초기화
-        KakaoSdk.init(this,"1cdb9c58056551e093411bcab081a6b4" )
+        KakaoSdk.init(this, BuildConfig.KAKAO_NATIVE_APP_KEY)
         FirebaseMessageService().getFirebaseToken()
-
-        //NoticeManager(this@SwithApplication).runRatingNotice("asdasd","aaaaa","2")
-
     }
 }
