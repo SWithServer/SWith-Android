@@ -2,14 +2,17 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
         <variable
             name="clickListener"
             type="android.view.View.OnClickListener" />
 
         <variable
             name="resume"
-            type="com.example.swith.data.ResumeResult" />
+            type="com.example.swith.entity.ResumeResult" />
+
         <variable
             name="resumeDialog"
             type="com.example.swith.ui.dialog.CustomDialog" />
@@ -20,11 +23,13 @@
         android:layout_height="match_parent"
         android:background="@color/white"
         tools:context=".ui.resume.ResumeDetailFragment">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_top"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_width="match_parent"
             android:layout_height="50dp">
+
             <ImageButton
                 android:id="@+id/ib_back"
                 android:layout_width="40dp"
@@ -33,14 +38,15 @@
                 android:onClick="@{clickListener}"
                 android:background="?android:attr/selectableItemBackground"
                 android:src="@drawable/ic_create_back"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:background="@color/color_F1F1F1"/>
+                android:background="@color/color_F1F1F1" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"

@@ -1,115 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:minHeight="130dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_marginBottom="8dp"
-    android:background="@drawable/bg_item_round">
-    <TextView
-        android:id="@+id/round_title_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="회차"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        android:textColor="@color/color_1363DF"
-        android:layout_margin="20dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
-    <TextView
-        android:id="@+id/round_date_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="22/7/15"
-        android:textSize="11sp"
-        android:textColor="@color/color_a4a4a4"
-        android:layout_marginEnd="20dp"
-        app:layout_constraintTop_toTopOf="@id/round_title_tv"
-        app:layout_constraintEnd_toEndOf="parent"/>
-    <TextView
-        android:id="@+id/round_detail_tv"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:text="내용"
-        android:textSize="12sp"
-        android:textColor="@color/black"
-        android:maxLines="2"
-        android:ellipsize="end"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintStart_toStartOf="@id/round_title_tv"
-        app:layout_constraintTop_toBottomOf="@id/round_title_tv"
-        app:layout_constraintBottom_toTopOf="@id/item_round_place_layout"/>
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/item_round_place_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="22dp"
-        android:gravity="center_vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/item_round_attend_layout"
-        android:layout_margin="20dp"
-        android:background="@drawable/bg_item_round_detail">
-        <ImageView
-            android:id="@+id/round_place_iv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginStart="10dp"
-            android:src="@drawable/ic_round_location"/>
-        <TextView
-            android:id="@+id/round_place_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="장소"
-            android:textSize="10sp"
-            android:layout_marginStart="2dp"
-            android:layout_marginEnd="10dp"
-            app:layout_constraintStart_toEndOf="@id/round_place_iv"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:textColor="@color/white"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/item_round_attend_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="25dp"
-        android:gravity="center_vertical"
-        android:layout_marginStart="4dp"
-        app:layout_constraintTop_toTopOf="@id/item_round_place_layout"
-        app:layout_constraintBottom_toBottomOf="@id/item_round_place_layout"
-        app:layout_constraintStart_toEndOf="@id/item_round_place_layout"
-        android:background="@drawable/bg_item_round_detail">
-        <ImageView
-            android:id="@+id/round_attend_iv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:src="@drawable/ic_round_attend"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
-        <TextView
-            android:id="@+id/round_attend_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0 %"
-            android:textSize="10sp"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="10dp"
-            android:textColor="@color/white"
-            app:layout_constraintStart_toEndOf="@id/round_attend_iv"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="130dp"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/bg_item_round">
+
+        <TextView
+            android:id="@+id/round_title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="회차"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="@color/color_1363DF"
+            android:layout_margin="20dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/round_date_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="22/7/15"
+            android:textSize="11sp"
+            android:textColor="@color/color_a4a4a4"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintTop_toTopOf="@id/round_title_tv"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/round_detail_tv"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:text="내용"
+            android:textSize="12sp"
+            android:textColor="@color/black"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintStart_toStartOf="@id/round_title_tv"
+            app:layout_constraintTop_toBottomOf="@id/round_title_tv"
+            app:layout_constraintBottom_toTopOf="@id/item_round_place_layout" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/item_round_place_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="22dp"
+            android:gravity="center_vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/item_round_attend_layout"
+            android:layout_margin="20dp"
+            android:background="@drawable/bg_item_round_detail">
+
+            <ImageView
+                android:id="@+id/round_place_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/ic_round_location" />
+
+            <TextView
+                android:id="@+id/round_place_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="장소"
+                android:textSize="10sp"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="10dp"
+                app:layout_constraintStart_toEndOf="@id/round_place_iv"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:textColor="@color/white" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/item_round_attend_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:gravity="center_vertical"
+            android:layout_marginStart="4dp"
+            app:layout_constraintTop_toTopOf="@id/item_round_place_layout"
+            app:layout_constraintBottom_toBottomOf="@id/item_round_place_layout"
+            app:layout_constraintStart_toEndOf="@id/item_round_place_layout"
+            android:background="@drawable/bg_item_round_detail">
+
+            <ImageView
+                android:id="@+id/round_attend_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/ic_round_attend"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/round_attend_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0 %"
+                android:textSize="10sp"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="10dp"
+                android:textColor="@color/white"
+                app:layout_constraintStart_toEndOf="@id/round_attend_iv"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

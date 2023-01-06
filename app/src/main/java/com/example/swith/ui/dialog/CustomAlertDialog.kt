@@ -41,7 +41,7 @@ class CustomAlertDialog(private val title: String, private val content: String) 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        with(binding){
+        with(binding) {
             tvAlertTitle.text = title
             tvAlertContent.text = content
             btnAlertConfirm.setOnClickListener { dismiss() }

@@ -6,12 +6,10 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.swith.R
-import com.example.swith.data.ManageUserIdx
-import com.example.swith.data.ManageUserProfileResponse
-import com.example.swith.data.StudyFinishReq
-import com.example.swith.data.StudyFinishResponse
+import com.example.swith.api.SwithService
 import com.example.swith.databinding.ActivityManageFinishBinding
-import com.example.swith.repository.RetrofitApi
+import com.example.swith.entity.StudyFinishReq
+import com.example.swith.entity.StudyFinishResponse
 import com.example.swith.repository.RetrofitService
 import com.example.swith.utils.SharedPrefManager
 import retrofit2.Call
@@ -21,7 +19,7 @@ import retrofit2.Response
 
 class ManageFinishActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var binding: ActivityManageFinishBinding
-    var groupIdx : Long = -1
+    var groupIdx: Long = -1
 //    val adminId = SharedPrefManager(this).getLoginData()
 //    val adminIdx = adminId?.userIdx
 
@@ -30,31 +28,33 @@ class ManageFinishActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_manage_finish)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_manage_finish)
 
         initData()
         with(binding)
         {
-            btnYes.setOnClickListener{
+            btnYes.setOnClickListener {
                 finishStudy(groupIdx)
             }
-            btnNo.setOnClickListener{
+            btnNo.setOnClickListener {
                 finish()
             }
             clickListener = this@ManageFinishActivity
         }
     }
 
-    fun initData()
-    {
+    fun initData() {
         (intent.hasExtra("groupIdx")).let { groupIdx = intent.getLongExtra("groupIdx", 0) }
-        Log.e("summer","groupIdx = ${groupIdx}")
+        Log.e("summer", "groupIdx = ${groupIdx}")
     }
 
-    fun finishStudy(groupIdx:Long){
-        var reqBody = StudyFinishReq(SharedPrefManager(this@ManageFinishActivity).getLoginData()!!.userIdx,groupIdx)
-        Log.e("req 값","${reqBody.toString()}")
-        val retrofitService = RetrofitService.retrofit.create(RetrofitApi::class.java)
+    fun finishStudy(groupIdx: Long) {
+        var reqBody = StudyFinishReq(
+            SharedPrefManager(this@ManageFinishActivity).getLoginData()!!.userIdx,
+            groupIdx
+        )
+        Log.e("req 값", "${reqBody.toString()}")
+        val retrofitService = RetrofitService.retrofit.create(SwithService::class.java)
         retrofitService.endStudy(reqBody).enqueue(object :
             Callback<StudyFinishResponse> {
             override fun onResponse(
@@ -64,15 +64,15 @@ class ManageFinishActivity : AppCompatActivity(), View.OnClickListener {
                 if (response.isSuccessful) {
                     Log.e("summer", "성공${response.toString()}")
                     response.body()?.apply {
-                        Log.e("summer 결과값","${this.result}")
+                        Log.e("summer 결과값", "${this.result}")
                         finish()
                     }
-                }
-                else {
+                } else {
                     Log.e("summer", "전달실패 code = ${response.code()}")
                     Log.e("summer", "전달실패 msg = ${response.message()}")
                 }
             }
+
             override fun onFailure(call: Call<StudyFinishResponse>, t: Throwable) {
                 Log.e("summer", "onFailure t = ${t.toString()}")
                 Log.e("summer", "onFailure msg = ${t.message}")
@@ -81,7 +81,7 @@ class ManageFinishActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onClick(view: View?) {
-        when(view?.id){
+        when (view?.id) {
             R.id.ib_basic_toolbar_back -> finish()
         }
     }

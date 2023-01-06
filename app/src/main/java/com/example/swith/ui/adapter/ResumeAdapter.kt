@@ -4,14 +4,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.swith.data.ResumeResult
-import com.example.swith.databinding.ItemInterestingBinding
 import com.example.swith.databinding.ItemResumeBinding
+import com.example.swith.entity.ResumeResult
 
 class ResumeAdapter() : RecyclerView.Adapter<ResumeAdapter.ResumeViewHolder>() {
     private var dataList: List<ResumeResult>? = null
 
-    inner class ResumeViewHolder(val binding: ItemResumeBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class ResumeViewHolder(val binding: ItemResumeBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
     fun setData(dataList: List<ResumeResult>) {
         this.dataList = dataList
@@ -28,7 +28,7 @@ class ResumeAdapter() : RecyclerView.Adapter<ResumeAdapter.ResumeViewHolder>() {
         val dataDetail = "${date?.get(0)}년 ${date?.get(1)}월 ${date?.get(2)}일"
         holder.binding.apply {
             resumeData = data
-            tvCalender.text=dataDetail
+            tvCalender.text = dataDetail
             if (data?.status == 0) {
                 tvStatusDetail.text = "승인대기"
             } else if (data?.status == 1) {

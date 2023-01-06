@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
+
         <variable
             name="createDialog"
             type="com.example.swith.ui.dialog.CustomDialog" />
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/transparent">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="137dp"
             android:background="@drawable/bg_top_round_white"
             app:layout_constraintBottom_toBottomOf="parent">
+
             <TextView
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
@@ -26,14 +31,16 @@
                 android:fontFamily="@font/kr_bold"
                 android:textSize="16dp"
                 android:text="@string/study_confirm"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black" />
+
             <View
                 android:id="@+id/view"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="16dp"
                 android:background="@color/color_F1F1F1"
-                app:layout_constraintTop_toBottomOf="@id/tv_title"/>
+                app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
             <Button
                 android:id="@+id/btn_no"
                 android:layout_width="140dp"
@@ -47,7 +54,8 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_title"
                 android:layout_marginTop="27dp"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="20dp"/>
+                android:layout_marginStart="20dp" />
+
             <Button
                 android:id="@+id/btn_yes"
                 android:layout_width="140dp"
@@ -61,7 +69,7 @@
                 android:layout_marginEnd="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_title"
-                android:layout_marginTop="27dp"/>
+                android:layout_marginTop="27dp" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

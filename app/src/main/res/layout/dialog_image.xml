@@ -3,19 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="imageDialog"
             type="com.example.swith.ui.dialog.CustomImageDialog" />
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/transparent">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:background="@drawable/bg_top_round_white"
             app:layout_constraintBottom_toBottomOf="parent">
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_close"
                 android:layout_width="50dp"
@@ -24,14 +28,16 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="3dp"
                     android:layout_marginTop="10dp"
                     android:background="@color/color_F1F1F1"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
             <TextView
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
@@ -43,14 +49,15 @@
                 android:fontFamily="@font/kr_bold"
                 android:textSize="16dp"
                 android:text="@string/choice_image"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black" />
+
             <View
                 android:id="@+id/view"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="25dp"
                 android:background="@color/color_F1F1F1"
-                app:layout_constraintTop_toBottomOf="@id/tv_title"/>
+                app:layout_constraintTop_toBottomOf="@id/tv_title" />
 
             <ImageButton
                 android:id="@+id/btn_camera"
@@ -62,7 +69,7 @@
                 android:background="?android:attr/selectableItemBackground"
                 app:layout_constraintTop_toBottomOf="@id/view"
                 app:layout_constraintEnd_toStartOf="@id/btn_gallery"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:id="@+id/tv_camera"
@@ -75,7 +82,8 @@
                 android:fontFamily="@font/kr_regular"
                 app:layout_constraintTop_toBottomOf="@id/btn_camera"
                 app:layout_constraintStart_toStartOf="@id/btn_camera"
-                app:layout_constraintEnd_toEndOf="@id/btn_camera"/>
+                app:layout_constraintEnd_toEndOf="@id/btn_camera" />
+
             <ImageButton
                 android:id="@+id/btn_gallery"
                 android:layout_width="50dp"
@@ -86,7 +94,8 @@
                 android:background="?android:attr/selectableItemBackground"
                 app:layout_constraintStart_toEndOf="@id/btn_camera"
                 app:layout_constraintTop_toTopOf="@id/view"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintEnd_toEndOf="parent" />
+
             <TextView
                 android:id="@+id/tv_gallery"
                 android:layout_width="wrap_content"
@@ -98,7 +107,7 @@
                 android:fontFamily="@font/kr_regular"
                 app:layout_constraintTop_toBottomOf="@id/btn_gallery"
                 app:layout_constraintStart_toStartOf="@id/btn_gallery"
-                app:layout_constraintEnd_toEndOf="@id/btn_gallery"/>
+                app:layout_constraintEnd_toEndOf="@id/btn_gallery" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

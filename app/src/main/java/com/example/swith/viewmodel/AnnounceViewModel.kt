@@ -1,13 +1,9 @@
 package com.example.swith.viewmodel
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.swith.data.Announce
-import com.example.swith.data.AnnounceCreate
-import com.example.swith.data.AnnounceList
-import com.example.swith.data.AnnounceModify
-import com.example.swith.repository.announce.AnnounceRemoteDataSource
+import com.example.swith.entity.AnnounceList
+import com.example.swith.remote.announce.AnnounceRemoteDataSource
 import com.example.swith.repository.announce.AnnounceRepository
 import com.example.swith.utils.SingleLiveEvent
 import com.example.swith.utils.base.BaseViewModel
@@ -21,29 +17,29 @@ class AnnounceViewModel : BaseViewModel() {
     private var _createLiveEvent = SingleLiveEvent<Any>()
     private var _updateLiveEvent = SingleLiveEvent<Any>()
 
-    val announceLiveData : LiveData<AnnounceList>
+    val announceLiveData: LiveData<com.example.swith.entity.AnnounceList>
         get() = _announceLiveData
 
-    val deleteLiveEvent : LiveData<Any>
+    val deleteLiveEvent: LiveData<Any>
         get() = _deleteLiveEvent
 
-    val createLiveEvent : LiveData<Any>
-        get() =  _createLiveEvent
+    val createLiveEvent: LiveData<Any>
+        get() = _createLiveEvent
 
-    val updateLiveEvent : LiveData<Any>
+    val updateLiveEvent: LiveData<Any>
         get() = _updateLiveEvent
 
-    fun loadData(groupIdx: Long){
+    fun loadData(groupIdx: Long) {
         viewModelScope.launch {
             val res = repository.getAllAnnounce(this@AnnounceViewModel, groupIdx)
-            if (res == null) mutableScreenState.postValue(ScreenState.RENDER) else{
+            if (res == null) mutableScreenState.postValue(ScreenState.RENDER) else {
                 mutableScreenState.postValue(ScreenState.RENDER)
                 _announceLiveData.value = res
             }
         }
     }
 
-    fun deleteAnnounce(announceIdx: Long){
+    fun deleteAnnounce(announceIdx: Long) {
         viewModelScope.launch {
             val res = repository.deleteAnnounce(this@AnnounceViewModel, announceIdx)
             res?.let {
@@ -53,7 +49,7 @@ class AnnounceViewModel : BaseViewModel() {
         }
     }
 
-    fun createAnnounce(announceCreate: AnnounceCreate){
+    fun createAnnounce(announceCreate: com.example.swith.entity.AnnounceCreate) {
         viewModelScope.launch {
             val res = repository.createAnnounce(this@AnnounceViewModel, announceCreate)
             res?.let {
@@ -63,7 +59,7 @@ class AnnounceViewModel : BaseViewModel() {
         }
     }
 
-    fun updateAnnounce(announceModify: AnnounceModify){
+    fun updateAnnounce(announceModify: com.example.swith.entity.AnnounceModify) {
         viewModelScope.launch {
             val res = repository.updateAnnounce(this@AnnounceViewModel, announceModify)
             res?.let {

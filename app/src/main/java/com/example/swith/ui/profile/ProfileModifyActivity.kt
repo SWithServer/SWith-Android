@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -15,19 +14,17 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.swith.R
-import com.example.swith.data.ProfileModifyRequest
-import com.example.swith.data.ProfileRequest
-import com.example.swith.data.ProfileResponse
 import com.example.swith.databinding.ActivityProfileModifyBinding
 import com.example.swith.databinding.DialogImageBinding
 import com.example.swith.databinding.DialogInterestingBinding
 import com.example.swith.databinding.DialogProfileBinding
+import com.example.swith.entity.ProfileResponse
 import com.example.swith.ui.MainActivity
 import com.example.swith.ui.dialog.CustomDialog
 import com.example.swith.ui.dialog.CustomImageDialog
@@ -36,7 +33,6 @@ import com.example.swith.ui.study.create.SelectPlaceActivity
 import com.example.swith.utils.CustomBinder
 import com.example.swith.utils.SharedPrefManager
 import com.example.swith.viewmodel.ProfileModifyViewModel
-import com.google.android.datatransport.cct.internal.LogEvent
 
 class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener, Observer<ProfileResponse> {
 
@@ -49,23 +45,25 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener, Observe
             }
         }
 
-    private val requestGalleryLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult())
-    {
-        if (it.resultCode == RESULT_OK) {
-            Glide.with(this)
-                .load(it.data!!.data)
-                .into(binding.civProfile)
+    private val requestGalleryLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+        {
+            if (it.resultCode == RESULT_OK) {
+                Glide.with(this)
+                    .load(it.data!!.data)
+                    .into(binding.civProfile)
+            }
         }
-    }
 
-    private val requestCameraLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult())
-    {
-        if (it.resultCode == RESULT_OK) {
-            Glide.with(this)
-                .load(it.data!!.extras?.get("data"))
-                .into(binding.civProfile)
+    private val requestCameraLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+        {
+            if (it.resultCode == RESULT_OK) {
+                Glide.with(this)
+                    .load(it.data!!.extras?.get("data"))
+                    .into(binding.civProfile)
+            }
         }
-    }
 
     private var mProfileModifyViewModel: ProfileModifyViewModel? = null
     lateinit var binding: ActivityProfileModifyBinding
@@ -84,25 +82,35 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener, Observe
         binding.apply {
             lifecycleOwner = this@ProfileModifyActivity
             mProfileModifyViewModel =
-                ViewModelProvider(this@ProfileModifyActivity, ProfileModifyViewModel.Factory()).get(ProfileModifyViewModel::class.java).apply {
+                ViewModelProvider(this@ProfileModifyActivity, ProfileModifyViewModel.Factory()).get(
+                    ProfileModifyViewModel::class.java
+                ).apply {
                     profileModifyViewModel = this
-                    getCurrentProfile().observe(this@ProfileModifyActivity, this@ProfileModifyActivity)
+                    getCurrentProfile().observe(
+                        this@ProfileModifyActivity,
+                        this@ProfileModifyActivity
+                    )
                     SharedPrefManager(this@ProfileModifyActivity).getLoginData()?.userIdx!!.apply {
-                        requestCurrentProfile(ProfileRequest(this as Long))
+                        requestCurrentProfile(com.example.swith.entity.ProfileRequest(this as Long))
                     }
                 }
-            mProfileModifyViewModel?.getCurrentProfileModify()?.observe(this@ProfileModifyActivity, Observer {
-                Log.e("doori", "observer = $it")
-                //TODO 관심분야가 index4번이상부터 안되넹
-                setShowDimmed(false)
-                if (it != null) {
-                    if (it!!.isSuccess) {
-                        goProfilePage()
-                    } else {
-                        Toast.makeText(this@ProfileModifyActivity, "잠시 후 다시 시작해주세요.", Toast.LENGTH_SHORT).show()
+            mProfileModifyViewModel?.getCurrentProfileModify()
+                ?.observe(this@ProfileModifyActivity, Observer {
+                    Log.e("doori", "observer = $it")
+                    //TODO 관심분야가 index4번이상부터 안되넹
+                    setShowDimmed(false)
+                    if (it != null) {
+                        if (it!!.isSuccess) {
+                            goProfilePage()
+                        } else {
+                            Toast.makeText(
+                                this@ProfileModifyActivity,
+                                "잠시 후 다시 시작해주세요.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     }
-                }
-            })
+                })
 
         }
     }
@@ -114,12 +122,13 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener, Observe
 
     override fun onResume() {
         super.onResume()
-        if(!getSharedPreferences("result4",0).getString("이름4","").toString().equals("")) {
-            val shPref1 = getSharedPreferences("result4",0)
-            val editor1 = getSharedPreferences("result4",0).edit()
+        if (!getSharedPreferences("result4", 0).getString("이름4", "").toString().equals("")) {
+            val shPref1 = getSharedPreferences("result4", 0)
+            val editor1 = getSharedPreferences("result4", 0).edit()
             binding.tvLocationDetail.text = shPref1.getString("이름4", "")
         }
     }
+
     override fun onClick(view: View?) {
         when (view?.id) {
             R.id.civ_image -> {
@@ -128,11 +137,11 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener, Observe
             }
             R.id.tv_location_detail -> {
                 //TODO 서머님께 부탁 ㅜㅜ
-                Log.e("doori","tv_location_click")
-                Intent(this@ProfileModifyActivity,SelectPlaceActivity::class.java).run {
-                    this.putExtra("번호",4)
+                Log.e("doori", "tv_location_click")
+                Intent(this@ProfileModifyActivity, SelectPlaceActivity::class.java).run {
+                    this.putExtra("번호", 4)
                     startActivity(this)
-              }
+                }
                 hideKeyboard()
             }
             R.id.btn_save -> {
@@ -195,7 +204,10 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener, Observe
     private fun showInterestingDialog(btnNumber: Int) {
         val imageArray = resources.getStringArray(R.array.intersting).toList() as ArrayList<String>
         DataBindingUtil.inflate<DialogInterestingBinding>(
-            LayoutInflater.from(this@ProfileModifyActivity), R.layout.dialog_interesting, null, false
+            LayoutInflater.from(this@ProfileModifyActivity),
+            R.layout.dialog_interesting,
+            null,
+            false
         ).apply {
             val interestingDialog = CustomBinder.showCustomInterestringDialog(imageArray,
                 binding.btnInteresting1.text as String,
@@ -255,7 +267,7 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener, Observe
             Log.e(
                 "doori",
                 "${
-                    ProfileModifyRequest(
+                    com.example.swith.entity.ProfileModifyRequest(
                         email,
                         getInterestringIndex(btnInteresting1.text.toString()),
                         getInterestringIndex(btnInteresting2.text.toString()),
@@ -266,7 +278,7 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener, Observe
                 }"
             )
             mProfileModifyViewModel?.requestCurrentProfileModify(
-                ProfileModifyRequest(
+                com.example.swith.entity.ProfileModifyRequest(
                     email,
                     getInterestringIndex(btnInteresting1.text.toString()),
                     getInterestringIndex(btnInteresting2.text.toString()),
@@ -308,7 +320,8 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener, Observe
     }
 
     fun showDialog(errorMsg: String) {
-        val builder = AlertDialog.Builder(this@ProfileModifyActivity).setTitle("프로필을 모두 작성해주세요.").setMessage(errorMsg)
+        val builder = AlertDialog.Builder(this@ProfileModifyActivity).setTitle("프로필을 모두 작성해주세요.")
+            .setMessage(errorMsg)
             .setPositiveButton("확인", DialogInterface.OnClickListener { _, _ ->
             }).setNegativeButton("취소", DialogInterface.OnClickListener { _, _ ->
 
@@ -331,8 +344,10 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener, Observe
         Log.e("doori", "onChanged = ${profileResponse.toString()}")
         //TODO 관심분야가 없다면?? 널값은 어떻게 처리해줘야할까?
         profileResponse?.result?.apply {
-            binding.btnInteresting1.text = resources.getStringArray(R.array.intersting)[interestIdx1]
-            binding.btnInteresting2.text = resources.getStringArray(R.array.intersting)[interestIdx2]
+            binding.btnInteresting1.text =
+                resources.getStringArray(R.array.intersting)[interestIdx1]
+            binding.btnInteresting2.text =
+                resources.getStringArray(R.array.intersting)[interestIdx2]
         }
     }
 

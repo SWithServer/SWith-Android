@@ -15,40 +15,41 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
 import com.example.swith.R
-import com.example.swith.data.StudyApplicationResponse
-import com.example.swith.data.StudyDetailResponse
-import com.example.swith.data.postApplicationReq
+import com.example.swith.api.SwithService
 import com.example.swith.databinding.DialogCreateBinding
 import com.example.swith.databinding.FragmentStudyFindDetailBinding
-import com.example.swith.repository.RetrofitApi
+import com.example.swith.entity.StudyApplicationResponse
+import com.example.swith.entity.StudyDetailResponse
+import com.example.swith.entity.postApplicationReq
 import com.example.swith.repository.RetrofitService
 import com.example.swith.ui.MainActivity
 import com.example.swith.ui.dialog.CustomDialog
 import com.example.swith.ui.manage.ManageUserProfileActivity
 import com.example.swith.utils.CustomBinder
-import com.example.swith.utils.SharedPrefManager
 import com.example.swith.utils.base.BaseFragment
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class StudyFindDetailFragment : BaseFragment<FragmentStudyFindDetailBinding>(R.layout.fragment_study_find_detail),MainActivity.onBackPressedListener {
-    var groupIdx : Long? = -1
+class StudyFindDetailFragment :
+    BaseFragment<FragmentStudyFindDetailBinding>(R.layout.fragment_study_find_detail),
+    MainActivity.onBackPressedListener {
+    var groupIdx: Long? = -1
 //    val userid= SharedPrefManager(requireActivity()).getLoginData()
 //    val userIdx = userid?.userIdx
 
-    var adminIdx : Long? = -1
-    var activity_:MainActivity? =null
-    lateinit var dialog_ :Dialog
-    var applicationMethod : Int? = -1
+    var adminIdx: Long? = -1
+    var activity_: MainActivity? = null
+    lateinit var dialog_: Dialog
+    var applicationMethod: Int? = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.e("summer", "fragment이동 true")
-        groupIdx = arguments?.getLong("groupIdx",0)
-        applicationMethod = arguments?.getInt("applicationMethod",0)
-        Log.e("summer","groupIdx = $groupIdx")
-        Log.e("summer","applicationMethod = $applicationMethod")
+        groupIdx = arguments?.getLong("groupIdx", 0)
+        applicationMethod = arguments?.getInt("applicationMethod", 0)
+        Log.e("summer", "groupIdx = $groupIdx")
+        Log.e("summer", "applicationMethod = $applicationMethod")
         setData(groupIdx)
     }
 
@@ -63,25 +64,24 @@ class StudyFindDetailFragment : BaseFragment<FragmentStudyFindDetailBinding>(R.l
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         customDialog()
-        binding.flLoadingLayout.visibility=View.VISIBLE
-        setVisiblebar(true,false,"","")
+        binding.flLoadingLayout.visibility = View.VISIBLE
+        setVisiblebar(true, false, "", "")
 
         with(binding)
         {
             btnStudyApply.setOnClickListener {
-                 when(applicationMethod)
-                {
-                     0->{
-                       showLastDialog(0,null) //선착순(신청서 필요 x)
-                     }
-                     1->{
+                when (applicationMethod) {
+                    0 -> {
+                        showLastDialog(0, null) //선착순(신청서 필요 x)
+                    }
+                    1 -> {
                         createApplication(1) //지원(신청서 -> 최종 dialog)
                     }
-                 }
-             }
+                }
+            }
 
             btnAdmin.setOnClickListener {
-                Log.e("클릭이벤트 발생","true")
+                Log.e("클릭이벤트 발생", "true")
                 val intent = Intent(requireActivity(), ManageUserProfileActivity::class.java)
                 intent.putExtra("userIdx", adminIdx)
                 startActivity(intent)
@@ -92,31 +92,31 @@ class StudyFindDetailFragment : BaseFragment<FragmentStudyFindDetailBinding>(R.l
     override fun onBackPressed() {
         activity_?.goSearchPage()
     }
+
     //신청서 Dialog
-    fun createApplication (applicationMethod: Int){
+    fun createApplication(applicationMethod: Int) {
         dialog_.show()
         var dialog_et = dialog_.findViewById<EditText>(R.id.et_application)
         var applyContent = ""
         dialog_et.setOnKeyListener { view, code, event ->
-            if( (event.action == KeyEvent.ACTION_DOWN) && (code == KeyEvent.KEYCODE_ENTER)){
+            if ((event.action == KeyEvent.ACTION_DOWN) && (code == KeyEvent.KEYCODE_ENTER)) {
                 applyContent = dialog_et.text.toString()
                 hideKeyboard(dialog_et)
                 true
-            }
-            else
+            } else
                 false
-            }
+        }
         dialog_.findViewById<Button>(R.id.btn_application_apply).setOnClickListener {
-           //신청서 작성 내용 변수
+            //신청서 작성 내용 변수
             applyContent = dialog_et.text.toString()
-            showLastDialog(1,applyContent)
+            showLastDialog(1, applyContent)
             dialog_.dismiss()
         }
     }
 
     //최종 제출하기 Dialog
-    fun showLastDialog(applicationMethod:Int,applyContent : String?){
-        Log.e("신청서 내용","${applyContent}")
+    fun showLastDialog(applicationMethod: Int, applyContent: String?) {
+        Log.e("신청서 내용", "${applyContent}")
         DataBindingUtil.inflate<DialogCreateBinding>(
             LayoutInflater.from(requireActivity()), R.layout.dialog_create, null, false
         ).apply {
@@ -129,17 +129,16 @@ class StudyFindDetailFragment : BaseFragment<FragmentStudyFindDetailBinding>(R.l
                     }
 
                     override fun onConfirm() {
-                        postData(applicationMethod,groupIdx,applyContent,1)
+                        postData(applicationMethod, groupIdx, applyContent, 1)
                     }
                 })
         }
     }
 
     //groupIdx로 study정보 가져오는 retrofit 부분 (API 나오면 작성하기)
-    fun setData(groupIdx: Long?)
-    {
-        Log.e("summer","데이터 set true")
-        val retrofitService = RetrofitService.retrofit.create(RetrofitApi::class.java)
+    fun setData(groupIdx: Long?) {
+        Log.e("summer", "데이터 set true")
+        val retrofitService = RetrofitService.retrofit.create(SwithService::class.java)
         retrofitService.getStudyDetail(groupIdx!!).enqueue(object : Callback<StudyDetailResponse> {
             override fun onResponse(
                 call: Call<StudyDetailResponse>,
@@ -149,7 +148,7 @@ class StudyFindDetailFragment : BaseFragment<FragmentStudyFindDetailBinding>(R.l
                     Log.e("summer", "성공${response.toString()}")
                     response.body()?.apply {
                         var result = this.result
-                        Log.e("스터디 정보 값들",result.toString())
+                        Log.e("스터디 정보 값들", result.toString())
                         adminIdx = result.adminIdx
                         with(binding)
                         {
@@ -166,56 +165,75 @@ class StudyFindDetailFragment : BaseFragment<FragmentStudyFindDetailBinding>(R.l
                         }
                         with(binding)
                         {
-                            tvStudyDetailTitle.text= result.title
-                            when(result.meet)
-                            {
-                                0->{
+                            tvStudyDetailTitle.text = result.title
+                            when (result.meet) {
+                                0 -> {
                                     tvStudySetTime.text = "주 ${result.frequency}회"
                                 }
-                                1->{
+                                1 -> {
                                     tvStudySetTime.text = "월 ${result.frequency}회"
                                 }
-                                2->{
-                                    tvStudySetTime.text ="${result.periods}"
+                                2 -> {
+                                    tvStudySetTime.text = "${result.periods}"
                                 }
                             }
-                            when(result.online)
-                            {
-                                1->{ tvStudySetPlace1.text ="온라인"
-                                tvStudySetPlace2.visibility = View.GONE}
-                                0->{tvStudySetPlace1.text ="${result.regionIdx1}"
-                                    tvStudySetPlace2.text ="${result.regionIdx2}"
-                                tvStudySetPlace2.visibility=View.VISIBLE
-                                tvStudySetPlace1.visibility=View.VISIBLE}
+                            when (result.online) {
+                                1 -> {
+                                    tvStudySetPlace1.text = "온라인"
+                                    tvStudySetPlace2.visibility = View.GONE
+                                }
+                                0 -> {
+                                    tvStudySetPlace1.text = "${result.regionIdx1}"
+                                    tvStudySetPlace2.text = "${result.regionIdx2}"
+                                    tvStudySetPlace2.visibility = View.VISIBLE
+                                    tvStudySetPlace1.visibility = View.VISIBLE
+                                }
                             }
-                            when(result.interest)
-                            {
-                                1->{tvStudySetCategory.text ="자격증/시험"}
-                                2->{tvStudySetCategory.text ="어학"}
-                                3->{tvStudySetCategory.text ="청소년/입시"}
-                                4->{tvStudySetCategory.text ="취업/창업"}
-                                5->{tvStudySetCategory.text ="컴퓨터/IT"}
-                                6->{tvStudySetCategory.text ="취미/문화"}
-                                7->{tvStudySetCategory.text ="면접"}
+                            when (result.interest) {
+                                1 -> {
+                                    tvStudySetCategory.text = "자격증/시험"
+                                }
+                                2 -> {
+                                    tvStudySetCategory.text = "어학"
+                                }
+                                3 -> {
+                                    tvStudySetCategory.text = "청소년/입시"
+                                }
+                                4 -> {
+                                    tvStudySetCategory.text = "취업/창업"
+                                }
+                                5 -> {
+                                    tvStudySetCategory.text = "컴퓨터/IT"
+                                }
+                                6 -> {
+                                    tvStudySetCategory.text = "취미/문화"
+                                }
+                                7 -> {
+                                    tvStudySetCategory.text = "면접"
+                                }
                             }
                             tvStudySetPlaytime.text = result.groupStart + " ~ " + result.groupEnd
-                            when(result.applicationMethod)
-                            {
-                                0->{tvStudySetApplyMethod.text ="선착순"}
-                                1->{tvStudySetApplyMethod.text ="지원"}
+                            when (result.applicationMethod) {
+                                0 -> {
+                                    tvStudySetApplyMethod.text = "선착순"
+                                }
+                                1 -> {
+                                    tvStudySetApplyMethod.text = "지원"
+                                }
                             }
                             tvStudySetDeadline.text = "${result.recruitmentEndDate} " + "까지"
-                            tvStudySetApplicationStatus.text = "${result.numOfApplicants} / ${result.memberLimit}"
-                            tvStudySetDetailContent.text= result.groupContent
+                            tvStudySetApplicationStatus.text =
+                                "${result.numOfApplicants} / ${result.memberLimit}"
+                            tvStudySetDetailContent.text = result.groupContent
                         }
-                        binding.flLoadingLayout.visibility=View.GONE
+                        binding.flLoadingLayout.visibility = View.GONE
                     }
-                }
-                else {
+                } else {
                     Log.e("summer", "전달실패 code = ${response.code()}")
                     Log.e("summer", "전달실패 msg = ${response.message()}")
                 }
             }
+
             override fun onFailure(call: Call<StudyDetailResponse>, t: Throwable) {
                 Log.e("summer", "onFailure t = ${t.toString()}")
                 Log.e("summer", "onFailure msg = ${t.message}")
@@ -224,35 +242,39 @@ class StudyFindDetailFragment : BaseFragment<FragmentStudyFindDetailBinding>(R.l
     }
 
     // 신청서 내용 보내기 retrofit 부분 (API 나오면 작성)
-    fun postData(applicationMethod:Int,groupIdx:Long?, applyContent:String?, UserIdx:Long)
-    {
-        Log.e("신청서 내용 보내는 부분","${applyContent.toString()}")
-        var postApplicationReq = postApplicationReq(UserIdx,applyContent)
-        val retrofitService = RetrofitService.retrofit.create(RetrofitApi::class.java)
-        retrofitService.postApplication(groupIdx!!,applicationMethod,postApplicationReq).enqueue(object : Callback <StudyApplicationResponse> {
-            override fun onResponse(call: Call<StudyApplicationResponse>, response: Response<StudyApplicationResponse>) {
-                if (response.isSuccessful)
-                {
-                    Log.e("summer", "성공${response.toString()}")
-                    response.body()?.apply {
-                        Log.e("post data =","${groupIdx},${applicationMethod},${postApplicationReq.toString()}")
+    fun postData(applicationMethod: Int, groupIdx: Long?, applyContent: String?, UserIdx: Long) {
+        Log.e("신청서 내용 보내는 부분", "${applyContent.toString()}")
+        var postApplicationReq = postApplicationReq(UserIdx, applyContent)
+        val retrofitService = RetrofitService.retrofit.create(SwithService::class.java)
+        retrofitService.postApplication(groupIdx!!, applicationMethod, postApplicationReq)
+            .enqueue(object : Callback<StudyApplicationResponse> {
+                override fun onResponse(
+                    call: Call<StudyApplicationResponse>,
+                    response: Response<StudyApplicationResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        Log.e("summer", "성공${response.toString()}")
+                        response.body()?.apply {
+                            Log.e(
+                                "post data =",
+                                "${groupIdx},${applicationMethod},${postApplicationReq.toString()}"
+                            )
+                        }
+                    } else {
+                        Log.e("summer", "전달실패 code = ${response.code()}")
+                        Log.e("summer", "전달실패 msg = ${response.message()}")
+                        Toast.makeText(requireActivity(), "다시 시도해주세요", Toast.LENGTH_SHORT).show()
+                        dialog_.dismiss()
                     }
                 }
-                else
-                {
-                    Log.e("summer", "전달실패 code = ${response.code()}")
-                    Log.e("summer", "전달실패 msg = ${response.message()}")
-                    Toast.makeText(requireActivity(),"다시 시도해주세요", Toast.LENGTH_SHORT).show()
+
+                override fun onFailure(call: Call<StudyApplicationResponse>, t: Throwable) {
+                    Log.e("summer", "onFailure t = ${t.toString()}")
+                    Log.e("summer", "onFailure msg = ${t.message}")
+                    Toast.makeText(requireActivity(), "다시 시도해주세요", Toast.LENGTH_SHORT).show()
                     dialog_.dismiss()
                 }
-            }
-            override fun onFailure(call: Call<StudyApplicationResponse>, t: Throwable) {
-                Log.e("summer","onFailure t = ${t.toString()}")
-                Log.e("summer","onFailure msg = ${t.message}")
-                Toast.makeText(requireActivity(),"다시 시도해주세요", Toast.LENGTH_SHORT).show()
-                dialog_.dismiss()
-            }
-        })
+            })
     }
 
     override fun onAttach(context: Context) {
@@ -260,7 +282,7 @@ class StudyFindDetailFragment : BaseFragment<FragmentStudyFindDetailBinding>(R.l
         activity_ = activity as MainActivity
     }
 
-    private fun hideKeyboard(editText: EditText){
+    private fun hideKeyboard(editText: EditText) {
         val mInputMethodManager =
             context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         mInputMethodManager.hideSoftInputFromWindow(
@@ -269,15 +291,14 @@ class StudyFindDetailFragment : BaseFragment<FragmentStudyFindDetailBinding>(R.l
         )
     }
 
-    fun customDialog()
-    {
+    fun customDialog() {
         dialog_ = Dialog(requireActivity())
         dialog_.setContentView(R.layout.dialog_application)
         var params = dialog_.window?.attributes
         dialog_.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         params?.height = WindowManager.LayoutParams.MATCH_PARENT
-        params?.width=WindowManager.LayoutParams.MATCH_PARENT
+        params?.width = WindowManager.LayoutParams.MATCH_PARENT
         params?.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
-        dialog_.window?.attributes=params
+        dialog_.window?.attributes = params
     }
 }

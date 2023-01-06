@@ -1,18 +1,15 @@
 package com.example.swith.ui.study.announce
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.swith.R
-import com.example.swith.data.Announce
-import com.example.swith.data.AnnounceCreate
-import com.example.swith.data.AnnounceModify
 import com.example.swith.databinding.ActivityAnnounceBinding
 import com.example.swith.ui.adapter.AnnounceRVAdapter
 import com.example.swith.ui.dialog.CustomAlertDialog
@@ -23,14 +20,16 @@ import com.example.swith.utils.SwipeController
 import com.example.swith.utils.error.ScreenState
 import com.example.swith.viewmodel.AnnounceViewModel
 
-class AnnounceActivity : AppCompatActivity(), View.OnClickListener{
-    private val viewModel : AnnounceViewModel by viewModels()
+class AnnounceActivity : AppCompatActivity(), View.OnClickListener {
+    private val viewModel: AnnounceViewModel by viewModels()
+
     // 매니저
     private val isManager: Boolean by lazy {
         if (intent.hasExtra("manager"))
             intent.getBooleanExtra("manager", false)
         else false
     }
+
     // group Idx
     private val groupIdx: Long by lazy {
         if (intent.hasExtra("groupIdx"))
@@ -48,12 +47,12 @@ class AnnounceActivity : AppCompatActivity(), View.OnClickListener{
     }
 
     private fun initView() {
-        with(binding){
+        with(binding) {
             clickListener = this@AnnounceActivity
             rvAnnounce.apply {
                 adapter = AnnounceRVAdapter().apply {
                     setListener(object : AnnounceRVAdapter.CustomListener {
-                        override fun onDelete(announce: Announce) {
+                        override fun onDelete(announce: com.example.swith.entity.Announce) {
                             CustomConfirmDialog(
                                 "공지사항 삭제",
                                 "해당 공지사항을 삭제하시겠습니까?\n내용 : ${announce.announcementContent}"
@@ -67,7 +66,7 @@ class AnnounceActivity : AppCompatActivity(), View.OnClickListener{
                             }.show(supportFragmentManager, "공지사항 삭제")
                         }
 
-                        override fun onItemClick(announce: Announce) {
+                        override fun onItemClick(announce: com.example.swith.entity.Announce) {
                             // 매니저인 경우 수정 화면 뜨도록
                             if (isManager) {
                                 CustomAnnounceModifyDialog(announce.announcementContent).apply {
@@ -84,7 +83,7 @@ class AnnounceActivity : AppCompatActivity(), View.OnClickListener{
                                                     override fun onConfirm() {
                                                         dismiss()
                                                         viewModel.updateAnnounce(
-                                                            AnnounceModify(
+                                                            com.example.swith.entity.AnnounceModify(
                                                                 content,
                                                                 announce.announcementIdx
                                                             )
@@ -104,8 +103,9 @@ class AnnounceActivity : AppCompatActivity(), View.OnClickListener{
                         }
                     })
                 }
-                layoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.VERTICAL, false)
-                if(isManager) {
+                layoutManager =
+                    LinearLayoutManager(applicationContext, LinearLayoutManager.VERTICAL, false)
+                if (isManager) {
                     val itemTouchHelper =
                         ItemTouchHelper(SwipeController(this.adapter as AnnounceRVAdapter))
                     itemTouchHelper.attachToRecyclerView(this)
@@ -113,21 +113,28 @@ class AnnounceActivity : AppCompatActivity(), View.OnClickListener{
             }
             ivAnnounceCreate.apply {
                 visibility = if (isManager) View.VISIBLE else View.INVISIBLE
-                setOnClickListener { CustomAnnounceCreateDialog().apply {
-                    setCustomListener(object: CustomAnnounceCreateDialog.CustomListener{
-                        override fun onConfirm(content: String) {
-                            dismiss()
-                            CustomConfirmDialog("공지사항 생성", "해당 공지사항을 생성합니다.").apply {
-                                setCustomListener(object: CustomConfirmDialog.CustomListener{
-                                    override fun onConfirm() {
-                                        viewModel.createAnnounce(AnnounceCreate(content, groupIdx))
-                                        dismiss()
-                                    }
-                                })
-                            }.show(supportFragmentManager, "공지사항 생성")
-                        }
-                    })
-                }.show(supportFragmentManager, "announceCreate") }
+                setOnClickListener {
+                    CustomAnnounceCreateDialog().apply {
+                        setCustomListener(object : CustomAnnounceCreateDialog.CustomListener {
+                            override fun onConfirm(content: String) {
+                                dismiss()
+                                CustomConfirmDialog("공지사항 생성", "해당 공지사항을 생성합니다.").apply {
+                                    setCustomListener(object : CustomConfirmDialog.CustomListener {
+                                        override fun onConfirm() {
+                                            viewModel.createAnnounce(
+                                                com.example.swith.entity.AnnounceCreate(
+                                                    content,
+                                                    groupIdx
+                                                )
+                                            )
+                                            dismiss()
+                                        }
+                                    })
+                                }.show(supportFragmentManager, "공지사항 생성")
+                            }
+                        })
+                    }.show(supportFragmentManager, "announceCreate")
+                }
             }
         }
     }
@@ -141,8 +148,8 @@ class AnnounceActivity : AppCompatActivity(), View.OnClickListener{
             (binding.rvAnnounce.adapter as AnnounceRVAdapter).setData(it.announces)
         })
 
-        viewModel.mutableScreenState.observe(this, Observer{
-            if(it == ScreenState.RENDER) setVisibility(false)
+        viewModel.mutableScreenState.observe(this, Observer {
+            if (it == ScreenState.RENDER) setVisibility(false)
         })
 
         viewModel.mutableErrorType.observe(this, Observer {
@@ -174,14 +181,14 @@ class AnnounceActivity : AppCompatActivity(), View.OnClickListener{
 
     }
 
-    private fun setVisibility(beforeLoad: Boolean){
-        with(binding){
-            svAnnounce.visibility = if(beforeLoad) View.INVISIBLE else View.VISIBLE
+    private fun setVisibility(beforeLoad: Boolean) {
+        with(binding) {
+            svAnnounce.visibility = if (beforeLoad) View.INVISIBLE else View.VISIBLE
             announceCircularIndicator.visibility = if (beforeLoad) View.VISIBLE else View.INVISIBLE
         }
     }
 
-    private fun reloadData(){
+    private fun reloadData() {
         // 새로고침<리로드> (로직 검토 필요)
         setVisibility(true)
         viewModel.loadData(groupIdx)
@@ -193,7 +200,7 @@ class AnnounceActivity : AppCompatActivity(), View.OnClickListener{
     }
 
     override fun onClick(view: View?) {
-        when(view?.id){
+        when (view?.id) {
             R.id.ib_basic_toolbar_back -> {
                 setResult(RESULT_OK)
                 finish()

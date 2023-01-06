@@ -5,15 +5,20 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.swith.R
-import com.example.swith.data.GetUserAttendanceRes
 import com.example.swith.databinding.ItemStatsBinding
+import com.example.swith.entity.GetUserAttendanceRes
 
 class StatsRVAdapter : RecyclerView.Adapter<StatsRVAdapter.ViewHolder>() {
     private lateinit var binding: ItemStatsBinding
     private var attendList = ArrayList<GetUserAttendanceRes>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        binding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_stats, parent, false)
+        binding = DataBindingUtil.inflate(
+            LayoutInflater.from(parent.context),
+            R.layout.item_stats,
+            parent,
+            false
+        )
         return ViewHolder(binding)
     }
 
@@ -23,26 +28,28 @@ class StatsRVAdapter : RecyclerView.Adapter<StatsRVAdapter.ViewHolder>() {
 
     override fun getItemCount(): Int = attendList.size
 
-    fun setData(data: List<GetUserAttendanceRes>){
+    fun setData(data: List<GetUserAttendanceRes>) {
         attendList = data as ArrayList<GetUserAttendanceRes>
     }
 
     // true 일때 출석율 순 false 면 이름 순
-    fun sortData(attendSort: Boolean){
+    fun sortData(attendSort: Boolean) {
         if (attendList.isNotEmpty()) {
             if (attendSort)
-                attendList.sortWith(compareBy<GetUserAttendanceRes> { -it.attendanceRate}.thenBy { it.nickname })
+                attendList.sortWith(compareBy<GetUserAttendanceRes> { -it.attendanceRate }.thenBy { it.nickname })
             else attendList.sortBy { it.nickname }
             notifyDataSetChanged()
         }
     }
 
     inner class ViewHolder(val binding: ItemStatsBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(attend: GetUserAttendanceRes){
-            with(binding){
+        fun bind(attend: GetUserAttendanceRes) {
+            with(binding) {
                 tvItemStatsNickname.text = attend.nickname
-                tvItemStatsRatio.text = if(attend.attendanceRate >= 0) "${attend.attendanceRate} %" else "0 %"
-                progressItemStats.progress = if(attend.attendanceRate >= 0) attend.attendanceRate else 0
+                tvItemStatsRatio.text =
+                    if (attend.attendanceRate >= 0) "${attend.attendanceRate} %" else "0 %"
+                progressItemStats.progress =
+                    if (attend.attendanceRate >= 0) attend.attendanceRate else 0
             }
         }
     }

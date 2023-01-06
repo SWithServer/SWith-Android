@@ -2,22 +2,19 @@ package com.example.swith.ui.login
 
 import android.content.DialogInterface
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.swith.R
-import com.example.swith.data.LoginRequest
-import com.example.swith.data.LoginResponse
 import com.example.swith.databinding.ActivitySnsLoginBinding
 import com.example.swith.ui.MainActivity
 import com.example.swith.ui.profile.ProfileModifyActivity
-import com.example.swith.utils.FirebaseMessageService
 import com.example.swith.utils.SharedPrefManager
 import com.example.swith.viewmodel.LoginViewModel
 import com.kakao.sdk.auth.AuthApiClient
@@ -27,7 +24,8 @@ import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.common.model.KakaoSdkError
 import com.kakao.sdk.user.UserApiClient
 
-class SnsLoginActivity : AppCompatActivity(), View.OnClickListener, Observer<LoginResponse> {
+class SnsLoginActivity : AppCompatActivity(), View.OnClickListener,
+    Observer<com.example.swith.entity.LoginResponse> {
     lateinit var binding: ActivitySnsLoginBinding
 
     private var mLoginViewModel: LoginViewModel? = null
@@ -42,10 +40,13 @@ class SnsLoginActivity : AppCompatActivity(), View.OnClickListener, Observer<Log
     private fun initView() {
         binding.apply {
             clickListener = this@SnsLoginActivity
-            mLoginViewModel = ViewModelProvider(this@SnsLoginActivity, LoginViewModel.Factory()).get(LoginViewModel::class.java).apply {
-                loginViewModel = this
-                getCurrentLogin().observe(this@SnsLoginActivity, this@SnsLoginActivity)
-            }
+            mLoginViewModel =
+                ViewModelProvider(this@SnsLoginActivity, LoginViewModel.Factory()).get(
+                    LoginViewModel::class.java
+                ).apply {
+                    loginViewModel = this
+                    getCurrentLogin().observe(this@SnsLoginActivity, this@SnsLoginActivity)
+                }
         }
     }
 
@@ -146,19 +147,23 @@ class SnsLoginActivity : AppCompatActivity(), View.OnClickListener, Observer<Log
                 )
 
                 mLoginViewModel?.requestCurrentLogin(
-                    LoginRequest(
-                        user.kakaoAccount?.email?:"null",
+                    com.example.swith.entity.LoginRequest(
+                        user.kakaoAccount?.email ?: "null",
                         user.kakaoAccount?.profile?.nickname ?: "null",
                         user.kakaoAccount?.profile?.thumbnailImageUrl ?: "no",
-                        SharedPrefManager(this@SnsLoginActivity).getFcmToken()?:"null"
+                        SharedPrefManager(this@SnsLoginActivity).getFcmToken() ?: "null"
                     )
                 )
-                Log.i("doori","${LoginRequest(
-                    user.kakaoAccount?.email?:"null",
-                    user.kakaoAccount?.profile?.nickname ?: "null",
-                    user.kakaoAccount?.profile?.thumbnailImageUrl ?: "no",
-                    SharedPrefManager(this@SnsLoginActivity).getFcmToken()?:"null"
-                )}")
+                Log.i(
+                    "doori", "${
+                        com.example.swith.entity.LoginRequest(
+                            user.kakaoAccount?.email ?: "null",
+                            user.kakaoAccount?.profile?.nickname ?: "null",
+                            user.kakaoAccount?.profile?.thumbnailImageUrl ?: "no",
+                            SharedPrefManager(this@SnsLoginActivity).getFcmToken() ?: "null"
+                        )
+                    }"
+                )
                 setShowDimmed(true)
             }
         }
@@ -195,7 +200,7 @@ class SnsLoginActivity : AppCompatActivity(), View.OnClickListener, Observer<Log
         builder.show()
     }
 
-    override fun onChanged(loginResponse: LoginResponse?) {
+    override fun onChanged(loginResponse: com.example.swith.entity.LoginResponse?) {
         Log.e("doori", "onChanged = $loginResponse")
         setShowDimmed(false)
         //가입되어있으면 메인페이지,아니면 프로필관리
@@ -204,7 +209,10 @@ class SnsLoginActivity : AppCompatActivity(), View.OnClickListener, Observer<Log
                 Log.e("doori", "goProfile = $this")
                 SharedPrefManager(this@SnsLoginActivity).setLoginData(userIdx, accessToken)
             }
-            Log.e("doori", "SharedPrefManage = ${SharedPrefManager(this@SnsLoginActivity).getLoginData()}")
+            Log.e(
+                "doori",
+                "SharedPrefManage = ${SharedPrefManager(this@SnsLoginActivity).getLoginData()}"
+            )
             if (this) {
                 goProfileModifyPage()
             } else {

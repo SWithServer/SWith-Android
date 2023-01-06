@@ -4,16 +4,15 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.swith.data.ProfileModifyRequest
-import com.example.swith.data.ProfileModifyResponse
-import com.example.swith.data.ProfileRequest
-import com.example.swith.data.ProfileResponse
+import com.example.swith.entity.ProfileResponse
 import com.example.swith.repository.profile.ProfileModifyRepository
 import com.example.swith.repository.profile.ProfileModifyRepositoryProvider
 
-class ProfileModifyViewModel:ViewModel() {
+class ProfileModifyViewModel : ViewModel() {
     val isLoading: ObservableField<Boolean> = ObservableField<Boolean>()
-    private val mProfileModifyRepository: ProfileModifyRepository = ProfileModifyRepositoryProvider.provideProfileModifyRepository()
+    private val mProfileModifyRepository: ProfileModifyRepository =
+        ProfileModifyRepositoryProvider.provideProfileModifyRepository()
+
     init {
         hideLoading()
     }
@@ -26,7 +25,7 @@ class ProfileModifyViewModel:ViewModel() {
         isLoading.set(false)
     }
 
-    fun requestCurrentProfile(profileRequest: ProfileRequest): LiveData<ProfileResponse> {
+    fun requestCurrentProfile(profileRequest: com.example.swith.entity.ProfileRequest): LiveData<ProfileResponse> {
         return mProfileModifyRepository.requestCurrentProfile(profileRequest)
     }
 
@@ -34,14 +33,15 @@ class ProfileModifyViewModel:ViewModel() {
         return mProfileModifyRepository.getCurrentProfile()
     }
 
-    fun requestCurrentProfileModify(profileModifyRequest: ProfileModifyRequest):LiveData<ProfileModifyResponse>{
+    fun requestCurrentProfileModify(profileModifyRequest: com.example.swith.entity.ProfileModifyRequest): LiveData<com.example.swith.entity.ProfileModifyResponse> {
         return mProfileModifyRepository.requestCurrentProfileModify(profileModifyRequest)
     }
-    fun getCurrentProfileModify():LiveData<ProfileModifyResponse>{
+
+    fun getCurrentProfileModify(): LiveData<com.example.swith.entity.ProfileModifyResponse> {
         return mProfileModifyRepository.getCurrentProfileModify()
     }
 
-    fun setImage(){
+    fun setImage() {
 
     }
 

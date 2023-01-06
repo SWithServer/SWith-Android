@@ -5,14 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.swith.data.RatingResult
 import com.example.swith.databinding.ItemRatingBinding
+import com.example.swith.entity.RatingResult
 
 
-class RatingAdapter():RecyclerView.Adapter<RatingAdapter.RatingViewHolder>() {
-    lateinit var binding:ItemRatingBinding
-    inner class RatingViewHolder(val binding: ItemRatingBinding) : RecyclerView.ViewHolder(binding.root)
-    var dataList:List<RatingResult>?=null
+class RatingAdapter() : RecyclerView.Adapter<RatingAdapter.RatingViewHolder>() {
+    lateinit var binding: ItemRatingBinding
+
+    inner class RatingViewHolder(val binding: ItemRatingBinding) :
+        RecyclerView.ViewHolder(binding.root)
+
+    var dataList: List<RatingResult>? = null
 
 
     fun setData(dataList: List<RatingResult>) {
@@ -25,13 +28,13 @@ class RatingAdapter():RecyclerView.Adapter<RatingAdapter.RatingViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: RatingViewHolder, position: Int) {
-        binding.tvName.text=dataList?.get(position)?.nickname
+        binding.tvName.text = dataList?.get(position)?.nickname
         //row 리스너
 //        binding.root.setOnClickListener {
 //            itemClickListener.onClick(it, position,binding.ratingbar.rating)
 //        }
-        binding.ratingbar.setOnClickListener{
-            Log.e("doori",binding.ratingbar.rating.toString())
+        binding.ratingbar.setOnClickListener {
+            Log.e("doori", binding.ratingbar.rating.toString())
         }
     }
 
@@ -42,7 +45,7 @@ class RatingAdapter():RecyclerView.Adapter<RatingAdapter.RatingViewHolder>() {
 
     //리스너 등록
     interface OnItemClickListener {
-        fun onClick(v: View, position: Int,rating:Float)
+        fun onClick(v: View, position: Int, rating: Float)
     }
 
     private lateinit var itemClickListener: OnItemClickListener

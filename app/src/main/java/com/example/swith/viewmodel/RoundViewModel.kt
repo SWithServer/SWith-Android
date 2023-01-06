@@ -1,24 +1,17 @@
 package com.example.swith.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.*
-import com.example.swith.SwithApplication
 import com.example.swith.SwithApplication.Companion.spfManager
-import com.example.swith.data.*
-import com.example.swith.repository.round.RoundRemoteDataSource
+import com.example.swith.entity.*
+import com.example.swith.remote.round.RoundRemoteDataSource
 import com.example.swith.repository.round.RoundRepository
-import com.example.swith.utils.SharedPrefManager
 import com.example.swith.utils.SingleLiveEvent
 import com.example.swith.utils.base.BaseViewModel
 import com.example.swith.utils.compareTimeWithNow
-import com.example.swith.utils.error.ErrorType
 import com.example.swith.utils.error.ScreenState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.time.ZoneId
-import java.time.ZonedDateTime
-import kotlin.collections.ArrayList
 
 class RoundViewModel() : BaseViewModel() {
     private val repository = RoundRepository(RoundRemoteDataSource())
@@ -27,7 +20,7 @@ class RoundViewModel() : BaseViewModel() {
 
     var groupIdx: Long = 0
     var pastVisible = false
-    private var curSessionIdx : Long = 0
+    private var curSessionIdx: Long = 0
     private var _roundLiveData = SingleLiveEvent<Round>()
 
     // 캘린더 화면에 관한 것
@@ -37,7 +30,7 @@ class RoundViewModel() : BaseViewModel() {
     private var _sessionLiveData = MutableLiveData<SessionInfo>()
 
     // 출석
-    private var _attendLiveEvent = MutableLiveData<AttendResponse>()
+    private var _attendLiveEvent = MutableLiveData<com.example.swith.entity.AttendResponse>()
 
     // 통계 화면 (유저별 출석율)
     private var _userAttendLiveData = MutableLiveData<UserAttend>()
@@ -45,35 +38,36 @@ class RoundViewModel() : BaseViewModel() {
     // 메모 화면
     private var _memoLiveEvent = SingleLiveEvent<Any>()
 
-    val roundLiveData : LiveData<Round>
+    val roundLiveData: LiveData<Round>
         get() = _roundLiveData
 
-    val calendarLiveData : LiveData<ArrayList<GetSessionRes>>
-        get () = _calendarLiveData
+    val calendarLiveData: LiveData<ArrayList<GetSessionRes>>
+        get() = _calendarLiveData
 
     val sessionLiveData: LiveData<SessionInfo>
         get() = _sessionLiveData
 
-    val attendLiveEvent: LiveData<AttendResponse>
+    val attendLiveEvent: LiveData<com.example.swith.entity.AttendResponse>
         get() = _attendLiveEvent
 
-    val userAttendLiveData : LiveData<UserAttend>
+    val userAttendLiveData: LiveData<UserAttend>
         get() = _userAttendLiveData
 
     val memoLiveEvent: LiveData<Any>
         get() = _memoLiveEvent
 
     // private val userIdx = SharedPrefManager().getLoginData()?.userIdx
-    private val userIdx: Long = if (spfManager.getLoginData() != null) spfManager.getLoginData()?.userIdx!! else 1
+    private val userIdx: Long =
+        if (spfManager.getLoginData() != null) spfManager.getLoginData()?.userIdx!! else 1
     var curUserAttend: GetAttendance? = null
 
-    fun loadData(){
+    fun loadData() {
         viewModelScope.launch {
             val res = repository.getAllRound(this@RoundViewModel, userIdx, groupIdx)
             withContext(Dispatchers.Main) {
                 postData.clear()
                 allData.clear()
-                if (res == null){
+                if (res == null) {
                     mutableScreenState.postValue(ScreenState.RENDER)
                 }
                 res?.let {
@@ -84,13 +78,14 @@ class RoundViewModel() : BaseViewModel() {
                     }
                     allData.sortBy { s -> s.sessionNum }
                     postData.sortBy { s -> s.sessionNum }
-                    _roundLiveData.value = it.apply { getSessionResList = if(pastVisible) allData else postData }
+                    _roundLiveData.value =
+                        it.apply { getSessionResList = if (pastVisible) allData else postData }
                 }
             }
         }
     }
 
-    fun loadInfoData(){
+    fun loadInfoData() {
         viewModelScope.launch {
             val res = repository.getSessionInfo(this@RoundViewModel, userIdx, curSessionIdx)
             if (res == null) mutableScreenState.postValue(ScreenState.RENDER)
@@ -108,27 +103,36 @@ class RoundViewModel() : BaseViewModel() {
 
     fun getAttendValidTime(): Int = sessionLiveData.value?.attendanceValidTime!!
 
-    fun getCurrentSession(): Int{
+    fun getCurrentSession(): Int {
         sessionLiveData.value?.let {
             return it.sessionNum
         }
         return 0
     }
 
-    fun setCurrentData(sessionIdx: Long){
+    fun setCurrentData(sessionIdx: Long) {
         curSessionIdx = sessionIdx
     }
 
-    fun setPastData(){
-        _roundLiveData.value = _roundLiveData.value?.apply { getSessionResList = if(pastVisible) allData else postData }
+    fun setPastData() {
+        _roundLiveData.value = _roundLiveData.value?.apply {
+            getSessionResList = if (pastVisible) allData else postData
+        }
     }
 
-     // 해당 날짜에 회차가 있는지 여부 체크
-    fun roundDayExists(year: Int, month: Int, day: Int) : Boolean{
+    // 해당 날짜에 회차가 있는지 여부 체크
+    fun roundDayExists(year: Int, month: Int, day: Int): Boolean {
         val thisTimeToLong = String.format("%4d%02d%02d", year, month, day).toLong()
         allData.forEach {
-            val startTimeToLong = String.format("%4d%02d%02d", it.sessionStart[0], it.sessionStart[1], it.sessionStart[2]).toLong()
-            val endTimeToLong = String.format("%4d%02d%02d", it.sessionEnd[0], it.sessionEnd[1], it.sessionEnd[2]).toLong()
+            val startTimeToLong = String.format(
+                "%4d%02d%02d",
+                it.sessionStart[0],
+                it.sessionStart[1],
+                it.sessionStart[2]
+            ).toLong()
+            val endTimeToLong =
+                String.format("%4d%02d%02d", it.sessionEnd[0], it.sessionEnd[1], it.sessionEnd[2])
+                    .toLong()
 
             if (thisTimeToLong in startTimeToLong..endTimeToLong) return true
         }
@@ -136,12 +140,19 @@ class RoundViewModel() : BaseViewModel() {
     }
 
     // 캘린더에 보여질 data 설정
-    fun setCalendarData(year: Int, month: Int, day: Int){
+    fun setCalendarData(year: Int, month: Int, day: Int) {
         val tempList = ArrayList<GetSessionRes>()
         val thisTimeToLong = String.format("%4d%02d%02d", year, month, day).toLong()
         allData.forEach {
-            val startTimeToLong = String.format("%4d%02d%02d",it.sessionStart[0], it.sessionStart[1], it.sessionStart[2]).toLong()
-            val endTimeToLong = String.format("%4d%02d%02d", it.sessionEnd[0], it.sessionEnd[1], it.sessionEnd[2]).toLong()
+            val startTimeToLong = String.format(
+                "%4d%02d%02d",
+                it.sessionStart[0],
+                it.sessionStart[1],
+                it.sessionStart[2]
+            ).toLong()
+            val endTimeToLong =
+                String.format("%4d%02d%02d", it.sessionEnd[0], it.sessionEnd[1], it.sessionEnd[2])
+                    .toLong()
 
             if (thisTimeToLong in startTimeToLong..endTimeToLong) tempList.add(it)
         }
@@ -149,17 +160,17 @@ class RoundViewModel() : BaseViewModel() {
         mutableScreenState.postValue(ScreenState.LOAD)
     }
 
-    fun isUpdateAvailable() : Boolean{
+    fun isUpdateAvailable(): Boolean {
         if (curUserAttend?.status == 0)
             _sessionLiveData.value?.let { return compareTimeWithNow(it.sessionEnd) }
         return false
     }
 
     // 현재 유저 출석 업데이트
-    fun updateCurAttend(){
+    fun updateCurAttend() {
         viewModelScope.launch {
             val res = repository.updateAttend(this@RoundViewModel, userIdx, curSessionIdx)
-            withContext(Dispatchers.Main){
+            withContext(Dispatchers.Main) {
                 res?.let {
                     if (!it.isSuccess) {
                         mutableErrorMessage.postValue(res.message)
@@ -172,10 +183,10 @@ class RoundViewModel() : BaseViewModel() {
         }
     }
 
-    fun loadUserAttend(){
+    fun loadUserAttend() {
         viewModelScope.launch {
             val res = repository.getUserAttend(this@RoundViewModel, groupIdx)
-            withContext(Dispatchers.Main){
+            withContext(Dispatchers.Main) {
                 if (res == null) mutableScreenState.postValue(ScreenState.RENDER)
                 res?.let {
                     mutableScreenState.postValue(ScreenState.RENDER)
@@ -185,10 +196,13 @@ class RoundViewModel() : BaseViewModel() {
         }
     }
 
-    fun createMemo(content: String){
+    fun createMemo(content: String) {
         viewModelScope.launch {
-            val res = repository.createMemo(this@RoundViewModel, Memo(content, curSessionIdx, userIdx))
-            withContext(Dispatchers.Main){
+            val res = repository.createMemo(
+                this@RoundViewModel,
+                com.example.swith.entity.Memo(content, curSessionIdx, userIdx)
+            )
+            withContext(Dispatchers.Main) {
                 if (res?.isSuccess == false)
                     mutableErrorMessage.postValue(res.message)
                 else {
@@ -199,10 +213,16 @@ class RoundViewModel() : BaseViewModel() {
         }
     }
 
-    fun updateMemo(content: String){
+    fun updateMemo(content: String) {
         viewModelScope.launch {
-            val res = repository.updateMemo(this@RoundViewModel, MemoUpdate(content, sessionLiveData.value?.memoIdx!!))
-            withContext(Dispatchers.Main){
+            val res = repository.updateMemo(
+                this@RoundViewModel,
+                com.example.swith.entity.MemoUpdate(
+                    content,
+                    sessionLiveData.value?.memoIdx!!
+                )
+            )
+            withContext(Dispatchers.Main) {
                 if (res?.isSuccess == false)
                     mutableErrorMessage.postValue(res.message)
                 else _memoLiveEvent.call()

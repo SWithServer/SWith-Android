@@ -3,24 +3,19 @@ package com.example.swith.ui.study.round
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.Observer
 import com.example.swith.R
-import com.example.swith.data.GetSessionRes
 import com.example.swith.databinding.FragmentRoundBinding
-import com.example.swith.utils.base.BaseFragment
+import com.example.swith.entity.GetSessionRes
 import com.example.swith.ui.adapter.RoundRVAdapter
-import com.example.swith.ui.study.StudyActivity
-import com.example.swith.ui.study.create.RoundCreateActivity
 import com.example.swith.ui.study.announce.AnnounceActivity
+import com.example.swith.ui.study.create.RoundCreateActivity
+import com.example.swith.utils.base.BaseFragment
 import com.example.swith.viewmodel.RoundViewModel
 
 class RoundFragment : BaseFragment<FragmentRoundBinding>(R.layout.fragment_round) {
@@ -45,18 +40,19 @@ class RoundFragment : BaseFragment<FragmentRoundBinding>(R.layout.fragment_round
 
         observeViewModel()
 
-        activityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { it ->
-            if(it.resultCode == Activity.RESULT_OK){
-                setViewVisibility(true)
-                viewModel.loadData()
-                setPastText()
+        activityResultLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { it ->
+                if (it.resultCode == Activity.RESULT_OK) {
+                    setViewVisibility(true)
+                    viewModel.loadData()
+                    setPastText()
+                }
             }
-        }
 
         initListener()
     }
 
-    private fun observeViewModel(){
+    private fun observeViewModel() {
         setViewVisibility(true)
         viewModel.loadData()
         setPastText()
@@ -76,25 +72,36 @@ class RoundFragment : BaseFragment<FragmentRoundBinding>(R.layout.fragment_round
         })
     }
 
-    private fun setViewVisibility(beforeDataLoad: Boolean){
+    private fun setViewVisibility(beforeDataLoad: Boolean) {
         with(binding) {
             if (beforeDataLoad) {
                 roundCircularIndicator.visibility = View.VISIBLE
                 roundMainLayout.visibility = View.INVISIBLE
-            }else{
+            } else {
                 roundMainLayout.visibility = View.VISIBLE
                 roundCircularIndicator.visibility = View.INVISIBLE
             }
         }
     }
 
-    private fun initListener(){
-        with(binding){
-            roundNoticeLayout.setOnClickListener { activityResultLauncher.launch(Intent(activity, AnnounceActivity::class.java).apply { putExtra("manager", viewModel.roundLiveData.value?.admin)
-                                                    putExtra("groupIdx", viewModel.groupIdx)})}
-            roundAddBtn.setOnClickListener { activityResultLauncher.launch(Intent(activity, RoundCreateActivity::class.java).apply { putExtra("minuteMin", viewModel.roundLiveData.value?.attendanceValidTime)
-                                                    putExtra("groupIdx", viewModel.groupIdx)
-            }) }
+    private fun initListener() {
+        with(binding) {
+            roundNoticeLayout.setOnClickListener {
+                activityResultLauncher.launch(Intent(activity, AnnounceActivity::class.java).apply {
+                    putExtra("manager", viewModel.roundLiveData.value?.admin)
+                    putExtra("groupIdx", viewModel.groupIdx)
+                })
+            }
+            roundAddBtn.setOnClickListener {
+                activityResultLauncher.launch(
+                    Intent(
+                        activity,
+                        RoundCreateActivity::class.java
+                    ).apply {
+                        putExtra("minuteMin", viewModel.roundLiveData.value?.attendanceValidTime)
+                        putExtra("groupIdx", viewModel.groupIdx)
+                    })
+            }
             roundPreviousTv.setOnClickListener {
                 viewModel.pastVisible = !viewModel.pastVisible
                 setPastText()
@@ -110,7 +117,7 @@ class RoundFragment : BaseFragment<FragmentRoundBinding>(R.layout.fragment_round
         }
     }
 
-    private fun setPastText(){
+    private fun setPastText() {
         with(binding.roundPreviousTv) {
             if (viewModel.pastVisible) {
                 text = "지난 회차 안보기"

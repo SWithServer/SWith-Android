@@ -2,10 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
         <variable
             name="profileModifyViewModel"
             type="com.example.swith.viewmodel.ProfileModifyViewModel" />
+
         <variable
             name="clickListener"
             type="android.view.View.OnClickListener" />
@@ -15,11 +18,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.profile.ProfileModifyActivity">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_profile"
             android:layout_width="match_parent"
             android:layout_height="36dp"
             app:layout_constraintTop_toTopOf="parent">
+
             <TextView
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
@@ -31,13 +36,13 @@
                 android:layout_marginStart="20dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintBottom_toBottomOf="parent" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/color_F1F1F1"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintBottom_toBottomOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -298,7 +303,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:indeterminateTint="#54000000"/>
+                android:indeterminateTint="#54000000" />
         </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

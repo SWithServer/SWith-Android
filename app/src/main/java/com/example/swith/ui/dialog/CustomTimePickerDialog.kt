@@ -10,17 +10,23 @@ import androidx.fragment.app.DialogFragment
 import com.example.swith.R
 import com.example.swith.databinding.DialogTimepickerBinding
 
-class CustomTimePickerDialog(context: Context): DialogFragment() {
+class CustomTimePickerDialog(context: Context) : DialogFragment() {
     val dialogBinding: DialogTimepickerBinding by lazy {
-        DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.dialog_timepicker, null, false)
+        DataBindingUtil.inflate(
+            LayoutInflater.from(context),
+            R.layout.dialog_timepicker,
+            null,
+            false
+        )
     }
 
-    interface ClickListener{
+    interface ClickListener {
         fun roundCreate()
     }
-    private lateinit var customListener : ClickListener
 
-    fun setCustomListener(listener: ClickListener){
+    private lateinit var customListener: ClickListener
+
+    fun setCustomListener(listener: ClickListener) {
         customListener = listener
     }
 
@@ -49,7 +55,7 @@ class CustomTimePickerDialog(context: Context): DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        with(dialogBinding){
+        with(dialogBinding) {
             btnRoundCreateCancel.setOnClickListener { dismiss() }
             btnRoundCreateConfirm.setOnClickListener { customListener.roundCreate() }
         }

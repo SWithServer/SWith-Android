@@ -2,37 +2,42 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
         <variable
             name="clickListener"
             type="android.view.View.OnClickListener" />
     </data>
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:context=".ui.study.StudyActivity">
-    <include
-        android:id="@+id/study_toolbar"
-        layout="@layout/study_appbar"
-        app:clickListener="@{clickListener}"
-        android:visibility="invisible"/>
-    <FrameLayout
-        android:id="@+id/study_frm"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/study_toolbar"
-        app:layout_constraintBottom_toTopOf="@id/study_bottom_nav"/>
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/study_bottom_nav"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:itemBackground="@color/white"
-        app:itemIconTint="@drawable/bottom_menu_selector_color"
-        app:labelVisibilityMode="unlabeled"
-        app:menu="@menu/bottom_study_menu"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:context=".ui.study.StudyActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <include
+            android:id="@+id/study_toolbar"
+            layout="@layout/study_appbar"
+            app:clickListener="@{clickListener}"
+            android:visibility="invisible" />
+
+        <FrameLayout
+            android:id="@+id/study_frm"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/study_toolbar"
+            app:layout_constraintBottom_toTopOf="@id/study_bottom_nav" />
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/study_bottom_nav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:itemBackground="@color/white"
+            app:itemIconTint="@drawable/bottom_menu_selector_color"
+            app:labelVisibilityMode="unlabeled"
+            app:menu="@menu/bottom_study_menu"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

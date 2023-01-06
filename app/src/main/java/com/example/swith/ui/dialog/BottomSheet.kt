@@ -9,15 +9,20 @@ import com.example.swith.R
 import com.example.swith.databinding.FragmentBottomSheetBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class BottomSheet(private val title: String, private val alert: String?, private val content: String, private val buttonMessage: String)
-    : BottomSheetDialogFragment(){
-    private lateinit var binding : FragmentBottomSheetBinding
+class BottomSheet(
+    private val title: String,
+    private val alert: String?,
+    private val content: String,
+    private val buttonMessage: String
+) : BottomSheetDialogFragment() {
+    private lateinit var binding: FragmentBottomSheetBinding
 
-    interface customClickListener{
+    interface customClickListener {
         fun onCheckClick()
     }
+
     private lateinit var customListener: customClickListener
-    fun setCustomListener(mClickListener: customClickListener){
+    fun setCustomListener(mClickListener: customClickListener) {
         customListener = mClickListener
     }
 
@@ -26,13 +31,14 @@ class BottomSheet(private val title: String, private val alert: String?, private
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_bottom_sheet, container, false)
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_bottom_sheet, container, false)
         initView()
         return binding.root
     }
 
-    private fun initView(){
-        with(binding){
+    private fun initView() {
+        with(binding) {
             tvBottomTitle.text = title
             tvBottomAlert.apply {
                 alert?.let { text = alert }

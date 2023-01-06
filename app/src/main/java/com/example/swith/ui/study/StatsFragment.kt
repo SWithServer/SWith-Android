@@ -1,35 +1,23 @@
 package com.example.swith.ui.study
 
-import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
-import androidx.core.view.forEach
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.swith.R
-import com.example.swith.data.GetUserAttendanceRes
 import com.example.swith.databinding.FragmentStatsBinding
-import com.example.swith.ui.adapter.ManageAttendRVAdapter
 import com.example.swith.ui.adapter.StatsRVAdapter
 import com.example.swith.utils.base.BaseFragment
 import com.example.swith.viewmodel.RoundViewModel
-import com.github.mikephil.charting.components.Legend
-import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.data.BarData
-import com.github.mikephil.charting.data.BarDataSet
-import com.github.mikephil.charting.data.BarEntry
-import com.github.mikephil.charting.formatter.ValueFormatter
-import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 
 class StatsFragment : BaseFragment<FragmentStatsBinding>(R.layout.fragment_stats) {
-    private val viewModel : RoundViewModel by activityViewModels()
+    private val viewModel: RoundViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -37,21 +25,21 @@ class StatsFragment : BaseFragment<FragmentStatsBinding>(R.layout.fragment_stats
         observeViewModel()
     }
 
-    private fun initView(){
+    private fun initView() {
         binding.rvStats.apply {
             adapter = StatsRVAdapter()
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         }
     }
 
-    private fun initSpinner(){
+    private fun initSpinner() {
         val stringList = ArrayList<String>()
         stringList.apply {
             add("출석율 순")
             add("이름순")
         }
         binding.spinnerStatsSort.apply {
-            adapter = object: ArrayAdapter<String>(requireContext(), R.layout.item_stats_spinner){
+            adapter = object : ArrayAdapter<String>(requireContext(), R.layout.item_stats_spinner) {
                 override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
                     // spinner 로 텍스트 설정
                     val textView = super.getView(position, convertView, parent) as TextView
@@ -60,7 +48,7 @@ class StatsFragment : BaseFragment<FragmentStatsBinding>(R.layout.fragment_stats
                 }
             }.apply { addAll(stringList) }
             dropDownVerticalOffset = dipToPixels(31f).toInt()
-            onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
+            onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
                     parent: AdapterView<*>?,
                     view: View?,
@@ -78,7 +66,7 @@ class StatsFragment : BaseFragment<FragmentStatsBinding>(R.layout.fragment_stats
         }
     }
 
-    private fun observeViewModel(){
+    private fun observeViewModel() {
         setVisibility(true, true)
         viewModel.loadUserAttend()
 
@@ -89,7 +77,10 @@ class StatsFragment : BaseFragment<FragmentStatsBinding>(R.layout.fragment_stats
         })
 
         viewModel.mutableScreenState.observe(viewLifecycleOwner, Observer {
-            setVisibility(false, viewModel.userAttendLiveData.value?.getUserAttendanceResList.isNullOrEmpty())
+            setVisibility(
+                false,
+                viewModel.userAttendLiveData.value?.getUserAttendanceResList.isNullOrEmpty()
+            )
         })
     }
 
@@ -161,9 +152,9 @@ class StatsFragment : BaseFragment<FragmentStatsBinding>(R.layout.fragment_stats
 //        }
 //    }
 
-    private fun setVisibility(beforeLoad: Boolean, isNull : Boolean){
-        with(binding){
-            if (beforeLoad){
+    private fun setVisibility(beforeLoad: Boolean, isNull: Boolean) {
+        with(binding) {
+            if (beforeLoad) {
                 statsLayout.visibility = View.INVISIBLE
                 statsCircularLayout.visibility = View.VISIBLE
             } else {

@@ -1,25 +1,23 @@
 package com.example.swith.ui.manage
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.swith.R
-import com.example.swith.data.ManageUserResult
 import com.example.swith.databinding.ActivityManageUserBinding
 import com.example.swith.ui.adapter.ManageUserTabVPAdapter
-import com.example.swith.ui.profile.ProfileFragment
 import com.google.android.material.tabs.TabLayoutMediator
 
-class ManageUserActivity : AppCompatActivity(), View.OnClickListener{
-    lateinit var binding : ActivityManageUserBinding
-    var groupIdx : Long = -1
+class ManageUserActivity : AppCompatActivity(), View.OnClickListener {
+    lateinit var binding: ActivityManageUserBinding
+    var groupIdx: Long = -1
     private val tabTitleArray = arrayOf(
         "지원",
         "목록"
     )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_manage_user)
@@ -28,22 +26,22 @@ class ManageUserActivity : AppCompatActivity(), View.OnClickListener{
         viewPager()
     }
 
-    fun viewPager(){
+    fun viewPager() {
         val viewPager = binding.applicationViewPager
         val tabLayout = binding.applicationTabLayout
-        viewPager.adapter = ManageUserTabVPAdapter(supportFragmentManager,lifecycle)
-        TabLayoutMediator(tabLayout,viewPager){ tab, position-> tab.text = tabTitleArray[position]
+        viewPager.adapter = ManageUserTabVPAdapter(supportFragmentManager, lifecycle)
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            tab.text = tabTitleArray[position]
         }.attach()
     }
 
-    fun initData()
-    {
+    fun initData() {
         (intent.hasExtra("groupIdx")).let { groupIdx = intent.getLongExtra("groupIdx", 0) }
-        Log.e("summer","groupIdx = ${groupIdx}")
+        Log.e("summer", "groupIdx = ${groupIdx}")
     }
 
     override fun onClick(view: View?) {
-        when(view?.id){
+        when (view?.id) {
             R.id.ib_basic_toolbar_back -> finish()
         }
     }

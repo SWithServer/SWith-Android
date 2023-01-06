@@ -10,16 +10,17 @@ import androidx.fragment.app.DialogFragment
 import com.example.swith.R
 import com.example.swith.databinding.DialogConfirmBinding
 
-class CustomConfirmDialog(private val title: String, private val content: String) : DialogFragment()  {
+class CustomConfirmDialog(private val title: String, private val content: String) :
+    DialogFragment() {
     private lateinit var binding: DialogConfirmBinding
 
-    interface CustomListener{
+    interface CustomListener {
         fun onConfirm()
     }
 
     private lateinit var customListener: CustomListener
 
-    fun setCustomListener(listener: CustomListener){
+    fun setCustomListener(listener: CustomListener) {
         customListener = listener
     }
 
@@ -51,7 +52,7 @@ class CustomConfirmDialog(private val title: String, private val content: String
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        with(binding){
+        with(binding) {
             tvConfirmTitle.text = title
             tvConfirmContent.text = content
             btnDialogCancel.setOnClickListener { dismiss() }

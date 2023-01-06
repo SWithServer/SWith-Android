@@ -4,15 +4,15 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.bumptech.glide.Glide
-import com.example.swith.data.ProfileRequest
-import com.example.swith.data.ProfileResponse
+import com.example.swith.entity.ProfileResponse
 import com.example.swith.repository.profile.ProfileRepository
 import com.example.swith.repository.profile.ProfileRepositoryProvider
 
-class ProfileViewModel: ViewModel(){
+class ProfileViewModel : ViewModel() {
     val isLoading: ObservableField<Boolean> = ObservableField<Boolean>()
-    private val mProfileRepository: ProfileRepository = ProfileRepositoryProvider.provideProfileRepository()
+    private val mProfileRepository: ProfileRepository =
+        ProfileRepositoryProvider.provideProfileRepository()
+
     init {
         hideLoading()
     }
@@ -25,7 +25,7 @@ class ProfileViewModel: ViewModel(){
         isLoading.set(false)
     }
 
-    fun requestCurrentProfile(profileRequest: ProfileRequest): LiveData<ProfileResponse> {
+    fun requestCurrentProfile(profileRequest: com.example.swith.entity.ProfileRequest): LiveData<ProfileResponse> {
         return mProfileRepository.requestCurrentProfile(profileRequest)
     }
 
@@ -33,7 +33,7 @@ class ProfileViewModel: ViewModel(){
         return mProfileRepository.getCurrentProfile()
     }
 
-    fun setImage(){
+    fun setImage() {
 
     }
 

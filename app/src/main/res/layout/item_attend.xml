@@ -1,30 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp">
-    <TableRow
+
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/tv_item_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:textColor="@color/black"
-            android:text="이름"
-            android:layout_weight="2"
-            android:gravity="center" />
-        <TextView
-            android:id="@+id/tv_item_attend"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="출석"
-            android:textSize="12sp"
-            android:textColor="@color/black"
-            android:gravity="center"
-            android:layout_weight="5" />
-    </TableRow>
-</TableLayout>
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_item_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:textColor="@color/black"
+                android:text="이름"
+                android:layout_weight="2"
+                android:gravity="center" />
+
+            <TextView
+                android:id="@+id/tv_item_attend"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="출석"
+                android:textSize="12sp"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:layout_weight="5" />
+        </TableRow>
+    </TableLayout>
 </layout>

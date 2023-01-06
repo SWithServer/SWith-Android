@@ -2,21 +2,26 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context = ".ui.study.manage.ManageStudyModifyActivity">
+    tools:context=".ui.study.manage.ManageStudyModifyActivity">
+
     <data>
+
         <variable
             name="clickListener"
             type="android.view.View.OnClickListener" />
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white">
+
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar_manage_study_modify"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
+
         <androidx.core.widget.NestedScrollView
             android:id="@+id/layout_create_scroll"
             android:layout_width="match_parent"
@@ -25,16 +30,19 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar_manage_study_modify">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:orientation="vertical">
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/layout_create_image"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
                     <androidx.cardview.widget.CardView
                         android:id="@+id/iv_image_cardview"
                         app:layout_constraintTop_toTopOf="parent"
@@ -42,6 +50,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
+
                         <ImageView
                             android:id="@+id/iv_study_create"
                             android:layout_width="match_parent"
@@ -52,6 +61,7 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
                     </androidx.cardview.widget.CardView>
+
                     <Button
                         android:id="@+id/btn_image"
                         android:layout_width="75dp"
@@ -62,12 +72,14 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
                     android:layout_marginTop="10dp">
+
                     <TextView
                         app:layout_constraintBottom_toTopOf="@id/layout_et_study_title"
                         app:layout_constraintStart_toStartOf="parent"
@@ -77,6 +89,7 @@
                         android:layout_height="wrap_content"
                         android:text="스터디 제목"
                         android:textSize="14sp" />
+
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/layout_et_study_title"
                         android:layout_width="match_parent"
@@ -84,6 +97,7 @@
                         android:layout_marginTop="10dp"
                         app:layout_constraintTop_toBottomOf="@id/tv_study_title"
                         android:background="@drawable/bg_round_gray">
+
                         <EditText
                             android:id="@+id/et_study_title"
                             app:layout_constraintStart_toStartOf="parent"
@@ -95,9 +109,10 @@
                             android:background="@drawable/bg_round_gray"
                             android:textColor="@color/black"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            android:textSize="12sp"/>
+                            android:textSize="12sp" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -113,8 +128,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
-                    >
+                    android:layout_marginEnd="20dp">
+
                     <TextView
                         android:id="@+id/tv_study_time"
                         android:layout_width="match_parent"
@@ -122,7 +137,8 @@
                         android:text="시간"
                         android:textColor="@color/black"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"/>
+                        app:layout_constraintStart_toStartOf="parent" />
+
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/layout_create_week"
                         android:layout_width="match_parent"
@@ -130,6 +146,7 @@
                         android:layout_marginTop="10dp"
                         app:layout_constraintTop_toBottomOf="@id/tv_study_time"
                         android:background="@drawable/bg_round_gray">
+
                         <TextView
                             android:id="@+id/tv_study_week"
                             android:layout_width="wrap_content"
@@ -142,6 +159,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@id/et_study_week"
                             android:layout_marginStart="20dp" />
+
                         <EditText
                             android:id="@+id/et_study_week"
                             android:layout_width="28dp"
@@ -155,6 +173,7 @@
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toEndOf="@id/tv_study_week" />
+
                         <TextView
                             android:id="@+id/study_week_tv2"
                             android:layout_width="wrap_content"
@@ -166,6 +185,7 @@
                             android:text="회"
                             android:textColor="@color/color_9F9F9F"
                             app:layout_constraintStart_toEndOf="@id/et_study_week" />
+
                         <CheckBox
                             android:id="@+id/check_week"
                             android:layout_width="16dp"
@@ -175,9 +195,10 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            android:layout_marginEnd="20dp"/>
+                            android:layout_marginEnd="20dp" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
+
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/layout_create_month"
                         android:layout_width="match_parent"
@@ -185,6 +206,7 @@
                         android:layout_marginTop="10dp"
                         app:layout_constraintTop_toBottomOf="@id/layout_create_week"
                         android:background="@drawable/bg_round_gray">
+
                         <TextView
                             android:id="@+id/tv_study_month"
                             android:layout_width="wrap_content"
@@ -197,6 +219,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@id/et_study_month"
                             android:layout_marginStart="20dp" />
+
                         <EditText
                             android:id="@+id/et_study_month"
                             android:layout_width="28dp"
@@ -210,6 +233,7 @@
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toEndOf="@id/tv_study_month" />
+
                         <TextView
                             android:id="@+id/study_month_tv2"
                             android:layout_width="wrap_content"
@@ -221,6 +245,7 @@
                             android:text="회"
                             android:textColor="@color/color_9F9F9F"
                             app:layout_constraintStart_toEndOf="@id/et_study_month" />
+
                         <CheckBox
                             android:id="@+id/check_month"
                             android:layout_width="16dp"
@@ -230,9 +255,10 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            android:layout_marginEnd="20dp"/>
+                            android:layout_marginEnd="20dp" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
+
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/layout_create_free"
                         android:layout_width="match_parent"
@@ -240,6 +266,7 @@
                         android:layout_marginTop="10dp"
                         app:layout_constraintTop_toBottomOf="@id/layout_create_month"
                         android:background="@drawable/bg_round_gray">
+
                         <EditText
                             android:id="@+id/et_study_free"
                             android:layout_width="match_parent"
@@ -253,7 +280,8 @@
                             android:hint="직접 입력해주세요"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"/>
+                            app:layout_constraintStart_toStartOf="parent" />
+
                         <CheckBox
                             android:id="@+id/check_free"
                             android:layout_width="16dp"
@@ -263,10 +291,11 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            android:layout_marginEnd="20dp"/>
+                            android:layout_marginEnd="20dp" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -282,8 +311,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
-                    >
+                    android:layout_marginEnd="20dp">
+
                     <TextView
                         android:id="@+id/tv_study_online"
                         app:layout_constraintStart_toStartOf="parent"
@@ -293,6 +322,7 @@
                         app:layout_constraintBottom_toTopOf="@id/layout_create_online_btn"
                         android:text="온/오프라인"
                         android:textSize="14sp" />
+
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/layout_create_online_btn"
                         android:layout_width="match_parent"
@@ -300,6 +330,7 @@
                         app:layout_constraintTop_toBottomOf="@id/tv_study_online"
                         app:layout_constraintBottom_toBottomOf="parent"
                         android:layout_marginTop="10dp">
+
                         <CheckBox
                             android:id="@+id/btn_online"
                             app:layout_constraintHorizontal_weight="1"
@@ -314,7 +345,8 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@id/btn_offline"/>
+                            app:layout_constraintEnd_toStartOf="@id/btn_offline" />
+
                         <CheckBox
                             android:id="@+id/btn_offline"
                             app:layout_constraintHorizontal_weight="1"
@@ -328,7 +360,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@id/btn_online"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent"/>
+                            app:layout_constraintBottom_toBottomOf="parent" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -349,8 +381,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
-                    >
+                    android:layout_marginEnd="20dp">
+
                     <TextView
                         android:id="@+id/tv_study_region"
                         android:layout_width="wrap_content"
@@ -360,7 +392,7 @@
                         android:textSize="14sp"
                         app:layout_constraintBottom_toTopOf="@id/layout_create_region_btns"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"/>
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/layout_create_region_btns"
@@ -369,6 +401,7 @@
                         android:layout_marginTop="10dp"
                         app:layout_constraintTop_toBottomOf="@id/tv_study_region"
                         app:layout_constraintBottom_toBottomOf="parent">
+
                         <Button
                             android:id="@+id/btn_plus_place1"
                             android:layout_width="0dp"
@@ -384,6 +417,7 @@
                             style="?android:attr/borderlessButtonStyle"
                             android:background="@drawable/bg_create_skyblue"
                             android:text="+" />
+
                         <Button
                             android:id="@+id/btn_plus_place2"
                             android:layout_width="0dp"
@@ -412,11 +446,13 @@
                     android:layout_marginBottom="10dp"
                     android:background="@color/color_F1F1F1"
                     app:layout_constraintTop_toTopOf="parent" />
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp">
+
                     <TextView
                         android:id="@+id/tv_study_category"
                         app:layout_constraintBottom_toTopOf="@id/layout_spinner_category"
@@ -426,14 +462,15 @@
                         android:layout_height="wrap_content"
                         android:text="분류"
                         android:textSize="14sp" />
+
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/layout_spinner_category"
                         android:layout_width="match_parent"
                         android:layout_marginTop="10dp"
                         android:layout_height="44dp"
                         android:background="@drawable/bg_create_white_blue"
-                        app:layout_constraintTop_toBottomOf="@id/tv_study_category"
-                        >
+                        app:layout_constraintTop_toBottomOf="@id/tv_study_category">
+
                         <Spinner
                             android:id="@+id/spinner_category"
                             android:layout_width="wrap_content"
@@ -442,55 +479,10 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             android:layout_marginStart="20dp"
-                            android:backgroundTint="@color/color_82B4FF"
-                           />
+                            android:backgroundTint="@color/color_82B4FF" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@color/color_F1F1F1"
-                    app:layout_constraintTop_toTopOf="parent" />
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp">
-                    <TextView
-                        android:id="@+id/tv_study_detail_interest"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintBottom_toTopOf="@+id/layout_et_study_detail"
-                        android:text="세부주제"
-                        android:textSize="14sp"
-                        android:textColor="@color/black" />
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/layout_et_study_detail"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_study_detail_interest"
-                        android:background="@drawable/bg_create_white_blue">
-                        <EditText
-                            android:id="@+id/et_create_topic"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            android:layout_width="match_parent"
-                            android:layout_marginStart="20dp"
-                            android:layout_marginEnd="20dp"
-                            android:layout_height="44dp"
-                            android:background="@drawable/bg_create_white_blue"
-                            android:textColor="@color/color_82B4FF"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            android:textSize="12sp"/>
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </androidx.constraintlayout.widget.ConstraintLayout>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -506,34 +498,41 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp">
+
                     <TextView
-                        android:id="@+id/tv_study_people"
-                        app:layout_constraintBottom_toTopOf="@id/layout_spinner_people"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
+                        android:id="@+id/tv_study_detail_interest"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="모집인원"
-                        android:textSize="14sp" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toTopOf="@+id/layout_et_study_detail"
+                        android:text="세부주제"
+                        android:textSize="14sp"
+                        android:textColor="@color/black" />
+
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/layout_spinner_people"
+                        android:id="@+id/layout_et_study_detail"
                         android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:layout_height="44dp"
-                        android:background="@drawable/bg_create_white_blue"
-                        app:layout_constraintTop_toBottomOf="@id/tv_study_people"
-                        >
-                        <Spinner
-                            android:id="@+id/spinner_people"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_study_detail_interest"
+                        android:background="@drawable/bg_create_white_blue">
+
+                        <EditText
+                            android:id="@+id/et_create_topic"
                             app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:layout_width="match_parent"
                             android:layout_marginStart="20dp"
-                            android:backgroundTint="@color/color_82B4FF"/>
+                            android:layout_marginEnd="20dp"
+                            android:layout_height="44dp"
+                            android:background="@drawable/bg_create_white_blue"
+                            android:textColor="@color/color_82B4FF"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:textSize="12sp" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -543,11 +542,59 @@
                     android:layout_marginBottom="10dp"
                     android:background="@color/color_F1F1F1"
                     app:layout_constraintTop_toTopOf="parent" />
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp">
+
+                    <TextView
+                        android:id="@+id/tv_study_people"
+                        app:layout_constraintBottom_toTopOf="@id/layout_spinner_people"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="모집인원"
+                        android:textSize="14sp" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/layout_spinner_people"
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="10dp"
+                        android:layout_height="44dp"
+                        android:background="@drawable/bg_create_white_blue"
+                        app:layout_constraintTop_toBottomOf="@id/tv_study_people">
+
+                        <Spinner
+                            android:id="@+id/spinner_people"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:layout_marginStart="20dp"
+                            android:backgroundTint="@color/color_82B4FF" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/color_F1F1F1"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp">
+
                     <TextView
                         android:id="@+id/tv_study_method"
                         app:layout_constraintBottom_toTopOf="@id/layout_spinner_method"
@@ -557,13 +604,14 @@
                         android:layout_height="wrap_content"
                         android:text="모집방식"
                         android:textSize="14sp" />
+
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/layout_spinner_method"
                         android:layout_width="match_parent"
                         android:layout_marginTop="10dp"
                         android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@id/tv_study_method"
-                        >
+                        app:layout_constraintTop_toBottomOf="@id/tv_study_method">
+
                         <CheckBox
                             android:id="@+id/btn_application_ff"
                             app:layout_constraintHorizontal_weight="1"
@@ -578,7 +626,8 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@id/btn_application_apply"/>
+                            app:layout_constraintEnd_toStartOf="@id/btn_application_apply" />
+
                         <CheckBox
                             android:id="@+id/btn_application_apply"
                             app:layout_constraintHorizontal_weight="1"
@@ -592,9 +641,10 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@id/btn_application_ff"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent"/>
+                            app:layout_constraintBottom_toBottomOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -604,11 +654,13 @@
                     android:layout_marginBottom="10dp"
                     android:background="@color/color_F1F1F1"
                     app:layout_constraintTop_toTopOf="parent" />
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp">
+
                     <TextView
                         android:id="@+id/tv_study_deadline"
                         android:layout_width="wrap_content"
@@ -617,6 +669,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         android:textColor="@color/black" />
+
                     <LinearLayout
                         android:id="@+id/study_create_day_layout"
                         android:layout_width="match_parent"
@@ -626,12 +679,14 @@
                         android:layout_marginBottom="15dp"
                         android:background="@drawable/bg_create_white_blue"
                         android:orientation="horizontal">
+
                         <ImageView
                             android:layout_width="14dp"
                             android:layout_height="14dp"
                             android:layout_marginStart="20dp"
                             android:src="@drawable/ic_calendar_blue"
-                            android:layout_gravity="center"/>
+                            android:layout_gravity="center" />
+
                         <TextView
                             android:id="@+id/btn_deadline"
                             android:layout_width="90dp"
@@ -644,6 +699,7 @@
                     </LinearLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -653,11 +709,13 @@
                     android:layout_marginBottom="10dp"
                     android:background="@color/color_F1F1F1"
                     app:layout_constraintTop_toTopOf="parent" />
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp">
+
                     <TextView
                         android:id="@+id/tv_study_group_time"
                         android:layout_width="wrap_content"
@@ -666,7 +724,8 @@
                         app:layout_constraintStart_toStartOf="parent"
                         android:textColor="@color/black"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toTopOf="@id/study_create_playtime_layout"/>
+                        app:layout_constraintBottom_toTopOf="@id/study_create_playtime_layout" />
+
                     <LinearLayout
                         android:id="@+id/study_create_playtime_layout"
                         android:layout_width="match_parent"
@@ -679,13 +738,14 @@
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="15dp"
                         android:orientation="horizontal">
+
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_weight="1"
                             android:layout_width="0dp"
                             android:layout_height="36dp"
                             android:layout_marginEnd="10dp"
-                            android:background="@drawable/bg_create_white_blue"
-                            >
+                            android:background="@drawable/bg_create_white_blue">
+
                             <ImageView
                                 android:id="@+id/iv_study_startDay"
                                 android:layout_width="14dp"
@@ -696,7 +756,8 @@
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintEnd_toStartOf="@id/btn_startDay"
-                                android:layout_gravity="center"/>
+                                android:layout_gravity="center" />
+
                             <TextView
                                 android:id="@+id/btn_startDay"
                                 android:layout_width="90dp"
@@ -708,13 +769,15 @@
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toEndOf="@id/iv_study_startDay"
                                 android:text="시작 날짜"
-                                android:textColor="@color/color_82B4FF"/>
+                                android:textColor="@color/color_82B4FF" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
+
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_weight="1"
                             android:layout_width="0dp"
                             android:layout_height="36dp"
                             android:background="@drawable/bg_create_white_blue">
+
                             <ImageView
                                 android:id="@+id/iv_study_finishDay"
                                 android:layout_width="14dp"
@@ -725,7 +788,8 @@
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintEnd_toStartOf="@id/btn_finishDay"
-                                android:layout_gravity="center"/>
+                                android:layout_gravity="center" />
+
                             <TextView
                                 android:id="@+id/btn_finishDay"
                                 android:layout_width="90dp"
@@ -745,6 +809,7 @@
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -754,11 +819,13 @@
                     android:layout_marginBottom="10dp"
                     android:background="@color/color_F1F1F1"
                     app:layout_constraintTop_toTopOf="parent" />
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp">
+
                     <TextView
                         android:id="@+id/tv_study_attend_time"
                         app:layout_constraintBottom_toTopOf="@+id/layout_spinner_attendtime"
@@ -768,14 +835,15 @@
                         android:layout_height="wrap_content"
                         android:text="출석 유효시간"
                         android:textSize="14sp" />
+
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/layout_spinner_attendtime"
                         android:layout_width="match_parent"
                         android:layout_marginTop="10dp"
                         android:layout_height="44dp"
                         android:background="@drawable/bg_create_white_blue"
-                        app:layout_constraintTop_toBottomOf="@id/tv_study_attend_time"
-                        >
+                        app:layout_constraintTop_toBottomOf="@id/tv_study_attend_time">
+
                         <Spinner
                             android:id="@+id/spinner_attend_time"
                             android:layout_width="wrap_content"
@@ -784,7 +852,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             android:layout_marginStart="20dp"
-                            android:backgroundTint="@color/color_82B4FF"/>
+                            android:backgroundTint="@color/color_82B4FF" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -826,6 +894,7 @@
             android:layout_marginTop="10dp"
             android:visibility="visible"
             android:layout_marginBottom="10dp" />
+
         <FrameLayout
             android:id="@+id/fl_loading_layout"
             android:layout_width="match_parent"
@@ -835,11 +904,12 @@
             android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@id/toolbar_manage_study_modify"
             app:layout_constraintBottom_toBottomOf="parent">
+
             <ProgressBar
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:indeterminateTint="@color/color_swith"/>
+                android:indeterminateTint="@color/color_swith" />
         </FrameLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
