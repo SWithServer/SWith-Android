@@ -1,25 +1,14 @@
-package com.example.swith.repository.announce
+package com.example.swith.repository
 
-import com.example.swith.remote.announce.AnnounceRemoteDataSource
+import com.example.swith.entity.AnnounceCreate
+import com.example.swith.entity.AnnounceList
+import com.example.swith.entity.AnnounceModify
 import com.example.swith.utils.RemoteErrorEmitter
 
-class AnnounceRepository(private val announceRemoteDataSource: AnnounceRemoteDataSource) {
-    suspend fun getAllAnnounce(
-        errorEmitter: RemoteErrorEmitter,
-        groupIdx: Long
-    ): com.example.swith.entity.AnnounceList? =
-        announceRemoteDataSource.getAllAnnounce(errorEmitter, groupIdx)
+interface AnnounceRepository {
+    suspend fun getAllAnnounce(errorEmitter: RemoteErrorEmitter, groupIdx: Long): AnnounceList?
+    suspend fun deleteAnnounce(emitter: RemoteErrorEmitter, announcementIdx: Long): String?
 
-    suspend fun deleteAnnounce(emitter: RemoteErrorEmitter, announcementIdx: Long) =
-        announceRemoteDataSource.deleteAnnounce(emitter, announcementIdx)
-
-    suspend fun createAnnounce(
-        emitter: RemoteErrorEmitter,
-        announceCreate: com.example.swith.entity.AnnounceCreate
-    ) = announceRemoteDataSource.createAnnounce(emitter, announceCreate)
-
-    suspend fun updateAnnounce(
-        emitter: RemoteErrorEmitter,
-        announceModify: com.example.swith.entity.AnnounceModify
-    ) = announceRemoteDataSource.updateAnnounce(emitter, announceModify)
+    suspend fun createAnnounce(emitter: RemoteErrorEmitter, announceCreate: AnnounceCreate) : Any?
+    suspend fun updateAnnounce(emitter: RemoteErrorEmitter, announceModify: AnnounceModify) : Any?
 }

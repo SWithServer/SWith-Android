@@ -18,8 +18,9 @@ import com.example.swith.ui.login.LoginActivity
 import com.example.swith.ui.profile.ProfileFragment
 import com.example.swith.ui.resume.ResumeFragment
 import com.example.swith.ui.study.find.StudyFindFragment
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity(), View.OnClickListener {
     //뒤로가기 눌렀던 시간 저장
     private var backKeyPressedTime: Long = 0

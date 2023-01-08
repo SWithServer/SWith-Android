@@ -2,22 +2,34 @@ package com.example.swith.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
+import com.example.swith.entity.AnnounceCreate
 import com.example.swith.entity.AnnounceList
+import com.example.swith.entity.AnnounceModify
 import com.example.swith.remote.announce.AnnounceRemoteDataSource
-import com.example.swith.repository.announce.AnnounceRepository
+import com.example.swith.usecase.announce.CreateAnnounceUseCase
+import com.example.swith.usecase.announce.DeleteAnnounceUseCase
+import com.example.swith.usecase.announce.GetAnnounceDataUseCase
+import com.example.swith.usecase.announce.UpdateAnnounceUseCase
 import com.example.swith.utils.SingleLiveEvent
 import com.example.swith.utils.base.BaseViewModel
 import com.example.swith.utils.error.ScreenState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class AnnounceViewModel : BaseViewModel() {
-    private val repository = AnnounceRepository(AnnounceRemoteDataSource())
+@HiltViewModel
+class AnnounceViewModel @Inject constructor(
+    private val getAnnounceDataUseCase: GetAnnounceDataUseCase,
+    private val deleteAnnounceUseCase: DeleteAnnounceUseCase,
+    private val updateAnnounceUseCase: UpdateAnnounceUseCase,
+    private val createAnnounceUseCase: CreateAnnounceUseCase
+): BaseViewModel() {
     private var _announceLiveData = SingleLiveEvent<AnnounceList>()
     private var _deleteLiveEvent = SingleLiveEvent<Any>()
     private var _createLiveEvent = SingleLiveEvent<Any>()
     private var _updateLiveEvent = SingleLiveEvent<Any>()
 
-    val announceLiveData: LiveData<com.example.swith.entity.AnnounceList>
+    val announceLiveData: LiveData<AnnounceList>
         get() = _announceLiveData
 
     val deleteLiveEvent: LiveData<Any>
@@ -31,38 +43,36 @@ class AnnounceViewModel : BaseViewModel() {
 
     fun loadData(groupIdx: Long) {
         viewModelScope.launch {
-            val res = repository.getAllAnnounce(this@AnnounceViewModel, groupIdx)
-            if (res == null) mutableScreenState.postValue(ScreenState.RENDER) else {
+            getAnnounceDataUseCase(this@AnnounceViewModel, groupIdx)?.let {
                 mutableScreenState.postValue(ScreenState.RENDER)
-                _announceLiveData.value = res
+                _announceLiveData.value = it
+            }?: run {
+                mutableScreenState.postValue(ScreenState.RENDER)
             }
         }
     }
 
     fun deleteAnnounce(announceIdx: Long) {
         viewModelScope.launch {
-            val res = repository.deleteAnnounce(this@AnnounceViewModel, announceIdx)
-            res?.let {
+            deleteAnnounceUseCase(this@AnnounceViewModel, announceIdx)?.let {
                 _deleteLiveEvent.call()
                 mutableScreenState.postValue(ScreenState.LOAD)
             }
         }
     }
 
-    fun createAnnounce(announceCreate: com.example.swith.entity.AnnounceCreate) {
+    fun createAnnounce(announceCreate: AnnounceCreate) {
         viewModelScope.launch {
-            val res = repository.createAnnounce(this@AnnounceViewModel, announceCreate)
-            res?.let {
+            createAnnounceUseCase(this@AnnounceViewModel, announceCreate)?.let {
                 _createLiveEvent.call()
                 mutableScreenState.postValue(ScreenState.LOAD)
             }
         }
     }
 
-    fun updateAnnounce(announceModify: com.example.swith.entity.AnnounceModify) {
+    fun updateAnnounce(announceModify: AnnounceModify) {
         viewModelScope.launch {
-            val res = repository.updateAnnounce(this@AnnounceViewModel, announceModify)
-            res?.let {
+            updateAnnounceUseCase(this@AnnounceViewModel, announceModify)?.let {
                 _updateLiveEvent.call()
                 mutableScreenState.postValue(ScreenState.LOAD)
             }

@@ -19,7 +19,9 @@ import com.example.swith.ui.dialog.CustomConfirmDialog
 import com.example.swith.utils.SwipeController
 import com.example.swith.utils.error.ScreenState
 import com.example.swith.viewmodel.AnnounceViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class AnnounceActivity : AppCompatActivity(), View.OnClickListener {
     private val viewModel: AnnounceViewModel by viewModels()
 
