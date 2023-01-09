@@ -64,7 +64,6 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent" />
-
                     <ImageView
                         android:id="@+id/iv_study_create"
                         android:layout_width="match_parent"
