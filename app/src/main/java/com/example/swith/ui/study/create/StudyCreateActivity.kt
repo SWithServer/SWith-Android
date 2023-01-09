@@ -13,6 +13,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.KeyEvent
+import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
@@ -27,8 +28,10 @@ import com.example.swith.data.StudyImageReq
 import com.example.swith.data.StudyImageRes
 import com.example.swith.data.StudyResponse
 import com.example.swith.databinding.ActivityStudyCreateBinding
+import com.example.swith.databinding.DialogCreateBinding
 import com.example.swith.repository.RetrofitApi
 import com.example.swith.repository.RetrofitService
+import com.example.swith.ui.dialog.CustomDialog
 import com.example.swith.utils.SharedPrefManager
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -104,10 +107,8 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_study_create)
         binding.clickListener = this@StudyCreateActivity
-        customDialog()
 
         //Log.e("유저 idx","${userIdx}")
-        Log.e("create","true")
         getSharedPreferences("result1",0).apply{
             if(this!=null) {
                 val editor1 = this.edit()
@@ -458,7 +459,7 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
                 periods_content=etStudyFree.text.toString()}
                 }
 
-                var studyRequestData=StudyGroup(SharedPrefManager(this@StudyCreateActivity).getLoginData()!!.userIdx,ImgUri,title,meet_idx,frequency_content,periods_content,online_idx,regionIdx1,regionIdx2,interest_idx
+                var studyRequestData=StudyGroup(1,ImgUri,title,meet_idx,frequency_content,periods_content,online_idx,regionIdx1,regionIdx2,interest_idx
                     ,topic_content,memberLimit_content,applicationMethod_idx,recruitmentEndDate_,groupStart_,groupEnd_
                     ,attendanceVaildTime_content,group_content)
                 Log.e("summer", "USER DATA = ${studyRequestData.toString()}")
@@ -537,20 +538,6 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
         }
     }
 
-    fun createStudy(studyRequestData : StudyGroup,content_text:String){
-        //레트로핏 부분
-        dialog_.findViewById<TextView>(R.id.tv_title).text = content_text
-        dialog_.show()
-
-        dialog_.findViewById<Button>(R.id.btn_no).setOnClickListener {
-            dialog_.dismiss()
-        }
-        dialog_.findViewById<Button>(R.id.btn_yes).setOnClickListener {
-            uploadImage(file,studyRequestData)
-            Log.e("summer", "USER DATA = ${studyRequestData.toString()}")
-        }
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == GALLERY)
         {
@@ -587,6 +574,20 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
                 Toast.makeText(this, "사진 선택 취소", Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+    fun createStudy(studyRequestData : StudyGroup,content_text:String){
+        //레트로핏 부분
+//        dialog_.findViewById<TextView>(R.id.tv_title).text = content_text
+//        dialog_.show()
+//        dialog_.findViewById<Button>(R.id.btn_no).setOnClickListener {
+//            dialog_.dismiss()
+//        }
+//        dialog_.findViewById<Button>(R.id.btn_yes).setOnClickListener {
+//            uploadImage(file,studyRequestData)
+//            Log.e("summer", "USER DATA = ${studyRequestData.toString()}")
+//        }
+        saveDialog(studyRequestData)
     }
 
     fun getRealPathFromURI(contentUri: Uri?): String? {
@@ -709,7 +710,7 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
         }
     }
 
-    fun hideKeyboard(editText: EditText){
+    private fun hideKeyboard(editText: EditText){
         val mInputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         mInputMethodManager.hideSoftInputFromWindow(
             editText.getWindowToken(),
@@ -717,15 +718,32 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
         )
     }
 
-    fun customDialog()
-    {
-        dialog_ = Dialog(this@StudyCreateActivity)
-        dialog_.setContentView(R.layout.dialog_create)
-        var params = dialog_.window?.attributes
-        dialog_.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        params?.height = WindowManager.LayoutParams.MATCH_PARENT
-        params?.width=WindowManager.LayoutParams.MATCH_PARENT
-        params?.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
-        dialog_.window?.attributes=params
+    private fun saveDialog(studyRequestData : StudyGroup) {
+        Log.e("summer", "saveDialog 함수")
+        with(binding)
+        {
+            DataBindingUtil.inflate<DialogCreateBinding>(
+                LayoutInflater.from(this@StudyCreateActivity),
+                R.layout.dialog_create, null, false
+            ).apply {
+                this.createDialog = CustomDialog(
+                    this@StudyCreateActivity,
+                    root,
+                    WindowManager.LayoutParams.MATCH_PARENT,
+                    WindowManager.LayoutParams.MATCH_PARENT
+                ).apply {
+                    this.setClickListener(object : CustomDialog.DialogClickListener {
+                        override fun onConfirm() {
+                            Log.e("summer", "save dialog onConfirm()")
+                            uploadImage(file, studyRequestData)
+                        }
+                        override fun onClose() {
+                            Log.e("summer", "save dialog onClose()")
+                        }
+                    })
+                    show()
+                }
+            }
+        }
     }
 }
