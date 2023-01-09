@@ -17,6 +17,7 @@ import com.example.swith.ui.home.HomeFragment
 import com.example.swith.ui.login.LoginActivity
 import com.example.swith.ui.profile.ProfileFragment
 import com.example.swith.ui.resume.ResumeFragment
+import com.example.swith.ui.notification.NotificationActivity
 import com.example.swith.ui.study.find.StudyFindFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -149,7 +150,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 onBackPressed()
             }
             R.id.ib_notice -> {
-                Toast.makeText(this@MainActivity, "notice", Toast.LENGTH_SHORT).show()
+                startActivity(Intent(this, NotificationActivity::class.java))
             }
         }
     }

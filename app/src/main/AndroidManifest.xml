@@ -18,7 +18,7 @@
         android:theme="@style/Theme.SWith"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".ui.study.announce.AlertActivity"
+            android:name=".ui.notification.NotificationActivity"
             android:exported="false" />
         <activity
             android:name=".ui.rating.RatingActivity"
@@ -80,11 +80,7 @@
         <activity
             android:name=".ui.SplashActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".ui.login.SnsLoginActivity"
@@ -95,7 +91,11 @@
         <activity
             android:name=".ui.MainActivity"
             android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".ui.study.StudyActivity"

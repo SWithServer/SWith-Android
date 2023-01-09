@@ -6,16 +6,17 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.swith.R
 import com.example.swith.databinding.ItemAnnounceBinding
+import com.example.swith.entity.Announce
 import com.example.swith.utils.ItemTouchHelperListener
 
 class AnnounceRVAdapter() : RecyclerView.Adapter<AnnounceRVAdapter.ViewHolder>(),
     ItemTouchHelperListener {
     private lateinit var binding: ItemAnnounceBinding
-    private var announceList = ArrayList<com.example.swith.entity.Announce>()
+    private var announceList = mutableListOf<Announce>()
 
     interface CustomListener {
-        fun onDelete(announce: com.example.swith.entity.Announce)
-        fun onItemClick(announce: com.example.swith.entity.Announce)
+        fun onDelete(announce: Announce)
+        fun onItemClick(announce: Announce)
     }
 
     private lateinit var customListener: CustomListener
@@ -27,7 +28,7 @@ class AnnounceRVAdapter() : RecyclerView.Adapter<AnnounceRVAdapter.ViewHolder>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         binding = DataBindingUtil.inflate(
             LayoutInflater.from(parent.context),
-            R.layout.item_announce,
+            R.layout.item_notification,
             parent,
             false
         )
@@ -39,17 +40,16 @@ class AnnounceRVAdapter() : RecyclerView.Adapter<AnnounceRVAdapter.ViewHolder>()
         holder.itemView.setOnClickListener { customListener.onItemClick(announceList[position]) }
     }
 
-    fun setData(announceData: List<com.example.swith.entity.Announce>) {
-        announceList = announceData as ArrayList<com.example.swith.entity.Announce>
+    fun setData(announceData: List<Announce>) {
+        announceList = announceData as MutableList<Announce>
         notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int = announceList.size
 
     inner class ViewHolder(binding: ItemAnnounceBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(announce: com.example.swith.entity.Announce) {
+        fun bind(announce: Announce) {
             with(binding) {
-                tvAnnounceContent.text = announce.announcementContent
                 tvAnnounceDate.text =
                     "${announce.createdAt[0]}/${announce.createdAt[1]}/${announce.createdAt[2]}"
             }
