@@ -1,12 +1,10 @@
 package com.example.swith.ui.study.create
 
 import android.app.DatePickerDialog
-import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.ImageDecoder
-import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -18,13 +16,13 @@ import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.example.swith.R
 import com.example.swith.SwithApplication.Companion.spfManager
 import com.example.swith.data.StudyGroup
-import com.example.swith.data.StudyImageReq
 import com.example.swith.data.StudyImageRes
 import com.example.swith.data.StudyResponse
 import com.example.swith.databinding.ActivityStudyCreateBinding
@@ -32,24 +30,23 @@ import com.example.swith.databinding.DialogCreateBinding
 import com.example.swith.repository.RetrofitApi
 import com.example.swith.repository.RetrofitService
 import com.example.swith.ui.dialog.CustomDialog
-import com.example.swith.utils.SharedPrefManager
-import okhttp3.MediaType
+import com.example.swith.viewmodel.StudyCreateViewModel
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 
 class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
     lateinit var binding: ActivityStudyCreateBinding
-
+    private val viewModel : StudyCreateViewModel by viewModels()
     private val GALLERY=1
-    private var imageView: ImageView? = null
+    var file=File("")
+
     private lateinit var startTime: Calendar //활동 시작기간
     private var calendar = Calendar.getInstance()
     private var year = calendar.get(Calendar.YEAR)
@@ -58,22 +55,18 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
 
     //val userid = SharedPrefManager(this@StudyCreateActivity).getLoginData()
     private val userIdx = spfManager.getLoginData()?.userIdx
-    private var meet_idx = -1
-    private var frequency_content:Int?=null
-    private var periods_content:String?=null
-    private var online_idx:Int = -1 //오프라인 0, 온라인 1
+    private var meetIdx = -1
+    private var frequencyContent:Int?=null
+    private var periodsContent:String?=null
+    private var onlineIdx:Int = -1 //오프라인 0, 온라인 1
     private var regionIdx1:String?=null
     private var regionIdx2:String?=null
 
     // spinner 선택되는 값들 매칭
-    var interest_idx=-1
-    var memberLimit_content=-1
-    var applicationMethod_idx =-1
-    var attendanceVaildTime_content=-1
-
-    var ImgUri:String?=null
-    var path:String?= ""
-    var file =File("")
+    var interestIdx=-1
+    var memberLimitContent=-1
+    var applicationMethodIdx =-1
+    var attendanceValidTimeContent=-1
 
     override fun onClick(view: View?) {
         when (view?.id) {
@@ -110,49 +103,48 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
         //스터디 개설버튼
         with(binding) {
             btnStudyCreate.setOnClickListener {
-                    when (meet_idx) {
+                    when (meetIdx) {
                         0 -> {
                             if (!etStudyWeek.text.isNullOrBlank())
-                                frequency_content = etStudyWeek.text.toString().toIntOrNull()
+                                frequencyContent = etStudyWeek.text.toString().toIntOrNull()
                         }
                         1 -> {
                             if (!etStudyMonth.text.isNullOrBlank())
-                                frequency_content = etStudyMonth.text.toString().toIntOrNull()
+                                frequencyContent = etStudyMonth.text.toString().toIntOrNull()
                         }
                         2 -> {
                             if (!etStudyFree.text.isNullOrBlank())
-                                periods_content = etStudyFree.text.toString()
+                                periodsContent = etStudyFree.text.toString()
                         }
                     }
 
                     var studyRequestData = StudyGroup(
                         1,
-                        ImgUri,
+                        null,
                         etStudyTitle.text.toString(),
-                        meet_idx,
-                        frequency_content,
-                        periods_content,
-                        online_idx,
+                        meetIdx,
+                        frequencyContent,
+                        periodsContent,
+                        onlineIdx,
                         regionIdx1,
                         regionIdx2,
-                        interest_idx,
+                        interestIdx,
                         etCreateTopic.text.toString(),
-                        memberLimit_content,
-                        applicationMethod_idx,
+                        memberLimitContent,
+                        applicationMethodIdx,
                         tvDeadline.text.toString(),
                         tvStartDay.text.toString(),
                         tvFinishDay.text.toString(),
-                        attendanceVaildTime_content,
+                        attendanceValidTimeContent,
                         etStudyContent.text.toString()
                     )
-                    Log.e("summer", "USER DATA = ${studyRequestData.toString()}")
+                    Log.e("summer", "USER DATA = $studyRequestData")
 
                     //Toast Message 설정
-                    if (etStudyTitle.text.equals("") || meet_idx == -1 || online_idx == -1 || interest_idx == -1 || etCreateTopic.text.equals(
-                            ""
-                        ) || tvDeadline.text.equals("+") || tvStartDay.text.equals("+") || tvFinishDay.text.equals(
-                            "+"
-                        ) || attendanceVaildTime_content == -1 || etStudyContent.text.equals("")
+                    if (etStudyTitle.text.equals("") || meetIdx == -1 || onlineIdx == -1 ||
+                        interestIdx == -1 || etCreateTopic.text.equals("") ||
+                        tvDeadline.text.equals("+") || tvStartDay.text.equals("+") || tvFinishDay.text.equals("+") ||
+                        attendanceValidTimeContent == -1 || etStudyContent.text.equals("")
                     ) {
                         Toast.makeText(
                             this@StudyCreateActivity,
@@ -160,15 +152,15 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
                             Toast.LENGTH_SHORT
                         ).show()
                     } else {
-                        when (meet_idx) {
+                        when (meetIdx) {
                             0, 1 -> {
-                                if (online_idx == 0 && regionIdx1 == null && regionIdx2 == null) {
+                                if (onlineIdx == 0 && regionIdx1 == null && regionIdx2 == null) {
                                     Toast.makeText(
                                         this@StudyCreateActivity,
                                         "모든 항목을 작성해주세요!",
                                         Toast.LENGTH_SHORT
                                     ).show()
-                                } else if (frequency_content == null) {
+                                } else if (frequencyContent == null) {
                                     Toast.makeText(
                                         this@StudyCreateActivity,
                                         "모든 항목을 작성해주세요!",
@@ -179,13 +171,13 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
                                 }
                             }
                             2 -> {
-                                if (online_idx == 0 && (regionIdx1 == null && regionIdx2 == null)) {
+                                if (onlineIdx == 0 && (regionIdx1 == null && regionIdx2 == null)) {
                                     Toast.makeText(
                                         this@StudyCreateActivity,
                                         "모든 항목을 작성해주세요!",
                                         Toast.LENGTH_SHORT
                                     ).show()
-                                } else if (periods_content == null) {
+                                } else if (periodsContent == null) {
                                     Toast.makeText(
                                         this@StudyCreateActivity,
                                         "모든 항목을 작성해주세요!",
@@ -202,12 +194,12 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
         }
 
     }
+
     override fun onResume() {
         super.onResume()
         Log.e("resume","true")
-        if(!getSharedPreferences("result1",0).getString("이름1","").toString().equals("")) {
+        if(getSharedPreferences("result1",0).getString("이름1","").toString() != "") {
             val shPref1 = getSharedPreferences("result1",0)
-            val editor1 = getSharedPreferences("result1",0).edit()
             binding.btnPlusPlace1.text = shPref1.getString("이름1", "")
             if(!(shPref1.getString("이름1","").equals("")) && !(shPref1.getString("이름1","").equals("+")))
             {Log.e("진입됨","true")
@@ -218,17 +210,62 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
                 binding.btnPlusPlace1.background = ContextCompat.getDrawable(this,R.drawable.bg_create_skyblue)
             }
         }
-        if(!getSharedPreferences("result2",0).getString("이름2","").toString().equals("")){
-            val shPref2 = getSharedPreferences("result2",0)
-            val editor2 = getSharedPreferences("result2",0).edit()
-            binding.btnPlusPlace2.text = shPref2.getString("이름2", "")
-            if(!(shPref2.getString("이름2","").equals("")) && !(shPref2.getString("이름2","").equals("+")))
-            {Log.e("진입됨","true")
-                regionIdx2 =shPref2.getString("이름2", "").toString()
-                binding.btnPlusPlace2.background = ContextCompat.getDrawable(this,R.drawable.bg_create_select_blue) }
-            else{
-                regionIdx2 =null
-                binding.btnPlusPlace2.background = ContextCompat.getDrawable(this,R.drawable.bg_create_skyblue)
+        if(getSharedPreferences("result2",0).getString("이름2","").toString() != ""){
+            with(binding){
+                val shPref2 = getSharedPreferences("result2",0)
+                btnPlusPlace2.text = shPref2.getString("이름2", "")
+                if(!(shPref2.getString("이름2","").equals("")) && !(shPref2.getString("이름2","").equals("+")))
+                {
+                    Log.e("진입됨","true")
+                    regionIdx2 =shPref2.getString("이름2", "").toString()
+                    btnPlusPlace2.background = ContextCompat.getDrawable(
+                        this@StudyCreateActivity, R.drawable.bg_create_select_blue)
+                }
+                else{
+                    regionIdx2 =null
+                    btnPlusPlace2.background = ContextCompat.getDrawable(
+                        this@StudyCreateActivity,R.drawable.bg_create_skyblue)
+                }
+            }
+        }
+    }
+
+    private fun saveDialog(studyRequestData : StudyGroup) {
+        Log.e("summer", "saveDialog 함수")
+        DataBindingUtil.inflate<DialogCreateBinding>(
+            LayoutInflater.from(this@StudyCreateActivity),
+            R.layout.dialog_create, null, false
+        ).apply {
+            this.createDialog = CustomDialog(
+                this@StudyCreateActivity,
+                root,
+                WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.MATCH_PARENT
+            ).apply {
+                this.setClickListener(object : CustomDialog.DialogClickListener {
+                    override fun onConfirm() {
+                        Log.e("summer", "save dialog onConfirm()")
+                        Log.e("summer","$file")
+                        if (!file.equals("")) {
+                            studyRequestData.groupImgUri = viewModel.postStudyImage(file,studyRequestData)
+                        }
+                        viewModel.postStudyInfo(studyRequestData).apply{
+                            if (this!= (-1).toLong()){
+                                setResult(RESULT_OK)
+                                finish()
+                            }
+                            else {
+                                Toast.makeText(this@StudyCreateActivity,
+                                    "다시 시도해주세요",
+                                    Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                    override fun onClose() {
+                        Log.e("summer", "save dialog onClose()")
+                    }
+                })
+                show()
             }
         }
     }
@@ -239,7 +276,7 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
             if(resultCode == RESULT_OK)
             {
                 var currentImageUri = data?.data
-                Log.e("현재 이미지 url", "${currentImageUri}")
+                Log.e("현재 이미지 url", "$currentImageUri")
                 try{
                     currentImageUri?.let{
                         if(Build.VERSION.SDK_INT < 28) {
@@ -247,16 +284,14 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
                                 this.contentResolver,
                                 currentImageUri
                             )
-                            imageView?.setImageBitmap(bitmap)
+                            binding.ivStudyCreate.setImageBitmap(bitmap)
                         } else {
                             val source = ImageDecoder.createSource(this.contentResolver, currentImageUri)
                             val bitmap = ImageDecoder.decodeBitmap(source)
-                            imageView?.setImageBitmap(bitmap)
+                            binding.ivStudyCreate.setImageBitmap(bitmap)
                         }
-                        path= getRealPathFromURI(currentImageUri)
-                        Log.e("ImgUri 값","${ImgUri}")
-                        Log.e("path 값","${path}")
-                        file = File(path)
+                         Log.e("path 값","${getRealPathFromURI(currentImageUri)}")
+                        file = File(getRealPathFromURI(currentImageUri))
                     }
                 }
                 catch (e:Exception)
@@ -275,7 +310,8 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
         // 모집 마감기간 설정
         binding.btnDeadline.setOnClickListener {
             //팝업 달력
-            val datePickerDialog = DatePickerDialog(this@StudyCreateActivity, R.style.DatePickerTheme, { _, year, month, day ->
+            val datePickerDialog = DatePickerDialog(this@StudyCreateActivity, R.style.DatePickerTheme,
+                { _, year, month, day ->
                 if (month<10)
                 { binding.tvDeadline.text =
                     year.toString() + "-0" + (month + 1).toString() + "-" + day.toString()
@@ -303,7 +339,8 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
 
         //활동 시작기간 설정
         binding.btnStartDay.setOnClickListener {
-            val datePickerDialog = DatePickerDialog(this@StudyCreateActivity, R.style.DatePickerTheme, { _, year, month, day ->
+            val datePickerDialog = DatePickerDialog(this@StudyCreateActivity, R.style.DatePickerTheme,
+                { _, year, month, day ->
                 if (month<10)
                 { binding.tvStartDay.text =
                     year.toString() + "-0" + (month + 1).toString() + "-" + day.toString()
@@ -333,7 +370,8 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
         // 활동 끝나는기간 설정
         binding.btnFinishDay.setOnClickListener {
             if (binding.tvStartDay.text.toString() != "시작 날짜") {
-                val datePickerDialog = DatePickerDialog(this@StudyCreateActivity, R.style.DatePickerTheme,{ _, year, month, day ->
+                val datePickerDialog = DatePickerDialog(this@StudyCreateActivity, R.style.DatePickerTheme,
+                    { _, year, month, day ->
                     if (month<10)
                     { binding.tvFinishDay.text =
                         year.toString() + "-0" + (month + 1).toString() + "-" + day.toString()
@@ -427,7 +465,6 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
         {
             //button
             btnImage.setOnClickListener {
-                imageView = binding.ivStudyCreate
                 openGallery()
             }
 
@@ -444,21 +481,21 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
             //spinner
             spinnerCategory.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
-                    interest_idx=position+1
+                    interestIdx=position+1
                 }
                 override fun onNothingSelected(p0: AdapterView<*>?) {
                 }
             }
             spinnerPeople.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
-                    memberLimit_content = "${spinnerPeople.getItemAtPosition(position)}".toInt()
+                    memberLimitContent = "${spinnerPeople.getItemAtPosition(position)}".toInt()
                 }
                 override fun onNothingSelected(p0: AdapterView<*>?) {
                 }
             }
             spinnerAttendTime.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
-                    attendanceVaildTime_content = "${spinnerAttendTime.getItemAtPosition(position)}".toInt()
+                    attendanceValidTimeContent = "${spinnerAttendTime.getItemAtPosition(position)}".toInt()
                 }
                 override fun onNothingSelected(p0: AdapterView<*>?) {
                 }
@@ -470,12 +507,12 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
                             R.id.btn_application_ff -> {
                                 btnApplicationApply.isChecked = false
                                 btnApplicationFf.isChecked = true
-                                applicationMethod_idx = 0 //선착순
+                                applicationMethodIdx = 0 //선착순
                             }
                             R.id.btn_application_apply -> {
                                 btnApplicationFf.isChecked = false
                                 btnApplicationApply.isChecked = true
-                                applicationMethod_idx = 1 // 지원
+                                applicationMethodIdx = 1 // 지원
                             }
                         }
                     }
@@ -488,19 +525,19 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
                             R.id.btn_application_ff -> {
                                 btnApplicationApply.isChecked = false
                                 btnApplicationFf.isChecked = true
-                                applicationMethod_idx = 0 //선착순
+                                applicationMethodIdx = 0 //선착순
                             }
                             R.id.btn_application_apply -> {
                                 btnApplicationFf.isChecked = false
                                 btnApplicationApply.isChecked = true
-                                applicationMethod_idx = 1 // 지원
+                                applicationMethodIdx = 1 // 지원
                             }
                         }
                     }
                 })
 
                 //on,offline 장소선택
-                val listener_online =
+                val listenerOnline =
                     CompoundButton.OnCheckedChangeListener { checkbox, isChecked ->
                         if (isChecked)
                             when (checkbox.id) {
@@ -510,7 +547,7 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
                                     tvStudyRegion.visibility = View.GONE
                                     layoutCreateRegionBtns.visibility = View.GONE
                                     lineRegion.visibility = View.GONE
-                                    online_idx = 1
+                                    onlineIdx = 1
                                     regionIdx1=null
                                     regionIdx2=null
                                     btnPlusPlace1.text="+"
@@ -533,12 +570,12 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
                                     tvStudyRegion.visibility = View.VISIBLE
                                     binding.layoutCreateRegionBtns.visibility = View.VISIBLE
                                     lineRegion.visibility = View.VISIBLE
-                                    online_idx = 0
+                                    onlineIdx = 0
                                 }
                             }
                     }
-                btnOnline.setOnCheckedChangeListener(listener_online)
-                btnOffline.setOnCheckedChangeListener(listener_online)
+                btnOnline.setOnCheckedChangeListener(listenerOnline)
+                btnOffline.setOnCheckedChangeListener(listenerOnline)
 
                 //시간 선택
                 val listener = CompoundButton.OnCheckedChangeListener { checkbox, isChecked ->
@@ -549,14 +586,16 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
                                 etStudyWeek.isEnabled = true
                                 etStudyMonth.isEnabled = false
                                 etStudyFree.isEnabled = false
-                                meet_idx = 0
+                                etStudyFree.setTextColor(Color.parseColor("#9F9F9F"))
+                                meetIdx = 0
                             }
                             R.id.check_month -> {
                                 toggleTime(etStudyFree,etStudyWeek,tvStudyMonth,studyMonthTv2,tvStudyWeek,studyWeekTv2,checkWeek,checkFree)
                                 etStudyMonth.isEnabled = true
                                 etStudyWeek.isEnabled = false
                                 etStudyFree.isEnabled = false
-                                meet_idx = 1
+                                etStudyFree.setTextColor(Color.parseColor("#9F9F9F"))
+                                meetIdx = 1
                             }
                             R.id.check_free -> {
                                 toggleTime(etStudyWeek,etStudyMonth,null,null,null,null,checkMonth,checkWeek)
@@ -567,8 +606,9 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
                                 studyMonthTv2.setTextColor(Color.parseColor("#9F9F9F"))
                                 tvStudyWeek.setTextColor(Color.parseColor("#9F9F9F"))
                                 studyWeekTv2.setTextColor(Color.parseColor("#9F9F9F"))
-                                meet_idx = 2
-                                periods_content = etStudyFree.text.toString()
+                                etStudyFree.setTextColor(Color.parseColor("#525252"))
+                                meetIdx = 2
+                                periodsContent = etStudyFree.text.toString()
                             }
                         }
                 }
@@ -615,34 +655,6 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
         check2.isChecked=false
     }
 
-    private fun saveDialog(studyRequestData : StudyGroup) {
-        Log.e("summer", "saveDialog 함수")
-        with(binding)
-        {
-            DataBindingUtil.inflate<DialogCreateBinding>(
-                LayoutInflater.from(this@StudyCreateActivity),
-                R.layout.dialog_create, null, false
-            ).apply {
-                this.createDialog = CustomDialog(
-                    this@StudyCreateActivity,
-                    root,
-                    WindowManager.LayoutParams.MATCH_PARENT,
-                    WindowManager.LayoutParams.MATCH_PARENT
-                ).apply {
-                    this.setClickListener(object : CustomDialog.DialogClickListener {
-                        override fun onConfirm() {
-                            Log.e("summer", "save dialog onConfirm()")
-                            uploadImage(file, studyRequestData)
-                        }
-                        override fun onClose() {
-                            Log.e("summer", "save dialog onClose()")
-                        }
-                    })
-                    show()
-                }
-            }
-        }
-    }
     private fun getRealPathFromURI(contentUri: Uri?): String? {
         val proj = arrayOf(MediaStore.Images.Media.DATA)
         val cursor = contentResolver.query(contentUri!!, proj, null, null, null)
@@ -652,16 +664,27 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
         cursor.close()
         return path
     }
+
     private fun openGallery(){
-        val intent: Intent = Intent(Intent.ACTION_PICK)
-        intent.setType("image/*")
+        val intent= Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
         startActivityForResult(intent,GALLERY)
     }
+
+    private fun hideKeyboard(editText: EditText){
+        val mInputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        mInputMethodManager.hideSoftInputFromWindow(
+            editText.getWindowToken(),
+            0
+        )
+    }
+
+    // TODO 서버 연결 후 ViewModel 코드 잘 실행되면 함수 삭제 하기
     private fun uploadImage(file:File,studyRequestData: StudyGroup) {
         Log.e("업로드 함수","진입")
         if (!(file.name.equals("")))
         {
-            var requestFile =  RequestBody.create("image"?.toMediaTypeOrNull(), file)
+            val requestFile = file.asRequestBody("image".toMediaTypeOrNull())
             var body  = MultipartBody.Part.createFormData("image", file.name, requestFile)
             val retrofitService = RetrofitService.retrofit.create(RetrofitApi::class.java)
             retrofitService.uploadImg(body).enqueue(object :
@@ -674,11 +697,10 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
                         Log.e("summer", "성공${response.toString()}")
                         response.body()?.apply {
                             Log.e("summer 결과값","${this.imageUrls}")
-                            ImgUri = this.imageUrls[0]
-                            Log.e("Img Uri 값 변경한 부분","${ImgUri}")
-                            studyRequestData.groupImgUrl=ImgUri
-                            postStudy(studyRequestData)
-
+                            //imgUri = this.imageUrls[0]
+                          //  Log.e("Img Uri 값 변경한 부분","$imgUri")
+                          //  studyRequestData.groupImgUri=imgUri
+                            //postStudy(studyRequestData)
                         }
                     }
                     else {
@@ -694,7 +716,7 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
         }
         else
         {
-            postStudy(studyRequestData)
+            //postStudy(studyRequestData)
         }
     }
     private fun postStudy(studyRequestData: StudyGroup) {
@@ -727,11 +749,4 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
         })
     }
 
-    private fun hideKeyboard(editText: EditText){
-        val mInputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        mInputMethodManager.hideSoftInputFromWindow(
-            editText.getWindowToken(),
-            0
-        )
-    }
 }
