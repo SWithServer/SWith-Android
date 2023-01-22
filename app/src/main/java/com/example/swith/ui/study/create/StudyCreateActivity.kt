@@ -59,8 +59,6 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
     private var frequencyContent:Int?=null
     private var periodsContent:String?=null
     private var onlineIdx:Int = -1 //오프라인 0, 온라인 1
-    private var regionIdx1:String?=null
-    private var regionIdx2:String?=null
 
     // spinner 선택되는 값들 매칭
     var interestIdx=-1
@@ -91,7 +89,9 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
                 val editor1 = this.edit()
                 editor1.clear()
                 editor1.apply()
-            } }
+            }
+        }
+
         getSharedPreferences("result2",0).apply{
             if(this!=null){
                 val editor2 =this.edit()
@@ -126,8 +126,9 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
                         frequencyContent,
                         periodsContent,
                         onlineIdx,
-                        regionIdx1,
-                        regionIdx2,
+
+                        if (onlineIdx==0) btnPlusPlace1.text.toString() else null,
+                        if (onlineIdx==0) btnPlusPlace2.text.toString() else null,
                         interestIdx,
                         etCreateTopic.text.toString(),
                         memberLimitContent,
@@ -154,7 +155,7 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
                     } else {
                         when (meetIdx) {
                             0, 1 -> {
-                                if (onlineIdx == 0 && regionIdx1 == null && regionIdx2 == null) {
+                                if (onlineIdx == 0 && btnPlusPlace1.text.equals("+") && btnPlusPlace2.text.equals("+")) {
                                     Toast.makeText(
                                         this@StudyCreateActivity,
                                         "모든 항목을 작성해주세요!",
@@ -171,7 +172,7 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
                                 }
                             }
                             2 -> {
-                                if (onlineIdx == 0 && (regionIdx1 == null && regionIdx2 == null)) {
+                                if (onlineIdx == 0 && btnPlusPlace1.text.equals("+") && btnPlusPlace2.text.equals("+")) {
                                     Toast.makeText(
                                         this@StudyCreateActivity,
                                         "모든 항목을 작성해주세요!",
@@ -197,32 +198,30 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
 
     override fun onResume() {
         super.onResume()
-        Log.e("resume","true")
+
+        with(binding){
         if(getSharedPreferences("result1",0).getString("이름1","").toString() != "") {
             val shPref1 = getSharedPreferences("result1",0)
-            binding.btnPlusPlace1.text = shPref1.getString("이름1", "")
-            if(!(shPref1.getString("이름1","").equals("")) && !(shPref1.getString("이름1","").equals("+")))
-            {Log.e("진입됨","true")
-                regionIdx1 =shPref1.getString("이름1", "").toString()
-                binding.btnPlusPlace1.background = ContextCompat.getDrawable(this,R.drawable.bg_create_select_blue) }
+            btnPlusPlace1.text = shPref1.getString("이름1", "")
+            if(!(shPref1.getString("이름1","").equals("")) && !(shPref1.getString("이름1","").equals("+"))) {
+                btnPlusPlace1.background = ContextCompat.getDrawable(
+                    this@StudyCreateActivity,R.drawable.bg_create_select_blue)
+            }
             else{
-                regionIdx1 =null
-                binding.btnPlusPlace1.background = ContextCompat.getDrawable(this,R.drawable.bg_create_skyblue)
+                btnPlusPlace1.background = ContextCompat.getDrawable(
+                    this@StudyCreateActivity,R.drawable.bg_create_skyblue)
             }
         }
+
         if(getSharedPreferences("result2",0).getString("이름2","").toString() != ""){
-            with(binding){
                 val shPref2 = getSharedPreferences("result2",0)
                 btnPlusPlace2.text = shPref2.getString("이름2", "")
                 if(!(shPref2.getString("이름2","").equals("")) && !(shPref2.getString("이름2","").equals("+")))
                 {
-                    Log.e("진입됨","true")
-                    regionIdx2 =shPref2.getString("이름2", "").toString()
                     btnPlusPlace2.background = ContextCompat.getDrawable(
                         this@StudyCreateActivity, R.drawable.bg_create_select_blue)
                 }
                 else{
-                    regionIdx2 =null
                     btnPlusPlace2.background = ContextCompat.getDrawable(
                         this@StudyCreateActivity,R.drawable.bg_create_skyblue)
                 }
@@ -244,7 +243,7 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
             ).apply {
                 this.setClickListener(object : CustomDialog.DialogClickListener {
                     override fun onConfirm() {
-                        Log.e("summer", "save dialog onConfirm()")
+                        Log.e("summer", "onConfirm()")
                         Log.e("summer","$file")
                         if (!file.equals("")) {
                             studyRequestData.groupImgUri = viewModel.postStudyImage(file,studyRequestData)
@@ -262,7 +261,7 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
                         }
                     }
                     override fun onClose() {
-                        Log.e("summer", "save dialog onClose()")
+                        Log.e("summer", "onClose()")
                     }
                 })
                 show()
@@ -334,7 +333,6 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
                 datePicker.minDate= System.currentTimeMillis() - 1000;
             }
             datePickerDialog.show()
-
         }
 
         //활동 시작기간 설정
@@ -478,6 +476,7 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
                 intent.putExtra("번호",2)
                 startActivity(intent)
             }
+
             //spinner
             spinnerCategory.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
@@ -500,26 +499,24 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
                 override fun onNothingSelected(p0: AdapterView<*>?) {
                 }
             }
-            btnApplicationApply.setOnCheckedChangeListener(
-                CompoundButton.OnCheckedChangeListener { checkbox, isChecked ->
-                    if (isChecked) {
-                        when (checkbox.id) {
-                            R.id.btn_application_ff -> {
-                                btnApplicationApply.isChecked = false
-                                btnApplicationFf.isChecked = true
-                                applicationMethodIdx = 0 //선착순
-                            }
-                            R.id.btn_application_apply -> {
-                                btnApplicationFf.isChecked = false
-                                btnApplicationApply.isChecked = true
-                                applicationMethodIdx = 1 // 지원
-                            }
+            btnApplicationApply.setOnCheckedChangeListener { checkbox, isChecked ->
+                if (isChecked) {
+                    when (checkbox.id) {
+                        R.id.btn_application_ff -> {
+                            btnApplicationApply.isChecked = false
+                            btnApplicationFf.isChecked = true
+                            applicationMethodIdx = 0 //선착순
+                        }
+                        R.id.btn_application_apply -> {
+                            btnApplicationFf.isChecked = false
+                            btnApplicationApply.isChecked = true
+                            applicationMethodIdx = 1 // 지원
                         }
                     }
-                })
+                }
+            }
 
-            btnApplicationFf.setOnCheckedChangeListener(
-                CompoundButton.OnCheckedChangeListener { checkbox, isChecked ->
+            btnApplicationFf.setOnCheckedChangeListener{ checkbox, isChecked ->
                     if (isChecked) {
                         when (checkbox.id) {
                             R.id.btn_application_ff -> {
@@ -534,7 +531,7 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
                             }
                         }
                     }
-                })
+                }
 
                 //on,offline 장소선택
                 val listenerOnline =
@@ -548,12 +545,12 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
                                     layoutCreateRegionBtns.visibility = View.GONE
                                     lineRegion.visibility = View.GONE
                                     onlineIdx = 1
-                                    regionIdx1=null
-                                    regionIdx2=null
                                     btnPlusPlace1.text="+"
                                     btnPlusPlace2.text="+"
-                                    binding.btnPlusPlace1.background = ContextCompat.getDrawable(this@StudyCreateActivity,R.drawable.bg_create_skyblue)
-                                    binding.btnPlusPlace2.background = ContextCompat.getDrawable(this@StudyCreateActivity,R.drawable.bg_create_skyblue)
+                                    btnPlusPlace1.background = ContextCompat.getDrawable(
+                                        this@StudyCreateActivity,R.drawable.bg_create_skyblue)
+                                    btnPlusPlace2.background = ContextCompat.getDrawable(
+                                        this@StudyCreateActivity,R.drawable.bg_create_skyblue)
 
                                     val pref1 = getSharedPreferences("result1", MODE_PRIVATE)
                                     val editor1 = pref1.edit()
@@ -564,6 +561,7 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
                                     editor2.remove("이름2")
                                     editor2.commit()
                                 }
+
                                 R.id.btn_offline -> {
                                     btnOnline.isChecked = false
                                     btnOffline.isChecked = true
