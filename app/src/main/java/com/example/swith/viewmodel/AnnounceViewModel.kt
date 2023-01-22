@@ -2,14 +2,13 @@ package com.example.swith.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.example.swith.entity.AnnounceCreate
-import com.example.swith.entity.AnnounceList
-import com.example.swith.entity.AnnounceModify
-import com.example.swith.remote.announce.AnnounceRemoteDataSource
-import com.example.swith.usecase.announce.CreateAnnounceUseCase
-import com.example.swith.usecase.announce.DeleteAnnounceUseCase
-import com.example.swith.usecase.announce.GetAnnounceDataUseCase
-import com.example.swith.usecase.announce.UpdateAnnounceUseCase
+import com.example.swith.domain.entity.AnnounceCreate
+import com.example.swith.domain.usecase.announce.CreateAnnounceUseCase
+import com.example.swith.domain.usecase.announce.DeleteAnnounceUseCase
+import com.example.swith.domain.usecase.announce.GetAnnounceDataUseCase
+import com.example.swith.domain.usecase.announce.UpdateAnnounceUseCase
+import com.example.swith.domain.entity.AnnounceList
+import com.example.swith.domain.entity.AnnounceModify
 import com.example.swith.utils.SingleLiveEvent
 import com.example.swith.utils.base.BaseViewModel
 import com.example.swith.utils.error.ScreenState

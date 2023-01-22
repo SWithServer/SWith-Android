@@ -4,9 +4,11 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.swith.entity.ProfileResponse
-import com.example.swith.repository.profile.ProfileModifyRepository
-import com.example.swith.repository.profile.ProfileModifyRepositoryProvider
+import com.example.swith.domain.entity.ProfileResponse
+import com.example.data.repository.profile.ProfileModifyRepository
+import com.example.swith.domain.entity.ProfileModifyRequest
+import com.example.swith.domain.entity.ProfileModifyResponse
+import com.example.swith.domain.entity.ProfileRequest
 
 class ProfileModifyViewModel : ViewModel() {
     val isLoading: ObservableField<Boolean> = ObservableField<Boolean>()
@@ -25,7 +27,7 @@ class ProfileModifyViewModel : ViewModel() {
         isLoading.set(false)
     }
 
-    fun requestCurrentProfile(profileRequest: com.example.swith.entity.ProfileRequest): LiveData<ProfileResponse> {
+    fun requestCurrentProfile(profileRequest: ProfileRequest): LiveData<ProfileResponse> {
         return mProfileModifyRepository.requestCurrentProfile(profileRequest)
     }
 
@@ -33,11 +35,11 @@ class ProfileModifyViewModel : ViewModel() {
         return mProfileModifyRepository.getCurrentProfile()
     }
 
-    fun requestCurrentProfileModify(profileModifyRequest: com.example.swith.entity.ProfileModifyRequest): LiveData<com.example.swith.entity.ProfileModifyResponse> {
+    fun requestCurrentProfileModify(profileModifyRequest: ProfileModifyRequest): LiveData<ProfileModifyResponse> {
         return mProfileModifyRepository.requestCurrentProfileModify(profileModifyRequest)
     }
 
-    fun getCurrentProfileModify(): LiveData<com.example.swith.entity.ProfileModifyResponse> {
+    fun getCurrentProfileModify(): LiveData<ProfileModifyResponse> {
         return mProfileModifyRepository.getCurrentProfileModify()
     }
 

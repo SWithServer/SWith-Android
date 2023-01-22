@@ -4,7 +4,7 @@
     <data>
         <variable
             name="notification"
-            type="com.example.swith.entity.Notification" />
+            type="com.example.swith.domain.entity.Notification" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

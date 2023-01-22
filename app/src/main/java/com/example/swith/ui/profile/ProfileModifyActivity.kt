@@ -19,20 +19,22 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
-import com.example.swith.R
-import com.example.swith.databinding.ActivityProfileModifyBinding
-import com.example.swith.databinding.DialogImageBinding
-import com.example.swith.databinding.DialogInterestingBinding
-import com.example.swith.databinding.DialogProfileBinding
-import com.example.swith.entity.ProfileResponse
-import com.example.swith.ui.MainActivity
-import com.example.swith.ui.dialog.CustomDialog
-import com.example.swith.ui.dialog.CustomImageDialog
-import com.example.swith.ui.dialog.CustomInterestingDialog
-import com.example.swith.ui.study.create.SelectPlaceActivity
-import com.example.swith.utils.CustomBinder
-import com.example.swith.utils.SharedPrefManager
-import com.example.swith.viewmodel.ProfileModifyViewModel
+import com.example.data.R
+import com.example.data.databinding.ActivityProfileModifyBinding
+import com.example.data.databinding.DialogImageBinding
+import com.example.data.databinding.DialogInterestingBinding
+import com.example.data.databinding.DialogProfileBinding
+import com.example.swith.domain.entity.ProfileResponse
+import com.example.data.ui.MainActivity
+import com.example.data.ui.dialog.CustomDialog
+import com.example.data.ui.dialog.CustomImageDialog
+import com.example.data.ui.dialog.CustomInterestingDialog
+import com.example.data.ui.study.create.SelectPlaceActivity
+import com.example.data.utils.CustomBinder
+import com.example.data.utils.SharedPrefManager
+import com.example.data.viewmodel.ProfileModifyViewModel
+import com.example.swith.domain.entity.ProfileModifyRequest
+import com.example.swith.domain.entity.ProfileRequest
 
 class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener, Observer<ProfileResponse> {
 
@@ -91,7 +93,7 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener, Observe
                         this@ProfileModifyActivity
                     )
                     SharedPrefManager(this@ProfileModifyActivity).getLoginData()?.userIdx!!.apply {
-                        requestCurrentProfile(com.example.swith.entity.ProfileRequest(this as Long))
+                        requestCurrentProfile(ProfileRequest(this as Long))
                     }
                 }
             mProfileModifyViewModel?.getCurrentProfileModify()
@@ -267,7 +269,7 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener, Observe
             Log.e(
                 "doori",
                 "${
-                    com.example.swith.entity.ProfileModifyRequest(
+                    ProfileModifyRequest(
                         email,
                         getInterestringIndex(btnInteresting1.text.toString()),
                         getInterestringIndex(btnInteresting2.text.toString()),
@@ -278,7 +280,7 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener, Observe
                 }"
             )
             mProfileModifyViewModel?.requestCurrentProfileModify(
-                com.example.swith.entity.ProfileModifyRequest(
+                ProfileModifyRequest(
                     email,
                     getInterestringIndex(btnInteresting1.text.toString()),
                     getInterestringIndex(btnInteresting2.text.toString()),

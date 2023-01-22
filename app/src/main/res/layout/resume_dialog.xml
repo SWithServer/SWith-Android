@@ -6,7 +6,7 @@
 
         <variable
             name="resumeDialog"
-            type="com.example.swith.ui.dialog.CustomResumeDialog" />
+            type="com.example.data.ui.dialog.CustomResumeDialog" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

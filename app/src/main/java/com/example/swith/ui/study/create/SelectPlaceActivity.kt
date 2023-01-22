@@ -8,11 +8,12 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.swith.R
-import com.example.swith.databinding.ActivitySelectPlaceBinding
-import com.example.swith.repository.ApiService
-import com.example.swith.repository.RetrofitService
-import com.example.swith.ui.adapter.LocationAdapter
+import com.example.data.R
+import com.example.data.databinding.ActivitySelectPlaceBinding
+import com.example.swith.data.api.ApiService
+import com.example.swith.data.api.RetrofitService
+import com.example.data.ui.adapter.LocationAdapter
+import com.example.swith.domain.entity.CityResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -71,14 +72,14 @@ class SelectPlaceActivity : AppCompatActivity(), View.OnClickListener {
 
         val regionService = retrofit.create(ApiService::class.java)
         regionService.getCityCode(code)
-            .enqueue(object : Callback<com.example.swith.entity.CityResponse> {
+            .enqueue(object : Callback<CityResponse> {
                 override fun onResponse(
-                    call: Call<com.example.swith.entity.CityResponse>,
-                    response: Response<com.example.swith.entity.CityResponse>
+                    call: Call<CityResponse>,
+                    response: Response<CityResponse>
                 ) {
                     Log.e("doori", response.toString())
                     response.body()?.apply {
-                        val regResponse = this as com.example.swith.entity.CityResponse
+                        val regResponse = this as CityResponse
                         val regcodes = regResponse.regcodes
                         Log.e("doori", response.toString())
                         when (num) {
@@ -117,7 +118,7 @@ class SelectPlaceActivity : AppCompatActivity(), View.OnClickListener {
                 }
 
                 override fun onFailure(
-                    call: Call<com.example.swith.entity.CityResponse>,
+                    call: Call<CityResponse>,
                     t: Throwable
                 ) {
                     Log.e("doori", t.toString())

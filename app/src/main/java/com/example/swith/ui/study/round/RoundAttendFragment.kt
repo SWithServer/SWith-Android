@@ -5,13 +5,13 @@ import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.swith.R
-import com.example.swith.databinding.FragmentRoundAttendBinding
-import com.example.swith.ui.adapter.AttendRVAdapter
-import com.example.swith.ui.dialog.BottomSheet
-import com.example.swith.ui.dialog.CustomAlertDialog
-import com.example.swith.utils.base.BaseFragment
-import com.example.swith.viewmodel.RoundViewModel
+import com.example.data.R
+import com.example.data.databinding.FragmentRoundAttendBinding
+import com.example.data.ui.adapter.AttendRVAdapter
+import com.example.data.ui.dialog.BottomSheet
+import com.example.data.ui.dialog.CustomAlertDialog
+import com.example.data.utils.base.BaseFragment
+import com.example.data.viewmodel.RoundViewModel
 
 class RoundAttendFragment(private val curCount: Int) :
     BaseFragment<FragmentRoundAttendBinding>(R.layout.fragment_round_attend) {

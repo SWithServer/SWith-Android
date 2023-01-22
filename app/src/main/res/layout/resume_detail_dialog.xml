@@ -11,11 +11,11 @@
 
         <variable
             name="resume"
-            type="com.example.swith.entity.ResumeResult" />
+            type="com.example.swith.domain.entity.ResumeResult" />
 
         <variable
             name="resumeDialog"
-            type="com.example.swith.ui.dialog.CustomDialog" />
+            type="com.example.data.ui.dialog.CustomDialog" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

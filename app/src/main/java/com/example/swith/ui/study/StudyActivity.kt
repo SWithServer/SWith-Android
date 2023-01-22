@@ -10,12 +10,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import com.example.swith.R
-import com.example.swith.databinding.ActivityStudyBinding
-import com.example.swith.ui.manage.ManageActivity
-import com.example.swith.ui.study.round.RoundFragment
-import com.example.swith.ui.study.round.RoundTabFragment
-import com.example.swith.viewmodel.RoundViewModel
+import com.example.data.R
+import com.example.data.databinding.ActivityStudyBinding
+import com.example.data.ui.manage.ManageActivity
+import com.example.data.ui.study.round.RoundFragment
+import com.example.data.ui.study.round.RoundTabFragment
+import com.example.data.viewmodel.RoundViewModel
 
 class StudyActivity : AppCompatActivity(), View.OnClickListener {
     private var groupId: Long = 0

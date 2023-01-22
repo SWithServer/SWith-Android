@@ -11,12 +11,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.swith.R
-import com.example.swith.databinding.ActivitySnsLoginBinding
-import com.example.swith.ui.MainActivity
-import com.example.swith.ui.profile.ProfileModifyActivity
-import com.example.swith.utils.SharedPrefManager
-import com.example.swith.viewmodel.LoginViewModel
+import com.example.data.R
+import com.example.data.databinding.ActivitySnsLoginBinding
+import com.example.data.ui.MainActivity
+import com.example.data.ui.profile.ProfileModifyActivity
+import com.example.data.utils.SharedPrefManager
+import com.example.data.viewmodel.LoginViewModel
+import com.example.swith.domain.entity.LoginRequest
+import com.example.swith.domain.entity.LoginResponse
 import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
@@ -25,7 +27,7 @@ import com.kakao.sdk.common.model.KakaoSdkError
 import com.kakao.sdk.user.UserApiClient
 
 class SnsLoginActivity : AppCompatActivity(), View.OnClickListener,
-    Observer<com.example.swith.entity.LoginResponse> {
+    Observer<LoginResponse> {
     lateinit var binding: ActivitySnsLoginBinding
 
     private var mLoginViewModel: LoginViewModel? = null
@@ -147,7 +149,7 @@ class SnsLoginActivity : AppCompatActivity(), View.OnClickListener,
                 )
 
                 mLoginViewModel?.requestCurrentLogin(
-                    com.example.swith.entity.LoginRequest(
+                    LoginRequest(
                         user.kakaoAccount?.email ?: "null",
                         user.kakaoAccount?.profile?.nickname ?: "null",
                         user.kakaoAccount?.profile?.thumbnailImageUrl ?: "no",
@@ -156,7 +158,7 @@ class SnsLoginActivity : AppCompatActivity(), View.OnClickListener,
                 )
                 Log.i(
                     "doori", "${
-                        com.example.swith.entity.LoginRequest(
+                        LoginRequest(
                             user.kakaoAccount?.email ?: "null",
                             user.kakaoAccount?.profile?.nickname ?: "null",
                             user.kakaoAccount?.profile?.thumbnailImageUrl ?: "no",
@@ -200,7 +202,7 @@ class SnsLoginActivity : AppCompatActivity(), View.OnClickListener,
         builder.show()
     }
 
-    override fun onChanged(loginResponse: com.example.swith.entity.LoginResponse?) {
+    override fun onChanged(loginResponse: LoginResponse?) {
         Log.e("doori", "onChanged = $loginResponse")
         setShowDimmed(false)
         //가입되어있으면 메인페이지,아니면 프로필관리

@@ -9,18 +9,18 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.swith.R
-import com.example.swith.databinding.FragmentResumeBinding
-import com.example.swith.databinding.ResumeDetailDialogBinding
-import com.example.swith.databinding.ResumeDialogBinding
-import com.example.swith.entity.ResumeResult
-import com.example.swith.ui.adapter.ResumeAdapter
-import com.example.swith.ui.dialog.CustomDialog
-import com.example.swith.ui.dialog.CustomResumeDialog
-import com.example.swith.utils.CustomBinder
-import com.example.swith.utils.SharedPrefManager
-import com.example.swith.utils.base.BaseFragment
-import com.example.swith.viewmodel.ResumeViewModel
+import com.example.data.R
+import com.example.data.databinding.FragmentResumeBinding
+import com.example.data.databinding.ResumeDetailDialogBinding
+import com.example.data.databinding.ResumeDialogBinding
+import com.example.swith.domain.entity.ResumeResult
+import com.example.data.ui.adapter.ResumeAdapter
+import com.example.data.ui.dialog.CustomDialog
+import com.example.data.ui.dialog.CustomResumeDialog
+import com.example.data.utils.CustomBinder
+import com.example.data.utils.SharedPrefManager
+import com.example.data.utils.base.BaseFragment
+import com.example.data.viewmodel.ResumeViewModel
 
 class ResumeFragment : BaseFragment<FragmentResumeBinding>(R.layout.fragment_resume) {
     private var mResumeViewModel: ResumeViewModel? = null

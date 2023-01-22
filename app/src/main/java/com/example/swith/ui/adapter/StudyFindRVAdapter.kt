@@ -6,9 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.swith.databinding.ItemLoadingBinding
-import com.example.swith.databinding.ItemStudyFindBinding
-import com.example.swith.entity.Content
+import com.example.data.databinding.ItemLoadingBinding
+import com.example.data.databinding.ItemStudyFindBinding
+import com.example.swith.domain.entity.Content
 import java.text.SimpleDateFormat
 import java.util.*
 

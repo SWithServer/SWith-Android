@@ -8,10 +8,10 @@ import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
-import com.example.swith.ui.dialog.CustomDialog
-import com.example.swith.ui.dialog.CustomImageDialog
-import com.example.swith.ui.dialog.CustomInterestingDialog
-import com.example.swith.ui.dialog.CustomResumeDialog
+import com.example.data.ui.dialog.CustomDialog
+import com.example.data.ui.dialog.CustomImageDialog
+import com.example.data.ui.dialog.CustomInterestingDialog
+import com.example.data.ui.dialog.CustomResumeDialog
 import de.hdodenhof.circleimageview.CircleImageView
 
 class CustomBinder {

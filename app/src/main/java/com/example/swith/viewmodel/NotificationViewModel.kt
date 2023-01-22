@@ -1,7 +1,7 @@
 package com.example.swith.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.example.swith.entity.Notification
+import com.example.swith.domain.entity.Notification
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

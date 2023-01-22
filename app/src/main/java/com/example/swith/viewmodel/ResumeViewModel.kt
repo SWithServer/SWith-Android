@@ -4,9 +4,9 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.swith.entity.ResumeResponse
-import com.example.swith.repository.resume.ResumeRepository
-import com.example.swith.repository.resume.ResumeRepositoryProvider
+import com.example.swith.domain.entity.ResumeResponse
+import com.example.data.repository.resume.ResumeRepository
+import com.example.data.repository.resume.ResumeRepositoryProvider
 
 class ResumeViewModel : ViewModel() {
     val isLoading: ObservableField<Boolean> = ObservableField<Boolean>()

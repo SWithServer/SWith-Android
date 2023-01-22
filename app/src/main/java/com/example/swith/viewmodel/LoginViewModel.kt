@@ -4,8 +4,10 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.swith.repository.login.LoginRepository
-import com.example.swith.repository.login.LoginRepositoryProvider
+import com.example.data.repository.login.LoginRepository
+import com.example.data.repository.login.LoginRepositoryProvider
+import com.example.swith.domain.entity.LoginRequest
+import com.example.swith.domain.entity.LoginResponse
 
 class LoginViewModel : ViewModel() {
     val isLoading: ObservableField<Boolean> = ObservableField<Boolean>()
@@ -23,11 +25,11 @@ class LoginViewModel : ViewModel() {
         isLoading.set(false)
     }
 
-    fun requestCurrentLogin(loginRequest: com.example.swith.entity.LoginRequest): LiveData<com.example.swith.entity.LoginResponse> {
+    fun requestCurrentLogin(loginRequest: LoginRequest): LiveData<LoginResponse> {
         return mLoginRepository.requestCurrentLogin(loginRequest)
     }
 
-    fun getCurrentLogin(): LiveData<com.example.swith.entity.LoginResponse> {
+    fun getCurrentLogin(): LiveData<LoginResponse> {
         return mLoginRepository.getCurrentLogin()
     }
 

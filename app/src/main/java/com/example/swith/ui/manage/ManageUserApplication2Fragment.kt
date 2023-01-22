@@ -9,15 +9,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.swith.R
-import com.example.swith.api.SwithService
-import com.example.swith.databinding.FragmentManageApplication2Binding
-import com.example.swith.repository.RetrofitService
-import com.example.swith.ui.adapter.ManageUserRVAdapter2
-import com.example.swith.ui.dialog.CustomConfirmDialog
-import com.example.swith.utils.SharedPrefManager
-import com.example.swith.utils.SwipeController
-import com.example.swith.utils.base.BaseFragment
+import com.example.data.R
+import com.example.data.databinding.FragmentManageApplication2Binding
+import com.example.swith.data.api.RetrofitService
+import com.example.data.ui.adapter.ManageUserRVAdapter2
+import com.example.data.ui.dialog.CustomConfirmDialog
+import com.example.data.utils.SharedPrefManager
+import com.example.data.utils.SwipeController
+import com.example.data.utils.base.BaseFragment
+import com.example.swith.domain.entity.ManageUserDelReq
+import com.example.swith.domain.entity.ManageUserDelResponse
+import com.example.swith.domain.entity.ManageUserResponse
+import com.example.swith.domain.entity.ManageUserResult
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -35,7 +38,7 @@ class ManageUserApplication2Fragment() :
 //    val adminIdx = 1
 
     private lateinit var adapter: ManageUserRVAdapter2
-    lateinit var userList: ArrayList<com.example.swith.entity.ManageUserResult>
+    lateinit var userList: ArrayList<ManageUserResult>
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -52,7 +55,7 @@ class ManageUserApplication2Fragment() :
         setRetrofitData(groupIdx?.toLong())
     }
 
-    fun initRV(userList: List<com.example.swith.entity.ManageUserResult>) {
+    fun initRV(userList: List<ManageUserResult>) {
         val adapter = ManageUserRVAdapter2()
         adapter.userList.addAll(userList)
         binding.rvApplication.adapter = adapter
@@ -78,7 +81,7 @@ class ManageUserApplication2Fragment() :
         })
         adapter.setCustomListener(object : ManageUserRVAdapter2.CustomListener {
             override fun onDeleteClick(
-                userInfo: com.example.swith.entity.ManageUserResult,
+                userInfo: ManageUserResult,
                 applicationIdx: Long
             ) {
                 Log.e("스와이프 이벤트 발생", "true")
@@ -103,13 +106,13 @@ class ManageUserApplication2Fragment() :
 
     fun setRetrofitData(groupIdx: Long?) {
         Log.e("groupIdx 레트로핏 값 ", "${groupIdx}")
-        val retrofitService = RetrofitService.retrofit.create(SwithService::class.java)
+        val retrofitService = RetrofitService.retrofit.create(com.example.swith.data.api.SwithService::class.java)
         //status가 1이면 지원해서 승인된 사람 or 선착순으로 바로 통과된 사람
         retrofitService.getUserList(groupIdx!!, 1).enqueue(object :
-            Callback<com.example.swith.entity.ManageUserResponse> {
+            Callback<ManageUserResponse> {
             override fun onResponse(
-                call: Call<com.example.swith.entity.ManageUserResponse>,
-                response: Response<com.example.swith.entity.ManageUserResponse>
+                call: Call<ManageUserResponse>,
+                response: Response<ManageUserResponse>
             ) {
                 if (response.isSuccessful) {
                     Log.e("summer", "성공${response.toString()}")
@@ -125,7 +128,7 @@ class ManageUserApplication2Fragment() :
             }
 
             override fun onFailure(
-                call: Call<com.example.swith.entity.ManageUserResponse>,
+                call: Call<ManageUserResponse>,
                 t: Throwable
             ) {
                 Log.e("summer", "onFailure t = ${t.toString()}")
@@ -140,16 +143,16 @@ class ManageUserApplication2Fragment() :
     }
 
     fun deleteUser(userIdx: Long?, adminIdx: Long?, applicationIdx: Long?) {
-        val retrofitService = RetrofitService.retrofit.create(SwithService::class.java)
+        val retrofitService = RetrofitService.retrofit.create(com.example.swith.data.api.SwithService::class.java)
         //status가 1이면 지원해서 승인된 사람 or 선착순으로 바로 통과된 사람
         Log.e("전달한 applicationIdx 값", applicationIdx.toString())
         val deleteReq =
-            com.example.swith.entity.ManageUserDelReq(adminIdx, userIdx, applicationIdx)
+            ManageUserDelReq(adminIdx, userIdx, applicationIdx)
         retrofitService.deleteUser(groupIdx!!.toLong(), 1, deleteReq).enqueue(object :
-            Callback<com.example.swith.entity.ManageUserDelResponse> {
+            Callback<ManageUserDelResponse> {
             override fun onResponse(
-                call: Call<com.example.swith.entity.ManageUserDelResponse>,
-                response: Response<com.example.swith.entity.ManageUserDelResponse>
+                call: Call<ManageUserDelResponse>,
+                response: Response<ManageUserDelResponse>
             ) {
                 if (response.isSuccessful) {
                     Log.e("summer", "성공${response.toString()}")
@@ -164,7 +167,7 @@ class ManageUserApplication2Fragment() :
             }
 
             override fun onFailure(
-                call: Call<com.example.swith.entity.ManageUserDelResponse>,
+                call: Call<ManageUserDelResponse>,
                 t: Throwable
             ) {
                 Log.e("summer", "onFailure t = ${t.toString()}")

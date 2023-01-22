@@ -6,7 +6,7 @@
 
         <variable
             name="resumeData"
-            type="com.example.swith.entity.ResumeResult" />
+            type="com.example.swith.domain.entity.ResumeResult" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -7,8 +7,8 @@ import android.os.Bundle
 import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
-import com.example.swith.R
-import com.example.swith.databinding.DialogTimepickerBinding
+import com.example.data.R
+import com.example.data.databinding.DialogTimepickerBinding
 
 class CustomTimePickerDialog(context: Context) : DialogFragment() {
     val dialogBinding: DialogTimepickerBinding by lazy {

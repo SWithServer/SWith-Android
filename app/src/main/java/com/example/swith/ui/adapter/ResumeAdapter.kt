@@ -4,8 +4,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.swith.databinding.ItemResumeBinding
-import com.example.swith.entity.ResumeResult
+import com.example.data.databinding.ItemResumeBinding
+import com.example.swith.domain.entity.ResumeResult
 
 class ResumeAdapter() : RecyclerView.Adapter<ResumeAdapter.ResumeViewHolder>() {
     private var dataList: List<ResumeResult>? = null

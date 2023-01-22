@@ -6,11 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.swith.databinding.ItemApplication1Binding
+import com.example.data.databinding.ItemApplication1Binding
+import com.example.swith.domain.entity.ManageUserResult
 
 class ManageUserRVAdapter1 : RecyclerView.Adapter<ManageUserRVAdapter1.CustomViewHolder>() {
 
-    var userList = mutableListOf<com.example.swith.entity.ManageUserResult>()
+    var userList = mutableListOf<ManageUserResult>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
         val binding =
@@ -29,7 +30,7 @@ class ManageUserRVAdapter1 : RecyclerView.Adapter<ManageUserRVAdapter1.CustomVie
 
     inner class CustomViewHolder(val binding: ItemApplication1Binding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(userInfo: com.example.swith.entity.ManageUserResult) {
+        fun bind(userInfo: ManageUserResult) {
             with(binding)
             {
                 tvName.text = userInfo?.nickname

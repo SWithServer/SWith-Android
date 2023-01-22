@@ -4,9 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.swith.R
-import com.example.swith.databinding.ItemNotificationBinding
-import com.example.swith.entity.Notification
+import com.example.data.R
+import com.example.data.databinding.ItemNotificationBinding
+import com.example.swith.domain.entity.Notification
 
 class NotificationRVAdapter() : RecyclerView.Adapter<NotificationRVAdapter.ViewHolder>() {
     private lateinit var binding: ItemNotificationBinding

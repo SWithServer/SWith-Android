@@ -5,11 +5,12 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import com.example.swith.R
-import com.example.swith.api.SwithService
-import com.example.swith.databinding.ActivityManageUserResumeBinding
-import com.example.swith.repository.RetrofitService
-import com.example.swith.utils.SharedPrefManager
+import com.example.data.R
+import com.example.data.databinding.ActivityManageUserResumeBinding
+import com.example.swith.data.api.RetrofitService
+import com.example.data.utils.SharedPrefManager
+import com.example.swith.domain.entity.ManageUserResumeReq
+import com.example.swith.domain.entity.ManageUserResumeResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -56,18 +57,18 @@ class ManageUserResumeActivity : AppCompatActivity(), View.OnClickListener {
     fun postData(statusOfApplication: Int) {
         Log.e("groupIdx 레트로핏 값 ", "${groupIdx}")
         Log.e("applicationIdx 신청서 idx 값", "${applicationIdx}")
-        val resumeReq = com.example.swith.entity.ManageUserResumeReq(
+        val resumeReq = ManageUserResumeReq(
             applicationIdx,
             SharedPrefManager(this@ManageUserResumeActivity).getLoginData()!!.userIdx,
             statusOfApplication
         )
         Log.e("req 부분", "${resumeReq}")
-        val retrofitService = RetrofitService.retrofit.create(SwithService::class.java)
+        val retrofitService = RetrofitService.retrofit.create(com.example.swith.data.api.SwithService::class.java)
         retrofitService.postUserResume(groupIdx!!, 0, resumeReq).enqueue(object :
-            Callback<com.example.swith.entity.ManageUserResumeResponse> {
+            Callback<ManageUserResumeResponse> {
             override fun onResponse(
-                call: Call<com.example.swith.entity.ManageUserResumeResponse>,
-                response: Response<com.example.swith.entity.ManageUserResumeResponse>
+                call: Call<ManageUserResumeResponse>,
+                response: Response<ManageUserResumeResponse>
             ) {
                 if (response.isSuccessful) {
                     binding.flLoadingLayout.visibility = View.GONE
@@ -82,7 +83,7 @@ class ManageUserResumeActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             override fun onFailure(
-                call: Call<com.example.swith.entity.ManageUserResumeResponse>,
+                call: Call<ManageUserResumeResponse>,
                 t: Throwable
             ) {
                 Log.e("summer", "onFailure t = ${t.toString()}")

@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace 'com.example.swith'
+    namespace 'com.example.swith.data'
     compileSdk 32
 
     defaultConfig {

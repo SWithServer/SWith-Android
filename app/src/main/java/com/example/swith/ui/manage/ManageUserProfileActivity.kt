@@ -5,10 +5,11 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import com.example.swith.R
-import com.example.swith.api.SwithService
-import com.example.swith.databinding.ActivityManageUserProfileBinding
-import com.example.swith.repository.RetrofitService
+import com.example.data.R
+import com.example.data.databinding.ActivityManageUserProfileBinding
+import com.example.swith.data.api.RetrofitService
+import com.example.swith.domain.entity.ManageUserIdx
+import com.example.swith.domain.entity.ManageUserProfileResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -39,13 +40,13 @@ class ManageUserProfileActivity : AppCompatActivity(), View.OnClickListener {
     fun setData(userIdx: Long?) {
         Log.e("userIdx 데이터 set ", "${userIdx}")
         Log.e("summer", "데이터 set true")
-        var reqUserIdx = com.example.swith.entity.ManageUserIdx(userIdx)
-        val retrofitService = RetrofitService.retrofit.create(SwithService::class.java)
+        var reqUserIdx = ManageUserIdx(userIdx)
+        val retrofitService = RetrofitService.retrofit.create(com.example.swith.data.api.SwithService::class.java)
         retrofitService.getUserProfile(reqUserIdx)
-            .enqueue(object : Callback<com.example.swith.entity.ManageUserProfileResponse> {
+            .enqueue(object : Callback<ManageUserProfileResponse> {
                 override fun onResponse(
-                    call: Call<com.example.swith.entity.ManageUserProfileResponse>,
-                    response: Response<com.example.swith.entity.ManageUserProfileResponse>
+                    call: Call<ManageUserProfileResponse>,
+                    response: Response<ManageUserProfileResponse>
                 ) {
                     if (response.isSuccessful) {
                         Log.e("summer", "성공${response.toString()}")
@@ -90,7 +91,7 @@ class ManageUserProfileActivity : AppCompatActivity(), View.OnClickListener {
                 }
 
                 override fun onFailure(
-                    call: Call<com.example.swith.entity.ManageUserProfileResponse>,
+                    call: Call<ManageUserProfileResponse>,
                     t: Throwable
                 ) {
                     Log.e("summer", "onFailure t = ${t.toString()}")

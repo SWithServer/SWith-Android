@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import com.example.swith.R
-import com.example.swith.databinding.FragmentBottomSheetBinding
+import com.example.data.R
+import com.example.data.databinding.FragmentBottomSheetBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class BottomSheet(

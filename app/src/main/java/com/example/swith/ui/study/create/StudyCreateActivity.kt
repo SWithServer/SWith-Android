@@ -20,15 +20,14 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import com.example.swith.R
-import com.example.swith.SwithApplication.Companion.spfManager
-import com.example.swith.api.SwithService
-import com.example.swith.databinding.ActivityStudyCreateBinding
-import com.example.swith.entity.StudyGroup
-import com.example.swith.entity.StudyImageRes
-import com.example.swith.entity.StudyResponse
-import com.example.swith.repository.RetrofitService
-import com.example.swith.utils.SharedPrefManager
+import com.example.data.R
+import com.example.data.SwithApplication.Companion.spfManager
+import com.example.data.databinding.ActivityStudyCreateBinding
+import com.example.swith.domain.entity.StudyGroup
+import com.example.swith.domain.entity.StudyImageRes
+import com.example.swith.domain.entity.StudyResponse
+import com.example.swith.data.api.RetrofitService
+import com.example.data.utils.SharedPrefManager
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -682,7 +681,7 @@ class StudyCreateActivity : AppCompatActivity(), View.OnClickListener {
         if (!(file.name.equals(""))) {
             var requestFile = RequestBody.create("image"?.toMediaTypeOrNull(), file)
             var body = MultipartBody.Part.createFormData("image", file.name, requestFile)
-            val retrofitService = RetrofitService.retrofit.create(SwithService::class.java)
+            val retrofitService = RetrofitService.retrofit.create(com.example.swith.data.api.SwithService::class.java)
             retrofitService.uploadImg(body).enqueue(object :
                 Callback<StudyImageRes> {
                 override fun onResponse(
@@ -717,7 +716,7 @@ class StudyCreateActivity : AppCompatActivity(), View.OnClickListener {
 
     fun postStudy(studyRequestData: StudyGroup) {
         Log.e("StudyReq 최종", "${studyRequestData.toString()}")
-        val retrofitService = RetrofitService.retrofit.create(SwithService::class.java)
+        val retrofitService = RetrofitService.retrofit.create(com.example.swith.data.api.SwithService::class.java)
         retrofitService.createStudy(studyRequestData).enqueue(object : Callback<StudyResponse> {
             override fun onResponse(call: Call<StudyResponse>, response: Response<StudyResponse>) {
                 if (response.isSuccessful) {

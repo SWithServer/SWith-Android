@@ -5,14 +5,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.swith.databinding.ItemApplication1Binding
-import com.example.swith.utils.ItemTouchHelperListener
+import com.example.data.databinding.ItemApplication1Binding
+import com.example.data.utils.ItemTouchHelperListener
+import com.example.swith.domain.entity.ManageUserResult
 
 // 유저관리 선착순 목록(지원서 불필요)
 class ManageUserRVAdapter2 : RecyclerView.Adapter<ManageUserRVAdapter2.CustomViewHolder>(),
     ItemTouchHelperListener {
 
-    var userList = mutableListOf<com.example.swith.entity.ManageUserResult>()
+    var userList = mutableListOf<ManageUserResult>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
         val binding =
@@ -30,7 +31,7 @@ class ManageUserRVAdapter2 : RecyclerView.Adapter<ManageUserRVAdapter2.CustomVie
 
     inner class CustomViewHolder(val binding: ItemApplication1Binding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(userInfo: com.example.swith.entity.ManageUserResult) {
+        fun bind(userInfo: ManageUserResult) {
             with(binding)
             {
                 tvName.text = userInfo?.nickname
@@ -73,7 +74,7 @@ class ManageUserRVAdapter2 : RecyclerView.Adapter<ManageUserRVAdapter2.CustomVie
     }
 
     interface CustomListener {
-        fun onDeleteClick(userInfo: com.example.swith.entity.ManageUserResult, applicationIdx: Long)
+        fun onDeleteClick(userInfo: ManageUserResult, applicationIdx: Long)
     }
 
     private lateinit var customListener: CustomListener

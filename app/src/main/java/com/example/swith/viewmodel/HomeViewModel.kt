@@ -1,13 +1,13 @@
 package com.example.swith.viewmodel
 
 import androidx.lifecycle.*
-import com.example.swith.SwithApplication
-import com.example.swith.entity.GroupList
-import com.example.swith.remote.home.HomeRemoteDataSource
-import com.example.swith.repository.home.HomeRepository
-import com.example.swith.utils.SingleLiveEvent
-import com.example.swith.utils.base.BaseViewModel
-import com.example.swith.utils.error.ScreenState
+import com.example.data.SwithApplication
+import com.example.swith.domain.entity.GroupList
+import com.example.data.remote.home.HomeRemoteDataSource
+import com.example.data.repository.home.HomeRepository
+import com.example.data.utils.SingleLiveEvent
+import com.example.data.utils.base.BaseViewModel
+import com.example.data.utils.error.ScreenState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -16,7 +16,7 @@ class HomeViewModel() : BaseViewModel() {
     private val repository: HomeRepository = HomeRepository(HomeRemoteDataSource())
     private var _groupLiveData = SingleLiveEvent<GroupList>()
 
-    val groupLiveData: LiveData<com.example.swith.entity.GroupList>
+    val groupLiveData: LiveData<GroupList>
         get() = _groupLiveData
 
     fun loadData() {

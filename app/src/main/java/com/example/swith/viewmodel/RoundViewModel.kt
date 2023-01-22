@@ -1,14 +1,15 @@
 package com.example.swith.viewmodel
 
 import androidx.lifecycle.*
-import com.example.swith.SwithApplication.Companion.spfManager
-import com.example.swith.entity.*
-import com.example.swith.remote.round.RoundRemoteDataSource
-import com.example.swith.repository.round.RoundRepository
-import com.example.swith.utils.SingleLiveEvent
-import com.example.swith.utils.base.BaseViewModel
-import com.example.swith.utils.compareTimeWithNow
-import com.example.swith.utils.error.ScreenState
+import com.example.data.SwithApplication.Companion.spfManager
+import com.example.data.entity.*
+import com.example.data.remote.round.RoundRemoteDataSource
+import com.example.data.repository.round.RoundRepository
+import com.example.data.utils.SingleLiveEvent
+import com.example.data.utils.base.BaseViewModel
+import com.example.data.utils.compareTimeWithNow
+import com.example.data.utils.error.ScreenState
+import com.example.swith.domain.entity.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -30,7 +31,7 @@ class RoundViewModel() : BaseViewModel() {
     private var _sessionLiveData = MutableLiveData<SessionInfo>()
 
     // 출석
-    private var _attendLiveEvent = MutableLiveData<com.example.swith.entity.AttendResponse>()
+    private var _attendLiveEvent = MutableLiveData<AttendResponse>()
 
     // 통계 화면 (유저별 출석율)
     private var _userAttendLiveData = MutableLiveData<UserAttend>()
@@ -47,7 +48,7 @@ class RoundViewModel() : BaseViewModel() {
     val sessionLiveData: LiveData<SessionInfo>
         get() = _sessionLiveData
 
-    val attendLiveEvent: LiveData<com.example.swith.entity.AttendResponse>
+    val attendLiveEvent: LiveData<AttendResponse>
         get() = _attendLiveEvent
 
     val userAttendLiveData: LiveData<UserAttend>
@@ -200,7 +201,7 @@ class RoundViewModel() : BaseViewModel() {
         viewModelScope.launch {
             val res = repository.createMemo(
                 this@RoundViewModel,
-                com.example.swith.entity.Memo(content, curSessionIdx, userIdx)
+                Memo(content, curSessionIdx, userIdx)
             )
             withContext(Dispatchers.Main) {
                 if (res?.isSuccess == false)
@@ -217,7 +218,7 @@ class RoundViewModel() : BaseViewModel() {
         viewModelScope.launch {
             val res = repository.updateMemo(
                 this@RoundViewModel,
-                com.example.swith.entity.MemoUpdate(
+                MemoUpdate(
                     content,
                     sessionLiveData.value?.memoIdx!!
                 )

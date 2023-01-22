@@ -14,14 +14,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import com.example.swith.R
-import com.example.swith.SwithApplication
-import com.example.swith.databinding.ActivityRoundCreateBinding
-import com.example.swith.entity.Session
-import com.example.swith.ui.dialog.BottomSheet
-import com.example.swith.ui.dialog.CustomAlertDialog
-import com.example.swith.ui.dialog.CustomTimePickerDialog
-import com.example.swith.viewmodel.RoundUpdateViewModel
+import com.example.data.R
+import com.example.data.SwithApplication
+import com.example.data.databinding.ActivityRoundCreateBinding
+import com.example.swith.domain.entity.Session
+import com.example.data.ui.dialog.BottomSheet
+import com.example.data.ui.dialog.CustomAlertDialog
+import com.example.data.ui.dialog.CustomTimePickerDialog
+import com.example.data.viewmodel.RoundUpdateViewModel
+import com.example.swith.domain.entity.DateTime
 import java.lang.Integer.max
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -42,8 +43,8 @@ open class RoundCreateActivity : AppCompatActivity(), View.OnClickListener {
     private val year = calendar.get(Calendar.YEAR)
     private val month = calendar.get(Calendar.MONTH)
     private val day = calendar.get(Calendar.DAY_OF_MONTH)
-    protected var startTime: com.example.swith.entity.DateTime? = null
-    protected var endTime: com.example.swith.entity.DateTime? = null
+    protected var startTime: DateTime? = null
+    protected var endTime: DateTime? = null
 
     private val groupIdx by lazy {
         intent.getLongExtra("groupIdx", 0)
@@ -713,7 +714,7 @@ open class RoundCreateActivity : AppCompatActivity(), View.OnClickListener {
                                         "시작 : ${dateYear}.${monthOfYear + 1}.${dayOfMonth} ${dialogBinding.npHourPicker.value}:%02d",
                                         (dialogBinding.npMinutePicker.value) * 10
                                     )
-                                    startTime = com.example.swith.entity.DateTime(
+                                    startTime = DateTime(
                                         dateYear,
                                         monthOfYear + 1,
                                         dayOfMonth,
@@ -732,7 +733,7 @@ open class RoundCreateActivity : AppCompatActivity(), View.OnClickListener {
                                         "종료 : ${dateYear}.${monthOfYear + 1}.${dayOfMonth} ${dialogBinding.npHourPicker.value}:%02d",
                                         (dialogBinding.npMinutePicker.value) * 10
                                     )
-                                    endTime = com.example.swith.entity.DateTime(
+                                    endTime = DateTime(
                                         dateYear,
                                         monthOfYear + 1,
                                         dayOfMonth,

@@ -7,8 +7,8 @@ import android.os.Bundle
 import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
-import com.example.swith.R
-import com.example.swith.databinding.DialogAlertBinding
+import com.example.data.R
+import com.example.data.databinding.DialogAlertBinding
 
 class CustomAlertDialog(private val title: String, private val content: String) : DialogFragment() {
     private lateinit var binding: DialogAlertBinding

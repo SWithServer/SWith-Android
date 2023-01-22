@@ -2,15 +2,15 @@ package com.example.swith.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.example.swith.SwithApplication
-import com.example.swith.entity.Round
-import com.example.swith.entity.Session
-import com.example.swith.entity.SessionModify
-import com.example.swith.remote.round.RoundUpdateRemoteDataSource
-import com.example.swith.repository.round.update.RoundUpdateRepository
-import com.example.swith.utils.SingleLiveEvent
-import com.example.swith.utils.base.BaseViewModel
-import com.example.swith.utils.error.ScreenState
+import com.example.data.SwithApplication
+import com.example.data.entity.Round
+import com.example.swith.domain.entity.Session
+import com.example.swith.domain.entity.SessionModify
+import com.example.data.remote.round.RoundUpdateRemoteDataSource
+import com.example.data.repository.round.update.RoundUpdateRepository
+import com.example.data.utils.SingleLiveEvent
+import com.example.data.utils.base.BaseViewModel
+import com.example.data.utils.error.ScreenState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

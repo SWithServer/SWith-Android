@@ -10,11 +10,11 @@ import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.swith.R
-import com.example.swith.databinding.FragmentStatsBinding
-import com.example.swith.ui.adapter.StatsRVAdapter
-import com.example.swith.utils.base.BaseFragment
-import com.example.swith.viewmodel.RoundViewModel
+import com.example.data.R
+import com.example.data.databinding.FragmentStatsBinding
+import com.example.data.ui.adapter.StatsRVAdapter
+import com.example.data.utils.base.BaseFragment
+import com.example.data.viewmodel.RoundViewModel
 
 class StatsFragment : BaseFragment<FragmentStatsBinding>(R.layout.fragment_stats) {
     private val viewModel: RoundViewModel by activityViewModels()

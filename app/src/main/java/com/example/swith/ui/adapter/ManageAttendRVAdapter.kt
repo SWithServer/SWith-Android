@@ -9,12 +9,14 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.swith.R
-import com.example.swith.databinding.ItemManageAttendBinding
+import com.example.data.R
+import com.example.data.databinding.ItemManageAttendBinding
+import com.example.swith.domain.entity.GetAttendanceInfo
+import com.example.swith.domain.entity.UpdateAttend
 
 class ManageAttendRVAdapter : RecyclerView.Adapter<ManageAttendRVAdapter.ViewHolder>() {
     private lateinit var binding: ItemManageAttendBinding
-    private var attendList = ArrayList<com.example.swith.entity.GetAttendanceInfo>()
+    private var attendList = ArrayList<GetAttendanceInfo>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         binding = DataBindingUtil.inflate(
             LayoutInflater.from(parent.context),
@@ -31,16 +33,16 @@ class ManageAttendRVAdapter : RecyclerView.Adapter<ManageAttendRVAdapter.ViewHol
 
     override fun getItemCount(): Int = attendList.size
 
-    fun setData(data: List<com.example.swith.entity.GetAttendanceInfo>) {
-        attendList = data as ArrayList<com.example.swith.entity.GetAttendanceInfo>
+    fun setData(data: List<GetAttendanceInfo>) {
+        attendList = data as ArrayList<GetAttendanceInfo>
         notifyDataSetChanged()
     }
 
-    fun getData(): List<com.example.swith.entity.UpdateAttend> {
-        val data = ArrayList<com.example.swith.entity.UpdateAttend>()
+    fun getData(): List<UpdateAttend> {
+        val data = ArrayList<UpdateAttend>()
         for (i in 0 until itemCount) {
             data.add(
-                com.example.swith.entity.UpdateAttend(
+                UpdateAttend(
                     attendList[i].attendanceIdx,
                     attendList[i].status
                 )
@@ -51,7 +53,7 @@ class ManageAttendRVAdapter : RecyclerView.Adapter<ManageAttendRVAdapter.ViewHol
 
     inner class ViewHolder(val binding: ItemManageAttendBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(attendance: com.example.swith.entity.GetAttendanceInfo, adapterPos: Int) {
+        fun bind(attendance: GetAttendanceInfo, adapterPos: Int) {
             with(binding) {
                 tvItemManageAttendNickname.text = attendance.nickname
                 if (attendance.status == 0) {

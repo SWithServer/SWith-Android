@@ -5,13 +5,12 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import com.example.swith.R
-import com.example.swith.api.SwithService
-import com.example.swith.databinding.ActivityManageFinishBinding
-import com.example.swith.entity.StudyFinishReq
-import com.example.swith.entity.StudyFinishResponse
-import com.example.swith.repository.RetrofitService
-import com.example.swith.utils.SharedPrefManager
+import com.example.data.R
+import com.example.data.databinding.ActivityManageFinishBinding
+import com.example.swith.domain.entity.StudyFinishReq
+import com.example.swith.domain.entity.StudyFinishResponse
+import com.example.swith.data.api.RetrofitService
+import com.example.data.utils.SharedPrefManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -54,7 +53,7 @@ class ManageFinishActivity : AppCompatActivity(), View.OnClickListener {
             groupIdx
         )
         Log.e("req 값", "${reqBody.toString()}")
-        val retrofitService = RetrofitService.retrofit.create(SwithService::class.java)
+        val retrofitService = RetrofitService.retrofit.create(com.example.swith.data.api.SwithService::class.java)
         retrofitService.endStudy(reqBody).enqueue(object :
             Callback<StudyFinishResponse> {
             override fun onResponse(

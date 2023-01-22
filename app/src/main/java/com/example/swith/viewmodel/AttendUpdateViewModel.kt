@@ -3,11 +3,13 @@ package com.example.swith.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.swith.repository.manage.attend.ManageAttendRemoteDataSource
-import com.example.swith.repository.manage.attend.ManageAttendRepository
-import com.example.swith.utils.SingleLiveEvent
-import com.example.swith.utils.base.BaseViewModel
-import com.example.swith.utils.error.ScreenState
+import com.example.data.repository.manage.attend.ManageAttendRemoteDataSource
+import com.example.data.repository.manage.attend.ManageAttendRepository
+import com.example.data.utils.SingleLiveEvent
+import com.example.data.utils.base.BaseViewModel
+import com.example.data.utils.error.ScreenState
+import com.example.swith.domain.entity.AttendList
+import com.example.swith.domain.entity.UpdateAttend
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -15,10 +17,10 @@ import kotlinx.coroutines.withContext
 class AttendUpdateViewModel : BaseViewModel() {
     private val repository = ManageAttendRepository(ManageAttendRemoteDataSource())
 
-    private var _attendLiveData = MutableLiveData<com.example.swith.entity.AttendList>()
+    private var _attendLiveData = MutableLiveData<AttendList>()
     private val _updateAttendLiveEvent = SingleLiveEvent<Any>()
 
-    val attendLiveData: LiveData<com.example.swith.entity.AttendList>
+    val attendLiveData: LiveData<AttendList>
         get() = _attendLiveData
 
     val updateAttendLiveEvent: LiveData<Any>
@@ -38,7 +40,7 @@ class AttendUpdateViewModel : BaseViewModel() {
         }
     }
 
-    fun updateData(attendList: List<com.example.swith.entity.UpdateAttend>) {
+    fun updateData(attendList: List<UpdateAttend>) {
         viewModelScope.launch {
             mutableScreenState.postValue(ScreenState.LOAD)
             val res = repository.updateAttendData(this@AttendUpdateViewModel, attendList)

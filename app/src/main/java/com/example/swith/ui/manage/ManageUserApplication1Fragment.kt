@@ -8,12 +8,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.swith.R
-import com.example.swith.api.SwithService
-import com.example.swith.databinding.FragmentManageApplicationBinding
-import com.example.swith.repository.RetrofitService
-import com.example.swith.ui.adapter.ManageUserRVAdapter1
-import com.example.swith.utils.base.BaseFragment
+import com.example.data.R
+import com.example.data.databinding.FragmentManageApplicationBinding
+import com.example.swith.data.api.RetrofitService
+import com.example.data.ui.adapter.ManageUserRVAdapter1
+import com.example.data.utils.base.BaseFragment
+import com.example.swith.domain.entity.ManageUserResponse
+import com.example.swith.domain.entity.ManageUserResult
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -28,7 +29,7 @@ class ManageUserApplication1Fragment() :
     var resumeContent: String = ""
     var resumeIdx: Int? = -1
     private var adapter = ManageUserRVAdapter1()
-    lateinit var userList: List<com.example.swith.entity.ManageUserResult>
+    lateinit var userList: List<ManageUserResult>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,13 +49,13 @@ class ManageUserApplication1Fragment() :
 
     fun setRetrofitData(groupIdx: Long?) {
         Log.e("groupIdx 레트로핏 값 ", "${groupIdx}")
-        val retrofitService = RetrofitService.retrofit.create(SwithService::class.java)
+        val retrofitService = RetrofitService.retrofit.create(com.example.swith.data.api.SwithService::class.java)
         //status가 0이면 지원했는데 아직 승인 안된사람들
         retrofitService.getUserList(groupIdx!!, 0).enqueue(object :
-            Callback<com.example.swith.entity.ManageUserResponse> {
+            Callback<ManageUserResponse> {
             override fun onResponse(
-                call: Call<com.example.swith.entity.ManageUserResponse>,
-                response: Response<com.example.swith.entity.ManageUserResponse>
+                call: Call<ManageUserResponse>,
+                response: Response<ManageUserResponse>
             ) {
                 if (response.isSuccessful) {
                     Log.e("summer", "성공${response.toString()}")
@@ -73,7 +74,7 @@ class ManageUserApplication1Fragment() :
             }
 
             override fun onFailure(
-                call: Call<com.example.swith.entity.ManageUserResponse>,
+                call: Call<ManageUserResponse>,
                 t: Throwable
             ) {
                 Log.e("summer", "onFailure t = ${t.toString()}")
@@ -82,7 +83,7 @@ class ManageUserApplication1Fragment() :
         })
     }
 
-    fun initRV(userList: List<com.example.swith.entity.ManageUserResult>) {
+    fun initRV(userList: List<ManageUserResult>) {
         val adapter = ManageUserRVAdapter1()
         adapter.userList.addAll(userList)
         binding.rvApplication.adapter = adapter

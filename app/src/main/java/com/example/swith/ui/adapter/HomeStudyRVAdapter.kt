@@ -6,15 +6,17 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.swith.R
-import com.example.swith.databinding.ItemStudyBinding
+import com.example.data.R
+import com.example.data.databinding.ItemStudyBinding
+import com.example.swith.domain.entity.Group
+import com.example.swith.domain.entity.GroupList
 
 class HomeStudyRVAdapter : RecyclerView.Adapter<HomeStudyRVAdapter.ViewHolder>() {
-    private var groupList = ArrayList<com.example.swith.entity.Group>()
+    private var groupList = ArrayList<Group>()
     private lateinit var binding: ItemStudyBinding
 
     interface myItemClickListener {
-        fun onItemClick(group: com.example.swith.entity.Group)
+        fun onItemClick(group: Group)
     }
 
     private lateinit var mItemClickListener: myItemClickListener
@@ -40,13 +42,13 @@ class HomeStudyRVAdapter : RecyclerView.Adapter<HomeStudyRVAdapter.ViewHolder>()
 
     override fun getItemCount(): Int = groupList.size
 
-    fun setData(newList: com.example.swith.entity.GroupList) {
-        groupList = newList.group as ArrayList<com.example.swith.entity.Group>
+    fun setData(newList: GroupList) {
+        groupList = newList.group as ArrayList<Group>
         notifyDataSetChanged()
     }
 
     inner class ViewHolder(val binding: ItemStudyBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(group: com.example.swith.entity.Group, position: Int) {
+        fun bind(group: Group, position: Int) {
             with(binding) {
                 studyTitleTv.text = group.title
                 studyNoticeTv.text = group.announcementContent

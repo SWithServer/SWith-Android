@@ -13,13 +13,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.swith.R
-import com.example.swith.databinding.ActivityManageAttendBinding
-import com.example.swith.ui.adapter.ManageAttendRVAdapter
-import com.example.swith.ui.dialog.BottomSheet
-import com.example.swith.ui.dialog.CustomAlertDialog
-import com.example.swith.utils.error.ScreenState
-import com.example.swith.viewmodel.AttendUpdateViewModel
+import com.example.data.R
+import com.example.data.databinding.ActivityManageAttendBinding
+import com.example.data.ui.adapter.ManageAttendRVAdapter
+import com.example.data.ui.dialog.BottomSheet
+import com.example.data.ui.dialog.CustomAlertDialog
+import com.example.data.utils.error.ScreenState
+import com.example.data.viewmodel.AttendUpdateViewModel
+import com.example.swith.domain.entity.AttendList
+import com.example.swith.domain.entity.GetAttendanceInfo
 
 class ManageAttendActivity : AppCompatActivity(), View.OnClickListener {
     private val viewModel: AttendUpdateViewModel by viewModels()
@@ -75,7 +77,7 @@ class ManageAttendActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun emptyLayoutVisible(
         empty: Boolean,
-        attendList: List<com.example.swith.entity.GetAttendanceInfo>
+        attendList: List<GetAttendanceInfo>
     ) {
         with(binding) {
             rvManageAttend.visibility = if (empty) View.INVISIBLE else View.VISIBLE
@@ -89,7 +91,7 @@ class ManageAttendActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun initSpinnerView(attendList: com.example.swith.entity.AttendList) {
+    private fun initSpinnerView(attendList: AttendList) {
         val stringList = ArrayList<String>()
         attendList.attend?.let {
             it.forEach { a -> stringList.add("${a.sessionNum}회차") }

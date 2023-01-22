@@ -6,9 +6,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.swith.R
-import com.example.swith.databinding.ItemAttendBinding
-import com.example.swith.entity.GetAttendance
+import com.example.data.R
+import com.example.data.databinding.ItemAttendBinding
+import com.example.swith.domain.entity.GetAttendance
 
 class AttendRVAdapter(private val userId: Long?) :
     RecyclerView.Adapter<AttendRVAdapter.ViewHolder>() {

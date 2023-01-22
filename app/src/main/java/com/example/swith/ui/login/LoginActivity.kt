@@ -9,8 +9,8 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
-import com.example.swith.R
-import com.example.swith.databinding.ActivityLoginBinding
+import com.example.data.R
+import com.example.data.databinding.ActivityLoginBinding
 import com.google.android.material.snackbar.Snackbar
 import kotlin.system.exitProcess
 

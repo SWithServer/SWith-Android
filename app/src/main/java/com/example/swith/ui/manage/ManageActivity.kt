@@ -6,8 +6,8 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import com.example.swith.R
-import com.example.swith.databinding.ActivityManageBinding
+import com.example.data.R
+import com.example.data.databinding.ActivityManageBinding
 
 class ManageActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityManageBinding

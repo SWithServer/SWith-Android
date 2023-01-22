@@ -9,8 +9,8 @@ import android.text.TextWatcher
 import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
-import com.example.swith.R
-import com.example.swith.databinding.DialogAnnounceModifyBinding
+import com.example.data.R
+import com.example.data.databinding.DialogAnnounceModifyBinding
 
 class CustomAnnounceModifyDialog(private val content: String) : DialogFragment() {
     private lateinit var binding: DialogAnnounceModifyBinding

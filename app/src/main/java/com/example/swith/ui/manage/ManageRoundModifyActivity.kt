@@ -4,14 +4,14 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Observer
-import com.example.swith.R
-import com.example.swith.entity.DateTime
-import com.example.swith.entity.GetSessionRes
-import com.example.swith.entity.SessionModify
-import com.example.swith.ui.dialog.BottomSheet
-import com.example.swith.ui.dialog.CustomAlertDialog
-import com.example.swith.ui.dialog.CustomConfirmDialog
-import com.example.swith.ui.study.create.RoundCreateActivity
+import com.example.data.R
+import com.example.swith.domain.entity.DateTime
+import com.example.data.entity.GetSessionRes
+import com.example.swith.domain.entity.SessionModify
+import com.example.data.ui.dialog.BottomSheet
+import com.example.data.ui.dialog.CustomAlertDialog
+import com.example.data.ui.dialog.CustomConfirmDialog
+import com.example.data.ui.study.create.RoundCreateActivity
 
 class ManageRoundModifyActivity : RoundCreateActivity(), View.OnClickListener {
     private val curRound: GetSessionRes by lazy {

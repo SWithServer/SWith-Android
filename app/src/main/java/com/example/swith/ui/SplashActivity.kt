@@ -5,10 +5,10 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import com.example.swith.R
-import com.example.swith.databinding.ActivitySplashBinding
-import com.example.swith.ui.login.LoginActivity
-import com.example.swith.utils.SharedPrefManager
+import com.example.data.R
+import com.example.data.databinding.ActivitySplashBinding
+import com.example.data.ui.login.LoginActivity
+import com.example.data.utils.SharedPrefManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

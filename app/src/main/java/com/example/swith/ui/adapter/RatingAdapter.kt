@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.swith.databinding.ItemRatingBinding
-import com.example.swith.entity.RatingResult
+import com.example.data.databinding.ItemRatingBinding
+import com.example.swith.domain.entity.RatingResult
 
 
 class RatingAdapter() : RecyclerView.Adapter<RatingAdapter.RatingViewHolder>() {

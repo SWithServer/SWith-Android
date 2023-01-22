@@ -11,14 +11,15 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.swith.R
-import com.example.swith.databinding.FragmentHomeBinding
-import com.example.swith.ui.adapter.HomeStudyRVAdapter
-import com.example.swith.ui.study.StudyActivity
-import com.example.swith.ui.study.create.StudyCreateActivity
-import com.example.swith.utils.SharedPrefManager
-import com.example.swith.utils.base.BaseFragment
-import com.example.swith.viewmodel.HomeViewModel
+import com.example.data.R
+import com.example.data.databinding.FragmentHomeBinding
+import com.example.data.ui.adapter.HomeStudyRVAdapter
+import com.example.data.ui.study.StudyActivity
+import com.example.data.ui.study.create.StudyCreateActivity
+import com.example.data.utils.SharedPrefManager
+import com.example.data.utils.base.BaseFragment
+import com.example.data.viewmodel.HomeViewModel
+import com.example.swith.domain.entity.Group
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
@@ -43,7 +44,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         binding.homeStudyRv.apply {
             adapter = HomeStudyRVAdapter().apply {
                 setMyItemClickListener(object : HomeStudyRVAdapter.myItemClickListener {
-                    override fun onItemClick(group: com.example.swith.entity.Group) {
+                    override fun onItemClick(group: Group) {
                         activityResultLauncher.launch(
                             Intent(
                                 activity,

@@ -4,11 +4,11 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import com.example.swith.R
-import com.example.swith.databinding.FragmentRoundTabBinding
-import com.example.swith.ui.adapter.RoundTabVPAdapter
-import com.example.swith.utils.base.BaseFragment
-import com.example.swith.viewmodel.RoundViewModel
+import com.example.data.R
+import com.example.data.databinding.FragmentRoundTabBinding
+import com.example.data.ui.adapter.RoundTabVPAdapter
+import com.example.data.utils.base.BaseFragment
+import com.example.data.viewmodel.RoundViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 
 class RoundTabFragment() : BaseFragment<FragmentRoundTabBinding>(R.layout.fragment_round_tab) {

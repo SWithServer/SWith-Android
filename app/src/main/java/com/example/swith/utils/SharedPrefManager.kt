@@ -2,9 +2,16 @@ package com.example.swith.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.example.swith.domain.entity.LoginData
 import com.google.gson.Gson
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class SharedPrefManager(private val context: Context) {
+@Singleton
+class SharedPrefManager @Inject constructor(
+    @ApplicationContext private val context: Context
+) {
 
     companion object {
         private const val FILENAME = ""
@@ -27,8 +34,8 @@ class SharedPrefManager(private val context: Context) {
         val prefs: SharedPreferences = context.getSharedPreferences(FILENAME, Context.MODE_PRIVATE)
 
         Gson().apply {
-            val loginData: com.example.swith.entity.LoginData =
-                com.example.swith.entity.LoginData(userIdx, jwt)
+            val loginData: LoginData =
+                LoginData(userIdx, jwt)
             val jsonToString: String = toJson(loginData)
             prefs.edit().putString(LOGIN_DATA, jsonToString).apply()
         }
@@ -38,11 +45,12 @@ class SharedPrefManager(private val context: Context) {
      * 로그인 데이터 반환
      * @return LoginData?
      */
-    fun getLoginData(): com.example.swith.entity.LoginData? {
+    fun getLoginData(): LoginData? {
         val prefs: SharedPreferences = context.getSharedPreferences(FILENAME, Context.MODE_PRIVATE)
         Gson().apply {
             val jsonToString: String = prefs.getString(LOGIN_DATA, "") ?: ""
-            return fromJson(jsonToString, com.example.swith.entity.LoginData::class.java)
+            return fromJson(jsonToString,
+                LoginData::class.java)
         }
     }
 

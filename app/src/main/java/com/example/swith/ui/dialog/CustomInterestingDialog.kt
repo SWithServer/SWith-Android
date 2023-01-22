@@ -8,7 +8,7 @@ import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
-import com.example.swith.ui.adapter.InterestingAdapter
+import com.example.data.ui.adapter.InterestingAdapter
 
 class CustomInterestingDialog(
     dataList: ArrayList<String>,
