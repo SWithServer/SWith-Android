@@ -97,6 +97,8 @@
                         android:id="@+id/btn_resume"
                         android:layout_width="wrap_content"
                         android:layout_height="20dp"
+                        android:minWidth="0dp"
+                        android:paddingHorizontal="10dp"
                         android:fontFamily="@font/kr_regular"
                         android:textColor="@color/white"
                         android:textSize="10sp"
@@ -371,7 +373,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:indeterminateTint="#54000000" />
+                android:indeterminateTint="@color/color_swith" />
         </FrameLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

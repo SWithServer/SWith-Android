@@ -31,7 +31,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    viewModel.profileData.collectLatest {
+                    viewModel.profileData.collect {
                         when (it) {
                             is ProfileState.Loading -> {
                                 binding.flLoadingLayout.visibility = View.VISIBLE
@@ -41,7 +41,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
                                 binding.flLoadingLayout.visibility = View.INVISIBLE
                             }
                             else -> {
-                                binding.flLoadingLayout.visibility = View.VISIBLE
+                                binding.flLoadingLayout.visibility = View.INVISIBLE
                             }
                         }
                     }

@@ -1,5 +1,6 @@
 package com.example.swith.viewmodel
 
+import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -19,19 +20,22 @@ class ProfileViewModel @Inject constructor(
     private val getCurrentProfileUseCase: GetCurrentProfileUseCase,
     private val sharedPrefManager: SharedPrefManager,
 ) : ViewModel() {
-    val isLoading: ObservableField<Boolean> = ObservableField<Boolean>()
-
     private val userIdx = sharedPrefManager.getLoginData()?.userIdx ?: 0
 
     private val _profileData = MutableStateFlow<ProfileState>(ProfileState.Loading)
     val profileData: StateFlow<ProfileState>
         get() = _profileData
 
+    init {
+        getProfileData()
+    }
 
-    fun getProfileData() {
+
+    private fun getProfileData() {
         viewModelScope.launch {
             getCurrentProfileUseCase(userIdx)
                 .catch {
+                    Log.e("error", it.message.toString())
                     _profileData.value = ProfileState.Error
                 }
                 .collectLatest {

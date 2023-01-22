@@ -153,16 +153,16 @@ interface SwithService {
     @PATCH("/groupinfo/end")
     fun endStudy(@Body body: StudyFinishReq): Call<StudyFinishResponse>
 
-    //프로필
-    @GET("/profile")
-    fun getProfileInfo(): Call<ProfileResponse>
+//    //프로필
+//    @GET("/profile")
+//    fun getProfileInfo(): Call<ProfileResponse>
 
     @POST("/signUpAndIn")
     fun login(@Body loginBody: LoginRequest): Call<LoginResponse>
 
     //프로필
     @POST("/userInfo")
-    fun getProfileInfo(@Body profileBody: ProfileRequest): ProfileResponse
+    suspend fun getProfileInfo(@Body profileBody: ProfileRequest): ProfileResponse
 
     //프로필update
     @POST("/register")
