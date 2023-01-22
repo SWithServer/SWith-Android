@@ -5,8 +5,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.data.ui.manage.ManageUserApplication1Fragment
-import com.example.data.ui.manage.ManageUserApplication2Fragment
+import com.example.swith.ui.manage.ManageUserApplication1Fragment
+import com.example.swith.ui.manage.ManageUserApplication2Fragment
 
 private const val NUM_TABS = 2
 

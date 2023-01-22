@@ -3,8 +3,8 @@ package com.example.swith.utils.base
 import androidx.lifecycle.ViewModel
 import com.example.data.utils.ErrorType
 import com.example.swith.domain.utils.RemoteErrorEmitter
-import com.example.data.utils.SingleLiveEvent
-import com.example.data.utils.error.ScreenState
+import com.example.swith.utils.SingleLiveEvent
+import com.example.swith.utils.error.ScreenState
 
 abstract class BaseViewModel : ViewModel(), RemoteErrorEmitter {
     val mutableScreenState = SingleLiveEvent<ScreenState>()

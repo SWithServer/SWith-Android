@@ -6,8 +6,8 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.data.R
-import com.example.data.databinding.ItemStudyBinding
+import com.example.swith.R
+import com.example.swith.databinding.ItemStudyBinding
 import com.example.swith.domain.entity.Group
 import com.example.swith.domain.entity.GroupList
 

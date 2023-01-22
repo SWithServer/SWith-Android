@@ -6,17 +6,16 @@ import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
-import com.example.data.R
-import com.example.data.databinding.FragmentRoundSummaryBinding
+import com.example.swith.R
+import com.example.swith.databinding.FragmentRoundSummaryBinding
+import com.example.swith.domain.entity.DateTime
 import com.example.swith.domain.entity.SessionInfo
-import com.example.data.utils.base.BaseFragment
-import com.example.data.viewmodel.RoundViewModel
-
+import com.example.swith.utils.base.BaseFragment
+import com.example.swith.viewmodel.RoundViewModel
 
 class RoundSummaryFragment :
     BaseFragment<FragmentRoundSummaryBinding>(R.layout.fragment_round_summary) {
-    private val viewModel: RoundViewModel by activityViewModels()
-
+    private val viewModel by activityViewModels<RoundViewModel>()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeViewModel()
@@ -31,14 +30,14 @@ class RoundSummaryFragment :
     private fun initView(session: SessionInfo) {
         with(binding) {
             tvSummaryCount.text = "${session.sessionNum}회차"
-            val startTime = com.example.data.entity.DateTime(
+            val startTime = DateTime(
                 session.sessionStart[0],
                 session.sessionStart[1],
                 session.sessionStart[2],
                 session.sessionStart[3],
                 session.sessionStart[4]
             )
-            val endTime = com.example.data.entity.DateTime(
+            val endTime = DateTime(
                 session.sessionEnd[0],
                 session.sessionEnd[1],
                 session.sessionEnd[2],

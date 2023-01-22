@@ -8,12 +8,12 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.data.R
-import com.example.data.databinding.ActivitySelectPlaceBinding
+import com.example.swith.R
 import com.example.swith.data.api.ApiService
 import com.example.swith.data.api.RetrofitService
-import com.example.data.ui.adapter.LocationAdapter
+import com.example.swith.databinding.ActivitySelectPlaceBinding
 import com.example.swith.domain.entity.CityResponse
+import com.example.swith.ui.adapter.LocationAdapter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -75,7 +75,7 @@ class SelectPlaceActivity : AppCompatActivity(), View.OnClickListener {
             .enqueue(object : Callback<CityResponse> {
                 override fun onResponse(
                     call: Call<CityResponse>,
-                    response: Response<CityResponse>
+                    response: Response<CityResponse>,
                 ) {
                     Log.e("doori", response.toString())
                     response.body()?.apply {
@@ -119,7 +119,7 @@ class SelectPlaceActivity : AppCompatActivity(), View.OnClickListener {
 
                 override fun onFailure(
                     call: Call<CityResponse>,
-                    t: Throwable
+                    t: Throwable,
                 ) {
                     Log.e("doori", t.toString())
                 }

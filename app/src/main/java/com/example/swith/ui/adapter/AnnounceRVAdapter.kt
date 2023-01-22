@@ -4,10 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.data.R
-import com.example.data.databinding.ItemAnnounceBinding
-import com.example.data.entity.Announce
-import com.example.data.utils.ItemTouchHelperListener
+import com.example.swith.R
+import com.example.swith.databinding.ItemAnnounceBinding
+import com.example.swith.domain.entity.Announce
+import com.example.swith.utils.ItemTouchHelperListener
 
 class AnnounceRVAdapter() : RecyclerView.Adapter<AnnounceRVAdapter.ViewHolder>(),
     ItemTouchHelperListener {

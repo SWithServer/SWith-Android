@@ -8,7 +8,7 @@ import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
-import com.example.data.ui.adapter.InterestingAdapter
+import com.example.swith.ui.adapter.InterestingAdapter
 
 class CustomInterestingDialog(
     dataList: ArrayList<String>,
@@ -17,7 +17,7 @@ class CustomInterestingDialog(
     context: Context,
     view: View,
     width: Int = WindowManager.LayoutParams.WRAP_CONTENT,
-    height: Int = WindowManager.LayoutParams.WRAP_CONTENT
+    height: Int = WindowManager.LayoutParams.WRAP_CONTENT,
 ) : Dialog(context) {
     private var listener: DialogClickListener? = null
     private var clickConfirm: Boolean = false

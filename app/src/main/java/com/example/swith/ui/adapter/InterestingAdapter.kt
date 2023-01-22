@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.data.R
-import com.example.data.databinding.ItemInterestingBinding
+import com.example.swith.R
+import com.example.swith.databinding.ItemInterestingBinding
 
 class InterestingAdapter(private val interestingClickCallback: InterestingCallback) :
     RecyclerView.Adapter<InterestingAdapter.InterestingViewHolder>() {

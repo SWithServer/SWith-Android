@@ -4,10 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.data.R
-import com.example.data.databinding.ItemMangeRoundBinding
 import com.example.data.entity.GetSessionRes
-import com.example.data.utils.ItemTouchHelperListener
+import com.example.swith.R
+import com.example.swith.databinding.ItemMangeRoundBinding
+import com.example.swith.utils.ItemTouchHelperListener
 
 class ManageRoundRVAdapter : RecyclerView.Adapter<ManageRoundRVAdapter.ViewHolder>(),
     ItemTouchHelperListener {

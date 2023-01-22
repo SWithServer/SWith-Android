@@ -1,5 +1,6 @@
 package com.example.swith.ui.manage
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.content.Context
@@ -21,15 +22,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
-import com.example.data.R
-import com.example.data.databinding.ActivityManageStudyModifyBinding
+import com.example.swith.R
+import com.example.swith.data.api.RetrofitService
+import com.example.swith.databinding.ActivityManageStudyModifyBinding
 import com.example.swith.domain.entity.StudyDetailResponse
 import com.example.swith.domain.entity.StudyGroup
 import com.example.swith.domain.entity.StudyImageRes
 import com.example.swith.domain.entity.StudyModifyResponse
-import com.example.swith.data.api.RetrofitService
-import com.example.data.ui.study.create.SelectPlaceActivity
-import com.example.data.utils.SharedPrefManager
+import com.example.swith.ui.study.create.SelectPlaceActivity
+import com.example.swith.utils.SharedPrefManager
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -265,7 +266,7 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
                     p0: AdapterView<*>?,
                     p1: View?,
                     position: Int,
-                    p3: Long
+                    p3: Long,
                 ) {
                     interest_idx = position
                 }
@@ -278,7 +279,7 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
                     p0: AdapterView<*>?,
                     p1: View?,
                     position: Int,
-                    p3: Long
+                    p3: Long,
                 ) {
                     memberLimit_content = "${spinnerPeople.getItemAtPosition(position)}".toInt()
                 }
@@ -291,7 +292,7 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
                     p0: AdapterView<*>?,
                     p1: View?,
                     position: Int,
-                    p3: Long
+                    p3: Long,
                 ) {
                     attendanceVaildTime_content =
                         "${spinnerAttendTime.getItemAtPosition(position)}".toInt()
@@ -502,12 +503,13 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
     // 본래 스터디 정보 가져오기 retrofit 함수
     fun initView(groupIdx: Long) {
         Log.e("summer", "데이터 set true")
-        val retrofitService = RetrofitService.retrofit.create(com.example.swith.data.api.SwithService::class.java)
+        val retrofitService =
+            RetrofitService.retrofit.create(com.example.swith.data.api.SwithService::class.java)
         retrofitService.getStudyDetail(groupIdx.toLong())
             .enqueue(object : Callback<StudyDetailResponse> {
                 override fun onResponse(
                     call: Call<StudyDetailResponse>,
-                    response: Response<StudyDetailResponse>
+                    response: Response<StudyDetailResponse>,
                 ) {
                     if (response.isSuccessful) {
                         Log.e("summer", "성공${response.toString()}")
@@ -662,6 +664,7 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == GALLERY) {
             if (resultCode == RESULT_OK) {
                 var currentImageUri = data?.data
@@ -694,6 +697,7 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    @SuppressLint("Range")
     fun getRealPathFromURI(contentUri: Uri?): String? {
         val proj = arrayOf(MediaStore.Images.Media.DATA)
         val cursor = contentResolver.query(contentUri!!, proj, null, null, null)
@@ -716,12 +720,13 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
         if (!(file.name.equals(""))) {
             var requestFile = RequestBody.create("image"?.toMediaTypeOrNull(), file)
             var body = MultipartBody.Part.createFormData("image", file.name, requestFile)
-            val retrofitService = RetrofitService.retrofit.create(com.example.swith.data.api.SwithService::class.java)
+            val retrofitService =
+                RetrofitService.retrofit.create(com.example.swith.data.api.SwithService::class.java)
             retrofitService.uploadImg(body).enqueue(object :
                 Callback<StudyImageRes> {
                 override fun onResponse(
                     call: Call<StudyImageRes>,
-                    response: Response<StudyImageRes>
+                    response: Response<StudyImageRes>,
                 ) {
                     if (response.isSuccessful) {
                         Log.e("summer", "성공${response.toString()}")
@@ -765,12 +770,13 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
 
     fun retrofitModify(studyRequestData: StudyGroup) {
         Log.e("StudyReq 최종", "${studyRequestData.toString()}")
-        val retrofitService = RetrofitService.retrofit.create(com.example.swith.data.api.SwithService::class.java)
+        val retrofitService =
+            RetrofitService.retrofit.create(com.example.swith.data.api.SwithService::class.java)
         retrofitService.modifyStudy(groupIdx.toLong(), studyRequestData)
             .enqueue(object : Callback<StudyModifyResponse> {
                 override fun onResponse(
                     call: Call<StudyModifyResponse>,
-                    response: Response<StudyModifyResponse>
+                    response: Response<StudyModifyResponse>,
                 ) {
                     if (response.isSuccessful) {
                         response.body()?.apply {

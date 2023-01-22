@@ -8,14 +8,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.data.R
-import com.example.data.databinding.ActivityRatingBinding
+import com.example.swith.R
+import com.example.swith.databinding.ActivityRatingBinding
+import com.example.swith.domain.entity.ProfileRequest
 import com.example.swith.domain.entity.RatingResponse
 import com.example.swith.domain.entity.RatingResult
-import com.example.data.ui.MainActivity
-import com.example.data.ui.adapter.RatingAdapter
-import com.example.data.viewmodel.RatingViewModel
-import com.example.swith.domain.entity.ProfileRequest
+import com.example.swith.ui.MainActivity
+import com.example.swith.ui.adapter.RatingAdapter
+import com.example.swith.viewmodel.RatingViewModel
 
 class RatingActivity : AppCompatActivity(), View.OnClickListener, Observer<RatingResponse> {
     lateinit var binding: ActivityRatingBinding

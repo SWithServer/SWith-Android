@@ -3,13 +3,13 @@ package com.example.swith.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.data.repository.manage.attend.ManageAttendRemoteDataSource
-import com.example.data.repository.manage.attend.ManageAttendRepository
-import com.example.data.utils.SingleLiveEvent
-import com.example.data.utils.base.BaseViewModel
-import com.example.data.utils.error.ScreenState
+import com.example.swith.data.repository.manage.attend.ManageAttendRemoteDataSource
+import com.example.swith.data.repository.manage.attend.ManageAttendRepository
 import com.example.swith.domain.entity.AttendList
 import com.example.swith.domain.entity.UpdateAttend
+import com.example.swith.utils.SingleLiveEvent
+import com.example.swith.utils.base.BaseViewModel
+import com.example.swith.utils.error.ScreenState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -34,7 +34,7 @@ class AttendUpdateViewModel : BaseViewModel() {
                 res?.let {
                     mutableScreenState.postValue(ScreenState.RENDER)
                     res.attend.sortBy { a -> a.sessionNum }
-                    _attendLiveData.value = res
+                    _attendLiveData.value = it
                 }
             }
         }

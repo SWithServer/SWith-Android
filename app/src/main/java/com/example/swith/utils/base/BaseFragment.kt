@@ -8,8 +8,8 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
-import com.example.data.ui.MainActivity
-import com.example.data.ui.study.StudyActivity
+import com.example.swith.ui.MainActivity
+import com.example.swith.ui.study.StudyActivity
 
 abstract class BaseFragment<VB : ViewBinding>(@LayoutRes private val layoutRes: Int) : Fragment() {
     private var _viewBinding: VB? = null
@@ -18,7 +18,7 @@ abstract class BaseFragment<VB : ViewBinding>(@LayoutRes private val layoutRes: 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _viewBinding = DataBindingUtil.inflate(inflater, layoutRes, container, false)
         return binding.root

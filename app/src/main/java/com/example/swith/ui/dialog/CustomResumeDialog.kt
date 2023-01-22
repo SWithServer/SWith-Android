@@ -13,7 +13,7 @@ class CustomResumeDialog(
     context: Context,
     view: View,
     width: Int = WindowManager.LayoutParams.WRAP_CONTENT,
-    height: Int = WindowManager.LayoutParams.WRAP_CONTENT
+    height: Int = WindowManager.LayoutParams.WRAP_CONTENT,
 ) : Dialog(context) {
     private var listener: DialogClickListener? = null
     private var isClickConfirm: Boolean = false

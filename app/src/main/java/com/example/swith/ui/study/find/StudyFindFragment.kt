@@ -16,15 +16,15 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.data.R
-import com.example.data.databinding.FragmentStudyFindBinding
+import com.example.swith.R
+import com.example.swith.data.api.RetrofitService
+import com.example.swith.databinding.FragmentStudyFindBinding
 import com.example.swith.domain.entity.StudyFindResponse
 import com.example.swith.domain.entity.studyReqest
-import com.example.swith.data.api.RetrofitService
-import com.example.data.ui.MainActivity
-import com.example.data.ui.adapter.StudyFindRVAdapter
-import com.example.data.ui.study.create.SelectPlaceActivity
-import com.example.data.utils.base.BaseFragment
+import com.example.swith.ui.MainActivity
+import com.example.swith.ui.adapter.StudyFindRVAdapter
+import com.example.swith.ui.study.create.SelectPlaceActivity
+import com.example.swith.utils.base.BaseFragment
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -162,7 +162,7 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
                             p0: AdapterView<*>?,
                             p1: View?,
                             position: Int,
-                            p3: Long
+                            p3: Long,
                         ) {
                             if (searchFilter == 1) {
                                 if (position == 0) {
@@ -210,7 +210,7 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
                             p0: AdapterView<*>?,
                             p1: View?,
                             position: Int,
-                            p3: Long
+                            p3: Long,
                         ) {
                             if (searchFilter == 2) {
                                 if (position == 0) {
@@ -257,7 +257,7 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
                         p0: AdapterView<*>?,
                         p1: View?,
                         position: Int,
-                        p3: Long
+                        p3: Long,
                     ) {
                         Log.e("정렬 data load", "true")
                         select_sort = position
@@ -281,7 +281,8 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
     //최초로 넣어줄 데이터 load
     fun loadData(title: String?, region: String?, interest1: Int?, interest2: Int?, sort: Int) {
         val req = studyReqest(title, region, null, interest1, interest2, sort, LocalDateTime.now())
-        val retrofitService = RetrofitService.retrofit.create(com.example.swith.data.api.SwithService::class.java)
+        val retrofitService =
+            RetrofitService.retrofit.create(com.example.swith.data.api.SwithService::class.java)
         retrofitService.getSearchStudy(
             limit, title, region, interest1, interest2, null, sort, date.format(
                 DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
@@ -289,7 +290,7 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
         ).enqueue(object : Callback<StudyFindResponse> {
             override fun onResponse(
                 call: Call<StudyFindResponse>,
-                response: Response<StudyFindResponse>
+                response: Response<StudyFindResponse>,
             ) {
                 if (response.isSuccessful) {
                     binding.flLoadingLayout.visibility = View.GONE
@@ -323,13 +324,14 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
         interest1: Int?,
         interest2: Int?,
         sort: Int,
-        groupIdx: Long?
+        groupIdx: Long?,
     ) {
         Log.e("loadMore", "true")
         var req =
             studyReqest(title, region, groupIdx, interest1, interest2, sort, LocalDateTime.now())
         adapter.setLoadingView(true)
-        val retrofitService = RetrofitService.retrofit.create(com.example.swith.data.api.SwithService::class.java)
+        val retrofitService =
+            RetrofitService.retrofit.create(com.example.swith.data.api.SwithService::class.java)
         val handler = android.os.Handler()
         handler.postDelayed({
             retrofitService.getSearchStudy(
@@ -345,7 +347,7 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
                 .enqueue(object : Callback<StudyFindResponse> {
                     override fun onResponse(
                         call: Call<StudyFindResponse>,
-                        response: Response<StudyFindResponse>
+                        response: Response<StudyFindResponse>,
                     ) {
                         val body = response.body()
                         if (body != null && response.isSuccessful) {

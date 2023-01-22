@@ -11,14 +11,14 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import com.example.data.R
-import com.example.data.databinding.ActivityMainBinding
-import com.example.data.ui.home.HomeFragment
-import com.example.data.ui.login.LoginActivity
-import com.example.data.ui.profile.ProfileFragment
-import com.example.data.ui.resume.ResumeFragment
-import com.example.data.ui.notification.NotificationActivity
-import com.example.data.ui.study.find.StudyFindFragment
+import com.example.swith.R
+import com.example.swith.databinding.ActivityMainBinding
+import com.example.swith.ui.home.HomeFragment
+import com.example.swith.ui.login.LoginActivity
+import com.example.swith.ui.notification.NotificationActivity
+import com.example.swith.ui.profile.ProfileFragment
+import com.example.swith.ui.resume.ResumeFragment
+import com.example.swith.ui.study.find.StudyFindFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private fun initView() {
         intent.getStringExtra("profile")?.let {
             Log.e("doori", "main tag = $it")
-            if (it == ProfileFragment.TAG) {
+            if (it == "profile") {
                 //특정 프레그먼트로 이동
                 binding.mainBnv.selectedItemId = R.id.bottom_nav_profile
             }

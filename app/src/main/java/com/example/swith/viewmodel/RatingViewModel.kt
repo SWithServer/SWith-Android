@@ -4,11 +4,10 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-
-import com.example.swith.domain.entity.RatingResponse
-import com.example.data.repository.rating.RatingRepository
-import com.example.data.repository.rating.RatingRepositoryProvider
+import com.example.swith.data.repository.rating.RatingRepository
+import com.example.swith.data.repository.rating.RatingRepositoryProvider
 import com.example.swith.domain.entity.ProfileRequest
+import com.example.swith.domain.entity.RatingResponse
 
 class RatingViewModel : ViewModel() {
     val isLoading: ObservableField<Boolean> = ObservableField<Boolean>()
@@ -36,7 +35,7 @@ class RatingViewModel : ViewModel() {
 //    }
     fun requestCurrentUserList(
         groupIdx: String,
-        userIdx: ProfileRequest
+        userIdx: ProfileRequest,
     ): LiveData<RatingResponse> {
         return mRatingRepository.requestCurrentUserList(groupIdx, userIdx)
     }

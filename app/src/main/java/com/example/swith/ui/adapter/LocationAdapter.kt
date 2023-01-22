@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.data.databinding.ItemLocationBinding
+import com.example.swith.databinding.ItemLocationBinding
 
 class LocationAdapter(regionList: ArrayList<String>) :
     RecyclerView.Adapter<LocationAdapter.LocationHolder>() {

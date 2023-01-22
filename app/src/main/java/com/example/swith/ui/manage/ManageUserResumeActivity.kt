@@ -5,12 +5,12 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import com.example.data.R
-import com.example.data.databinding.ActivityManageUserResumeBinding
+import com.example.swith.R
 import com.example.swith.data.api.RetrofitService
-import com.example.data.utils.SharedPrefManager
+import com.example.swith.databinding.ActivityManageUserResumeBinding
 import com.example.swith.domain.entity.ManageUserResumeReq
 import com.example.swith.domain.entity.ManageUserResumeResponse
+import com.example.swith.utils.SharedPrefManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -63,12 +63,13 @@ class ManageUserResumeActivity : AppCompatActivity(), View.OnClickListener {
             statusOfApplication
         )
         Log.e("req 부분", "${resumeReq}")
-        val retrofitService = RetrofitService.retrofit.create(com.example.swith.data.api.SwithService::class.java)
+        val retrofitService =
+            RetrofitService.retrofit.create(com.example.swith.data.api.SwithService::class.java)
         retrofitService.postUserResume(groupIdx!!, 0, resumeReq).enqueue(object :
             Callback<ManageUserResumeResponse> {
             override fun onResponse(
                 call: Call<ManageUserResumeResponse>,
-                response: Response<ManageUserResumeResponse>
+                response: Response<ManageUserResumeResponse>,
             ) {
                 if (response.isSuccessful) {
                     binding.flLoadingLayout.visibility = View.GONE
@@ -84,7 +85,7 @@ class ManageUserResumeActivity : AppCompatActivity(), View.OnClickListener {
 
             override fun onFailure(
                 call: Call<ManageUserResumeResponse>,
-                t: Throwable
+                t: Throwable,
             ) {
                 Log.e("summer", "onFailure t = ${t.toString()}")
                 Log.e("summer", "onFailure msg = ${t.message}")

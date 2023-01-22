@@ -6,7 +6,7 @@
 
         <variable
             name="interestingDialog"
-            type="com.example.data.ui.dialog.CustomInterestingDialog" />
+            type="com.example.swith.ui.dialog.CustomInterestingDialog" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

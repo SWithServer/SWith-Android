@@ -10,11 +10,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.data.R
-import com.example.data.databinding.ActivityNotificationBinding
-import com.example.data.ui.MainActivity
-import com.example.data.ui.adapter.NotificationRVAdapter
-import com.example.data.viewmodel.NotificationViewModel
+import com.example.swith.R
+import com.example.swith.databinding.ActivityNotificationBinding
+import com.example.swith.ui.MainActivity
+import com.example.swith.ui.adapter.NotificationRVAdapter
+import com.example.swith.viewmodel.NotificationViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -36,17 +36,21 @@ class NotificationActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun initView() {
-        with(binding){
+        with(binding) {
             rvNotification.apply {
                 adapter = NotificationRVAdapter()
-                layoutManager = LinearLayoutManager(this@NotificationActivity, LinearLayoutManager.VERTICAL, false)
+                layoutManager = LinearLayoutManager(
+                    this@NotificationActivity,
+                    LinearLayoutManager.VERTICAL,
+                    false
+                )
             }
         }
     }
 
     private fun observe() {
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED){
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     viewModel.noticeList.collectLatest {
                         if (it.isNotEmpty())

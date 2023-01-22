@@ -5,11 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.data.R
-import com.example.data.databinding.ItemRoundBinding
 import com.example.data.entity.GetSessionRes
 import com.example.data.entity.Round
-import com.example.data.utils.compareTimeWithNow
+import com.example.swith.R
+import com.example.swith.databinding.ItemRoundBinding
+import com.example.swith.utils.compareTimeWithNow
 import java.time.ZoneId
 import java.time.ZonedDateTime
 

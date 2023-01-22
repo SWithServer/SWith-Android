@@ -19,22 +19,19 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
-import com.example.data.R
-import com.example.data.databinding.ActivityProfileModifyBinding
-import com.example.data.databinding.DialogImageBinding
-import com.example.data.databinding.DialogInterestingBinding
-import com.example.data.databinding.DialogProfileBinding
+import com.example.swith.R
+import com.example.swith.databinding.ActivityProfileModifyBinding
+import com.example.swith.databinding.DialogImageBinding
+import com.example.swith.databinding.DialogInterestingBinding
+import com.example.swith.databinding.DialogProfileBinding
 import com.example.swith.domain.entity.ProfileResponse
-import com.example.data.ui.MainActivity
-import com.example.data.ui.dialog.CustomDialog
-import com.example.data.ui.dialog.CustomImageDialog
-import com.example.data.ui.dialog.CustomInterestingDialog
-import com.example.data.ui.study.create.SelectPlaceActivity
-import com.example.data.utils.CustomBinder
-import com.example.data.utils.SharedPrefManager
-import com.example.data.viewmodel.ProfileModifyViewModel
-import com.example.swith.domain.entity.ProfileModifyRequest
-import com.example.swith.domain.entity.ProfileRequest
+import com.example.swith.ui.MainActivity
+import com.example.swith.ui.dialog.CustomDialog
+import com.example.swith.ui.dialog.CustomImageDialog
+import com.example.swith.ui.dialog.CustomInterestingDialog
+import com.example.swith.ui.study.create.SelectPlaceActivity
+import com.example.swith.utils.CustomBinder
+import com.example.swith.viewmodel.ProfileModifyViewModel
 
 class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener, Observer<ProfileResponse> {
 
@@ -88,31 +85,31 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener, Observe
                     ProfileModifyViewModel::class.java
                 ).apply {
                     profileModifyViewModel = this
-                    getCurrentProfile().observe(
-                        this@ProfileModifyActivity,
-                        this@ProfileModifyActivity
-                    )
-                    SharedPrefManager(this@ProfileModifyActivity).getLoginData()?.userIdx!!.apply {
-                        requestCurrentProfile(ProfileRequest(this as Long))
-                    }
+//                    getCurrentProfile().observe(
+//                        this@ProfileModifyActivity,
+//                        this@ProfileModifyActivity
+//                    )
+//                    SharedPrefManager(this@ProfileModifyActivity).getLoginData()?.userIdx!!.apply {
+//                        requestCurrentProfile(ProfileRequest(this as Long))
+//                    }
                 }
-            mProfileModifyViewModel?.getCurrentProfileModify()
-                ?.observe(this@ProfileModifyActivity, Observer {
-                    Log.e("doori", "observer = $it")
-                    //TODO 관심분야가 index4번이상부터 안되넹
-                    setShowDimmed(false)
-                    if (it != null) {
-                        if (it!!.isSuccess) {
-                            goProfilePage()
-                        } else {
-                            Toast.makeText(
-                                this@ProfileModifyActivity,
-                                "잠시 후 다시 시작해주세요.",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    }
-                })
+//            mProfileModifyViewModel?.getCurrentProfileModify()
+//                ?.observe(this@ProfileModifyActivity, Observer {
+//                    Log.e("doori", "observer = $it")
+//                    //TODO 관심분야가 index4번이상부터 안되넹
+//                    setShowDimmed(false)
+//                    if (it != null) {
+//                        if (it!!.isSuccess) {
+//                            goProfilePage()
+//                        } else {
+//                            Toast.makeText(
+//                                this@ProfileModifyActivity,
+//                                "잠시 후 다시 시작해주세요.",
+//                                Toast.LENGTH_SHORT
+//                            ).show()
+//                        }
+//                    }
+//                })
 
         }
     }
@@ -256,41 +253,41 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener, Observe
 
                     override fun onConfirm() {
                         setShowDimmed(true)
-                        requestProfile()
+//                        requestProfile()
                     }
                 })
         }
     }
 
-    private fun requestProfile() {
-        val email = mProfileModifyViewModel?.getCurrentProfile()?.value?.result!!.email
-
-        binding.apply {
-            Log.e(
-                "doori",
-                "${
-                    ProfileModifyRequest(
-                        email,
-                        getInterestringIndex(btnInteresting1.text.toString()),
-                        getInterestringIndex(btnInteresting2.text.toString()),
-                        etIntroduceDetail.text.toString(),
-                        etNickname.text.toString(),
-                        tvLocationDetail.text.toString()
-                    )
-                }"
-            )
-            mProfileModifyViewModel?.requestCurrentProfileModify(
-                ProfileModifyRequest(
-                    email,
-                    getInterestringIndex(btnInteresting1.text.toString()),
-                    getInterestringIndex(btnInteresting2.text.toString()),
-                    etIntroduceDetail.text.toString(),
-                    etNickname.text.toString(),
-                    tvLocationDetail.text.toString()
-                )
-            )
-        }
-    }
+//    private fun requestProfile() {
+//        val email = mProfileModifyViewModel?.getCurrentProfile()?.value?.result!!.email
+//
+//        binding.apply {
+//            Log.e(
+//                "doori",
+//                "${
+//                    ProfileModifyRequest(
+//                        email,
+//                        getInterestringIndex(btnInteresting1.text.toString()),
+//                        getInterestringIndex(btnInteresting2.text.toString()),
+//                        etIntroduceDetail.text.toString(),
+//                        etNickname.text.toString(),
+//                        tvLocationDetail.text.toString()
+//                    )
+//                }"
+//            )
+//            mProfileModifyViewModel?.requestCurrentProfileModify(
+//                ProfileModifyRequest(
+//                    email,
+//                    getInterestringIndex(btnInteresting1.text.toString()),
+//                    getInterestringIndex(btnInteresting2.text.toString()),
+//                    etIntroduceDetail.text.toString(),
+//                    etNickname.text.toString(),
+//                    tvLocationDetail.text.toString()
+//                )
+//            )
+//        }
+//    }
 
     fun goProfilePage() {
         Intent(this@ProfileModifyActivity, MainActivity::class.java).run {
@@ -366,7 +363,7 @@ class ProfileModifyActivity : AppCompatActivity(), View.OnClickListener, Observe
     override fun onDestroy() {
         super.onDestroy()
         mProfileModifyViewModel?.run {
-            getCurrentProfile().removeObserver(this@ProfileModifyActivity)
+//            getCurrentProfile().removeObserver(this@ProfileModifyActivity)
         }
     }
 

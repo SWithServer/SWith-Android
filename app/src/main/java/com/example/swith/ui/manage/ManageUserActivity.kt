@@ -5,9 +5,9 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import com.example.data.R
-import com.example.data.databinding.ActivityManageUserBinding
-import com.example.data.ui.adapter.ManageUserTabVPAdapter
+import com.example.swith.R
+import com.example.swith.databinding.ActivityManageUserBinding
+import com.example.swith.ui.adapter.ManageUserTabVPAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 
 class ManageUserActivity : AppCompatActivity(), View.OnClickListener {

@@ -9,18 +9,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.data.R
-import com.example.data.databinding.FragmentManageApplication2Binding
+import com.example.swith.R
 import com.example.swith.data.api.RetrofitService
-import com.example.data.ui.adapter.ManageUserRVAdapter2
-import com.example.data.ui.dialog.CustomConfirmDialog
-import com.example.data.utils.SharedPrefManager
-import com.example.data.utils.SwipeController
-import com.example.data.utils.base.BaseFragment
+import com.example.swith.databinding.FragmentManageApplication2Binding
 import com.example.swith.domain.entity.ManageUserDelReq
 import com.example.swith.domain.entity.ManageUserDelResponse
 import com.example.swith.domain.entity.ManageUserResponse
 import com.example.swith.domain.entity.ManageUserResult
+import com.example.swith.ui.adapter.ManageUserRVAdapter2
+import com.example.swith.ui.dialog.CustomConfirmDialog
+import com.example.swith.utils.SharedPrefManager
+import com.example.swith.utils.SwipeController
+import com.example.swith.utils.base.BaseFragment
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -42,7 +42,7 @@ class ManageUserApplication2Fragment() :
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         groupIdx = userActivity?.groupIdx
         return super.onCreateView(inflater, container, savedInstanceState)
@@ -82,7 +82,7 @@ class ManageUserApplication2Fragment() :
         adapter.setCustomListener(object : ManageUserRVAdapter2.CustomListener {
             override fun onDeleteClick(
                 userInfo: ManageUserResult,
-                applicationIdx: Long
+                applicationIdx: Long,
             ) {
                 Log.e("스와이프 이벤트 발생", "true")
                 CustomConfirmDialog("회원 삭제", "${userInfo.nickname}님을 추방하시겠습니까?").apply {
@@ -106,13 +106,14 @@ class ManageUserApplication2Fragment() :
 
     fun setRetrofitData(groupIdx: Long?) {
         Log.e("groupIdx 레트로핏 값 ", "${groupIdx}")
-        val retrofitService = RetrofitService.retrofit.create(com.example.swith.data.api.SwithService::class.java)
+        val retrofitService =
+            RetrofitService.retrofit.create(com.example.swith.data.api.SwithService::class.java)
         //status가 1이면 지원해서 승인된 사람 or 선착순으로 바로 통과된 사람
         retrofitService.getUserList(groupIdx!!, 1).enqueue(object :
             Callback<ManageUserResponse> {
             override fun onResponse(
                 call: Call<ManageUserResponse>,
-                response: Response<ManageUserResponse>
+                response: Response<ManageUserResponse>,
             ) {
                 if (response.isSuccessful) {
                     Log.e("summer", "성공${response.toString()}")
@@ -129,7 +130,7 @@ class ManageUserApplication2Fragment() :
 
             override fun onFailure(
                 call: Call<ManageUserResponse>,
-                t: Throwable
+                t: Throwable,
             ) {
                 Log.e("summer", "onFailure t = ${t.toString()}")
                 Log.e("summer", "onFailure msg = ${t.message}")
@@ -143,7 +144,8 @@ class ManageUserApplication2Fragment() :
     }
 
     fun deleteUser(userIdx: Long?, adminIdx: Long?, applicationIdx: Long?) {
-        val retrofitService = RetrofitService.retrofit.create(com.example.swith.data.api.SwithService::class.java)
+        val retrofitService =
+            RetrofitService.retrofit.create(com.example.swith.data.api.SwithService::class.java)
         //status가 1이면 지원해서 승인된 사람 or 선착순으로 바로 통과된 사람
         Log.e("전달한 applicationIdx 값", applicationIdx.toString())
         val deleteReq =
@@ -152,7 +154,7 @@ class ManageUserApplication2Fragment() :
             Callback<ManageUserDelResponse> {
             override fun onResponse(
                 call: Call<ManageUserDelResponse>,
-                response: Response<ManageUserDelResponse>
+                response: Response<ManageUserDelResponse>,
             ) {
                 if (response.isSuccessful) {
                     Log.e("summer", "성공${response.toString()}")
@@ -168,7 +170,7 @@ class ManageUserApplication2Fragment() :
 
             override fun onFailure(
                 call: Call<ManageUserDelResponse>,
-                t: Throwable
+                t: Throwable,
             ) {
                 Log.e("summer", "onFailure t = ${t.toString()}")
                 Log.e("summer", "onFailure msg = ${t.message}")

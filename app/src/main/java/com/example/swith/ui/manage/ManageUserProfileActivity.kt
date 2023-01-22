@@ -5,9 +5,9 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import com.example.data.R
-import com.example.data.databinding.ActivityManageUserProfileBinding
+import com.example.swith.R
 import com.example.swith.data.api.RetrofitService
+import com.example.swith.databinding.ActivityManageUserProfileBinding
 import com.example.swith.domain.entity.ManageUserIdx
 import com.example.swith.domain.entity.ManageUserProfileResponse
 import retrofit2.Call
@@ -41,12 +41,13 @@ class ManageUserProfileActivity : AppCompatActivity(), View.OnClickListener {
         Log.e("userIdx 데이터 set ", "${userIdx}")
         Log.e("summer", "데이터 set true")
         var reqUserIdx = ManageUserIdx(userIdx)
-        val retrofitService = RetrofitService.retrofit.create(com.example.swith.data.api.SwithService::class.java)
+        val retrofitService =
+            RetrofitService.retrofit.create(com.example.swith.data.api.SwithService::class.java)
         retrofitService.getUserProfile(reqUserIdx)
             .enqueue(object : Callback<ManageUserProfileResponse> {
                 override fun onResponse(
                     call: Call<ManageUserProfileResponse>,
-                    response: Response<ManageUserProfileResponse>
+                    response: Response<ManageUserProfileResponse>,
                 ) {
                     if (response.isSuccessful) {
                         Log.e("summer", "성공${response.toString()}")
@@ -92,7 +93,7 @@ class ManageUserProfileActivity : AppCompatActivity(), View.OnClickListener {
 
                 override fun onFailure(
                     call: Call<ManageUserProfileResponse>,
-                    t: Throwable
+                    t: Throwable,
                 ) {
                     Log.e("summer", "onFailure t = ${t.toString()}")
                     Log.e("summer", "onFailure msg = ${t.message}")

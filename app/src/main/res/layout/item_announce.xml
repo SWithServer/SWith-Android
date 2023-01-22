@@ -4,7 +4,7 @@
     <data>
         <variable
             name="announce"
-            type="com.example.data.entity.Announce" />
+            type="com.example.swith.domain.entity.Announce" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

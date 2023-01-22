@@ -3,14 +3,16 @@ package com.example.swith.ui.dialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.*
+import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
-import com.example.data.R
-import com.example.data.databinding.DialogAnnounceCreateBinding
+import com.example.swith.R
+import com.example.swith.databinding.DialogAnnounceCreateBinding
 
 class CustomAnnounceCreateDialog : DialogFragment() {
     private lateinit var binding: DialogAnnounceCreateBinding
@@ -24,6 +26,7 @@ class CustomAnnounceCreateDialog : DialogFragment() {
         customListener = listener
     }
 
+    @RequiresApi(Build.VERSION_CODES.R)
     override fun onResume() {
         super.onResume()
         // 디바이스 크기별 세팅
@@ -41,7 +44,7 @@ class CustomAnnounceCreateDialog : DialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.dialog_announce_create, container, false)

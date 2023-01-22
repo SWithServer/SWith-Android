@@ -10,7 +10,7 @@ import javax.inject.Singleton
 
 @Singleton
 class SharedPrefManager @Inject constructor(
-    @ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context,
 ) {
 
     companion object {
@@ -49,8 +49,10 @@ class SharedPrefManager @Inject constructor(
         val prefs: SharedPreferences = context.getSharedPreferences(FILENAME, Context.MODE_PRIVATE)
         Gson().apply {
             val jsonToString: String = prefs.getString(LOGIN_DATA, "") ?: ""
-            return fromJson(jsonToString,
-                LoginData::class.java)
+            return fromJson(
+                jsonToString,
+                LoginData::class.java
+            )
         }
     }
 

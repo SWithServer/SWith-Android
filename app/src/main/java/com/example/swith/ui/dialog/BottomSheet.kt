@@ -5,15 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import com.example.data.R
-import com.example.data.databinding.FragmentBottomSheetBinding
+import com.example.swith.R
+import com.example.swith.databinding.FragmentBottomSheetBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class BottomSheet(
     private val title: String,
     private val alert: String?,
     private val content: String,
-    private val buttonMessage: String
+    private val buttonMessage: String,
 ) : BottomSheetDialogFragment() {
     private lateinit var binding: FragmentBottomSheetBinding
 
@@ -29,7 +29,7 @@ class BottomSheet(
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_bottom_sheet, container, false)

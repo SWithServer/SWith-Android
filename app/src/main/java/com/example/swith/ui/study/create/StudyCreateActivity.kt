@@ -1,5 +1,6 @@
 package com.example.swith.ui.study.create
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.content.Context
@@ -20,14 +21,14 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import com.example.data.R
-import com.example.data.SwithApplication.Companion.spfManager
-import com.example.data.databinding.ActivityStudyCreateBinding
+import com.example.swith.R
+import com.example.swith.SwithApplication.Companion.spfManager
+import com.example.swith.data.api.RetrofitService
+import com.example.swith.databinding.ActivityStudyCreateBinding
 import com.example.swith.domain.entity.StudyGroup
 import com.example.swith.domain.entity.StudyImageRes
 import com.example.swith.domain.entity.StudyResponse
-import com.example.swith.data.api.RetrofitService
-import com.example.data.utils.SharedPrefManager
+import com.example.swith.utils.SharedPrefManager
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -309,7 +310,7 @@ class StudyCreateActivity : AppCompatActivity(), View.OnClickListener {
                     p0: AdapterView<*>?,
                     p1: View?,
                     position: Int,
-                    p3: Long
+                    p3: Long,
                 ) {
                     interest_idx = position + 1
                 }
@@ -322,7 +323,7 @@ class StudyCreateActivity : AppCompatActivity(), View.OnClickListener {
                     p0: AdapterView<*>?,
                     p1: View?,
                     position: Int,
-                    p3: Long
+                    p3: Long,
                 ) {
                     memberLimit_content = "${spinnerPeople.getItemAtPosition(position)}".toInt()
                 }
@@ -335,7 +336,7 @@ class StudyCreateActivity : AppCompatActivity(), View.OnClickListener {
                     p0: AdapterView<*>?,
                     p1: View?,
                     position: Int,
-                    p3: Long
+                    p3: Long,
                 ) {
                     attendanceVaildTime_content =
                         "${spinnerAttendTime.getItemAtPosition(position)}".toInt()
@@ -627,6 +628,7 @@ class StudyCreateActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == GALLERY) {
             if (resultCode == RESULT_OK) {
                 var currentImageUri = data?.data
@@ -659,6 +661,7 @@ class StudyCreateActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    @SuppressLint("Range")
     fun getRealPathFromURI(contentUri: Uri?): String? {
         val proj = arrayOf(MediaStore.Images.Media.DATA)
         val cursor = contentResolver.query(contentUri!!, proj, null, null, null)
@@ -681,12 +684,13 @@ class StudyCreateActivity : AppCompatActivity(), View.OnClickListener {
         if (!(file.name.equals(""))) {
             var requestFile = RequestBody.create("image"?.toMediaTypeOrNull(), file)
             var body = MultipartBody.Part.createFormData("image", file.name, requestFile)
-            val retrofitService = RetrofitService.retrofit.create(com.example.swith.data.api.SwithService::class.java)
+            val retrofitService =
+                RetrofitService.retrofit.create(com.example.swith.data.api.SwithService::class.java)
             retrofitService.uploadImg(body).enqueue(object :
                 Callback<StudyImageRes> {
                 override fun onResponse(
                     call: Call<StudyImageRes>,
-                    response: Response<StudyImageRes>
+                    response: Response<StudyImageRes>,
                 ) {
                     if (response.isSuccessful) {
                         Log.e("summer", "성공${response.toString()}")
@@ -716,7 +720,8 @@ class StudyCreateActivity : AppCompatActivity(), View.OnClickListener {
 
     fun postStudy(studyRequestData: StudyGroup) {
         Log.e("StudyReq 최종", "${studyRequestData.toString()}")
-        val retrofitService = RetrofitService.retrofit.create(com.example.swith.data.api.SwithService::class.java)
+        val retrofitService =
+            RetrofitService.retrofit.create(com.example.swith.data.api.SwithService::class.java)
         retrofitService.createStudy(studyRequestData).enqueue(object : Callback<StudyResponse> {
             override fun onResponse(call: Call<StudyResponse>, response: Response<StudyResponse>) {
                 if (response.isSuccessful) {

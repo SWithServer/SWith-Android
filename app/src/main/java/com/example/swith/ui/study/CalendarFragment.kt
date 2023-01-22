@@ -14,13 +14,13 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.data.R
-import com.example.data.databinding.FragmentCalendarBinding
-import com.example.data.ui.adapter.CalendarRoundRVAdapter
-import com.example.data.ui.study.create.RoundCreateActivity
-import com.example.data.utils.base.BaseFragment
-import com.example.data.utils.compareDayWithNow
-import com.example.data.viewmodel.RoundViewModel
+import com.example.swith.R
+import com.example.swith.databinding.FragmentCalendarBinding
+import com.example.swith.ui.adapter.CalendarRoundRVAdapter
+import com.example.swith.ui.study.create.RoundCreateActivity
+import com.example.swith.utils.base.BaseFragment
+import com.example.swith.utils.compareDayWithNow
+import com.example.swith.viewmodel.RoundViewModel
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.CalendarMode
 import com.prolificinteractive.materialcalendarview.DayViewDecorator
@@ -146,7 +146,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
             text: CharSequence,
             start: Int,
             end: Int,
-            lineNumber: Int
+            lineNumber: Int,
         ) {
             // 원 그리고 색깔 칠하기
             canvas.drawCircle(

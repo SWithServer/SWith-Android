@@ -3,12 +3,12 @@ package com.example.swith.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.example.swith.domain.entity.AnnounceCreate
+import com.example.swith.domain.entity.AnnounceList
+import com.example.swith.domain.entity.AnnounceModify
 import com.example.swith.domain.usecase.announce.CreateAnnounceUseCase
 import com.example.swith.domain.usecase.announce.DeleteAnnounceUseCase
 import com.example.swith.domain.usecase.announce.GetAnnounceDataUseCase
 import com.example.swith.domain.usecase.announce.UpdateAnnounceUseCase
-import com.example.swith.domain.entity.AnnounceList
-import com.example.swith.domain.entity.AnnounceModify
 import com.example.swith.utils.SingleLiveEvent
 import com.example.swith.utils.base.BaseViewModel
 import com.example.swith.utils.error.ScreenState
@@ -21,8 +21,8 @@ class AnnounceViewModel @Inject constructor(
     private val getAnnounceDataUseCase: GetAnnounceDataUseCase,
     private val deleteAnnounceUseCase: DeleteAnnounceUseCase,
     private val updateAnnounceUseCase: UpdateAnnounceUseCase,
-    private val createAnnounceUseCase: CreateAnnounceUseCase
-): BaseViewModel() {
+    private val createAnnounceUseCase: CreateAnnounceUseCase,
+) : BaseViewModel() {
     private var _announceLiveData = SingleLiveEvent<AnnounceList>()
     private var _deleteLiveEvent = SingleLiveEvent<Any>()
     private var _createLiveEvent = SingleLiveEvent<Any>()
@@ -45,7 +45,7 @@ class AnnounceViewModel @Inject constructor(
             getAnnounceDataUseCase(this@AnnounceViewModel, groupIdx)?.let {
                 mutableScreenState.postValue(ScreenState.RENDER)
                 _announceLiveData.value = it
-            }?: run {
+            } ?: run {
                 mutableScreenState.postValue(ScreenState.RENDER)
             }
         }

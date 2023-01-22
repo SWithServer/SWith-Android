@@ -8,10 +8,9 @@ import android.content.Context.NOTIFICATION_SERVICE
 import android.content.Intent
 import android.graphics.Color
 import androidx.core.app.NotificationCompat
-import com.example.data.R
-import com.example.data.ui.rating.RatingActivity
-import com.example.data.ui.study.announce.AnnounceActivity
-
+import com.example.swith.R
+import com.example.swith.ui.rating.RatingActivity
+import com.example.swith.ui.study.announce.AnnounceActivity
 
 class NoticeManager(private val context: Context) {
     companion object {

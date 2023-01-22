@@ -9,14 +9,14 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import com.example.data.R
-import com.example.data.databinding.FragmentRoundBinding
 import com.example.data.entity.GetSessionRes
-import com.example.data.ui.adapter.RoundRVAdapter
-import com.example.data.ui.study.announce.AnnounceActivity
-import com.example.data.ui.study.create.RoundCreateActivity
-import com.example.data.utils.base.BaseFragment
-import com.example.data.viewmodel.RoundViewModel
+import com.example.swith.R
+import com.example.swith.databinding.FragmentRoundBinding
+import com.example.swith.ui.adapter.RoundRVAdapter
+import com.example.swith.ui.study.announce.AnnounceActivity
+import com.example.swith.ui.study.create.RoundCreateActivity
+import com.example.swith.utils.base.BaseFragment
+import com.example.swith.viewmodel.RoundViewModel
 
 class RoundFragment : BaseFragment<FragmentRoundBinding>(R.layout.fragment_round) {
     private val viewModel: RoundViewModel by activityViewModels()

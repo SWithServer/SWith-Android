@@ -9,16 +9,19 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.data.R
-import com.example.data.databinding.ActivityAnnounceBinding
-import com.example.data.ui.adapter.AnnounceRVAdapter
-import com.example.data.ui.dialog.CustomAlertDialog
-import com.example.data.ui.dialog.CustomAnnounceCreateDialog
-import com.example.data.ui.dialog.CustomAnnounceModifyDialog
-import com.example.data.ui.dialog.CustomConfirmDialog
-import com.example.data.utils.SwipeController
-import com.example.data.utils.error.ScreenState
-import com.example.data.viewmodel.AnnounceViewModel
+import com.example.swith.R
+import com.example.swith.databinding.ActivityAnnounceBinding
+import com.example.swith.domain.entity.Announce
+import com.example.swith.domain.entity.AnnounceCreate
+import com.example.swith.domain.entity.AnnounceModify
+import com.example.swith.ui.adapter.AnnounceRVAdapter
+import com.example.swith.ui.dialog.CustomAlertDialog
+import com.example.swith.ui.dialog.CustomAnnounceCreateDialog
+import com.example.swith.ui.dialog.CustomAnnounceModifyDialog
+import com.example.swith.ui.dialog.CustomConfirmDialog
+import com.example.swith.utils.SwipeController
+import com.example.swith.utils.error.ScreenState
+import com.example.swith.viewmodel.AnnounceViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -54,7 +57,7 @@ class AnnounceActivity : AppCompatActivity(), View.OnClickListener {
             rvAnnounce.apply {
                 adapter = AnnounceRVAdapter().apply {
                     setListener(object : AnnounceRVAdapter.CustomListener {
-                        override fun onDelete(announce: com.example.data.entity.Announce) {
+                        override fun onDelete(announce: Announce) {
                             CustomConfirmDialog(
                                 "공지사항 삭제",
                                 "해당 공지사항을 삭제하시겠습니까?\n내용 : ${announce.announcementContent}"
@@ -68,7 +71,7 @@ class AnnounceActivity : AppCompatActivity(), View.OnClickListener {
                             }.show(supportFragmentManager, "공지사항 삭제")
                         }
 
-                        override fun onItemClick(announce: com.example.data.entity.Announce) {
+                        override fun onItemClick(announce: Announce) {
                             // 매니저인 경우 수정 화면 뜨도록
                             if (isManager) {
                                 CustomAnnounceModifyDialog(announce.announcementContent).apply {
@@ -85,7 +88,7 @@ class AnnounceActivity : AppCompatActivity(), View.OnClickListener {
                                                     override fun onConfirm() {
                                                         dismiss()
                                                         viewModel.updateAnnounce(
-                                                            com.example.data.entity.AnnounceModify(
+                                                            AnnounceModify(
                                                                 content,
                                                                 announce.announcementIdx
                                                             )
@@ -124,7 +127,7 @@ class AnnounceActivity : AppCompatActivity(), View.OnClickListener {
                                     setCustomListener(object : CustomConfirmDialog.CustomListener {
                                         override fun onConfirm() {
                                             viewModel.createAnnounce(
-                                                com.example.data.entity.AnnounceCreate(
+                                                AnnounceCreate(
                                                     content,
                                                     groupIdx
                                                 )

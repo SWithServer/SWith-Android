@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.data.databinding.ItemRatingBinding
+import com.example.swith.databinding.ItemRatingBinding
 import com.example.swith.domain.entity.RatingResult
 
 

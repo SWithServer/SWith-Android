@@ -1,15 +1,19 @@
 package com.example.swith.viewmodel
 
-import androidx.lifecycle.*
-import com.example.data.SwithApplication.Companion.spfManager
-import com.example.data.entity.*
-import com.example.data.remote.round.RoundRemoteDataSource
-import com.example.data.repository.round.RoundRepository
-import com.example.data.utils.SingleLiveEvent
-import com.example.data.utils.base.BaseViewModel
-import com.example.data.utils.compareTimeWithNow
-import com.example.data.utils.error.ScreenState
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import com.example.data.entity.GetSessionRes
+import com.example.data.entity.Round
+import com.example.data.entity.UserAttend
+import com.example.swith.SwithApplication.Companion.spfManager
+import com.example.swith.data.remote.round.RoundRemoteDataSource
+import com.example.swith.data.repository.round.RoundRepository
 import com.example.swith.domain.entity.*
+import com.example.swith.utils.SingleLiveEvent
+import com.example.swith.utils.base.BaseViewModel
+import com.example.swith.utils.compareTimeWithNow
+import com.example.swith.utils.error.ScreenState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -31,7 +35,7 @@ class RoundViewModel() : BaseViewModel() {
     private var _sessionLiveData = MutableLiveData<SessionInfo>()
 
     // 출석
-    private var _attendLiveEvent = MutableLiveData<AttendResponse>()
+    private var _attendLiveEvent = MutableLiveData<AttendResponse?>()
 
     // 통계 화면 (유저별 출석율)
     private var _userAttendLiveData = MutableLiveData<UserAttend>()
@@ -48,7 +52,7 @@ class RoundViewModel() : BaseViewModel() {
     val sessionLiveData: LiveData<SessionInfo>
         get() = _sessionLiveData
 
-    val attendLiveEvent: LiveData<AttendResponse>
+    val attendLiveEvent: LiveData<AttendResponse?>
         get() = _attendLiveEvent
 
     val userAttendLiveData: LiveData<UserAttend>
@@ -97,7 +101,7 @@ class RoundViewModel() : BaseViewModel() {
                 }
                 mutableScreenState.postValue(ScreenState.RENDER)
                 _attendLiveEvent.value = null
-                _sessionLiveData.value = res
+                _sessionLiveData.value = it
             }
         }
     }
@@ -191,7 +195,7 @@ class RoundViewModel() : BaseViewModel() {
                 if (res == null) mutableScreenState.postValue(ScreenState.RENDER)
                 res?.let {
                     mutableScreenState.postValue(ScreenState.RENDER)
-                    _userAttendLiveData.value = res
+                    _userAttendLiveData.value = it
                 }
             }
         }

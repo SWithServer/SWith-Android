@@ -8,10 +8,10 @@ import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
-import com.example.data.ui.dialog.CustomDialog
-import com.example.data.ui.dialog.CustomImageDialog
-import com.example.data.ui.dialog.CustomInterestingDialog
-import com.example.data.ui.dialog.CustomResumeDialog
+import com.example.swith.ui.dialog.CustomDialog
+import com.example.swith.ui.dialog.CustomImageDialog
+import com.example.swith.ui.dialog.CustomInterestingDialog
+import com.example.swith.ui.dialog.CustomResumeDialog
 import de.hdodenhof.circleimageview.CircleImageView
 
 class CustomBinder {
@@ -35,7 +35,7 @@ class CustomBinder {
             view: View,
             width: Int = WindowManager.LayoutParams.WRAP_CONTENT,
             height: Int = WindowManager.LayoutParams.WRAP_CONTENT,
-            listener: CustomDialog.DialogClickListener?
+            listener: CustomDialog.DialogClickListener?,
         ): CustomDialog {
             return CustomDialog(context, view, width, height).apply {
                 setClickListener(listener)
@@ -52,7 +52,7 @@ class CustomBinder {
             view: View,
             width: Int = WindowManager.LayoutParams.WRAP_CONTENT,
             height: Int = WindowManager.LayoutParams.WRAP_CONTENT,
-            listener: CustomInterestingDialog.DialogClickListener?
+            listener: CustomInterestingDialog.DialogClickListener?,
         ): CustomInterestingDialog {
             return CustomInterestingDialog(
                 arrayList,
@@ -74,7 +74,7 @@ class CustomBinder {
             view: View,
             width: Int = WindowManager.LayoutParams.WRAP_CONTENT,
             height: Int = WindowManager.LayoutParams.WRAP_CONTENT,
-            listener: CustomImageDialog.DialogClickListener?
+            listener: CustomImageDialog.DialogClickListener?,
         ): CustomImageDialog {
             return CustomImageDialog(context, view, width, height).apply {
                 setClickListener(listener)
@@ -101,7 +101,7 @@ class CustomBinder {
             view: View,
             width: Int = WindowManager.LayoutParams.WRAP_CONTENT,
             height: Int = WindowManager.LayoutParams.WRAP_CONTENT,
-            listener: CustomResumeDialog.DialogClickListener?
+            listener: CustomResumeDialog.DialogClickListener?,
         ): CustomResumeDialog {
             return CustomResumeDialog(title, context, view, width, height).apply {
                 setClickListener(listener)

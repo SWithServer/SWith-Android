@@ -3,14 +3,15 @@ package com.example.swith.ui.dialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
-import com.example.data.R
-import com.example.data.databinding.DialogAnnounceModifyBinding
+import com.example.swith.R
+import com.example.swith.databinding.DialogAnnounceModifyBinding
 
 class CustomAnnounceModifyDialog(private val content: String) : DialogFragment() {
     private lateinit var binding: DialogAnnounceModifyBinding
@@ -29,7 +30,11 @@ class CustomAnnounceModifyDialog(private val content: String) : DialogFragment()
         // 디바이스 크기별 세팅
         val params = dialog?.window?.attributes
         val windowManager = activity?.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val size = windowManager.currentWindowMetrics
+        val size = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            windowManager.currentWindowMetrics
+        } else {
+            TODO("VERSION.SDK_INT < R")
+        }
         val deviceWidth = size.bounds.width()
         val deviceHeight = size.bounds.height()
 
@@ -41,7 +46,7 @@ class CustomAnnounceModifyDialog(private val content: String) : DialogFragment()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.dialog_announce_modify, container, false)

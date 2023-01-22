@@ -14,18 +14,18 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
-import com.example.data.R
-import com.example.data.databinding.DialogCreateBinding
-import com.example.data.databinding.FragmentStudyFindDetailBinding
+import com.example.swith.R
+import com.example.swith.data.api.RetrofitService
+import com.example.swith.databinding.DialogCreateBinding
+import com.example.swith.databinding.FragmentStudyFindDetailBinding
 import com.example.swith.domain.entity.StudyApplicationResponse
 import com.example.swith.domain.entity.StudyDetailResponse
 import com.example.swith.domain.entity.postApplicationReq
-import com.example.swith.data.api.RetrofitService
-import com.example.data.ui.MainActivity
-import com.example.data.ui.dialog.CustomDialog
-import com.example.data.ui.manage.ManageUserProfileActivity
-import com.example.data.utils.CustomBinder
-import com.example.data.utils.base.BaseFragment
+import com.example.swith.ui.MainActivity
+import com.example.swith.ui.dialog.CustomDialog
+import com.example.swith.ui.manage.ManageUserProfileActivity
+import com.example.swith.utils.CustomBinder
+import com.example.swith.utils.base.BaseFragment
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -55,7 +55,7 @@ class StudyFindDetailFragment :
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         return super.onCreateView(inflater, container, savedInstanceState)
     }
@@ -137,11 +137,12 @@ class StudyFindDetailFragment :
     //groupIdx로 study정보 가져오는 retrofit 부분 (API 나오면 작성하기)
     fun setData(groupIdx: Long?) {
         Log.e("summer", "데이터 set true")
-        val retrofitService = RetrofitService.retrofit.create(com.example.swith.data.api.SwithService::class.java)
+        val retrofitService =
+            RetrofitService.retrofit.create(com.example.swith.data.api.SwithService::class.java)
         retrofitService.getStudyDetail(groupIdx!!).enqueue(object : Callback<StudyDetailResponse> {
             override fun onResponse(
                 call: Call<StudyDetailResponse>,
-                response: Response<StudyDetailResponse>
+                response: Response<StudyDetailResponse>,
             ) {
                 if (response.isSuccessful) {
                     Log.e("summer", "성공${response.toString()}")
@@ -244,12 +245,13 @@ class StudyFindDetailFragment :
     fun postData(applicationMethod: Int, groupIdx: Long?, applyContent: String?, UserIdx: Long) {
         Log.e("신청서 내용 보내는 부분", "${applyContent.toString()}")
         var postApplicationReq = postApplicationReq(UserIdx, applyContent)
-        val retrofitService = RetrofitService.retrofit.create(com.example.swith.data.api.SwithService::class.java)
+        val retrofitService =
+            RetrofitService.retrofit.create(com.example.swith.data.api.SwithService::class.java)
         retrofitService.postApplication(groupIdx!!, applicationMethod, postApplicationReq)
             .enqueue(object : Callback<StudyApplicationResponse> {
                 override fun onResponse(
                     call: Call<StudyApplicationResponse>,
-                    response: Response<StudyApplicationResponse>
+                    response: Response<StudyApplicationResponse>,
                 ) {
                     if (response.isSuccessful) {
                         Log.e("summer", "성공${response.toString()}")

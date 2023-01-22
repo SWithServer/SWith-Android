@@ -1,19 +1,15 @@
 package com.example.swith.viewmodel
 
 import androidx.databinding.ObservableField
-import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.swith.domain.entity.ProfileResponse
-import com.example.data.repository.profile.ProfileModifyRepository
-import com.example.swith.domain.entity.ProfileModifyRequest
-import com.example.swith.domain.entity.ProfileModifyResponse
-import com.example.swith.domain.entity.ProfileRequest
+
 
 class ProfileModifyViewModel : ViewModel() {
+    val currentProfile = MutableLiveData<ProfileResponse>()
     val isLoading: ObservableField<Boolean> = ObservableField<Boolean>()
-    private val mProfileModifyRepository: ProfileModifyRepository =
-        ProfileModifyRepositoryProvider.provideProfileModifyRepository()
 
     init {
         hideLoading()
@@ -27,25 +23,25 @@ class ProfileModifyViewModel : ViewModel() {
         isLoading.set(false)
     }
 
-    fun requestCurrentProfile(profileRequest: ProfileRequest): LiveData<ProfileResponse> {
-        return mProfileModifyRepository.requestCurrentProfile(profileRequest)
-    }
-
-    fun getCurrentProfile(): LiveData<ProfileResponse> {
-        return mProfileModifyRepository.getCurrentProfile()
-    }
-
-    fun requestCurrentProfileModify(profileModifyRequest: ProfileModifyRequest): LiveData<ProfileModifyResponse> {
-        return mProfileModifyRepository.requestCurrentProfileModify(profileModifyRequest)
-    }
-
-    fun getCurrentProfileModify(): LiveData<ProfileModifyResponse> {
-        return mProfileModifyRepository.getCurrentProfileModify()
-    }
-
-    fun setImage() {
-
-    }
+//    fun requestCurrentProfile(profileRequest: ProfileRequest): LiveData<ProfileResponse> {
+//        return mProfileModifyRepository.requestCurrentProfile(profileRequest)
+//    }
+//
+//    fun getCurrentProfile(): LiveData<ProfileResponse> {
+//        return mProfileModifyRepository.getCurrentProfile()
+//    }
+//
+//    fun requestCurrentProfileModify(profileModifyRequest: ProfileModifyRequest): LiveData<ProfileModifyResponse> {
+//        return mProfileModifyRepository.requestCurrentProfileModify(profileModifyRequest)
+//    }
+//
+//    fun getCurrentProfileModify(): LiveData<ProfileModifyResponse> {
+//        return mProfileModifyRepository.getCurrentProfileModify()
+//    }
+//
+//    fun setImage() {
+//
+//    }
 
     class Factory : ViewModelProvider.NewInstanceFactory() {
 

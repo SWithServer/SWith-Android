@@ -1,13 +1,14 @@
 package com.example.swith.viewmodel
 
-import androidx.lifecycle.*
-import com.example.data.SwithApplication
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.viewModelScope
+import com.example.swith.SwithApplication
+import com.example.swith.data.remote.home.HomeRemoteDataSource
+import com.example.swith.data.repository.home.HomeRepository
 import com.example.swith.domain.entity.GroupList
-import com.example.data.remote.home.HomeRemoteDataSource
-import com.example.data.repository.home.HomeRepository
-import com.example.data.utils.SingleLiveEvent
-import com.example.data.utils.base.BaseViewModel
-import com.example.data.utils.error.ScreenState
+import com.example.swith.utils.SingleLiveEvent
+import com.example.swith.utils.base.BaseViewModel
+import com.example.swith.utils.error.ScreenState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -27,7 +28,7 @@ class HomeViewModel() : BaseViewModel() {
             withContext(Dispatchers.Main) {
                 if (res == null) mutableScreenState.postValue(ScreenState.RENDER)
                 res?.let {
-                    _groupLiveData.value = res
+                    _groupLiveData.value = it
                     mutableScreenState.postValue(ScreenState.RENDER)
                 }
             }

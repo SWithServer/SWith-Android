@@ -9,8 +9,8 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.data.R
-import com.example.data.databinding.ItemManageAttendBinding
+import com.example.swith.R
+import com.example.swith.databinding.ItemManageAttendBinding
 import com.example.swith.domain.entity.GetAttendanceInfo
 import com.example.swith.domain.entity.UpdateAttend
 
@@ -76,7 +76,7 @@ class ManageAttendRVAdapter : RecyclerView.Adapter<ManageAttendRVAdapter.ViewHol
                             override fun getView(
                                 position: Int,
                                 convertView: View?,
-                                parent: ViewGroup
+                                parent: ViewGroup,
                             ): View {
                                 val textView =
                                     super.getView(position, convertView, parent) as TextView
@@ -107,7 +107,7 @@ class ManageAttendRVAdapter : RecyclerView.Adapter<ManageAttendRVAdapter.ViewHol
                                 parent: AdapterView<*>?,
                                 view: View?,
                                 position: Int,
-                                id: Long
+                                id: Long,
                             ) {
                                 attendList[adapterPos].status = position + 1
                                 when (position) {

@@ -3,12 +3,14 @@ package com.example.swith.ui.dialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
 import android.view.*
+import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
-import com.example.data.R
-import com.example.data.databinding.DialogTimepickerBinding
+import com.example.swith.R
+import com.example.swith.databinding.DialogTimepickerBinding
 
 class CustomTimePickerDialog(context: Context) : DialogFragment() {
     val dialogBinding: DialogTimepickerBinding by lazy {
@@ -33,7 +35,7 @@ class CustomTimePickerDialog(context: Context) : DialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         // 모서리 직각 제거
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -41,6 +43,7 @@ class CustomTimePickerDialog(context: Context) : DialogFragment() {
         return dialogBinding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.R)
     override fun onResume() {
         super.onResume()
         // 디바이스 크기별 세팅

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.data">
+    package="com.example.swith">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -9,7 +9,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".data.SwithApplication"
+        android:name=".SwithApplication"
         android:allowBackup="false"
         android:icon="@mipmap/ic_app_launcher"
         android:label="@string/app_name"
@@ -18,10 +18,10 @@
         android:theme="@style/Theme.SWith"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".data.ui.notification.NotificationActivity"
+            android:name=".ui.notification.NotificationActivity"
             android:exported="false" />
         <activity
-            android:name=".data.ui.rating.RatingActivity"
+            android:name=".ui.rating.RatingActivity"
             android:exported="false" />
 
         <meta-data
@@ -35,7 +35,7 @@
             android:value="fcm_default_channel" />
 
         <service
-            android:name=".data.utils.FirebaseMessageService"
+            android:name=".utils.FirebaseMessageService"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -44,52 +44,52 @@
         </service>
 
         <activity
-            android:name=".data.ui.manage.ManageRoundActivity"
+            android:name=".ui.manage.ManageRoundActivity"
             android:exported="false" />
         <activity
-            android:name=".data.ui.manage.ManageAttendActivity"
+            android:name=".ui.manage.ManageAttendActivity"
             android:exported="false" />
         <activity
-            android:name=".data.ui.manage.ManageRoundModifyActivity"
+            android:name=".ui.manage.ManageRoundModifyActivity"
             android:exported="false" />
         <activity
-            android:name=".data.ui.manage.ManageFinishActivity"
+            android:name=".ui.manage.ManageFinishActivity"
             android:exported="false" />
         <activity
-            android:name=".data.ui.manage.ManageStudyModifyActivity"
+            android:name=".ui.manage.ManageStudyModifyActivity"
             android:exported="false" />
         <activity
-            android:name=".data.ui.manage.ManageUserActivity"
+            android:name=".ui.manage.ManageUserActivity"
             android:exported="false" />
         <activity
-            android:name=".data.ui.manage.ManageUserProfileActivity"
+            android:name=".ui.manage.ManageUserProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".data.ui.manage.ManageUserResumeActivity"
+            android:name=".ui.manage.ManageUserResumeActivity"
             android:exported="false" />
         <activity
-            android:name=".data.ui.study.create.RoundCreateActivity"
+            android:name=".ui.study.create.RoundCreateActivity"
             android:exported="false" />
         <activity
-            android:name=".data.ui.login.LoginActivity"
+            android:name=".ui.login.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".data.ui.study.announce.AnnounceActivity"
+            android:name=".ui.study.announce.AnnounceActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustNothing" />
         <activity
-            android:name=".data.ui.SplashActivity"
+            android:name=".ui.SplashActivity"
             android:exported="true">
 
         </activity>
         <activity
-            android:name=".data.ui.login.SnsLoginActivity"
+            android:name=".ui.login.SnsLoginActivity"
             android:exported="true"></activity>
         <activity
-            android:name=".data.ui.profile.ProfileModifyActivity"
+            android:name=".ui.profile.ProfileModifyActivity"
             android:exported="true"></activity>
         <activity
-            android:name=".data.ui.MainActivity"
+            android:name=".ui.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -98,15 +98,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".data.ui.study.StudyActivity"
+            android:name=".ui.study.StudyActivity"
             android:windowSoftInputMode="adjustNothing" />
-        <activity android:name=".data.ui.manage.ManageActivity" />
+        <activity android:name=".ui.manage.ManageActivity" />
         <activity
-            android:name=".data.ui.study.create.StudyCreateActivity"
+            android:name=".ui.study.create.StudyCreateActivity"
             android:exported="true"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".data.ui.study.create.SelectPlaceActivity"
+            android:name=".ui.study.create.SelectPlaceActivity"
             android:exported="true"
             android:windowSoftInputMode="stateHidden" />
         <activity

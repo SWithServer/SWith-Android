@@ -9,16 +9,15 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.data.R
-import com.example.data.databinding.ActivityManageRoundBinding
 import com.example.data.entity.GetSessionRes
-import com.example.data.ui.adapter.ManageRoundRVAdapter
-import com.example.data.ui.dialog.CustomAlertDialog
-import com.example.data.ui.dialog.CustomConfirmDialog
-import com.example.data.utils.SwipeController
-import com.example.data.utils.error.ScreenState
-import com.example.data.viewmodel.RoundUpdateViewModel
-
+import com.example.swith.R
+import com.example.swith.databinding.ActivityManageRoundBinding
+import com.example.swith.ui.adapter.ManageRoundRVAdapter
+import com.example.swith.ui.dialog.CustomAlertDialog
+import com.example.swith.ui.dialog.CustomConfirmDialog
+import com.example.swith.utils.SwipeController
+import com.example.swith.utils.error.ScreenState
+import com.example.swith.viewmodel.RoundUpdateViewModel
 
 class ManageRoundActivity : AppCompatActivity(), View.OnClickListener {
     private val viewModel: RoundUpdateViewModel by viewModels()

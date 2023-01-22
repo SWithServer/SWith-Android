@@ -5,9 +5,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.data.databinding.ItemApplication1Binding
-import com.example.data.utils.ItemTouchHelperListener
+import com.example.swith.databinding.ItemApplication1Binding
 import com.example.swith.domain.entity.ManageUserResult
+import com.example.swith.utils.ItemTouchHelperListener
 
 // 유저관리 선착순 목록(지원서 불필요)
 class ManageUserRVAdapter2 : RecyclerView.Adapter<ManageUserRVAdapter2.CustomViewHolder>(),

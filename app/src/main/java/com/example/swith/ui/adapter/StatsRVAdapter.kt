@@ -4,9 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.data.R
-import com.example.data.databinding.ItemStatsBinding
 import com.example.data.entity.GetUserAttendanceRes
+import com.example.swith.R
+import com.example.swith.databinding.ItemStatsBinding
 
 class StatsRVAdapter : RecyclerView.Adapter<StatsRVAdapter.ViewHolder>() {
     private lateinit var binding: ItemStatsBinding

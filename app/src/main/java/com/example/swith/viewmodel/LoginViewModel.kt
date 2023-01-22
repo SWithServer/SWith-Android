@@ -4,8 +4,8 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.data.repository.login.LoginRepository
-import com.example.data.repository.login.LoginRepositoryProvider
+import com.example.swith.data.repository.login.LoginRepository
+import com.example.swith.data.repository.login.LoginRepositoryProvider
 import com.example.swith.domain.entity.LoginRequest
 import com.example.swith.domain.entity.LoginResponse
 

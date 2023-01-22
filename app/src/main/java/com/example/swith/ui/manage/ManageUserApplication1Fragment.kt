@@ -8,13 +8,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.data.R
-import com.example.data.databinding.FragmentManageApplicationBinding
+import com.example.swith.R
 import com.example.swith.data.api.RetrofitService
-import com.example.data.ui.adapter.ManageUserRVAdapter1
-import com.example.data.utils.base.BaseFragment
+import com.example.swith.databinding.FragmentManageApplicationBinding
 import com.example.swith.domain.entity.ManageUserResponse
 import com.example.swith.domain.entity.ManageUserResult
+import com.example.swith.ui.adapter.ManageUserRVAdapter1
+import com.example.swith.utils.base.BaseFragment
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -34,7 +34,7 @@ class ManageUserApplication1Fragment() :
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         groupIdx = userActivity?.groupIdx
         return super.onCreateView(inflater, container, savedInstanceState)
@@ -49,13 +49,14 @@ class ManageUserApplication1Fragment() :
 
     fun setRetrofitData(groupIdx: Long?) {
         Log.e("groupIdx 레트로핏 값 ", "${groupIdx}")
-        val retrofitService = RetrofitService.retrofit.create(com.example.swith.data.api.SwithService::class.java)
+        val retrofitService =
+            RetrofitService.retrofit.create(com.example.swith.data.api.SwithService::class.java)
         //status가 0이면 지원했는데 아직 승인 안된사람들
         retrofitService.getUserList(groupIdx!!, 0).enqueue(object :
             Callback<ManageUserResponse> {
             override fun onResponse(
                 call: Call<ManageUserResponse>,
-                response: Response<ManageUserResponse>
+                response: Response<ManageUserResponse>,
             ) {
                 if (response.isSuccessful) {
                     Log.e("summer", "성공${response.toString()}")
@@ -75,7 +76,7 @@ class ManageUserApplication1Fragment() :
 
             override fun onFailure(
                 call: Call<ManageUserResponse>,
-                t: Throwable
+                t: Throwable,
             ) {
                 Log.e("summer", "onFailure t = ${t.toString()}")
                 Log.e("summer", "onFailure msg = ${t.message}")
@@ -102,7 +103,7 @@ class ManageUserApplication1Fragment() :
                 v: View,
                 pos: Int,
                 applicationContent: String?,
-                applicationIdx: Long?
+                applicationIdx: Long?,
             ) {
                 Log.e("frag1 resume 클릭 이벤트", "true")
                 val intent = Intent(requireActivity(), ManageUserResumeActivity::class.java)

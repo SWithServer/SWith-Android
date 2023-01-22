@@ -24,7 +24,7 @@ class SwipeController() : ItemTouchHelper.Callback() {
 
     override fun getMovementFlags(
         recyclerView: RecyclerView,
-        viewHolder: RecyclerView.ViewHolder
+        viewHolder: RecyclerView.ViewHolder,
     ): Int {
         return makeMovementFlags(0, ItemTouchHelper.LEFT)
     }
@@ -32,7 +32,7 @@ class SwipeController() : ItemTouchHelper.Callback() {
     override fun onMove(
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder,
-        target: RecyclerView.ViewHolder
+        target: RecyclerView.ViewHolder,
     ): Boolean = false
 
 
@@ -47,7 +47,7 @@ class SwipeController() : ItemTouchHelper.Callback() {
         dX: Float,
         dY: Float,
         actionState: Int,
-        isCurrentlyActive: Boolean
+        isCurrentlyActive: Boolean,
     ) {
         var dX = dX
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
@@ -91,7 +91,7 @@ class SwipeController() : ItemTouchHelper.Callback() {
 
     private fun drawButtons(
         c: Canvas,
-        viewHolder: RecyclerView.ViewHolder
+        viewHolder: RecyclerView.ViewHolder,
     ) { //레이아웃이 아닌 클래스에서 직접 버튼 구현
         val corners = 5f
         val itemView: View = viewHolder.itemView
@@ -136,7 +136,7 @@ class SwipeController() : ItemTouchHelper.Callback() {
     @SuppressLint("ClickableViewAccessibility")
     private fun setTouchListener(
         c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder,
-        dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean
+        dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean,
     ) {
         recyclerView.setOnTouchListener { view, event ->
             swipeBack =
@@ -164,7 +164,7 @@ class SwipeController() : ItemTouchHelper.Callback() {
     private fun setTouchDownListener(
         c: Canvas, recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder, dX: Float, dY: Float,
-        actionState: Int, isCurrentlyActive: Boolean
+        actionState: Int, isCurrentlyActive: Boolean,
     ) {
         recyclerView.setOnTouchListener { v, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
@@ -186,7 +186,7 @@ class SwipeController() : ItemTouchHelper.Callback() {
     private fun setTouchUpListener(
         c: Canvas, recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder, dX: Float, dY: Float,
-        actionState: Int, isCurrentlyActive: Boolean
+        actionState: Int, isCurrentlyActive: Boolean,
     ) {
         recyclerView.setOnTouchListener { v, event ->
             super@SwipeController.onChildDraw(
