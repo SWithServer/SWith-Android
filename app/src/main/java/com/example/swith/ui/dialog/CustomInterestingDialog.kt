@@ -12,8 +12,8 @@ import com.example.swith.ui.adapter.InterestingAdapter
 
 class CustomInterestingDialog(
     dataList: ArrayList<String>,
-    interesting1: String,
-    interesting2: String,
+    interesting1: Int,
+    interesting2: Int,
     context: Context,
     view: View,
     width: Int = WindowManager.LayoutParams.WRAP_CONTENT,
@@ -22,8 +22,8 @@ class CustomInterestingDialog(
     private var listener: DialogClickListener? = null
     private var clickConfirm: Boolean = false
     private var select: String = ""
-    private var interesting1: String = ""
-    private var interesting2: String = ""
+    private var interesting1: Int = 0
+    private var interesting2: Int = 0
     private var dataList: ArrayList<String>? = null
     private var interestingAdapter: InterestingAdapter? = null
 
@@ -50,7 +50,7 @@ class CustomInterestingDialog(
     }
 
     interface DialogClickListener {
-        fun onSelect(select: String)
+        fun onSelect(idxSelect: Int)
         fun onClose()
     }
 
@@ -66,7 +66,7 @@ class CustomInterestingDialog(
         interestingAdapter = InterestingAdapter(object : InterestingAdapter.InterestingCallback {
             override fun onClick(data: String) {
                 select = data
-                listener?.onSelect(select)
+                dataList?.let { listener?.onSelect(it.indexOf(data)) }
                 dismiss()
             }
         })

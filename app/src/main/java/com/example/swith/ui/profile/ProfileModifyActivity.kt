@@ -3,12 +3,14 @@ package com.example.swith.ui.profile
 import android.Manifest
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -69,8 +71,8 @@ class ProfileModifyActivity : AppCompatActivity() {
 
         initView()
         initListener()
+        observe()
     }
-
     private fun initView() {
 //        setShowDimmed(true)
         with(binding){
@@ -148,6 +150,28 @@ class ProfileModifyActivity : AppCompatActivity() {
         }
     }
 
+    private fun observe(){
+        viewModel.interest1.observe(this){
+            setInterestButton(binding.btnInteresting1, it)
+        }
+
+        viewModel.interest2.observe(this){
+            setInterestButton(binding.btnInteresting2, it)
+        }
+
+        viewModel.region.observe(this){
+
+        }
+    }
+
+    private fun setInterestButton(button: Button, idx: Int){
+        button.apply {
+            backgroundTintList = if (idx > 0) ColorStateList.valueOf(resources.getColor(R.color.color_82B4FF, null))
+                else ColorStateList.valueOf(resources.getColor(R.color.color_C2DBFF, null))
+            text = if (idx > 0) resources.getStringArray(R.array.intersting)[idx] else "+"
+        }
+    }
+
 
     private fun showImageDialog() {
         DataBindingUtil.inflate<DialogImageBinding>(
@@ -198,25 +222,18 @@ class ProfileModifyActivity : AppCompatActivity() {
             false
         ).apply {
             val interestingDialog = CustomBinder.showCustomInterestringDialog(imageArray,
-                binding.btnInteresting1.text as String,
-                binding.btnInteresting2.text as String,
+                viewModel.interest1.value!!,
+                viewModel.interest2.value!!,
                 this@ProfileModifyActivity,
                 root,
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.MATCH_PARENT,
                 object : CustomInterestingDialog.DialogClickListener {
-                    override fun onSelect(select: String) {
-                        Log.e("doori", "onSelect = $select")
+                    override fun onSelect(idxSelect: Int) {
                         if (btnNumber == 1) {
-                            binding.btnInteresting1.apply {
-                                text = select
-                                setBackgroundColor(resources.getColor(R.color.color_82B4FF, null))
-                            }
+                            viewModel.setInterest(true, idxSelect)
                         } else if (btnNumber == 2) {
-                            binding.btnInteresting2.apply {
-                                text = select
-                                setBackgroundColor(resources.getColor(R.color.color_82B4FF, null))
-                            }
+                            viewModel.setInterest(false, idxSelect)
                         }
 
                     }
