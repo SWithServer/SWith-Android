@@ -46,8 +46,8 @@ class CustomBinder {
         @JvmStatic
         fun showCustomInterestringDialog(
             arrayList: ArrayList<String>,
-            interesting1: String,
-            interesting2: String,
+            interesting1: Int,
+            interesting2: Int,
             context: Context,
             view: View,
             width: Int = WindowManager.LayoutParams.WRAP_CONTENT,

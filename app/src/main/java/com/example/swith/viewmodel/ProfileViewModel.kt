@@ -37,7 +37,7 @@ class ProfileViewModel @Inject constructor(
                 .catch {
                     Log.e("error", it.message.toString())
                     _profileData.value = ProfileState.Success(ProfileResult(
-                        "token", 1L, "email", 1, 2, "서울특별시 동작구",
+                        "token", 1L, "email", 1, 0, "서울특별시 동작구",
                         "자기소개", "동건동건", null, "token", "역할", 1, 1))
                 }
                 .collectLatest {
