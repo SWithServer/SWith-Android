@@ -8,17 +8,17 @@ data class ProfileResponse(
 )
 
 data class ProfileResult(
-    val accessToken: Any,
+    val accessToken: String,
     val averageStar: Long,
     val email: String,
-    val interestIdx1: Int,
-    val interestIdx2: Int,
+    val interestIdx1: Long,
+    val interestIdx2: Long,
     val region: String,
     val introduction: String,
     val nickname: String,
-    val profileImgUrl: String,
+    val profileImgUrl: String?,
     val refreshToken: String,
     val role: String,
     val status: Int,
-    val userIdx: Int,
-)
+    val userIdx: Long,
+): java.io.Serializable

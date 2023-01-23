@@ -13,18 +13,17 @@ import com.example.swith.utils.base.BaseFragment
 import com.example.swith.viewmodel.ProfileState
 import com.example.swith.viewmodel.ProfileViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_profile),
-    View.OnClickListener {
+class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_profile){
     private val viewModel by viewModels<ProfileViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        observe()
         initView()
+        observe()
+        initListener()
     }
 
     private fun observe() {
@@ -51,7 +50,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
     }
 
     private fun initView() {
-        binding.clickListener = this@ProfileFragment
         setVisiblebar(backButton = false, noticeButton = true, getString(R.string.profile), "")
 //
 //        mProfileViewModel?.getCurrentProfile()?.observe(viewLifecycleOwner, Observer {
@@ -71,43 +69,30 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
 //        getProfile()
     }
 
-    override fun onClick(view: View?) {
-        when (view?.id) {
-            R.id.iv_setting -> {
-                Intent(context, ProfileModifyActivity::class.java).run {
-                    startActivity(this)
-                }
+    private fun initListener(){
+        with(binding){
+            // 프로필 관리 페이지로 이동
+            ivSetting.setOnClickListener {
+                startActivity(Intent(requireContext(), ProfileModifyActivity::class.java).apply {
+                    putExtra("profile", profile)
+                })
             }
-            R.id.btn_resume -> {
-                goResumePage()
-            }
-//            R.id.btn_logout -> {
+            // 로그아웃
+            //            R.id.btn_logout -> {
 //                context?.let { SharedPrefManager(it).deleteLoginData() }
 ////                kakaoLogout()
 //                goLoginPage()
 //            }
+            btnLogout.setOnClickListener {
+                // Todo : 다이얼로그 띄운 후 로그아웃
+            }
+            btnResume.setOnClickListener {
+                goResumePage()
+            }
+
         }
     }
 
-//    private fun getProfile() {
-//        setShowDimmed(true)
-//        mProfileViewModel?.requestCurrentProfile(
-//            com.example.swith.entity.ProfileRequest(
-//                context?.let { SharedPrefManager(it).getLoginData() }!!.userIdx as Long
-//            )
-//        )
-//    }
-
-//    private fun setShowDimmed(isLoading: Boolean) {
-//        mProfileViewModel?.apply {
-//            if (isLoading) {
-//                showLoading()
-//            } else {
-//                hideLoading()
-//            }
-//        }
-//    }
-//
 //    override fun onResume() {
 //        super.onResume()
 //        initView()

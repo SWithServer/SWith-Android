@@ -1,14 +1,21 @@
 package com.example.swith.viewmodel
 
 import androidx.databinding.ObservableField
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.*
 import com.example.swith.domain.entity.ProfileResponse
+import com.example.swith.domain.entity.ProfileResult
+import dagger.assisted.Assisted
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
+@HiltViewModel
+class ProfileModifyViewModel @Inject constructor(
+    private val savedStateHandle: SavedStateHandle
+): ViewModel() {
+    private val _profileData = savedStateHandle.getLiveData<ProfileResult>("profile")
+    val profileData : LiveData<ProfileResult>
+        get() = _profileData
 
-class ProfileModifyViewModel : ViewModel() {
-    val currentProfile = MutableLiveData<ProfileResponse>()
     val isLoading: ObservableField<Boolean> = ObservableField<Boolean>()
 
     init {
@@ -23,31 +30,4 @@ class ProfileModifyViewModel : ViewModel() {
         isLoading.set(false)
     }
 
-//    fun requestCurrentProfile(profileRequest: ProfileRequest): LiveData<ProfileResponse> {
-//        return mProfileModifyRepository.requestCurrentProfile(profileRequest)
-//    }
-//
-//    fun getCurrentProfile(): LiveData<ProfileResponse> {
-//        return mProfileModifyRepository.getCurrentProfile()
-//    }
-//
-//    fun requestCurrentProfileModify(profileModifyRequest: ProfileModifyRequest): LiveData<ProfileModifyResponse> {
-//        return mProfileModifyRepository.requestCurrentProfileModify(profileModifyRequest)
-//    }
-//
-//    fun getCurrentProfileModify(): LiveData<ProfileModifyResponse> {
-//        return mProfileModifyRepository.getCurrentProfileModify()
-//    }
-//
-//    fun setImage() {
-//
-//    }
-
-    class Factory : ViewModelProvider.NewInstanceFactory() {
-
-        //@Suppress("UNCHECKED_CAST")
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return ProfileModifyViewModel() as T
-        }
-    }
 }

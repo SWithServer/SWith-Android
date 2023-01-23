@@ -44,7 +44,7 @@
 
     <!--profile-->
     <string name="profile">프로필</string>
-    <string name="profile_admin">프로필 관리</string>
+    <string name="profile_admin">프로필 설정</string>
     <string name="nickname">닉네임</string>
     <string name="nickname_hint">닉네임을 입력하세요.</string>
     <string name="interesting">관심분야</string>
@@ -57,6 +57,7 @@
     <string name="profile_resume">내 지원서</string>
     <string name="complete_study">완료한 스터디 총</string>
     <string name="choice_image">이미지 가져올 방법을 선택하세요.</string>
+    <string name="profile_modify_place_select_hint">지역을 선택해주세요.</string>
 
     <!--resume-->
     <string name="resume_status">상태 : </string>
