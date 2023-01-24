@@ -664,7 +664,7 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
                         Log.e("summer 결과값","${this.imageUrls}")
                         ImgUri = this.imageUrls[0]
                         Log.e("Img Uri 값 변경한 부분","${ImgUri}")
-                        studyRequestData.groupImgUrl=ImgUri
+                        studyRequestData.groupImgUri=ImgUri
                         retrofitModify(studyRequestData)
                     }
                 }

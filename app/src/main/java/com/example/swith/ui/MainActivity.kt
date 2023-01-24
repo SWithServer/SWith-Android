@@ -62,7 +62,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     return@setOnItemSelectedListener true
                 }
                 R.id.bottom_nav_search -> {
-                    // TODO: goSearchPage()
                     goSearchPage()
                     return@setOnItemSelectedListener true
                 }
@@ -128,15 +127,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             .commitAllowingStateLoss()
     }
 
-    fun goDeatailPage(groupIdx:Long,applicationMethod:Int,fragment: Fragment) {
+    fun goDetailPage(groupIdx:Long,applicationMethod:Int,fragment: Fragment) {
         Log.e("summer","goDetailPage")
-        var fragment_ = fragment
-        var bundle = Bundle()
+        val bundle = Bundle()
         fragment.arguments=bundle
         bundle.putLong("groupIdx",groupIdx)
         bundle.putInt("applicationMethod",applicationMethod)
         supportFragmentManager.beginTransaction()
-            .replace(R.id.main_frm,fragment_)
+            .replace(R.id.main_frm,fragment)
             .addToBackStack(null)
             .commit()
     }

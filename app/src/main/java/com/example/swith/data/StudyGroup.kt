@@ -7,7 +7,7 @@ import java.util.*
 // 스터디 개설할때 만들어지는 스터디 data들
 data class StudyGroup(
     var adminIdx:Long?,
-    var groupImgUrl:String?,
+    var groupImgUri:String?,
     var title:String,
     var meet:Int,
     var frequency:Int?,
