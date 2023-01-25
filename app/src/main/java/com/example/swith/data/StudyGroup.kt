@@ -1,10 +1,10 @@
 package com.example.swith.data
 
 import com.google.gson.annotations.SerializedName
-import java.time.LocalDate
+
 import java.util.*
 
-// 스터디 개설할때 만들어지는 스터디 data들
+// 스터디 개설,수정 req
 data class StudyGroup(
     var adminIdx:Long?,
     var groupImgUri:String?,
@@ -28,10 +28,7 @@ data class StudyGroup(
     var groupContent:String
 )
 
-data class StudyResult(
-    @SerializedName("groupIdx") val groupIdx:Long
-)
-//스터디 개설 retrofit post response data
+//스터디 개설 response
 data class StudyResponse(
     @SerializedName("code") val code: Int,
     @SerializedName("isSuccess") val isSuccess: Boolean,
@@ -39,6 +36,11 @@ data class StudyResponse(
     @SerializedName("result") val result: StudyResult
 )
 
+data class StudyResult(
+    @SerializedName("groupIdx") val groupIdx:Long
+)
+
+// 스터디 수정 response
 data class StudyModifyResponse(
     val isSuccess: Boolean,
     val code: Long,

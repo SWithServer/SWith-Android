@@ -44,7 +44,7 @@ import java.util.*
 class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
     lateinit var binding: ActivityStudyCreateBinding
     private val viewModel : StudyCreateViewModel by viewModels()
-    private val GALLERY=1
+    private val GALLERY = 1
     var file=File("")
 
     private lateinit var startTime: Calendar //활동 시작기간
@@ -126,7 +126,6 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
                         frequencyContent,
                         periodsContent,
                         onlineIdx,
-
                         if (onlineIdx==0) btnPlusPlace1.text.toString() else null,
                         if (onlineIdx==0) btnPlusPlace2.text.toString() else null,
                         interestIdx,
@@ -467,14 +466,16 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
             }
 
             btnPlusPlace1.setOnClickListener {
-                var intent = Intent(this@StudyCreateActivity,SelectPlaceActivity::class.java)
-                intent.putExtra("번호",1)
-                startActivity(intent)
+             Intent(this@StudyCreateActivity,SelectPlaceActivity::class.java).run{
+                    putExtra("번호",1)
+                    startActivity(this@run)
+                }
             }
             btnPlusPlace2.setOnClickListener {
-                var intent = Intent(this@StudyCreateActivity,SelectPlaceActivity::class.java)
-                intent.putExtra("번호",2)
-                startActivity(intent)
+               Intent(this@StudyCreateActivity,SelectPlaceActivity::class.java).run{
+                   putExtra("번호",2)
+                   startActivity(this@run)
+               }
             }
 
             //spinner

@@ -7,6 +7,12 @@
         <variable
             name="clickListener"
             type="android.view.View.OnClickListener" />
+        <variable
+            name="studyModifyViewModel"
+            type="com.example.swith.viewmodel.StudyModifyViewModel"/>
+        <variable
+            name="groupIdx"
+            type="Long"/>
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -92,8 +98,10 @@
                             android:layout_marginStart="20dp"
                             android:layout_marginEnd="20dp"
                             android:layout_height="44dp"
+                            android:text="@{studyModifyViewModel.getStudyInfo(groupIdx).result.title}"
                             android:background="@drawable/bg_round_gray"
                             android:textColor="@color/black"
+                            android:hint="@string/study_create_editText"
                             app:layout_constraintBottom_toBottomOf="parent"
                             android:textSize="12sp"/>
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -251,6 +259,7 @@
                             android:textSize="12sp"
                             android:inputType="text"
                             android:hint="직접 입력해주세요"
+                            android:text="@{studyModifyViewModel.getStudyInfo(groupIdx).result.groupContent}"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"/>
@@ -383,7 +392,7 @@
                             app:layout_constraintEnd_toStartOf="@id/btn_plus_place2"
                             style="?android:attr/borderlessButtonStyle"
                             android:background="@drawable/bg_create_skyblue"
-                            android:text="+" />
+                            android:text="@{studyModifyViewModel.getStudyInfo(groupIdx).result.regionIdx1}" />
                         <Button
                             android:id="@+id/btn_plus_place2"
                             android:layout_width="0dp"
@@ -397,7 +406,7 @@
                             android:textColor="@color/white"
                             style="?android:attr/borderlessButtonStyle"
                             android:background="@drawable/bg_create_skyblue"
-                            android:text="+" />
+                            android:text="@{studyModifyViewModel.getStudyInfo(groupIdx).result.regionIdx2}" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -485,6 +494,7 @@
                             android:layout_marginStart="20dp"
                             android:layout_marginEnd="20dp"
                             android:layout_height="44dp"
+                            android:text="@{studyModifyViewModel.getStudyInfo(groupIdx).result.topic}"
                             android:background="@drawable/bg_create_white_blue"
                             android:textColor="@color/color_82B4FF"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -639,7 +649,7 @@
                             android:layout_marginStart="10dp"
                             android:textSize="12sp"
                             android:layout_gravity="center"
-                            android:text="마감 날짜"
+                            android:text="@{studyModifyViewModel.getStudyInfo(groupIdx).result.recruitmentEndDate}"
                             android:textColor="@color/color_82B4FF" />
                     </LinearLayout>
 
@@ -707,7 +717,7 @@
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toEndOf="@id/iv_study_startDay"
-                                android:text="시작 날짜"
+                                android:text="@{studyModifyViewModel.getStudyInfo(groupIdx).result.groupStart}"
                                 android:textColor="@color/color_82B4FF"/>
                         </androidx.constraintlayout.widget.ConstraintLayout>
                         <androidx.constraintlayout.widget.ConstraintLayout
@@ -736,7 +746,7 @@
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toEndOf="@id/iv_study_finishDay"
-                                android:text="마감 날짜"
+                                android:text="@{studyModifyViewModel.getStudyInfo(groupIdx).result.groupEnd}"
                                 android:textColor="@color/color_82B4FF" />
 
 
@@ -808,6 +818,7 @@
                     android:background="@drawable/bg_create_gray"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
+                    android:text="@{studyModifyViewModel.getStudyInfo(groupIdx).result.groupContent}"
                     android:hint="텍스트 입력" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>

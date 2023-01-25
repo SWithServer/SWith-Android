@@ -2,19 +2,17 @@ package com.example.swith.ui.manage
 
 import android.app.DatePickerDialog
 import android.app.Dialog
-import android.content.ContentUris
 import android.content.Context
 import android.content.Intent
-import android.database.Cursor
 import android.graphics.Color
 import android.graphics.ImageDecoder
-import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.KeyEvent
+import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
@@ -22,17 +20,18 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.swith.R
-import com.example.swith.data.StudyDetailResponse
-import com.example.swith.data.StudyGroup
-import com.example.swith.data.StudyImageRes
-import com.example.swith.data.StudyModifyResponse
+import com.example.swith.data.*
 import com.example.swith.databinding.ActivityManageStudyModifyBinding
+import com.example.swith.databinding.DialogCreateBinding
 import com.example.swith.repository.RetrofitApi
 import com.example.swith.repository.RetrofitService
+import com.example.swith.ui.dialog.CustomDialog
 import com.example.swith.ui.study.create.SelectPlaceActivity
 import com.example.swith.utils.SharedPrefManager
+import com.example.swith.viewmodel.StudyModifyViewModel
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -43,9 +42,10 @@ import java.io.File
 import java.util.*
 
 
-class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
+class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener,androidx.lifecycle.Observer<StudyDetailResponse> {
     lateinit var binding:ActivityManageStudyModifyBinding
-    var groupIdx : Long = -1
+    private var viewModel : StudyModifyViewModel?=null
+    private var groupIdx : Long = -1
 
     var title:String=""
 
@@ -83,14 +83,19 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
     var path : String? = "" // 파일로 변환할때 필요한 변수
     var file=File("")
 
+    override fun onClick(view: View?) {
+        when(view?.id){
+            R.id.ib_basic_toolbar_back -> finish()
+        }
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this@ManageStudyModifyActivity, R.layout.activity_manage_study_modify)
-
-        initData()
         binding.flLoadingLayout.visibility=View.VISIBLE
-        initView(groupIdx)
-        customDialog()
+        initData()
+        initView()
 
         with(binding)
         {
@@ -252,7 +257,7 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
                 Toast.makeText(this, "시작날짜부터 입력해주세요!", Toast.LENGTH_SHORT).show()
             }
         }
-        setupSinner()
+        setSpinner()
         with(binding)
         {
             //spinner
@@ -420,7 +425,7 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
                                     Toast.makeText(this@ManageStudyModifyActivity,"모든 항목을 작성해주세요!",Toast.LENGTH_SHORT).show()
                                 }
                                 else{
-                                    modifyStudy(studyRequestData,"수정하시겠습니까?")
+                                    saveDialog(studyRequestData)
                                 }
                             }
                             2->{
@@ -434,7 +439,7 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
 
                                 }
                                 else{
-                                    modifyStudy(studyRequestData,"수정하시겠습니까?")
+                                    saveDialog(studyRequestData)
                                 }
                             }
                         }
@@ -453,140 +458,24 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
-    fun initData()
-    {
-        (intent.hasExtra("groupIdx")).let { groupIdx = intent.getLongExtra("groupIdx", 0) }
-        Log.e("summer","groupIdx = ${groupIdx}")
+    override fun onChanged(t: StudyDetailResponse?) {
+
     }
 
-    // 본래 스터디 정보 가져오기 retrofit 함수
-    fun initView(groupIdx : Long)
-    {
-        Log.e("summer","데이터 set true")
-        val retrofitService = RetrofitService.retrofit.create(RetrofitApi::class.java)
-        retrofitService.getStudyDetail(groupIdx.toLong()).enqueue(object : Callback<StudyDetailResponse> {
-            override fun onResponse(
-                call: Call<StudyDetailResponse>,
-                response: Response<StudyDetailResponse>
-            ) {
-                if (response.isSuccessful) {
-                    Log.e("summer", "성공${response.toString()}")
-                    response.body()?.apply {
-                        binding.flLoadingLayout.visibility=View.GONE
-                        var result = this.result
-                        ImgUri = this.result.groupImgURL
-                        Log.e("user data = ", "${this.result.toString()}")
+    private fun initData(){
+        intent.hasExtra("groupIdx").let{
+            binding.groupIdx = intent.getLongExtra("groupIdx", 0)
+        }
+        Log.e("summer","groupIdx = $groupIdx")
+    }
 
-                        if (ImgUri == null || ImgUri.equals(""))
-                        {
-                            Log.e("주소 없음 진입","true")
-                            binding.ivStudyCreate.setImageDrawable(getDrawable(R.drawable.bg_create_sample))
-                        }
-                        else
-                        {
-                            Log.e("주소 있음 진입","true")
-                            Glide.with(this@ManageStudyModifyActivity).load(ImgUri).into(binding.ivStudyCreate)
-                        }
-                        with(binding)
-                        {
-                            etStudyTitle.setText(result.title)
-                            etCreateTopic.setText(result.topic)
-                            when(result.meet)
-                            {
-                                0->{
-                                    checkWeek.isChecked=true
-                                    checkFree.isChecked=false
-                                    checkMonth.isChecked=false
-                                   etStudyWeek.setText(result.frequency.toString())
-                                }
-                                1->{
-                                    checkWeek.isChecked=false
-                                    checkMonth.isChecked=true
-                                    checkFree.isChecked=false
-                                    etStudyMonth.setText(result.frequency.toString())
-                                }
-                                2->{
-                                    checkWeek.isChecked=false
-                                    checkFree.isChecked=true
-                                    checkMonth.isChecked=false
-                                    etStudyFree.setText(result.periods.toString())
-                                }
-                            }
-                            when(result.online)
-                            {
-                                0->{ btnOnline.isChecked= true
-                                btnOffline.isChecked=false
-                                    layoutCreateRegion.visibility=View.GONE
-                                    binding.btnPlusPlace1.background = ContextCompat.getDrawable(this@ManageStudyModifyActivity,R.drawable.bg_create_skyblue)
-                                    binding.btnPlusPlace2.background = ContextCompat.getDrawable(this@ManageStudyModifyActivity,R.drawable.bg_create_skyblue)}
-                                1->{btnOnline.isChecked= true
-                                    btnOffline.isChecked=false
-                                    layoutCreateRegion.visibility=View.VISIBLE
-                                    if (result.regionIdx1!= null)
-                                    {
-                                        btnPlusPlace1.text= result.regionIdx1
-                                        binding.btnPlusPlace1.background = ContextCompat.getDrawable(this@ManageStudyModifyActivity,R.drawable.bg_create_select_blue)
-                                    }
-                                    else
-                                    {
-                                        btnPlusPlace1.text = "+"
-                                        binding.btnPlusPlace1.background = ContextCompat.getDrawable(this@ManageStudyModifyActivity,R.drawable.bg_create_skyblue)
-                                    }
-
-                                    if (result.regionIdx2!= null)
-                                    {
-                                        btnPlusPlace2.text= result.regionIdx2
-                                        binding.btnPlusPlace2.background = ContextCompat.getDrawable(this@ManageStudyModifyActivity,R.drawable.bg_create_select_blue)
-                                    }
-                                    else
-                                    {
-                                        btnPlusPlace2.text = "+"
-                                        binding.btnPlusPlace2.background = ContextCompat.getDrawable(this@ManageStudyModifyActivity,R.drawable.bg_create_skyblue)
-                                    }
-                                }
-                            }
-                            when(result.interest)
-                            {
-                                1->{spinnerCategory.setSelection(1)}
-                                2->{spinnerCategory.setSelection(2)}
-                                3->{spinnerCategory.setSelection(3)}
-                                4->{spinnerCategory.setSelection(4)}
-                                5->{spinnerCategory.setSelection(5)}
-                                6->{spinnerCategory.setSelection(6)}
-                                7->{spinnerCategory.setSelection(7)}
-                            }
-                            btnDeadline.text = result.recruitmentEndDate
-                            btnStartDay.text = result.groupStart
-                            btnFinishDay.text = result.groupEnd
-                            when(result.applicationMethod)
-                            {
-                                0->{btnApplicationFf.isChecked=true
-                                btnApplicationApply.isChecked=false
-                                    applicationMethod_idx =0
-                                }
-                                1->{btnApplicationFf.isChecked=false
-                                    btnApplicationApply.isChecked=true
-                                    applicationMethod_idx =1}
-                            }
-                            var selectedPeople = result.memberLimit
-                            spinnerPeople.setSelection(selectedPeople-2)
-                            var selectedTime = result.attendanceValidTime
-                            spinnerAttendTime.setSelection((selectedTime/10)-1)
-                            etStudyContent.setText(result.groupContent)
-                        }
-                    }
-                }
-                else {
-                    Log.e("summer init view ", "전달실패")
-                    Log.e("summer", "전달실패 code = ${response.code()}")
-                    Log.e("summer", "전달실패 msg = ${response.message()}")
-                }
+    private fun initView(){
+        binding.apply{
+            lifecycleOwner = this@ManageStudyModifyActivity
+            viewModel= ViewModelProvider(this@ManageStudyModifyActivity,StudyModifyViewModel.Factory()).get(StudyModifyViewModel::class.java).apply{
+                studyModifyViewModel = this
             }
-            override fun onFailure(call: Call<StudyDetailResponse>, t: Throwable) {
-                Log.e("summer", "onFailure t = ${t.toString()}")
-                Log.e("summer", "onFailure msg = ${t.message}")
-            }
-        })
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -644,58 +533,248 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
         startActivityForResult(intent,GALLERY)
     }
 
+    //스터디 수정 값들 가져와서 전송 retrofit 함수
+    private fun saveDialog(studyRequestData : StudyGroup){
+        Log.e("summer","saveDialog 함수")
+        DataBindingUtil.inflate<DialogCreateBinding>(
+            LayoutInflater.from(this@ManageStudyModifyActivity),
+            R.layout.dialog_create, null,false
+        ).apply {
+            this.tvTitle.text ="수정하시겠습니까?"
+            this.createDialog = CustomDialog(
+                this@ManageStudyModifyActivity,
+                root,
+                WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.MATCH_PARENT
+            ).apply {
+                this.setClickListener(object : CustomDialog.DialogClickListener {
+                    override fun onConfirm() {
+                        Log.e("summer", "onConfirm()")
+                        Log.e("summer","$file")
+                        if (!file.equals("")){
+                            studyRequestData.groupImgUri = viewModel?.postStudyImage(file)
+                        }
+                        viewModel?.modifyStudy(groupIdx,studyRequestData).apply{
+                            if (this!=(-1).toLong()){
+                                finish()
+                            }
+                            else{
+                                Toast.makeText(this@ManageStudyModifyActivity,
+                                    "다시 시도해주세요",
+                                    Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+
+                    override fun onClose() {
+                        Log.e("summer", "onClose()")
+                    }
+                })
+                show()
+            }
+        }
+    }
+
+    fun setSpinner(){
+        with(binding){
+            spinnerCategory.adapter = ArrayAdapter.createFromResource(
+                this@ManageStudyModifyActivity.applicationContext,
+                R.array.intersting,
+                R.layout.item_create_spinner
+            ).apply {
+                this.setDropDownViewResource(R.layout.item_search_spinner_dropdown)
+            }
+            spinnerAttendTime.adapter = ArrayAdapter.createFromResource(
+                this@ManageStudyModifyActivity.applicationContext,
+                R.array.attendTimeList,
+                R.layout.item_create_spinner
+            ).apply {
+                this.setDropDownViewResource(R.layout.item_search_spinner_dropdown)
+            }
+            spinnerPeople.adapter = ArrayAdapter.createFromResource(
+                this@ManageStudyModifyActivity.applicationContext,
+                R.array.peopleList,
+                R.layout.item_create_spinner
+            ).apply {
+                this.setDropDownViewResource(R.layout.item_search_spinner_dropdown)
+            }
+        }
+    }
+
+    fun hideKeyboard(editText: EditText){
+            val  mInputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            mInputMethodManager.hideSoftInputFromWindow(
+                editText.getWindowToken(),
+                0
+            )
+        }
+
+    fun initView2(groupIdx : Long)
+    {
+        Log.e("summer","데이터 set true")
+        val retrofitService = RetrofitService.retrofit.create(RetrofitApi::class.java)
+        retrofitService.getStudyDetail(groupIdx.toLong()).enqueue(object : Callback<StudyDetailResponse> {
+            override fun onResponse(
+                call: Call<StudyDetailResponse>,
+                response: Response<StudyDetailResponse>
+            ) {
+                if (response.isSuccessful) {
+                    Log.e("summer", "성공${response.toString()}")
+                    response.body()?.apply {
+                        binding.flLoadingLayout.visibility=View.GONE
+                        var result = this.result
+                        ImgUri = this.result.groupImgURL
+                        Log.e("user data = ", "${this.result.toString()}")
+
+                        if (ImgUri == null || ImgUri.equals(""))
+                        {
+                            Log.e("주소 없음 진입","true")
+                            binding.ivStudyCreate.setImageDrawable(getDrawable(R.drawable.bg_create_sample))
+                        }
+                        else
+                        {
+                            Log.e("주소 있음 진입","true")
+                            Glide.with(this@ManageStudyModifyActivity).load(ImgUri).into(binding.ivStudyCreate)
+                        }
+                        with(binding)
+                        {
+                            etStudyTitle.setText(result.title)
+                            etCreateTopic.setText(result.topic)
+                            when(result.meet)
+                            {
+                                0->{
+                                    checkWeek.isChecked=true
+                                    checkFree.isChecked=false
+                                    checkMonth.isChecked=false
+                                    etStudyWeek.setText(result.frequency.toString())
+                                }
+                                1->{
+                                    checkWeek.isChecked=false
+                                    checkMonth.isChecked=true
+                                    checkFree.isChecked=false
+                                    etStudyMonth.setText(result.frequency.toString())
+                                }
+                                2->{
+                                    checkWeek.isChecked=false
+                                    checkFree.isChecked=true
+                                    checkMonth.isChecked=false
+                                    etStudyFree.setText(result.periods.toString())
+                                }
+                            }
+                            when(result.online)
+                            {
+                                0->{ btnOnline.isChecked= true
+                                    btnOffline.isChecked=false
+                                    layoutCreateRegion.visibility=View.GONE
+                                    binding.btnPlusPlace1.background = ContextCompat.getDrawable(this@ManageStudyModifyActivity,R.drawable.bg_create_skyblue)
+                                    binding.btnPlusPlace2.background = ContextCompat.getDrawable(this@ManageStudyModifyActivity,R.drawable.bg_create_skyblue)}
+                                1->{btnOnline.isChecked= true
+                                    btnOffline.isChecked=false
+                                    layoutCreateRegion.visibility=View.VISIBLE
+                                    if (result.regionIdx1!= null)
+                                    {
+                                        btnPlusPlace1.text= result.regionIdx1
+                                        binding.btnPlusPlace1.background = ContextCompat.getDrawable(this@ManageStudyModifyActivity,R.drawable.bg_create_select_blue)
+                                    }
+                                    else
+                                    {
+                                        btnPlusPlace1.text = "+"
+                                        binding.btnPlusPlace1.background = ContextCompat.getDrawable(this@ManageStudyModifyActivity,R.drawable.bg_create_skyblue)
+                                    }
+
+                                    if (result.regionIdx2!= null)
+                                    {
+                                        btnPlusPlace2.text= result.regionIdx2
+                                        binding.btnPlusPlace2.background = ContextCompat.getDrawable(this@ManageStudyModifyActivity,R.drawable.bg_create_select_blue)
+                                    }
+                                    else
+                                    {
+                                        btnPlusPlace2.text = "+"
+                                        binding.btnPlusPlace2.background = ContextCompat.getDrawable(this@ManageStudyModifyActivity,R.drawable.bg_create_skyblue)
+                                    }
+                                }
+                            }
+                            when(result.interest)
+                            {
+                                1->{spinnerCategory.setSelection(1)}
+                                2->{spinnerCategory.setSelection(2)}
+                                3->{spinnerCategory.setSelection(3)}
+                                4->{spinnerCategory.setSelection(4)}
+                                5->{spinnerCategory.setSelection(5)}
+                                6->{spinnerCategory.setSelection(6)}
+                                7->{spinnerCategory.setSelection(7)}
+                            }
+                            btnDeadline.text = result.recruitmentEndDate
+                            btnStartDay.text = result.groupStart
+                            btnFinishDay.text = result.groupEnd
+                            when(result.applicationMethod)
+                            {
+                                0->{btnApplicationFf.isChecked=true
+                                    btnApplicationApply.isChecked=false
+                                    applicationMethod_idx =0
+                                }
+                                1->{btnApplicationFf.isChecked=false
+                                    btnApplicationApply.isChecked=true
+                                    applicationMethod_idx =1}
+                            }
+                            var selectedPeople = result.memberLimit
+                            spinnerPeople.setSelection(selectedPeople-2)
+                            var selectedTime = result.attendanceValidTime
+                            spinnerAttendTime.setSelection((selectedTime/10)-1)
+                            etStudyContent.setText(result.groupContent)
+                        }
+                    }
+                }
+                else {
+                    Log.e("summer init view ", "전달실패")
+                    Log.e("summer", "전달실패 code = ${response.code()}")
+                    Log.e("summer", "전달실패 msg = ${response.message()}")
+                }
+            }
+            override fun onFailure(call: Call<StudyDetailResponse>, t: Throwable) {
+                Log.e("summer", "onFailure t = ${t.toString()}")
+                Log.e("summer", "onFailure msg = ${t.message}")
+            }
+        })
+    }
+
     fun uploadImage(file:File,studyRequestData: StudyGroup)
     {
         Log.e("업로드 함수","진입")
         if (!(file.name.equals("")))
         {
-        var requestFile =  RequestBody.create("image"?.toMediaTypeOrNull(), file)
-        var body  = MultipartBody.Part.createFormData("image", file.name, requestFile)
-        val retrofitService = RetrofitService.retrofit.create(RetrofitApi::class.java)
-        retrofitService.uploadImg(body).enqueue(object :
-            Callback<StudyImageRes> {
-            override fun onResponse(
-                call: Call<StudyImageRes>,
-                response: Response<StudyImageRes>
-            ) {
-                if (response.isSuccessful) {
-                    Log.e("summer", "성공${response.toString()}")
-                    response.body()?.apply {
-                        Log.e("summer 결과값","${this.imageUrls}")
-                        ImgUri = this.imageUrls[0]
-                        Log.e("Img Uri 값 변경한 부분","${ImgUri}")
-                        studyRequestData.groupImgUri=ImgUri
-                        retrofitModify(studyRequestData)
+            var requestFile =  RequestBody.create("image"?.toMediaTypeOrNull(), file)
+            var body  = MultipartBody.Part.createFormData("image", file.name, requestFile)
+            val retrofitService = RetrofitService.retrofit.create(RetrofitApi::class.java)
+            retrofitService.uploadImg(body).enqueue(object :
+                Callback<StudyImageRes> {
+                override fun onResponse(
+                    call: Call<StudyImageRes>,
+                    response: Response<StudyImageRes>
+                ) {
+                    if (response.isSuccessful) {
+                        Log.e("summer", "성공${response.toString()}")
+                        response.body()?.apply {
+                            Log.e("summer 결과값","${this.imageUrls}")
+                            ImgUri = this.imageUrls[0]
+                            Log.e("Img Uri 값 변경한 부분","${ImgUri}")
+                            studyRequestData.groupImgUri=ImgUri
+                            // retrofitModify(studyRequestData)
+                        }
+                    }
+                    else {
+                        Log.e("summer", "전달실패 code = ${response.code()}")
+                        Log.e("summer", "전달실패 msg = ${response.message()}")
                     }
                 }
-                else {
-                    Log.e("summer", "전달실패 code = ${response.code()}")
-                    Log.e("summer", "전달실패 msg = ${response.message()}")
+                override fun onFailure(call: Call<StudyImageRes>, t: Throwable) {
+                    Log.e("summer", "onFailure t = ${t.toString()}")
+                    Log.e("summer", "onFailure msg = ${t.message}")
                 }
-            }
-            override fun onFailure(call: Call<StudyImageRes>, t: Throwable) {
-                Log.e("summer", "onFailure t = ${t.toString()}")
-                Log.e("summer", "onFailure msg = ${t.message}")
-            }
-        })
+            })
         }
         else{
-            retrofitModify(studyRequestData)
-        }
-    }
-
-    //스터디 수정 값들 가져와서 전송 retrofit 함수
-    fun modifyStudy(studyRequestData : StudyGroup,content_text:String){
-        //레트로핏 부분
-        dialog_.findViewById<TextView>(R.id.tv_title).text = content_text
-        dialog_.show()
-        dialog_.findViewById<Button>(R.id.btn_no).setOnClickListener {
-            dialog_.dismiss()
-        }
-        dialog_.findViewById<Button>(R.id.btn_yes).setOnClickListener {
-            uploadImage(file,studyRequestData)
-            Log.e("summer","retrofit 함수 in")
-            Log.e("summer", "USER DATA = ${studyRequestData.toString()}")
+            //retrofitModify(studyRequestData)
         }
     }
 
@@ -728,57 +807,6 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
             }
         })
     }
-    fun setupSinner(){
-            val interest_spinner = binding.spinnerCategory
-            val memberLimit_spinner = binding.spinnerPeople
-            val attendanceVaildTime_spinner = binding.spinnerAttendTime
 
-            interest_spinner.adapter = ArrayAdapter.createFromResource(
-                this.applicationContext,R.array.intersting,R.layout.item_create_spinner
-            ).apply{
-                this.setDropDownViewResource(R.layout.item_search_spinner_dropdown)
-            }
-
-            attendanceVaildTime_spinner.adapter = ArrayAdapter.createFromResource(
-                this.applicationContext,
-                R.array.attendTimeList,
-                R.layout.item_create_spinner
-            ).apply{
-                this.setDropDownViewResource(R.layout.item_search_spinner_dropdown)
-            }
-            memberLimit_spinner.adapter = ArrayAdapter.createFromResource(
-                this.applicationContext,
-                R.array.peopleList,
-                R.layout.item_create_spinner
-            ).apply{
-                this.setDropDownViewResource(R.layout.item_search_spinner_dropdown)
-            }
-        }
-
-    fun hideKeyboard(editText: EditText){
-            val  mInputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            mInputMethodManager.hideSoftInputFromWindow(
-                editText.getWindowToken(),
-                0
-            )
-        }
-
-    override fun onClick(view: View?) {
-        when(view?.id){
-            R.id.ib_basic_toolbar_back -> finish()
-        }
-    }
-
-    fun customDialog()
-    {
-        dialog_ = Dialog(this@ManageStudyModifyActivity)
-        dialog_.setContentView(R.layout.dialog_create)
-        var params = dialog_.window?.attributes
-        dialog_.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        params?.height = WindowManager.LayoutParams.MATCH_PARENT
-        params?.width= WindowManager.LayoutParams.MATCH_PARENT
-        params?.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
-        dialog_.window?.attributes=params
-    }
 
 }

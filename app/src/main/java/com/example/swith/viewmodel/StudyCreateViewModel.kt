@@ -1,7 +1,10 @@
 package com.example.swith.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import com.example.swith.data.StudyDetailResponse
 import com.example.swith.data.StudyGroup
+import com.example.swith.data.StudyResponse
 import com.example.swith.repository.study.StudyCreateDataSource
 import com.example.swith.repository.study.StudyCreateRepository
 import java.io.File
