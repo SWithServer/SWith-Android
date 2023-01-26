@@ -21,7 +21,9 @@ import com.example.swith.utils.CustomBinder
 import com.example.swith.utils.SharedPrefManager
 import com.example.swith.utils.base.BaseFragment
 import com.example.swith.viewmodel.ResumeViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ResumeFragment : BaseFragment<FragmentResumeBinding>(R.layout.fragment_resume) {
     private var mResumeViewModel: ResumeViewModel? = null
 

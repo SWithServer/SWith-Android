@@ -1,5 +1,6 @@
 package com.example.swith.ui
 
+import StudyFindFragment
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -18,7 +19,6 @@ import com.example.swith.ui.login.LoginActivity
 import com.example.swith.ui.notification.NotificationActivity
 import com.example.swith.ui.profile.ProfileFragment
 import com.example.swith.ui.resume.ResumeFragment
-import com.example.swith.ui.study.find.StudyFindFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -64,7 +64,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     return@setOnItemSelectedListener true
                 }
                 R.id.bottom_nav_search -> {
-                    // TODO: goSearchPage()
                     goSearchPage()
                     return@setOnItemSelectedListener true
                 }
@@ -131,15 +130,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             .commitAllowingStateLoss()
     }
 
-    fun goDeatailPage(groupIdx: Long, applicationMethod: Int, fragment: Fragment) {
-        Log.e("summer", "goDetailPage")
-        var fragment_ = fragment
-        var bundle = Bundle()
-        fragment.arguments = bundle
-        bundle.putLong("groupIdx", groupIdx)
-        bundle.putInt("applicationMethod", applicationMethod)
+    fun goDetailPage(groupIdx:Long,applicationMethod:Int,fragment: Fragment) {
+        Log.e("summer","goDetailPage")
+        val bundle = Bundle()
+        fragment.arguments=bundle
+        bundle.putLong("groupIdx",groupIdx)
+        bundle.putInt("applicationMethod",applicationMethod)
         supportFragmentManager.beginTransaction()
-            .replace(R.id.main_frm, fragment_)
+            .replace(R.id.main_frm,fragment)
             .addToBackStack(null)
             .commit()
     }

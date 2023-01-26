@@ -1,5 +1,6 @@
 package com.example.swith.ui.manage
 
+import ManageStudyModifyActivity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log

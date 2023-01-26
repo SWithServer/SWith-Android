@@ -27,6 +27,7 @@ class ProfileModifyViewModel @Inject constructor(
 
     val isLoading: ObservableField<Boolean> = ObservableField<Boolean>()
 
+    val editEnabled : ObservableField<Boolean> = ObservableField<Boolean>()
     init {
         hideLoading()
         // 관심사 idx 설정
@@ -51,5 +52,4 @@ class ProfileModifyViewModel @Inject constructor(
         else
             _interest2.value = interestIdx
     }
-
 }

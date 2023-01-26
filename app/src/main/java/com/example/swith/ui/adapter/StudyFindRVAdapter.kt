@@ -21,8 +21,73 @@ class StudyFindRVAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val studyList = mutableListOf<Content?>()
 
-    fun setData(studyList: List<Content>) {
-        this.studyList.apply {
+    inner class FindViewHolder(val binding: ItemStudyFindBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun onBind(studyList:Content?) {
+            with(binding)
+            {
+                tvStudyTitle.text = studyList?.title
+                if (studyList?.groupContent?.length?.compareTo(25)==0 ||studyList?.groupContent?.length?.compareTo(25)==-1 )
+                {
+                    tvSearchContent.text= studyList?.groupContent
+                }
+                else{
+                    if (studyList?.groupContent?.length?.compareTo(50)==1)
+                    {
+                        tvSearchContent.text = studyList?.groupContent?.substring(0,25) + "\n" +
+                         studyList?.groupContent?.substring(25,50) + "…"
+                    }
+                    else
+                    {
+                        tvSearchContent.text = studyList?.groupContent?.substring(0,25) + "\n" +
+                         studyList?.groupContent?.substring(25)
+                    }
+                }
+                val formatter = SimpleDateFormat("yyyy-MM-dd")
+                val date = formatter.parse("${studyList!!.recruitmentEndDate[0]}"
+                        +"-"+"${studyList.recruitmentEndDate[1]}"+"-"+"${studyList.recruitmentEndDate[2]}").time
+                val today = Calendar.getInstance().apply {
+                    set(Calendar.HOUR_OF_DAY, 0)
+                    set(Calendar.MINUTE, 0)
+                    set(Calendar.SECOND, 0)
+                    set(Calendar.MILLISECOND, 0)
+                }.time.time
+                tvSearchDeadline.text = "마감 D-${(date - today) / (60 * 60 * 24 * 1000)}"
+                tvSearchPeople.text = studyList?.numOfApplicants.toString() + "/" + studyList?.memberLimit.toString()
+                if (studyList?.regionIdx1!=null && studyList?.regionIdx2==null)
+                {
+                    tvSearchRegion.text ="${studyList?.regionIdx1}"
+                }
+                else if (studyList?.regionIdx1== null && studyList?.regionIdx2!=null)
+                {
+                    tvSearchRegion.text ="${studyList?.regionIdx2}"
+                }
+                else if (studyList?.regionIdx1 !=null && studyList?.regionIdx2!=null)
+                {
+                    tvSearchRegion.text= "${studyList?.regionIdx1}" + "," + "${studyList?.regionIdx2}"
+                }
+                else
+                {
+                    tvSearchRegion.text = "온라인"
+                }
+            }
+            binding.root.setOnClickListener { v ->
+                val pos = adapterPosition
+                if (pos != RecyclerView.NO_POSITION) {
+                    val groupIdx = studyList!!.groupIdx
+                    val applicationMethod = studyList!!.applicationMethod
+                    itemClickListener.onClick(v, pos,groupIdx,applicationMethod)
+                }
+            }
+        }
+    }
+
+    inner class LoadingViewHolder(val binding:ItemLoadingBinding):
+        RecyclerView.ViewHolder(binding.root){
+    }
+
+    fun setData(studyList: List<Content>)
+    {
+        this.studyList.apply{
             clear()
             addAll(studyList)
         }
@@ -79,73 +144,6 @@ class StudyFindRVAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         return studyList.size
     }
 
-
-    inner class FindViewHolder(val binding: ItemStudyFindBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        fun onBind(studyList: Content?) {
-            with(binding)
-            {
-                tvStudyTitle.text = studyList?.title
-                if (studyList?.groupContent?.length?.compareTo(25) == 0 || studyList?.groupContent?.length?.compareTo(
-                        25
-                    ) == -1
-                ) {
-                    tvSearchContent.text = studyList?.groupContent
-                } else {
-                    if (studyList?.groupContent?.length?.compareTo(50) == 1) {
-                        tvSearchContent.text = studyList?.groupContent?.substring(
-                            0,
-                            25
-                        ) + "\n" + studyList?.groupContent?.substring(25, 50) + "…"
-                    } else {
-                        tvSearchContent.text = studyList?.groupContent?.substring(
-                            0,
-                            25
-                        ) + "\n" + studyList?.groupContent?.substring(25)
-                    }
-                }
-                val formatter = SimpleDateFormat("yyyy-MM-dd")
-                val year = studyList!!.recruitmentEndDate[0]
-                val month = studyList!!.recruitmentEndDate[1]
-                val day = studyList!!.recruitmentEndDate[2]
-                val date = formatter.parse("${year}" + "-" + "${month}" + "-" + "${day}").time
-                val today = Calendar.getInstance().apply {
-                    set(Calendar.HOUR_OF_DAY, 0)
-                    set(Calendar.MINUTE, 0)
-                    set(Calendar.SECOND, 0)
-                    set(Calendar.MILLISECOND, 0)
-                }.time.time
-                tvSearchDeadline.text = "마감 D-${(date - today) / (60 * 60 * 24 * 1000)}"
-                tvSearchPeople.text =
-                    studyList?.numOfApplicants.toString() + "/" + studyList?.memberLimit.toString()
-                if (studyList?.regionIdx1 != null && studyList?.regionIdx2 == null) {
-                    tvSearchRegion.text = "${studyList?.regionIdx1}"
-                } else if (studyList?.regionIdx1 == null && studyList?.regionIdx2 != null) {
-                    tvSearchRegion.text = "${studyList?.regionIdx2}"
-                } else if (studyList?.regionIdx1 != null && studyList?.regionIdx2 != null) {
-                    tvSearchRegion.text =
-                        "${studyList?.regionIdx1}" + "," + "${studyList?.regionIdx2}"
-                } else {
-                    tvSearchRegion.text = "온라인"
-                }
-            }
-            binding.root.setOnClickListener { v ->
-                val pos = adapterPosition
-                if (pos != RecyclerView.NO_POSITION) {
-                    if (itemClickListener != null) {
-                        var groupIdx = studyList!!.groupIdx
-                        var applicationMethod = studyList!!.applicationMethod
-                        itemClickListener.onClick(v, pos, groupIdx, applicationMethod)
-                    }
-                }
-            }
-        }
-    }
-
-    inner class LoadingViewHolder(val binding: ItemLoadingBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-    }
-
     private lateinit var itemClickListener: OnItemClickListener
 
     interface OnItemClickListener {
@@ -164,5 +162,4 @@ class StudyFindRVAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
         }
     }
-
 }

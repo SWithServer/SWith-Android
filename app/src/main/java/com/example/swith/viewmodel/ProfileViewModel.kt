@@ -36,9 +36,10 @@ class ProfileViewModel @Inject constructor(
             getCurrentProfileUseCase(userIdx)
                 .catch {
                     Log.e("error", it.message.toString())
-                    _profileData.value = ProfileState.Success(ProfileResult(
-                        "token", 1L, "email", 1, 0, "서울특별시 동작구",
-                        "자기소개", "동건동건", null, "token", "역할", 1, 1))
+                    _profileData.value = ProfileState.Error
+//                    _profileData.value = ProfileState.Success(ProfileResult(
+//                        "token", 1L, "email", 1, 0, "서울특별시 동작구",
+//                        "자기소개", "동건동건", null, "token", "역할", 1, 1))
                 }
                 .collectLatest {
                     _profileData.value = ProfileState.Success(it)

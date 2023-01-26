@@ -122,8 +122,7 @@ class ProfileModifyActivity : AppCompatActivity() {
             }
             // 활동 지역 선택
             tvLocationDetail.setOnClickListener {
-                //TODO 서머님께 부탁 ㅜㅜ
-                Log.e("doori", "tv_location_click")
+                // Todo : 장소 선택 추가
                 Intent(this@ProfileModifyActivity, SelectPlaceActivity::class.java).run {
                     this.putExtra("번호", 4)
                     startActivity(this)
@@ -164,6 +163,7 @@ class ProfileModifyActivity : AppCompatActivity() {
         }
     }
 
+    // 관심 분야 버튼
     private fun setInterestButton(button: Button, idx: Int){
         button.apply {
             backgroundTintList = if (idx > 0) ColorStateList.valueOf(resources.getColor(R.color.color_82B4FF, null))
@@ -222,8 +222,8 @@ class ProfileModifyActivity : AppCompatActivity() {
             false
         ).apply {
             val interestingDialog = CustomBinder.showCustomInterestringDialog(imageArray,
-                viewModel.interest1.value!!,
-                viewModel.interest2.value!!,
+                viewModel.interest1.value?: 0,
+                viewModel.interest2.value?: 0,
                 this@ProfileModifyActivity,
                 root,
                 WindowManager.LayoutParams.MATCH_PARENT,
