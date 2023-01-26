@@ -1,12 +1,12 @@
 package com.example.swith.ui.login
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import com.example.swith.R
@@ -22,23 +22,23 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_login)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
 
         initData()
         initView()
     }
 
     private fun initView() {
-        binding.clickListener=this@LoginActivity
+        binding.clickListener = this@LoginActivity
     }
 
     private fun initData() {
     }
 
     override fun onClick(view: View?) {
-        when(view?.id){
-            R.id.btn_login->{
-                Intent(this@LoginActivity,SnsLoginActivity::class.java).run {
+        when (view?.id) {
+            R.id.btn_login -> {
+                Intent(this@LoginActivity, SnsLoginActivity::class.java).run {
                     startActivity(this)
                 }
             }
@@ -47,7 +47,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onBackPressed() {
         binding.run {
-            Log.e("doori","onbackPressed ${mBackBtnPresses.toString()}")
+            Log.e("doori", "onbackPressed ${mBackBtnPresses.toString()}")
             if (mBackBtnPresses) {
                 mBackBtnPresses = false
                 finishApp()

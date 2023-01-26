@@ -1,20 +1,21 @@
 package com.example.swith.ui
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.swith.R
 import com.example.swith.databinding.ActivitySplashBinding
 import com.example.swith.ui.login.LoginActivity
 import com.example.swith.utils.SharedPrefManager
-import com.kakao.sdk.common.util.Utility
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class SplashActivity : AppCompatActivity() {
     lateinit var binding: ActivitySplashBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,6 +49,7 @@ class SplashActivity : AppCompatActivity() {
             }
         }
     }
+
     private fun goMainpage() {
         //1초동안 로고보이기
         CoroutineScope(Dispatchers.Default).launch {

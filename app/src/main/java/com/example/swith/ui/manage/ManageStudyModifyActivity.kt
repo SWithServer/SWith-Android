@@ -2,10 +2,13 @@ package com.example.swith.ui.manage
 
 import android.app.DatePickerDialog
 import android.app.Dialog
+import android.content.ContentUris
 import android.content.Context
 import android.content.Intent
+import android.database.Cursor
 import android.graphics.Color
 import android.graphics.ImageDecoder
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -23,12 +26,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.swith.R
-import com.example.swith.data.*
+import com.example.swith.data.api.RetrofitService
+import com.example.swith.data.api.SwithService
 import com.example.swith.databinding.ActivityManageStudyModifyBinding
-import com.example.swith.databinding.DialogCreateBinding
-import com.example.swith.repository.RetrofitApi
-import com.example.swith.repository.RetrofitService
-import com.example.swith.ui.dialog.CustomDialog
+import com.example.swith.domain.entity.StudyDetailResponse
+import com.example.swith.domain.entity.StudyGroup
+import com.example.swith.domain.entity.StudyImageRes
+import com.example.swith.domain.entity.StudyModifyResponse
 import com.example.swith.ui.study.create.SelectPlaceActivity
 import com.example.swith.utils.SharedPrefManager
 import com.example.swith.viewmodel.StudyModifyViewModel
@@ -83,16 +87,11 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener,andr
     var path : String? = "" // 파일로 변환할때 필요한 변수
     var file=File("")
 
-    override fun onClick(view: View?) {
-        when(view?.id){
-            R.id.ib_basic_toolbar_back -> finish()
-        }
-    }
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this@ManageStudyModifyActivity, R.layout.activity_manage_study_modify)
+
+        initData()
         binding.flLoadingLayout.visibility=View.VISIBLE
         initData()
         initView()
@@ -257,7 +256,7 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener,andr
                 Toast.makeText(this, "시작날짜부터 입력해주세요!", Toast.LENGTH_SHORT).show()
             }
         }
-        setSpinner()
+        setupSinner()
         with(binding)
         {
             //spinner
@@ -425,7 +424,7 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener,andr
                                     Toast.makeText(this@ManageStudyModifyActivity,"모든 항목을 작성해주세요!",Toast.LENGTH_SHORT).show()
                                 }
                                 else{
-                                    saveDialog(studyRequestData)
+                                    modifyStudy(studyRequestData,"수정하시겠습니까?")
                                 }
                             }
                             2->{
@@ -439,7 +438,7 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener,andr
 
                                 }
                                 else{
-                                    saveDialog(studyRequestData)
+                                    modifyStudy(studyRequestData,"수정하시겠습니까?")
                                 }
                             }
                         }
@@ -458,158 +457,14 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener,andr
 
     }
 
-    override fun onChanged(t: StudyDetailResponse?) {
-
+    fun initData()
+    {
+        (intent.hasExtra("groupIdx")).let { groupIdx = intent.getLongExtra("groupIdx", 0) }
+        Log.e("summer","groupIdx = ${groupIdx}")
     }
 
-    private fun initData(){
-        intent.hasExtra("groupIdx").let{
-            binding.groupIdx = intent.getLongExtra("groupIdx", 0)
-        }
-        Log.e("summer","groupIdx = $groupIdx")
-    }
-
-    private fun initView(){
-        binding.apply{
-            lifecycleOwner = this@ManageStudyModifyActivity
-            viewModel= ViewModelProvider(this@ManageStudyModifyActivity,StudyModifyViewModel.Factory()).get(StudyModifyViewModel::class.java).apply{
-                studyModifyViewModel = this
-            }
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == GALLERY)
-        {
-            if(resultCode == RESULT_OK)
-            {
-                var currentImageUri = data?.data
-                Log.e("현재 이미지 url", "${currentImageUri}")
-                try{
-                    currentImageUri?.let{
-                        if(Build.VERSION.SDK_INT < 28) {
-                            val bitmap = MediaStore.Images.Media.getBitmap(
-                                this.contentResolver,
-                                currentImageUri
-                            )
-                            imageView?.setImageBitmap(bitmap)
-                        } else {
-                            val source = ImageDecoder.createSource(this.contentResolver, currentImageUri)
-                            val bitmap = ImageDecoder.decodeBitmap(source)
-                            imageView?.setImageBitmap(bitmap)
-                        }
-                        path= getRealPathFromURI(currentImageUri)
-                        Log.e("path 값","${path}")
-                        file = File(path)
-                    }
-
-                }
-                catch (e:Exception)
-                {
-                    e.printStackTrace()
-                }
-            }
-            else if(resultCode == RESULT_CANCELED)
-            {
-                Toast.makeText(this, "사진 선택 취소", Toast.LENGTH_LONG).show();
-            }
-        }
-    }
-
-    fun getRealPathFromURI(contentUri: Uri?): String? {
-        val proj = arrayOf(MediaStore.Images.Media.DATA)
-        val cursor = contentResolver.query(contentUri!!, proj, null, null, null)
-        cursor!!.moveToNext()
-        val path = cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.DATA))
-        val uri = Uri.fromFile(File(path))
-        cursor.close()
-        return path
-    }
-
-    //갤러리에서 이미지 선택
-    private fun openGallery(){
-        val intent: Intent = Intent(Intent.ACTION_PICK)
-        intent.setType("image/*")
-        startActivityForResult(intent,GALLERY)
-    }
-
-    //스터디 수정 값들 가져와서 전송 retrofit 함수
-    private fun saveDialog(studyRequestData : StudyGroup){
-        Log.e("summer","saveDialog 함수")
-        DataBindingUtil.inflate<DialogCreateBinding>(
-            LayoutInflater.from(this@ManageStudyModifyActivity),
-            R.layout.dialog_create, null,false
-        ).apply {
-            this.tvTitle.text ="수정하시겠습니까?"
-            this.createDialog = CustomDialog(
-                this@ManageStudyModifyActivity,
-                root,
-                WindowManager.LayoutParams.MATCH_PARENT,
-                WindowManager.LayoutParams.MATCH_PARENT
-            ).apply {
-                this.setClickListener(object : CustomDialog.DialogClickListener {
-                    override fun onConfirm() {
-                        Log.e("summer", "onConfirm()")
-                        Log.e("summer","$file")
-                        if (!file.equals("")){
-                            studyRequestData.groupImgUri = viewModel?.postStudyImage(file)
-                        }
-                        viewModel?.modifyStudy(groupIdx,studyRequestData).apply{
-                            if (this!=(-1).toLong()){
-                                finish()
-                            }
-                            else{
-                                Toast.makeText(this@ManageStudyModifyActivity,
-                                    "다시 시도해주세요",
-                                    Toast.LENGTH_SHORT).show()
-                            }
-                        }
-                    }
-
-                    override fun onClose() {
-                        Log.e("summer", "onClose()")
-                    }
-                })
-                show()
-            }
-        }
-    }
-
-    fun setSpinner(){
-        with(binding){
-            spinnerCategory.adapter = ArrayAdapter.createFromResource(
-                this@ManageStudyModifyActivity.applicationContext,
-                R.array.intersting,
-                R.layout.item_create_spinner
-            ).apply {
-                this.setDropDownViewResource(R.layout.item_search_spinner_dropdown)
-            }
-            spinnerAttendTime.adapter = ArrayAdapter.createFromResource(
-                this@ManageStudyModifyActivity.applicationContext,
-                R.array.attendTimeList,
-                R.layout.item_create_spinner
-            ).apply {
-                this.setDropDownViewResource(R.layout.item_search_spinner_dropdown)
-            }
-            spinnerPeople.adapter = ArrayAdapter.createFromResource(
-                this@ManageStudyModifyActivity.applicationContext,
-                R.array.peopleList,
-                R.layout.item_create_spinner
-            ).apply {
-                this.setDropDownViewResource(R.layout.item_search_spinner_dropdown)
-            }
-        }
-    }
-
-    fun hideKeyboard(editText: EditText){
-            val  mInputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            mInputMethodManager.hideSoftInputFromWindow(
-                editText.getWindowToken(),
-                0
-            )
-        }
-
-    fun initView2(groupIdx : Long)
+    // 본래 스터디 정보 가져오기 retrofit 함수
+    fun initView(groupIdx : Long)
     {
         Log.e("summer","데이터 set true")
         val retrofitService = RetrofitService.retrofit.create(RetrofitApi::class.java)
@@ -646,7 +501,7 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener,andr
                                     checkWeek.isChecked=true
                                     checkFree.isChecked=false
                                     checkMonth.isChecked=false
-                                    etStudyWeek.setText(result.frequency.toString())
+                                   etStudyWeek.setText(result.frequency.toString())
                                 }
                                 1->{
                                     checkWeek.isChecked=false
@@ -664,7 +519,7 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener,andr
                             when(result.online)
                             {
                                 0->{ btnOnline.isChecked= true
-                                    btnOffline.isChecked=false
+                                btnOffline.isChecked=false
                                     layoutCreateRegion.visibility=View.GONE
                                     binding.btnPlusPlace1.background = ContextCompat.getDrawable(this@ManageStudyModifyActivity,R.drawable.bg_create_skyblue)
                                     binding.btnPlusPlace2.background = ContextCompat.getDrawable(this@ManageStudyModifyActivity,R.drawable.bg_create_skyblue)}
@@ -738,40 +593,95 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener,andr
         })
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == GALLERY)
+        {
+            if(resultCode == RESULT_OK)
+            {
+                var currentImageUri = data?.data
+                Log.e("현재 이미지 url", "${currentImageUri}")
+                try{
+                    currentImageUri?.let{
+                        if(Build.VERSION.SDK_INT < 28) {
+                            val bitmap = MediaStore.Images.Media.getBitmap(
+                                this.contentResolver,
+                                currentImageUri
+                            )
+                            imageView?.setImageBitmap(bitmap)
+                        } else {
+                            val source = ImageDecoder.createSource(this.contentResolver, currentImageUri)
+                            val bitmap = ImageDecoder.decodeBitmap(source)
+                            imageView?.setImageBitmap(bitmap)
+                        }
+                        path= getRealPathFromURI(currentImageUri)
+                        Log.e("path 값","${path}")
+                        file = File(path)
+                    }
+
+                }
+                catch (e:Exception)
+                {
+                    e.printStackTrace()
+                }
+            }
+            else if(resultCode == RESULT_CANCELED)
+            {
+                Toast.makeText(this, "사진 선택 취소", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    fun getRealPathFromURI(contentUri: Uri?): String? {
+        val proj = arrayOf(MediaStore.Images.Media.DATA)
+        val cursor = contentResolver.query(contentUri!!, proj, null, null, null)
+        cursor!!.moveToNext()
+        val path = cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.DATA))
+        val uri = Uri.fromFile(File(path))
+        cursor.close()
+        return path
+    }
+
+    //갤러리에서 이미지 선택
+    private fun openGallery(){
+        val intent: Intent = Intent(Intent.ACTION_PICK)
+        intent.setType("image/*")
+        startActivityForResult(intent,GALLERY)
+    }
+
     fun uploadImage(file:File,studyRequestData: StudyGroup)
     {
         Log.e("업로드 함수","진입")
         if (!(file.name.equals("")))
         {
-            var requestFile =  RequestBody.create("image"?.toMediaTypeOrNull(), file)
-            var body  = MultipartBody.Part.createFormData("image", file.name, requestFile)
-            val retrofitService = RetrofitService.retrofit.create(RetrofitApi::class.java)
-            retrofitService.uploadImg(body).enqueue(object :
-                Callback<StudyImageRes> {
-                override fun onResponse(
-                    call: Call<StudyImageRes>,
-                    response: Response<StudyImageRes>
-                ) {
-                    if (response.isSuccessful) {
-                        Log.e("summer", "성공${response.toString()}")
-                        response.body()?.apply {
-                            Log.e("summer 결과값","${this.imageUrls}")
-                            ImgUri = this.imageUrls[0]
-                            Log.e("Img Uri 값 변경한 부분","${ImgUri}")
-                            studyRequestData.groupImgUri=ImgUri
-                            // retrofitModify(studyRequestData)
-                        }
-                    }
-                    else {
-                        Log.e("summer", "전달실패 code = ${response.code()}")
-                        Log.e("summer", "전달실패 msg = ${response.message()}")
+        var requestFile =  RequestBody.create("image"?.toMediaTypeOrNull(), file)
+        var body  = MultipartBody.Part.createFormData("image", file.name, requestFile)
+        val retrofitService = RetrofitService.retrofit.create(RetrofitApi::class.java)
+        retrofitService.uploadImg(body).enqueue(object :
+            Callback<StudyImageRes> {
+            override fun onResponse(
+                call: Call<StudyImageRes>,
+                response: Response<StudyImageRes>
+            ) {
+                if (response.isSuccessful) {
+                    Log.e("summer", "성공${response.toString()}")
+                    response.body()?.apply {
+                        Log.e("summer 결과값","${this.imageUrls}")
+                        ImgUri = this.imageUrls[0]
+                        Log.e("Img Uri 값 변경한 부분","${ImgUri}")
+                        studyRequestData.groupImgUri=ImgUri
+                        retrofitModify(studyRequestData)
                     }
                 }
-                override fun onFailure(call: Call<StudyImageRes>, t: Throwable) {
-                    Log.e("summer", "onFailure t = ${t.toString()}")
-                    Log.e("summer", "onFailure msg = ${t.message}")
+                else {
+                    Log.e("summer", "전달실패 code = ${response.code()}")
+                    Log.e("summer", "전달실패 msg = ${response.message()}")
                 }
-            })
+            }
+            override fun onFailure(call: Call<StudyImageRes>, t: Throwable) {
+                Log.e("summer", "onFailure t = ${t.toString()}")
+                Log.e("summer", "onFailure msg = ${t.message}")
+            }
+        })
         }
         else{
             //retrofitModify(studyRequestData)

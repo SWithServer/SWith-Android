@@ -5,13 +5,12 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
-class SwipeController() : ItemTouchHelper.Callback(){
+class SwipeController() : ItemTouchHelper.Callback() {
     private var swipeBack = false
     private val buttonWidth = 200f //버튼 너비 지정
     private var buttonsShowedState = false
@@ -19,12 +18,13 @@ class SwipeController() : ItemTouchHelper.Callback(){
     private lateinit var listener: ItemTouchHelperListener
     private var currentItemViewHolder: RecyclerView.ViewHolder? = null
 
-    constructor(listener: ItemTouchHelperListener) : this(){
+    constructor(listener: ItemTouchHelperListener) : this() {
         this.listener = listener
     }
+
     override fun getMovementFlags(
         recyclerView: RecyclerView,
-        viewHolder: RecyclerView.ViewHolder
+        viewHolder: RecyclerView.ViewHolder,
     ): Int {
         return makeMovementFlags(0, ItemTouchHelper.LEFT)
     }
@@ -32,13 +32,14 @@ class SwipeController() : ItemTouchHelper.Callback(){
     override fun onMove(
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder,
-        target: RecyclerView.ViewHolder
+        target: RecyclerView.ViewHolder,
     ): Boolean = false
 
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
 
     }
+
     override fun onChildDraw(
         c: Canvas,
         recyclerView: RecyclerView,
@@ -46,7 +47,7 @@ class SwipeController() : ItemTouchHelper.Callback(){
         dX: Float,
         dY: Float,
         actionState: Int,
-        isCurrentlyActive: Boolean
+        isCurrentlyActive: Boolean,
     ) {
         var dX = dX
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
@@ -90,7 +91,7 @@ class SwipeController() : ItemTouchHelper.Callback(){
 
     private fun drawButtons(
         c: Canvas,
-        viewHolder: RecyclerView.ViewHolder
+        viewHolder: RecyclerView.ViewHolder,
     ) { //레이아웃이 아닌 클래스에서 직접 버튼 구현
         val corners = 5f
         val itemView: View = viewHolder.itemView
@@ -131,10 +132,11 @@ class SwipeController() : ItemTouchHelper.Callback(){
         }
         return super.convertToAbsoluteDirection(flags, layoutDirection)
     }
+
     @SuppressLint("ClickableViewAccessibility")
     private fun setTouchListener(
         c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder,
-        dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean
+        dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean,
     ) {
         recyclerView.setOnTouchListener { view, event ->
             swipeBack =
@@ -162,7 +164,7 @@ class SwipeController() : ItemTouchHelper.Callback(){
     private fun setTouchDownListener(
         c: Canvas, recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder, dX: Float, dY: Float,
-        actionState: Int, isCurrentlyActive: Boolean
+        actionState: Int, isCurrentlyActive: Boolean,
     ) {
         recyclerView.setOnTouchListener { v, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
@@ -184,7 +186,7 @@ class SwipeController() : ItemTouchHelper.Callback(){
     private fun setTouchUpListener(
         c: Canvas, recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder, dX: Float, dY: Float,
-        actionState: Int, isCurrentlyActive: Boolean
+        actionState: Int, isCurrentlyActive: Boolean,
     ) {
         recyclerView.setOnTouchListener { v, event ->
             super@SwipeController.onChildDraw(
@@ -202,7 +204,7 @@ class SwipeController() : ItemTouchHelper.Callback(){
             setItemClickable(recyclerView, true)
             swipeBack = false
             if (buttonInstance != null && buttonInstance!!.contains(event.x, event.y)) {
-               listener.onDeleteButtonClick(viewHolder.adapterPosition)
+                listener.onDeleteButtonClick(viewHolder.adapterPosition)
             }
             buttonsShowedState = false
             currentItemViewHolder = null

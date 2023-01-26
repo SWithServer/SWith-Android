@@ -1,99 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <TextView
-        android:id="@+id/tv_attend_min_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="출석 유효 시간"
-        android:layout_marginTop="32dp"
-        android:layout_marginStart="20dp"
-        android:textSize="14sp"
-        android:textColor="@color/black"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/sv_attend"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="20dp"
-        android:overScrollMode="never"
-        app:layout_constraintTop_toBottomOf="@id/tv_attend_min_time"
-        app:layout_constraintBottom_toBottomOf="parent">
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <TableLayout
-                android:id="@+id/tl_attend_top_row"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:gravity="center_horizontal|center_vertical"
-                android:background="@drawable/bg_attend_first_row"
-                app:layout_constraintTop_toTopOf="parent">
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:weightSum="7">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="2"
-                        android:textSize="11sp"
-                        android:textColor="@color/color_82B4FF"
-                        android:text="이름"
-                        android:gravity="center" />
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:text="출석"
-                        android:textSize="11sp"
-                        android:textColor="@color/color_82B4FF"
-                        android:layout_weight="5"
-                        android:gravity="center" />
-                </TableRow>
 
-            </TableLayout>
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_attend"
-                android:paddingTop="12dp"
-                android:paddingBottom="4dp"
-                android:overScrollMode="never"
-                android:layout_marginTop="2dp"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <TextView
+            android:id="@+id/tv_attend_min_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="출석 유효 시간"
+            android:layout_marginTop="32dp"
+            android:layout_marginStart="20dp"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/sv_attend"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="20dp"
+            android:overScrollMode="never"
+            app:layout_constraintTop_toBottomOf="@id/tv_attend_min_time"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_attend_rv"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintTop_toBottomOf="@id/tl_attend_top_row"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
-    <TextView
-        android:id="@+id/tv_no_people"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:visibility="invisible"
-        android:text="@string/attend_no_people"
-        android:textSize="18sp"
-        android:textColor="@color/black"
-        android:gravity="center"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-    <Button
-        android:id="@+id/btn_attend"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_margin="20dp"
-        android:text="출석"
-        android:textColor="@color/white"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        android:background="@drawable/attend_button_drawable"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_height="match_parent">
+
+                <TableLayout
+                    android:id="@+id/tl_attend_top_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:background="@drawable/bg_attend_first_row"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:weightSum="7">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="2"
+                            android:textSize="11sp"
+                            android:textColor="@color/color_82B4FF"
+                            android:text="이름"
+                            android:gravity="center" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:text="출석"
+                            android:textSize="11sp"
+                            android:textColor="@color/color_82B4FF"
+                            android:layout_weight="5"
+                            android:gravity="center" />
+                    </TableRow>
+
+                </TableLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_attend"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="4dp"
+                    android:overScrollMode="never"
+                    android:layout_marginTop="2dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_attend_rv"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintTop_toBottomOf="@id/tl_attend_top_row" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <TextView
+            android:id="@+id/tv_no_people"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:visibility="invisible"
+            android:text="@string/attend_no_people"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:gravity="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <Button
+            android:id="@+id/btn_attend"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_margin="20dp"
+            android:text="출석"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:background="@drawable/attend_button_drawable"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

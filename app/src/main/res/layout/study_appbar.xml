@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
+
         <variable
             name="clickListener"
             type="android.view.View.OnClickListener" />
     </data>
+
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/study_toolbar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         app:elevation="0dp">
+
         <androidx.appcompat.widget.Toolbar
             android:layout_height="50dp"
             style="@style/toolbar"
@@ -19,6 +23,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
                 <ImageButton
                     android:id="@+id/ib_study_back"
                     android:layout_width="40dp"
@@ -27,7 +32,7 @@
                     android:onClick="@{clickListener}"
                     android:background="?android:attr/selectableItemBackground"
                     android:src="@drawable/ic_create_back"
-                    app:layout_constraintStart_toStartOf="parent"/>
+                    app:layout_constraintStart_toStartOf="parent" />
 
                 <ImageButton
                     android:id="@+id/ib_study_notice"
@@ -37,7 +42,8 @@
                     android:onClick="@{clickListener}"
                     android:layout_marginEnd="20dp"
                     android:background="?android:attr/selectableItemBackground"
-                    app:layout_constraintEnd_toStartOf="@id/ib_study_setting"/>
+                    app:layout_constraintEnd_toStartOf="@id/ib_study_setting" />
+
                 <ImageButton
                     android:id="@+id/ib_study_setting"
                     android:layout_width="40dp"
@@ -46,12 +52,13 @@
                     android:onClick="@{clickListener}"
                     android:layout_marginEnd="15dp"
                     android:background="?android:attr/selectableItemBackground"
-                    app:layout_constraintEnd_toEndOf="parent"/>
+                    app:layout_constraintEnd_toEndOf="parent" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    android:background="@color/color_F1F1F1"/>
+                    android:background="@color/color_F1F1F1" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>

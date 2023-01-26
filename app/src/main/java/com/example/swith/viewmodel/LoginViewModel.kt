@@ -4,14 +4,15 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.swith.data.LoginRequest
-import com.example.swith.data.LoginResponse
-import com.example.swith.repository.login.LoginRepository
-import com.example.swith.repository.login.LoginRepositoryProvider
+import com.example.swith.data.repository.login.LoginRepository
+import com.example.swith.data.repository.login.LoginRepositoryProvider
+import com.example.swith.domain.entity.LoginRequest
+import com.example.swith.domain.entity.LoginResponse
 
-class LoginViewModel:ViewModel() {
+class LoginViewModel : ViewModel() {
     val isLoading: ObservableField<Boolean> = ObservableField<Boolean>()
     private val mLoginRepository: LoginRepository = LoginRepositoryProvider.provideLoginRepository()
+
     init {
         hideLoading()
     }

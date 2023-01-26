@@ -7,12 +7,10 @@ import android.content.Context
 import android.content.Context.NOTIFICATION_SERVICE
 import android.content.Intent
 import android.graphics.Color
-import android.os.Bundle
 import androidx.core.app.NotificationCompat
 import com.example.swith.R
 import com.example.swith.ui.rating.RatingActivity
 import com.example.swith.ui.study.announce.AnnounceActivity
-
 
 class NoticeManager(private val context: Context) {
     companion object {
@@ -49,9 +47,14 @@ class NoticeManager(private val context: Context) {
 
     }
 
-    fun runAnnounceNotice(title: String,content: String){
-        val actionIntent = Intent(context,AnnounceActivity::class.java)
-        val actionPendingIntent = PendingIntent.getActivity(context, CHANNEL_NUMBER,actionIntent,PendingIntent.FLAG_IMMUTABLE)
+    fun runAnnounceNotice(title: String, content: String) {
+        val actionIntent = Intent(context, AnnounceActivity::class.java)
+        val actionPendingIntent = PendingIntent.getActivity(
+            context,
+            CHANNEL_NUMBER,
+            actionIntent,
+            PendingIntent.FLAG_IMMUTABLE
+        )
 
         builder.run {
             setSmallIcon(R.drawable.ic_stat_notification)
@@ -60,14 +63,19 @@ class NoticeManager(private val context: Context) {
             setContentText(content)
             setContentIntent(actionPendingIntent)
 
-            manager.notify(CHANNEL_NUMBER,build())
+            manager.notify(CHANNEL_NUMBER, build())
         }
     }
 
-    fun runRatingNotice(title: String, content: String, groupId:String){
-        val actionIntent = Intent(context,RatingActivity::class.java)
-        actionIntent.putExtra("Rating",groupId)
-        val actionPendingIntent = PendingIntent.getActivity(context, CHANNEL_NUMBER,actionIntent,PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_CANCEL_CURRENT)
+    fun runRatingNotice(title: String, content: String, groupId: String) {
+        val actionIntent = Intent(context, RatingActivity::class.java)
+        actionIntent.putExtra("Rating", groupId)
+        val actionPendingIntent = PendingIntent.getActivity(
+            context,
+            CHANNEL_NUMBER,
+            actionIntent,
+            PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_CANCEL_CURRENT
+        )
 
         builder.run {
             setSmallIcon(R.drawable.ic_stat_notification)
@@ -76,7 +84,7 @@ class NoticeManager(private val context: Context) {
             setContentText(content)
             setContentIntent(actionPendingIntent)
 
-            manager.notify(CHANNEL_NUMBER,build())
+            manager.notify(CHANNEL_NUMBER, build())
         }
     }
 }

@@ -5,17 +5,20 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <View
             android:id="@+id/manage_round_view"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/color_F1F1F1"
             app:layout_constraintTop_toTopOf="parent" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
             app:layout_constraintTop_toBottomOf="@id/manage_round_view">
+
             <TextView
                 android:id="@+id/tv_item_manage_round_count"
                 android:layout_width="wrap_content"
@@ -29,6 +32,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -38,19 +42,21 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_announce_calendar"/>
-            <TextView
-                android:id="@+id/tv_item_manage_round_date"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:text="2022/8/25"
-                android:textColor="@color/color_1363DF"
-                android:layout_marginStart="3dp"
-                android:textSize="14dp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_announce_calendar" />
+
+                <TextView
+                    android:id="@+id/tv_item_manage_round_date"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="2022/8/25"
+                    android:textColor="@color/color_1363DF"
+                    android:layout_marginStart="3dp"
+                    android:textSize="14dp" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

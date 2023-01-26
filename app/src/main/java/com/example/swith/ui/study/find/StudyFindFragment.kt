@@ -1,37 +1,34 @@
-package com.example.swith.ui.study.find
-
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
-import android.view.View.OnTouchListener
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.EditText
-import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.swith.R
-import com.example.swith.data.*
+import com.example.swith.data.api.RetrofitService
+import com.example.swith.data.api.SwithService
 import com.example.swith.databinding.FragmentStudyFindBinding
-import com.example.swith.repository.RetrofitApi
-import com.example.swith.repository.RetrofitService
+import com.example.swith.domain.entity.StudyFindResponse
+import com.example.swith.domain.entity.studyReqest
 import com.example.swith.ui.MainActivity
 import com.example.swith.ui.adapter.StudyFindRVAdapter
 import com.example.swith.ui.study.create.SelectPlaceActivity
+import com.example.swith.ui.study.find.StudyFindDetailFragment
 import com.example.swith.utils.base.BaseFragment
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-
 
 class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.fragment_study_find) {
 
@@ -68,10 +65,10 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
             DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
 
         adapter.setItemClickListener(object:StudyFindRVAdapter.OnItemClickListener{
-            override fun onClick(view: View, pos:Int,groupIdx:Long,applicationMethod:Int) {
+            override fun onClick(view: View, pos:Int, groupIdx:Long, applicationMethod:Int) {
                 Log.e("클릭이벤트 발생","true")
                 Log.e("그룹 idx 값","$groupIdx")
-                mainActivity?.goDetailPage(groupIdx,applicationMethod,StudyFindDetailFragment())
+                mainActivity?.goDetailPage(groupIdx,applicationMethod, StudyFindDetailFragment())
             }
         })
 
@@ -158,9 +155,9 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
                 override fun onNothingSelected(p0: AdapterView<*>?) {
                 }
             }
-            spinnerInterest1.setOnTouchListener(OnTouchListener{ v, _ ->
+            spinnerInterest1.setOnTouchListener(View.OnTouchListener { v, _ ->
                 v.performClick()
-                searchFilter =1
+                searchFilter = 1
                 false
             })
             spinnerInterest2.adapter = ArrayAdapter.createFromResource(
@@ -191,9 +188,9 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
                 override fun onNothingSelected(p0: AdapterView<*>?) {
                 }
             }
-            spinnerInterest2.setOnTouchListener(OnTouchListener{ v, event ->
+            spinnerInterest2.setOnTouchListener(View.OnTouchListener { v, event ->
                 v.performClick()
-                searchFilter =2
+                searchFilter = 2
                 false
             })
             spinnerSort.adapter = ArrayAdapter.createFromResource(
@@ -219,7 +216,7 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
     //최초로 넣어줄 데이터 load
     private fun loadData(title:String?,region:String?, interest1:Int?, interest2:Int?, sort:Int){
         val req = studyReqest(title,region, null,interest1, interest2,sort, LocalDateTime.now())
-        val retrofitService = RetrofitService.retrofit.create(RetrofitApi::class.java)
+        val retrofitService = RetrofitService.retrofit.create(SwithService::class.java)
         retrofitService.getSearchStudy(limit,title,region,interest1,interest2,null,sort,date.format(
             DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))).enqueue(object : Callback<StudyFindResponse> {
             override fun onResponse(
@@ -256,7 +253,7 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
         Log.e("loadMore","true")
         var req = studyReqest(title,region, groupIdx,interest1, interest2,sort, LocalDateTime.now())
         adapter.setLoadingView(true)
-        val retrofitService = RetrofitService.retrofit.create(RetrofitApi::class.java)
+        val retrofitService = RetrofitService.retrofit.create(SwithService::class.java)
         val handler = android.os.Handler()
         handler.postDelayed({
             retrofitService.getSearchStudy(limit,title,region,interest1,interest2,groupIdx,sort, date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
@@ -314,8 +311,8 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
                     val lastGroupIdx = adapter.getData()[adapter.getData().size-1]?.groupIdx
                     Log.e("last groupIdx","$lastGroupIdx")
                     Log.e("if문","true")
-                        loadMoreData(searchTitle,selectRegion, selectInterest1 , selectInterest2,selectSort,lastGroupIdx)
-                        setHasNextPage(false)
+                    loadMoreData(searchTitle,selectRegion, selectInterest1 , selectInterest2,selectSort,lastGroupIdx)
+                    setHasNextPage(false)
                 }
             }
         })

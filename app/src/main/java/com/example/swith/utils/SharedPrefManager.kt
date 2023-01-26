@@ -1,16 +1,23 @@
 package com.example.swith.utils
+
 import android.content.Context
 import android.content.SharedPreferences
-import com.example.swith.data.LoginData
+import com.example.swith.domain.entity.LoginData
 import com.google.gson.Gson
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class SharedPrefManager (private val context: Context) {
+@Singleton
+class SharedPrefManager @Inject constructor(
+    @ApplicationContext private val context: Context,
+) {
 
     companion object {
         private const val FILENAME = ""
         private const val LOGIN_DATA: String = "login_data"
-        private const val FCM_NAME="fcm"
-        private const val FCM_DATA: String="fcm_data"
+        private const val FCM_NAME = "fcm"
+        private const val FCM_DATA: String = "fcm_data"
     }
 
     fun clearAll() {
@@ -27,11 +34,13 @@ class SharedPrefManager (private val context: Context) {
         val prefs: SharedPreferences = context.getSharedPreferences(FILENAME, Context.MODE_PRIVATE)
 
         Gson().apply {
-            val loginData: LoginData = LoginData(userIdx,jwt)
+            val loginData: LoginData =
+                LoginData(userIdx, jwt)
             val jsonToString: String = toJson(loginData)
             prefs.edit().putString(LOGIN_DATA, jsonToString).apply()
         }
     }
+
     /**
      * 로그인 데이터 반환
      * @return LoginData?
@@ -39,8 +48,11 @@ class SharedPrefManager (private val context: Context) {
     fun getLoginData(): LoginData? {
         val prefs: SharedPreferences = context.getSharedPreferences(FILENAME, Context.MODE_PRIVATE)
         Gson().apply {
-            val jsonToString: String = prefs.getString(LOGIN_DATA, "")?:""
-            return fromJson(jsonToString, LoginData::class.java)
+            val jsonToString: String = prefs.getString(LOGIN_DATA, "") ?: ""
+            return fromJson(
+                jsonToString,
+                LoginData::class.java
+            )
         }
     }
 
@@ -55,13 +67,13 @@ class SharedPrefManager (private val context: Context) {
     /**
      * fcm토큰저장
      */
-    fun setFcmToken(token:String){
-        val prefs:SharedPreferences=context.getSharedPreferences(FCM_NAME,Context.MODE_PRIVATE)
-        prefs.edit().putString(FCM_DATA,token).apply()
+    fun setFcmToken(token: String) {
+        val prefs: SharedPreferences = context.getSharedPreferences(FCM_NAME, Context.MODE_PRIVATE)
+        prefs.edit().putString(FCM_DATA, token).apply()
     }
 
-    fun getFcmToken():String?{
-        val prefs:SharedPreferences=context.getSharedPreferences(FCM_NAME,Context.MODE_PRIVATE)
-        return prefs.getString(FCM_DATA,"")
+    fun getFcmToken(): String? {
+        val prefs: SharedPreferences = context.getSharedPreferences(FCM_NAME, Context.MODE_PRIVATE)
+        return prefs.getString(FCM_DATA, "")
     }
 }

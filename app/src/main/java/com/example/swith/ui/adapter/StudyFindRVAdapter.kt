@@ -6,16 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.swith.data.*
 import com.example.swith.databinding.ItemLoadingBinding
 import com.example.swith.databinding.ItemStudyFindBinding
-import com.example.swith.ui.study.create.*
+import com.example.swith.domain.entity.Content
 import java.text.SimpleDateFormat
 import java.util.*
 
 class StudyFindRVAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    companion object{
+    companion object {
         private const val TYPE_VIEW = 0
         private const val TYPE_LOADING = 1
     }
@@ -95,66 +94,62 @@ class StudyFindRVAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         notifyDataSetChanged()
     }
 
-    fun addData(studyList : List <Content>)
-    {
-        Log.e("DATA",studyList.toString())
+    fun addData(studyList: List<Content>) {
+        Log.e("DATA", studyList.toString())
         this.studyList.addAll(studyList)
         notifyDataSetChanged()
     }
 
-    fun getData() : MutableList<Content?> {
+    fun getData(): MutableList<Content?> {
         return studyList
     }
 
-    fun setLoadingView(b:Boolean)
-    {
-        if (b)
-        {
-            android.os.Handler(Looper.getMainLooper()).post{
+    fun setLoadingView(b: Boolean) {
+        if (b) {
+            android.os.Handler(Looper.getMainLooper()).post {
                 this.studyList.add(null)
                 notifyItemInserted(studyList.size - 1)
             }
-        }
-        else{
-            if (this.studyList[studyList.size-1]==null){
-                this.studyList.removeAt(studyList.size-1)
+        } else {
+            if (this.studyList[studyList.size - 1] == null) {
+                this.studyList.removeAt(studyList.size - 1)
                 notifyItemRemoved(studyList.size)
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        when(viewType)
-        {
-            TYPE_VIEW->{
+        when (viewType) {
+            TYPE_VIEW -> {
                 val inflatedView = LayoutInflater.from(parent.context)
-                val binding = ItemStudyFindBinding.inflate(inflatedView,parent,false)
+                val binding = ItemStudyFindBinding.inflate(inflatedView, parent, false)
                 return FindViewHolder(binding)
             }
-            else ->{
+            else -> {
                 val inflatedView = LayoutInflater.from(parent.context)
-                val binding = ItemLoadingBinding.inflate(inflatedView,parent,false)
+                val binding = ItemLoadingBinding.inflate(inflatedView, parent, false)
                 return LoadingViewHolder(binding)
             }
         }
     }
 
-    override fun getItemViewType(position:Int):Int{
-        return when(studyList[position]){
-            null-> TYPE_LOADING
-            else-> TYPE_VIEW
+    override fun getItemViewType(position: Int): Int {
+        return when (studyList[position]) {
+            null -> TYPE_LOADING
+            else -> TYPE_VIEW
         }
     }
 
-    override fun getItemCount():Int{
+    override fun getItemCount(): Int {
         return studyList.size
     }
 
     private lateinit var itemClickListener: OnItemClickListener
 
     interface OnItemClickListener {
-        fun onClick(v:View, pos:Int,groupIdx:Long,applicationMethod:Int)
+        fun onClick(v: View, pos: Int, groupIdx: Long, applicationMethod: Int)
     }
+
     fun setItemClickListener(itemClickListener: OnItemClickListener) {
         this.itemClickListener = itemClickListener
     }

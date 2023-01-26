@@ -3,27 +3,30 @@ package com.example.swith.ui.dialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.*
+import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.example.swith.R
 import com.example.swith.databinding.DialogAnnounceCreateBinding
 
-class CustomAnnounceCreateDialog : DialogFragment(){
+class CustomAnnounceCreateDialog : DialogFragment() {
     private lateinit var binding: DialogAnnounceCreateBinding
 
-    interface CustomListener{
+    interface CustomListener {
         fun onConfirm(content: String)
     }
 
     private lateinit var customListener: CustomListener
-    fun setCustomListener(listener: CustomListener){
+    fun setCustomListener(listener: CustomListener) {
         customListener = listener
     }
 
+    @RequiresApi(Build.VERSION_CODES.R)
     override fun onResume() {
         super.onResume()
         // 디바이스 크기별 세팅
@@ -41,9 +44,10 @@ class CustomAnnounceCreateDialog : DialogFragment(){
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.dialog_announce_create, container, false)
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.dialog_announce_create, container, false)
         // 모서리 직각 제거
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
@@ -52,13 +56,14 @@ class CustomAnnounceCreateDialog : DialogFragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.etAnnounceCreate.addTextChangedListener(object: TextWatcher{
+        binding.etAnnounceCreate.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 binding.btnAnnounceCreate.visibility = View.INVISIBLE
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                binding.btnAnnounceCreate.visibility = if (!s.isNullOrEmpty()) View.VISIBLE else View.INVISIBLE
+                binding.btnAnnounceCreate.visibility =
+                    if (!s.isNullOrEmpty()) View.VISIBLE else View.INVISIBLE
             }
 
             override fun afterTextChanged(s: Editable?) {

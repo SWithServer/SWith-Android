@@ -3,59 +3,65 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.study.find.StudyFindDetailFragment">
+
     <androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-        android:background="@color/white">
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/study_apply_layout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-       app:layout_constraintBottom_toBottomOf="parent">
-        <LinearLayout
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/study_apply_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:focusable="true"
-            android:focusableInTouchMode="true">
-            <ImageView
-                android:id="@+id/iv_study_detail_image"
-                android:layout_width="match_parent"
-                android:layout_height="230dp"
-                android:src="@drawable/bg_create_sample"
-                android:layout_marginBottom="15dp"
-                android:scaleType="fitXY"/>
-            <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_height="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginBottom="10dp"
-                >
-                <TextView
-                    android:id="@+id/tv_study_detail_title"
-                    android:layout_width="wrap_content"
+                android:orientation="vertical"
+                android:focusable="true"
+                android:focusableInTouchMode="true">
+
+                <ImageView
+                    android:id="@+id/iv_study_detail_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="230dp"
+                    android:src="@drawable/bg_create_sample"
+                    android:layout_marginBottom="15dp"
+                    android:scaleType="fitXY" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:text="스터디제목"
-                    android:textSize="16sp"
-                    android:textColor="@color/black"
-                    android:layout_marginBottom="10dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    />
-                <Button
-                    android:id="@+id/btn_admin"
-                    android:layout_width="90dp"
-                    android:layout_height="25dp"
-                    android:text="리더"
-                    android:textColor="@color/white"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:background="@drawable/btn_search_blue_selector"/>
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="10dp">
+
+                    <TextView
+                        android:id="@+id/tv_study_detail_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:text="스터디제목"
+                        android:textSize="16sp"
+                        android:textColor="@color/black"
+                        android:layout_marginBottom="10dp"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <Button
+                        android:id="@+id/btn_admin"
+                        android:layout_width="90dp"
+                        android:layout_height="25dp"
+                        android:text="리더"
+                        android:textColor="@color/white"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:background="@drawable/btn_search_blue_selector" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
@@ -64,6 +70,7 @@
                     android:layout_marginBottom="6dp"
                     android:layout_gravity="center"
                     android:background="@drawable/bg_item_study_search_light_blue">
+
                     <TextView
                         android:id="@+id/tv_study_time"
                         android:layout_width="70dp"
@@ -75,8 +82,8 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toStartOf="@id/tv_study_set_time"
-                        app:layout_constraintTop_toTopOf="parent"
-                        />
+                        app:layout_constraintTop_toTopOf="parent" />
+
                     <TextView
                         android:id="@+id/tv_study_set_time"
                         android:layout_width="200dp"
@@ -88,7 +95,7 @@
                         android:gravity="left"
                         app:layout_constraintBottom_toBottomOf="parent"
                         android:textColor="@color/black"
-                        app:layout_constraintTop_toTopOf="parent"/>
+                        app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -99,6 +106,7 @@
                     android:layout_marginBottom="6dp"
                     android:layout_gravity="center"
                     android:background="@drawable/bg_item_study_search_light_blue">
+
                     <TextView
                         android:id="@+id/tv_study_place"
                         android:layout_width="70dp"
@@ -110,8 +118,8 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/tv_study_set_place1"
-                        app:layout_constraintTop_toTopOf="parent"
-                        />
+                        app:layout_constraintTop_toTopOf="parent" />
+
                     <TextView
                         android:id="@+id/tv_study_set_place1"
                         android:layout_width="wrap_content"
@@ -127,7 +135,7 @@
                         android:gravity="center"
                         app:layout_constraintBottom_toBottomOf="parent"
                         android:textColor="@color/white"
-                        app:layout_constraintTop_toTopOf="parent"/>
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/tv_study_set_place2"
@@ -143,7 +151,7 @@
                         android:background="@drawable/bg_search_spinner"
                         app:layout_constraintBottom_toBottomOf="parent"
                         android:textColor="@color/white"
-                        app:layout_constraintTop_toTopOf="parent"/>
+                        app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -155,6 +163,7 @@
                     android:layout_marginBottom="6dp"
                     android:layout_gravity="center"
                     android:background="@drawable/bg_item_study_search_light_blue">
+
                     <TextView
                         android:id="@+id/tv_study_detail"
                         android:layout_width="70dp"
@@ -166,8 +175,8 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/tv_study_set_detail"
-                        app:layout_constraintTop_toTopOf="parent"
-                        />
+                        app:layout_constraintTop_toTopOf="parent" />
+
                     <TextView
                         android:id="@+id/tv_study_set_detail"
                         android:layout_width="200dp"
@@ -179,7 +188,7 @@
                         android:gravity="left"
                         app:layout_constraintBottom_toBottomOf="parent"
                         android:textColor="@color/black"
-                        app:layout_constraintTop_toTopOf="parent"/>
+                        app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -190,6 +199,7 @@
                     android:layout_marginBottom="6dp"
                     android:layout_gravity="center"
                     android:background="@drawable/bg_item_study_search_light_blue">
+
                     <TextView
                         android:id="@+id/tv_study_category"
                         android:layout_width="70dp"
@@ -201,8 +211,8 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/tv_study_set_category"
-                        app:layout_constraintTop_toTopOf="parent"
-                        />
+                        app:layout_constraintTop_toTopOf="parent" />
+
                     <TextView
                         android:id="@+id/tv_study_set_category"
                         android:layout_width="200dp"
@@ -214,8 +224,9 @@
                         android:gravity="left"
                         app:layout_constraintBottom_toBottomOf="parent"
                         android:textColor="@color/black"
-                        app:layout_constraintTop_toTopOf="parent"/>
+                        app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="26dp"
@@ -224,6 +235,7 @@
                     android:layout_marginBottom="6dp"
                     android:layout_gravity="center"
                     android:background="@drawable/bg_item_study_search_light_blue">
+
                     <TextView
                         android:id="@+id/tv_study_playtime"
                         android:layout_width="70dp"
@@ -235,8 +247,8 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/tv_study_set_playtime"
-                        app:layout_constraintTop_toTopOf="parent"
-                        />
+                        app:layout_constraintTop_toTopOf="parent" />
+
                     <TextView
                         android:id="@+id/tv_study_set_playtime"
                         android:layout_width="200dp"
@@ -248,8 +260,9 @@
                         android:gravity="left"
                         app:layout_constraintBottom_toBottomOf="parent"
                         android:textColor="@color/black"
-                        app:layout_constraintTop_toTopOf="parent"/>
+                        app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="26dp"
@@ -258,6 +271,7 @@
                     android:layout_marginBottom="6dp"
                     android:layout_gravity="center"
                     android:background="@drawable/bg_item_study_search_light_blue">
+
                     <TextView
                         android:id="@+id/tv_study_deadline"
                         android:layout_width="70dp"
@@ -269,8 +283,8 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/tv_study_set_deadline"
-                        app:layout_constraintTop_toTopOf="parent"
-                        />
+                        app:layout_constraintTop_toTopOf="parent" />
+
                     <TextView
                         android:id="@+id/tv_study_set_deadline"
                         android:layout_width="200dp"
@@ -282,8 +296,9 @@
                         android:gravity="left"
                         app:layout_constraintBottom_toBottomOf="parent"
                         android:textColor="@color/black"
-                        app:layout_constraintTop_toTopOf="parent"/>
+                        app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="26dp"
@@ -292,6 +307,7 @@
                     android:layout_marginBottom="6dp"
                     android:layout_gravity="center"
                     android:background="@drawable/bg_item_study_search_light_blue">
+
                     <TextView
                         android:id="@+id/tv_study_apply_method"
                         android:layout_width="70dp"
@@ -303,8 +319,8 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/tv_study_set_apply_method"
-                        app:layout_constraintTop_toTopOf="parent"
-                        />
+                        app:layout_constraintTop_toTopOf="parent" />
+
                     <TextView
                         android:id="@+id/tv_study_set_apply_method"
                         android:layout_width="200dp"
@@ -316,119 +332,127 @@
                         android:gravity="left"
                         app:layout_constraintBottom_toBottomOf="parent"
                         android:textColor="@color/black"
-                        app:layout_constraintTop_toTopOf="parent"/>
+                        app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="26dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginBottom="5dp"
-                android:layout_gravity="center"
-                android:background="@drawable/bg_item_study_search_light_blue">
-                <TextView
-                    android:id="@+id/tv_study_application_status"
-                    android:layout_width="70dp"
-                    android:layout_height="wrap_content"
-                    android:text="모집 현황"
-                    android:textSize="11sp"
-                    android:textColor="@color/color_82B4FF"
-                    android:gravity="center"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/tv_study_set_application_status"
-                    app:layout_constraintTop_toTopOf="parent"
-                    />
-                <TextView
-                    android:id="@+id/tv_study_set_application_status"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toEndOf="@+id/tv_study_application_status"
-                    android:layout_marginStart="10dp"
-                    android:text="모집현황"
-                    android:textSize="11sp"
-                    android:gravity="left"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:textColor="@color/black"
-                    app:layout_constraintTop_toTopOf="parent"/>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="@color/color_F1F1F1"
-                app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginBottom="5dp"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:background="@drawable/bg_item_study_light_blue">
-                <LinearLayout
-                    android:id="@+id/layout_study_content_detail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="26dp"
                     android:layout_marginStart="20dp"
-                    app:layout_constraintBottom_toTopOf="@id/tv_study_set_detail_content">
-                    <ImageView
-                        android:id="@+id/iv_study_detail_content"
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"
-                        android:src="@drawable/ic_study_detail_content"
-                        app:layout_constraintStart_toStartOf="parent" />
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_item_study_search_light_blue">
+
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:id="@+id/tv_study_application_status"
+                        android:layout_width="70dp"
                         android:layout_height="wrap_content"
-                        android:text="상세내용"
+                        android:text="모집 현황"
                         android:textSize="11sp"
                         android:textColor="@color/color_82B4FF"
-                        android:layout_marginStart="5dp"
-                        />
-                </LinearLayout>
-                <TextView
-                    android:id="@+id/tv_study_set_detail_content"
-                    android:layout_marginTop="5dp"
+                        android:gravity="center"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/tv_study_set_application_status"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_study_set_application_status"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toEndOf="@+id/tv_study_application_status"
+                        android:layout_marginStart="10dp"
+                        android:text="모집현황"
+                        android:textSize="11sp"
+                        android:gravity="left"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:textColor="@color/black"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/color_F1F1F1"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
-                    android:textSize="11sp"
-                    app:layout_constraintTop_toBottomOf="@+id/layout_study_content_detail"
-                    android:text="스터디 상세정보"
-                    />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="10dp">
-                <Button
-                    android:id="@+id/btn_study_apply"
-                    android:layout_width="320dp"
-                    android:background="@drawable/btn_round_blue_selector"
-                    android:layout_height="44dp"
-                    android:textColor="@color/white"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:textSize="16sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:padding="10dp"
-                    android:text="가입 신청" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+                    android:layout_marginBottom="5dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:background="@drawable/bg_item_study_light_blue">
+
+                    <LinearLayout
+                        android:id="@+id/layout_study_content_detail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginStart="20dp"
+                        app:layout_constraintBottom_toTopOf="@id/tv_study_set_detail_content">
+
+                        <ImageView
+                            android:id="@+id/iv_study_detail_content"
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:src="@drawable/ic_study_detail_content"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="상세내용"
+                            android:textSize="11sp"
+                            android:textColor="@color/color_82B4FF"
+                            android:layout_marginStart="5dp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_study_set_detail_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:textSize="11sp"
+                        app:layout_constraintTop_toBottomOf="@+id/layout_study_content_detail"
+                        android:text="스터디 상세정보" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="10dp">
+
+                    <Button
+                        android:id="@+id/btn_study_apply"
+                        android:layout_width="320dp"
+                        android:background="@drawable/btn_round_blue_selector"
+                        android:layout_height="44dp"
+                        android:textColor="@color/white"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:textSize="16sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:padding="10dp"
+                        android:text="가입 신청" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
         <FrameLayout
             android:id="@+id/fl_loading_layout"
             android:layout_width="match_parent"
@@ -438,11 +462,12 @@
             android:visibility="visible"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent">
+
             <ProgressBar
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:indeterminateTint="@color/color_swith"/>
+                android:indeterminateTint="@color/color_swith" />
         </FrameLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

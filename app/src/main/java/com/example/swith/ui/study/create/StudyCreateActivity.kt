@@ -1,5 +1,6 @@
 package com.example.swith.ui.study.create
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
@@ -22,13 +23,13 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.example.swith.R
 import com.example.swith.SwithApplication.Companion.spfManager
-import com.example.swith.data.StudyGroup
-import com.example.swith.data.StudyImageRes
-import com.example.swith.data.StudyResponse
+import com.example.swith.data.api.RetrofitService
+import com.example.swith.data.api.SwithService
 import com.example.swith.databinding.ActivityStudyCreateBinding
 import com.example.swith.databinding.DialogCreateBinding
-import com.example.swith.repository.RetrofitApi
-import com.example.swith.repository.RetrofitService
+import com.example.swith.domain.entity.StudyGroup
+import com.example.swith.domain.entity.StudyImageRes
+import com.example.swith.domain.entity.StudyResponse
 import com.example.swith.ui.dialog.CustomDialog
 import com.example.swith.viewmodel.StudyCreateViewModel
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -44,7 +45,7 @@ import java.util.*
 class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
     lateinit var binding: ActivityStudyCreateBinding
     private val viewModel : StudyCreateViewModel by viewModels()
-    private val GALLERY = 1
+    private val GALLERY=1
     var file=File("")
 
     private lateinit var startTime: Calendar //활동 시작기간
@@ -126,6 +127,7 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
                         frequencyContent,
                         periodsContent,
                         onlineIdx,
+
                         if (onlineIdx==0) btnPlusPlace1.text.toString() else null,
                         if (onlineIdx==0) btnPlusPlace2.text.toString() else null,
                         interestIdx,
@@ -269,6 +271,7 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == GALLERY)
         {
             if(resultCode == RESULT_OK)
@@ -310,25 +313,25 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
             //팝업 달력
             val datePickerDialog = DatePickerDialog(this@StudyCreateActivity, R.style.DatePickerTheme,
                 { _, year, month, day ->
-                if (month<10)
-                { binding.tvDeadline.text =
-                    year.toString() + "-0" + (month + 1).toString() + "-" + day.toString()
-                    if (day<10)
-                    {
-                        binding.tvDeadline.text =
-                            year.toString() + "-0" + (month + 1).toString() + "-0" + day.toString()
+                    if (month<10)
+                    { binding.tvDeadline.text =
+                        year.toString() + "-0" + (month + 1).toString() + "-" + day.toString()
+                        if (day<10)
+                        {
+                            binding.tvDeadline.text =
+                                year.toString() + "-0" + (month + 1).toString() + "-0" + day.toString()
+                        }
                     }
-                }
-                else
-                { binding.tvDeadline.text =
-                    year.toString() + "-" + (month + 1).toString() + "-" + day.toString()
-                    if (day<10)
-                    {
-                        binding.tvDeadline.text =
-                            year.toString() + "-" + (month + 1).toString() + "-0" + day.toString()
+                    else
+                    { binding.tvDeadline.text =
+                        year.toString() + "-" + (month + 1).toString() + "-" + day.toString()
+                        if (day<10)
+                        {
+                            binding.tvDeadline.text =
+                                year.toString() + "-" + (month + 1).toString() + "-0" + day.toString()
+                        }
                     }
-                }
-            }, year, month, day).apply{
+                }, year, month, day).apply{
                 datePicker.minDate= System.currentTimeMillis() - 1000;
             }
             datePickerDialog.show()
@@ -338,27 +341,27 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
         binding.btnStartDay.setOnClickListener {
             val datePickerDialog = DatePickerDialog(this@StudyCreateActivity, R.style.DatePickerTheme,
                 { _, year, month, day ->
-                if (month<10)
-                { binding.tvStartDay.text =
-                    year.toString() + "-0" + (month + 1).toString() + "-" + day.toString()
-                    if (day<10)
-                    {
-                        binding.tvStartDay.text =
-                            year.toString() + "-0" + (month + 1).toString() + "-0" + day.toString()
+                    if (month<10)
+                    { binding.tvStartDay.text =
+                        year.toString() + "-0" + (month + 1).toString() + "-" + day.toString()
+                        if (day<10)
+                        {
+                            binding.tvStartDay.text =
+                                year.toString() + "-0" + (month + 1).toString() + "-0" + day.toString()
+                        }
                     }
-                }
-                else
-                { binding.tvStartDay.text =
-                    year.toString() + "-" + (month + 1).toString() + "-" + day.toString()
-                    if (day<10)
-                    {
-                        binding.tvStartDay.text =
-                            year.toString() + "-" + (month + 1).toString() + "-0" + day.toString()
+                    else
+                    { binding.tvStartDay.text =
+                        year.toString() + "-" + (month + 1).toString() + "-" + day.toString()
+                        if (day<10)
+                        {
+                            binding.tvStartDay.text =
+                                year.toString() + "-" + (month + 1).toString() + "-0" + day.toString()
+                        }
                     }
-                }
-                startTime=Calendar.getInstance()
-                startTime.apply { set(year, month, day) }
-            }, year, month, day).apply {
+                    startTime=Calendar.getInstance()
+                    startTime.apply { set(year, month, day) }
+                }, year, month, day).apply {
                 datePicker.minDate= System.currentTimeMillis() - 1000;
             }
             datePickerDialog.show()
@@ -369,25 +372,25 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
             if (binding.tvStartDay.text.toString() != "시작 날짜") {
                 val datePickerDialog = DatePickerDialog(this@StudyCreateActivity, R.style.DatePickerTheme,
                     { _, year, month, day ->
-                    if (month<10)
-                    { binding.tvFinishDay.text =
-                        year.toString() + "-0" + (month + 1).toString() + "-" + day.toString()
-                        if (day<10)
-                        {
-                            binding.tvFinishDay.text =
-                                year.toString() + "-0" + (month + 1).toString() + "-0" + day.toString()
+                        if (month<10)
+                        { binding.tvFinishDay.text =
+                            year.toString() + "-0" + (month + 1).toString() + "-" + day.toString()
+                            if (day<10)
+                            {
+                                binding.tvFinishDay.text =
+                                    year.toString() + "-0" + (month + 1).toString() + "-0" + day.toString()
+                            }
                         }
-                    }
-                    else
-                    { binding.tvFinishDay.text =
-                        year.toString() + "-" + (month + 1).toString() + "-" + day.toString()
-                        if (day<10)
-                        {
-                            binding.tvFinishDay.text =
-                                year.toString() + "-" + (month + 1).toString() + "-0" + day.toString()
+                        else
+                        { binding.tvFinishDay.text =
+                            year.toString() + "-" + (month + 1).toString() + "-" + day.toString()
+                            if (day<10)
+                            {
+                                binding.tvFinishDay.text =
+                                    year.toString() + "-" + (month + 1).toString() + "-0" + day.toString()
+                            }
                         }
-                    }
-                }, year, month, day).apply {
+                    }, year, month, day).apply {
                     datePicker.minDate = startTime.timeInMillis
                 }
                 datePickerDialog.show()
@@ -518,102 +521,102 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
             }
 
             btnApplicationFf.setOnCheckedChangeListener{ checkbox, isChecked ->
-                    if (isChecked) {
-                        when (checkbox.id) {
-                            R.id.btn_application_ff -> {
-                                btnApplicationApply.isChecked = false
-                                btnApplicationFf.isChecked = true
-                                applicationMethodIdx = 0 //선착순
-                            }
-                            R.id.btn_application_apply -> {
-                                btnApplicationFf.isChecked = false
-                                btnApplicationApply.isChecked = true
-                                applicationMethodIdx = 1 // 지원
-                            }
+                if (isChecked) {
+                    when (checkbox.id) {
+                        R.id.btn_application_ff -> {
+                            btnApplicationApply.isChecked = false
+                            btnApplicationFf.isChecked = true
+                            applicationMethodIdx = 0 //선착순
+                        }
+                        R.id.btn_application_apply -> {
+                            btnApplicationFf.isChecked = false
+                            btnApplicationApply.isChecked = true
+                            applicationMethodIdx = 1 // 지원
                         }
                     }
                 }
+            }
 
-                //on,offline 장소선택
-                val listenerOnline =
-                    CompoundButton.OnCheckedChangeListener { checkbox, isChecked ->
-                        if (isChecked)
-                            when (checkbox.id) {
-                                R.id.btn_online -> {
-                                    btnOnline.isChecked = true
-                                    btnOffline.isChecked = false
-                                    tvStudyRegion.visibility = View.GONE
-                                    layoutCreateRegionBtns.visibility = View.GONE
-                                    lineRegion.visibility = View.GONE
-                                    onlineIdx = 1
-                                    btnPlusPlace1.text="+"
-                                    btnPlusPlace2.text="+"
-                                    btnPlusPlace1.background = ContextCompat.getDrawable(
-                                        this@StudyCreateActivity,R.drawable.bg_create_skyblue)
-                                    btnPlusPlace2.background = ContextCompat.getDrawable(
-                                        this@StudyCreateActivity,R.drawable.bg_create_skyblue)
-
-                                    val pref1 = getSharedPreferences("result1", MODE_PRIVATE)
-                                    val editor1 = pref1.edit()
-                                    editor1.remove("이름1")
-                                    editor1.commit()
-                                    val pref2 = getSharedPreferences("result2", MODE_PRIVATE)
-                                    val editor2 = pref2.edit()
-                                    editor2.remove("이름2")
-                                    editor2.commit()
-                                }
-
-                                R.id.btn_offline -> {
-                                    btnOnline.isChecked = false
-                                    btnOffline.isChecked = true
-                                    tvStudyRegion.visibility = View.VISIBLE
-                                    binding.layoutCreateRegionBtns.visibility = View.VISIBLE
-                                    lineRegion.visibility = View.VISIBLE
-                                    onlineIdx = 0
-                                }
-                            }
-                    }
-                btnOnline.setOnCheckedChangeListener(listenerOnline)
-                btnOffline.setOnCheckedChangeListener(listenerOnline)
-
-                //시간 선택
-                val listener = CompoundButton.OnCheckedChangeListener { checkbox, isChecked ->
+            //on,offline 장소선택
+            val listenerOnline =
+                CompoundButton.OnCheckedChangeListener { checkbox, isChecked ->
                     if (isChecked)
                         when (checkbox.id) {
-                            R.id.check_week -> {
-                                toggleTime(etStudyFree,etStudyMonth,tvStudyWeek,studyWeekTv2,tvStudyMonth,studyMonthTv2,checkMonth,checkFree)
-                                etStudyWeek.isEnabled = true
-                                etStudyMonth.isEnabled = false
-                                etStudyFree.isEnabled = false
-                                etStudyFree.setTextColor(Color.parseColor("#9F9F9F"))
-                                meetIdx = 0
+                            R.id.btn_online -> {
+                                btnOnline.isChecked = true
+                                btnOffline.isChecked = false
+                                tvStudyRegion.visibility = View.GONE
+                                layoutCreateRegionBtns.visibility = View.GONE
+                                lineRegion.visibility = View.GONE
+                                onlineIdx = 1
+                                btnPlusPlace1.text="+"
+                                btnPlusPlace2.text="+"
+                                btnPlusPlace1.background = ContextCompat.getDrawable(
+                                    this@StudyCreateActivity,R.drawable.bg_create_skyblue)
+                                btnPlusPlace2.background = ContextCompat.getDrawable(
+                                    this@StudyCreateActivity,R.drawable.bg_create_skyblue)
+
+                                val pref1 = getSharedPreferences("result1", MODE_PRIVATE)
+                                val editor1 = pref1.edit()
+                                editor1.remove("이름1")
+                                editor1.commit()
+                                val pref2 = getSharedPreferences("result2", MODE_PRIVATE)
+                                val editor2 = pref2.edit()
+                                editor2.remove("이름2")
+                                editor2.commit()
                             }
-                            R.id.check_month -> {
-                                toggleTime(etStudyFree,etStudyWeek,tvStudyMonth,studyMonthTv2,tvStudyWeek,studyWeekTv2,checkWeek,checkFree)
-                                etStudyMonth.isEnabled = true
-                                etStudyWeek.isEnabled = false
-                                etStudyFree.isEnabled = false
-                                etStudyFree.setTextColor(Color.parseColor("#9F9F9F"))
-                                meetIdx = 1
-                            }
-                            R.id.check_free -> {
-                                toggleTime(etStudyWeek,etStudyMonth,null,null,null,null,checkMonth,checkWeek)
-                                etStudyFree.isEnabled = true
-                                etStudyWeek.isEnabled = false
-                                etStudyMonth.isEnabled = false
-                                tvStudyMonth.setTextColor(Color.parseColor("#9F9F9F"))
-                                studyMonthTv2.setTextColor(Color.parseColor("#9F9F9F"))
-                                tvStudyWeek.setTextColor(Color.parseColor("#9F9F9F"))
-                                studyWeekTv2.setTextColor(Color.parseColor("#9F9F9F"))
-                                etStudyFree.setTextColor(Color.parseColor("#525252"))
-                                meetIdx = 2
-                                periodsContent = etStudyFree.text.toString()
+
+                            R.id.btn_offline -> {
+                                btnOnline.isChecked = false
+                                btnOffline.isChecked = true
+                                tvStudyRegion.visibility = View.VISIBLE
+                                binding.layoutCreateRegionBtns.visibility = View.VISIBLE
+                                lineRegion.visibility = View.VISIBLE
+                                onlineIdx = 0
                             }
                         }
                 }
-                checkWeek.setOnCheckedChangeListener(listener)
-                checkMonth.setOnCheckedChangeListener(listener)
-                checkFree.setOnCheckedChangeListener(listener)
+            btnOnline.setOnCheckedChangeListener(listenerOnline)
+            btnOffline.setOnCheckedChangeListener(listenerOnline)
+
+            //시간 선택
+            val listener = CompoundButton.OnCheckedChangeListener { checkbox, isChecked ->
+                if (isChecked)
+                    when (checkbox.id) {
+                        R.id.check_week -> {
+                            toggleTime(etStudyFree,etStudyMonth,tvStudyWeek,studyWeekTv2,tvStudyMonth,studyMonthTv2,checkMonth,checkFree)
+                            etStudyWeek.isEnabled = true
+                            etStudyMonth.isEnabled = false
+                            etStudyFree.isEnabled = false
+                            etStudyFree.setTextColor(Color.parseColor("#9F9F9F"))
+                            meetIdx = 0
+                        }
+                        R.id.check_month -> {
+                            toggleTime(etStudyFree,etStudyWeek,tvStudyMonth,studyMonthTv2,tvStudyWeek,studyWeekTv2,checkWeek,checkFree)
+                            etStudyMonth.isEnabled = true
+                            etStudyWeek.isEnabled = false
+                            etStudyFree.isEnabled = false
+                            etStudyFree.setTextColor(Color.parseColor("#9F9F9F"))
+                            meetIdx = 1
+                        }
+                        R.id.check_free -> {
+                            toggleTime(etStudyWeek,etStudyMonth,null,null,null,null,checkMonth,checkWeek)
+                            etStudyFree.isEnabled = true
+                            etStudyWeek.isEnabled = false
+                            etStudyMonth.isEnabled = false
+                            tvStudyMonth.setTextColor(Color.parseColor("#9F9F9F"))
+                            studyMonthTv2.setTextColor(Color.parseColor("#9F9F9F"))
+                            tvStudyWeek.setTextColor(Color.parseColor("#9F9F9F"))
+                            studyWeekTv2.setTextColor(Color.parseColor("#9F9F9F"))
+                            etStudyFree.setTextColor(Color.parseColor("#525252"))
+                            meetIdx = 2
+                            periodsContent = etStudyFree.text.toString()
+                        }
+                    }
+            }
+            checkWeek.setOnCheckedChangeListener(listener)
+            checkMonth.setOnCheckedChangeListener(listener)
+            checkFree.setOnCheckedChangeListener(listener)
         }
 
     }
@@ -654,6 +657,7 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
         check2.isChecked=false
     }
 
+    @SuppressLint("Range")
     private fun getRealPathFromURI(contentUri: Uri?): String? {
         val proj = arrayOf(MediaStore.Images.Media.DATA)
         val cursor = contentResolver.query(contentUri!!, proj, null, null, null)
@@ -685,7 +689,7 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
         {
             val requestFile = file.asRequestBody("image".toMediaTypeOrNull())
             var body  = MultipartBody.Part.createFormData("image", file.name, requestFile)
-            val retrofitService = RetrofitService.retrofit.create(RetrofitApi::class.java)
+            val retrofitService = RetrofitService.retrofit.create(SwithService::class.java)
             retrofitService.uploadImg(body).enqueue(object :
                 Callback<StudyImageRes> {
                 override fun onResponse(
@@ -720,7 +724,7 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
     }
     private fun postStudy(studyRequestData: StudyGroup) {
         Log.e("StudyReq 최종", "${studyRequestData.toString()}")
-        val retrofitService = RetrofitService.retrofit.create(RetrofitApi::class.java)
+        val retrofitService = RetrofitService.retrofit.create(SwithService::class.java)
         retrofitService.createStudy(studyRequestData).enqueue(object : Callback <StudyResponse> {
             override fun onResponse(call: Call<StudyResponse>, response: Response<StudyResponse>) {
                 if (response.isSuccessful)

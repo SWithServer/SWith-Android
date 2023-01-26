@@ -2,15 +2,14 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
 android {
-    compileSdk 31
+    compileSdk 32
 
     buildFeatures {
         viewBinding true
@@ -24,11 +23,6 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
-        //key값 가리기
-//        def kakao_api_key = properties.getProperty('kakao_api_key')
-//        buildConfigField "String", "KAKAO_API_KEY", properties['kakao_api_key']
-//        manifestPlaceholders["KAKAO_API_KEY"] = kakao_api_key
     }
 
     buildTypes {
@@ -48,6 +42,8 @@ android {
 
 
 dependencies {
+    implementation project(":data")
+    implementation project(":domain")
     def room_version = "2.4.2"
     def lifecycle_version = "2.5.0-rc02"
     // room DB
@@ -118,4 +114,9 @@ dependencies {
     implementation 'com.amazonaws:aws-android-sdk-mobile-client:2.13.5'
     implementation 'com.amazonaws:aws-android-sdk-cognito:2.13.5'
     implementation 'com.amazonaws:aws-android-sdk-s3:2.13.5'
+
+    // dagger - hilt
+    implementation 'com.google.dagger:hilt-android:2.43.1'
+    kapt 'com.google.dagger:hilt-compiler:2.43.1'
+    kapt 'androidx.hilt:hilt-compiler:1.0.0'
 }

@@ -6,43 +6,39 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.swith.R
-import com.example.swith.data.ManageUserResponse
-import com.example.swith.data.ManageUserResumeReq
-import com.example.swith.data.ManageUserResumeResponse
-import com.example.swith.databinding.ActivityManageFinishBinding
+import com.example.swith.data.api.RetrofitService
 import com.example.swith.databinding.ActivityManageUserResumeBinding
-import com.example.swith.repository.RetrofitApi
-import com.example.swith.repository.RetrofitService
+import com.example.swith.domain.entity.ManageUserResumeReq
+import com.example.swith.domain.entity.ManageUserResumeResponse
 import com.example.swith.utils.SharedPrefManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ManageUserResumeActivity:AppCompatActivity(),View.OnClickListener {
-    lateinit var binding:ActivityManageUserResumeBinding
-    var userIdx : Long?= -1
-    var groupIdx : Long? = -1
+class ManageUserResumeActivity : AppCompatActivity(), View.OnClickListener {
+    lateinit var binding: ActivityManageUserResumeBinding
+    var userIdx: Long? = -1
+    var groupIdx: Long? = -1
 
 //    val adminId = SharedPrefManager(this@ManageUserResumeActivity).getLoginData()
 //    val adminIdx = adminId?.userIdx
 
-//    val adminIdx : Long = 1
-    var applicationIdx : Long? = -1
+    //    val adminIdx : Long = 1
+    var applicationIdx: Long? = -1
 
-    var status : Int? = -1
-    var applicationContent : String?=""
+    var status: Int? = -1
+    var applicationContent: String? = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_manage_user_resume)
         binding.clickListener = this
         initData()
-        binding.flLoadingLayout.visibility=View.VISIBLE
+        binding.flLoadingLayout.visibility = View.VISIBLE
         setResume(applicationContent)
         clickButton()
     }
 
-    fun clickButton()
-    {
+    fun clickButton() {
         with(binding)
         {
             btnYes.setOnClickListener {
@@ -58,32 +54,39 @@ class ManageUserResumeActivity:AppCompatActivity(),View.OnClickListener {
         }
     }
 
-    fun postData(statusOfApplication : Int)
-    {
+    fun postData(statusOfApplication: Int) {
         Log.e("groupIdx 레트로핏 값 ", "${groupIdx}")
-        Log.e("applicationIdx 신청서 idx 값","${applicationIdx}")
-        val resumeReq = ManageUserResumeReq(applicationIdx,SharedPrefManager(this@ManageUserResumeActivity).getLoginData()!!.userIdx,statusOfApplication)
-        Log.e("req 부분","${resumeReq}")
-        val retrofitService = RetrofitService.retrofit.create(RetrofitApi::class.java)
-        retrofitService.postUserResume(groupIdx!!,0,resumeReq).enqueue(object :
+        Log.e("applicationIdx 신청서 idx 값", "${applicationIdx}")
+        val resumeReq = ManageUserResumeReq(
+            applicationIdx,
+            SharedPrefManager(this@ManageUserResumeActivity).getLoginData()!!.userIdx,
+            statusOfApplication
+        )
+        Log.e("req 부분", "${resumeReq}")
+        val retrofitService =
+            RetrofitService.retrofit.create(com.example.swith.data.api.SwithService::class.java)
+        retrofitService.postUserResume(groupIdx!!, 0, resumeReq).enqueue(object :
             Callback<ManageUserResumeResponse> {
             override fun onResponse(
                 call: Call<ManageUserResumeResponse>,
-                response: Response<ManageUserResumeResponse>
+                response: Response<ManageUserResumeResponse>,
             ) {
                 if (response.isSuccessful) {
-                    binding.flLoadingLayout.visibility=View.GONE
+                    binding.flLoadingLayout.visibility = View.GONE
                     Log.e("summer", "성공${response.toString()}")
                     response.body()?.apply {
-                        Log.e("resume 승인/반려 성공" ,"${this.toString()}")
+                        Log.e("resume 승인/반려 성공", "${this.toString()}")
                     }
-                }
-                else {
+                } else {
                     Log.e("summer", "전달실패 code = ${response.code()}")
                     Log.e("summer", "전달실패 msg = ${response.message()}")
                 }
             }
-            override fun onFailure(call: Call<ManageUserResumeResponse>, t: Throwable) {
+
+            override fun onFailure(
+                call: Call<ManageUserResumeResponse>,
+                t: Throwable,
+            ) {
                 Log.e("summer", "onFailure t = ${t.toString()}")
                 Log.e("summer", "onFailure msg = ${t.message}")
             }
@@ -91,56 +94,53 @@ class ManageUserResumeActivity:AppCompatActivity(),View.OnClickListener {
     }
 
     // resume 값 가져오기
-    fun setResume(resumeContent: String?)
-    {
-        binding.flLoadingLayout.visibility=View.GONE
+    fun setResume(resumeContent: String?) {
+        binding.flLoadingLayout.visibility = View.GONE
         with(binding)
         {
             tvResumeContent.text = resumeContent
         }
     }
 
-    fun initData()
-    {
-        (intent.hasExtra("status").let{
-            status = intent.getIntExtra("status",0)
-            Log.e("status값","${status}")
-            when(status)
-            {
-                0->{
-                    Log.e("when 0 값","true")
+    fun initData() {
+        (intent.hasExtra("status").let {
+            status = intent.getIntExtra("status", 0)
+            Log.e("status값", "${status}")
+            when (status) {
+                0 -> {
+                    Log.e("when 0 값", "true")
                     with(binding)
                     {
-                        btnYes.visibility= View.VISIBLE
+                        btnYes.visibility = View.VISIBLE
                         btnNo.visibility = View.VISIBLE
                     }
                 }
-                1->{
-                    Log.e("when 1 값 ","true")
+                1 -> {
+                    Log.e("when 1 값 ", "true")
                     with(binding)
                     {
-                        btnYes.visibility= View.GONE
+                        btnYes.visibility = View.GONE
                         btnNo.visibility = View.GONE
                     }
                 }
             }
         })
-        (intent.hasExtra("groupIdx").let{
-            groupIdx = intent.getIntExtra("groupIdx",0).toLong()
-            Log.e("groupIdx값","${groupIdx}")
+        (intent.hasExtra("groupIdx").let {
+            groupIdx = intent.getIntExtra("groupIdx", 0).toLong()
+            Log.e("groupIdx값", "${groupIdx}")
         })
-        (intent.hasExtra("applicationIdx").let{
-          applicationIdx = intent.getLongExtra("applicationIdx",-1)
-            Log.e("applicationIdx값","${applicationIdx}")
+        (intent.hasExtra("applicationIdx").let {
+            applicationIdx = intent.getLongExtra("applicationIdx", -1)
+            Log.e("applicationIdx값", "${applicationIdx}")
         })
-        (intent.hasExtra("applicationContent").let{
+        (intent.hasExtra("applicationContent").let {
             applicationContent = intent.getStringExtra("applicationContent")
-            Log.e("지원서 내용:applicationContent 값","${applicationContent}")
+            Log.e("지원서 내용:applicationContent 값", "${applicationContent}")
         })
     }
 
     override fun onClick(view: View?) {
-        when(view?.id){
+        when (view?.id) {
             R.id.ib_basic_toolbar_back -> finish()
         }
     }

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
         <variable
             name="clickListener"
             type="android.view.View.OnClickListener" />
+
         <variable
             name="loginViewModel"
             type="com.example.swith.viewmodel.LoginViewModel" />
@@ -45,6 +45,7 @@
             android:textSize="32dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
         <LinearLayout
             android:id="@+id/ll_kakao"
             android:layout_width="match_parent"
@@ -59,17 +60,19 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_kakao"/>
+                android:src="@drawable/ic_kakao" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/login_kakao"
                 android:fontFamily="@font/kr_regular"
                 android:textSize="16dp"
-                android:textColor="@color/color_swith"/>
+                android:textColor="@color/color_swith" />
         </LinearLayout>
 
         <FrameLayout
@@ -85,11 +88,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:indeterminateTint="#54000000"/>
+                android:indeterminateTint="#54000000" />
         </FrameLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
 
 </layout>
