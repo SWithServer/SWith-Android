@@ -1,21 +1,41 @@
 package com.example.swith.viewmodel
 
 import androidx.databinding.ObservableField
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import com.example.swith.data.ProfileModifyRequest
-import com.example.swith.data.ProfileModifyResponse
-import com.example.swith.data.ProfileRequest
-import com.example.swith.data.ProfileResponse
-import com.example.swith.repository.profile.ProfileModifyRepository
-import com.example.swith.repository.profile.ProfileModifyRepositoryProvider
+import androidx.lifecycle.*
+import com.example.swith.domain.entity.ProfileResponse
+import com.example.swith.domain.entity.ProfileResult
+import dagger.assisted.Assisted
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class ProfileModifyViewModel:ViewModel() {
+@HiltViewModel
+class ProfileModifyViewModel @Inject constructor(
+    private val savedStateHandle: SavedStateHandle
+): ViewModel() {
+    private val _profileData = savedStateHandle.getLiveData<ProfileResult>("profile")
+    val profileData : LiveData<ProfileResult> get() = _profileData
+
+    private val _interest1 = MutableLiveData<Int>()
+    val interest1 : LiveData<Int> get() = _interest1
+
+    private val _interest2 = MutableLiveData<Int>()
+    val interest2 : LiveData<Int> get() = _interest2
+
+    private val _region = MutableLiveData<String>()
+    val region : LiveData<String> get() =  _region
+
+
     val isLoading: ObservableField<Boolean> = ObservableField<Boolean>()
-    private val mProfileModifyRepository: ProfileModifyRepository = ProfileModifyRepositoryProvider.provideProfileModifyRepository()
+
+    val editEnabled : ObservableField<Boolean> = ObservableField<Boolean>()
     init {
         hideLoading()
+        // 관심사 idx 설정
+        _profileData.value?.let {
+            _interest1.value = it.interestIdx1
+            _interest2.value = it.interestIdx2
+            _region.value = it.region
+        }
     }
 
     fun showLoading() {
@@ -26,30 +46,10 @@ class ProfileModifyViewModel:ViewModel() {
         isLoading.set(false)
     }
 
-    fun requestCurrentProfile(profileRequest: ProfileRequest): LiveData<ProfileResponse> {
-        return mProfileModifyRepository.requestCurrentProfile(profileRequest)
-    }
-
-    fun getCurrentProfile(): LiveData<ProfileResponse> {
-        return mProfileModifyRepository.getCurrentProfile()
-    }
-
-    fun requestCurrentProfileModify(profileModifyRequest: ProfileModifyRequest):LiveData<ProfileModifyResponse>{
-        return mProfileModifyRepository.requestCurrentProfileModify(profileModifyRequest)
-    }
-    fun getCurrentProfileModify():LiveData<ProfileModifyResponse>{
-        return mProfileModifyRepository.getCurrentProfileModify()
-    }
-
-    fun setImage(){
-
-    }
-
-    class Factory : ViewModelProvider.NewInstanceFactory() {
-
-        //@Suppress("UNCHECKED_CAST")
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return ProfileModifyViewModel() as T
-        }
+    fun setInterest(first : Boolean, interestIdx: Int){
+        if (first)
+            _interest1.value = interestIdx
+        else
+            _interest2.value = interestIdx
     }
 }

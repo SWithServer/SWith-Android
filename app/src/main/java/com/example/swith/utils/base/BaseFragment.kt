@@ -11,11 +11,15 @@ import androidx.viewbinding.ViewBinding
 import com.example.swith.ui.MainActivity
 import com.example.swith.ui.study.StudyActivity
 
-abstract class BaseFragment<VB : ViewBinding>(@LayoutRes private val layoutRes: Int): Fragment(){
+abstract class BaseFragment<VB : ViewBinding>(@LayoutRes private val layoutRes: Int) : Fragment() {
     private var _viewBinding: VB? = null
     protected val binding get() = _viewBinding!!
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
         _viewBinding = DataBindingUtil.inflate(inflater, layoutRes, container, false)
         return binding.root
     }
@@ -25,41 +29,41 @@ abstract class BaseFragment<VB : ViewBinding>(@LayoutRes private val layoutRes: 
         _viewBinding = null
     }
 
-    fun setVisiblebar(backButton: Boolean,noticeButton: Boolean,title:String,midTitle:String){
+    fun setVisiblebar(backButton: Boolean, noticeButton: Boolean, title: String, midTitle: String) {
         activity?.let {
             if (it is MainActivity) {
-                it.setVisibleBar(backButton,noticeButton,title,midTitle)
+                it.setVisibleBar(backButton, noticeButton, title, midTitle)
             }
         }
     }
 
-    fun setManagerLayout(isManager: Boolean){
-        activity?.let{
-            if (it is StudyActivity){
+    fun setManagerLayout(isManager: Boolean) {
+        activity?.let {
+            if (it is StudyActivity) {
                 it.setVisibleBar(isManager)
             }
         }
     }
 
-    fun goLoginPage(){
-        activity?.let{
-            if (it is MainActivity){
+    fun goLoginPage() {
+        activity?.let {
+            if (it is MainActivity) {
                 it.loginPage()
             }
         }
     }
 
-    fun goProfilePage(){
-        activity?.let{
-            if (it is MainActivity){
+    fun goProfilePage() {
+        activity?.let {
+            if (it is MainActivity) {
                 it.goProfilePage()
             }
         }
     }
 
-    fun goResumePage(){
-        activity?.let{
-            if (it is MainActivity){
+    fun goResumePage() {
+        activity?.let {
+            if (it is MainActivity) {
                 it.goResumePage()
             }
         }

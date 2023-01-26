@@ -3,31 +3,39 @@ package com.example.swith.ui.dialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
 import android.view.*
+import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.example.swith.R
 import com.example.swith.databinding.DialogTimepickerBinding
 
-class CustomTimePickerDialog(context: Context): DialogFragment() {
+class CustomTimePickerDialog(context: Context) : DialogFragment() {
     val dialogBinding: DialogTimepickerBinding by lazy {
-        DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.dialog_timepicker, null, false)
+        DataBindingUtil.inflate(
+            LayoutInflater.from(context),
+            R.layout.dialog_timepicker,
+            null,
+            false
+        )
     }
 
-    interface ClickListener{
+    interface ClickListener {
         fun roundCreate()
     }
-    private lateinit var customListener : ClickListener
 
-    fun setCustomListener(listener: ClickListener){
+    private lateinit var customListener: ClickListener
+
+    fun setCustomListener(listener: ClickListener) {
         customListener = listener
     }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         // 모서리 직각 제거
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -35,6 +43,7 @@ class CustomTimePickerDialog(context: Context): DialogFragment() {
         return dialogBinding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.R)
     override fun onResume() {
         super.onResume()
         // 디바이스 크기별 세팅
@@ -49,7 +58,7 @@ class CustomTimePickerDialog(context: Context): DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        with(dialogBinding){
+        with(dialogBinding) {
             btnRoundCreateCancel.setOnClickListener { dismiss() }
             btnRoundCreateConfirm.setOnClickListener { customListener.roundCreate() }
         }

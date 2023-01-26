@@ -1,174 +1,189 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+
     <data>
+
         <variable
             name="clickListener"
             type="android.view.View.OnClickListener" />
     </data>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:context=".ui.study.create.RoundCreateActivity">
-    <include
-        android:id="@+id/toolbar_create"
-        layout="@layout/round_appbar"
-        app:clickListener="@{clickListener}"/>
-    <TextView
-        android:id="@+id/tv_create_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/create_info"
-        android:textSize="14sp"
-        android:textColor="@color/black"
-        android:layout_marginStart="20dp"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_create"
-        android:layout_marginTop="10dp"
-        app:layout_constraintStart_toStartOf="parent"/>
-    <TextView
-        android:id="@+id/tv_create_reset"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:gravity="center_vertical"
-        android:text="시간 초기화"
-        android:textSize="12sp"
-        android:textColor="@color/color_ADA0FF"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        app:layout_constraintTop_toTopOf="@id/tv_create_info"
-        app:layout_constraintBottom_toBottomOf="@id/tv_create_info"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
-    <LinearLayout
-        android:id="@+id/layout_create_date"
-        android:layout_width="0dp"
-        android:layout_height="36dp"
-        android:orientation="horizontal"
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        app:layout_constraintTop_toBottomOf="@id/tv_create_info"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-        <Button
-            android:id="@+id/btn_create_start_date"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_round_create_light_grey"
-            android:text="시작 시간"
-            android:stateListAnimator="@null"
-            android:layout_marginEnd="4dp"
-            android:layout_weight="1"
-            android:textSize="12sp"
-            android:textColor="@color/color_82B4FF" />
-        <Button
-            android:id="@+id/btn_create_end_date"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_marginStart="4dp"
-            android:background="@drawable/bg_round_create_light_grey"
-            android:stateListAnimator="@null"
-            android:text="종료 시간"
-            android:textSize="12sp"
-            android:textColor="@color/color_82B4FF" />
-    </LinearLayout>
-    <TextView
-        android:id="@+id/tv_round_create_alert"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="시간 초기화 후에 시작 시간 재설정이 가능합니다."
-        android:visibility="gone"
-        android:textColor="#F44336"
-        android:textSize="12sp"
-        android:layout_marginStart="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layout_create_date"/>
-    <LinearLayout
-        android:id="@+id/layout_create_checkbox"
-        android:layout_width="0dp"
-        android:layout_height="36dp"
-        android:orientation="horizontal"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@id/tv_round_create_alert"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-        <Button
-            android:id="@+id/btn_create_online"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_marginEnd="4dp"
-            android:stateListAnimator="@null"
-            android:background="@drawable/bg_round_create_sky_blue"
-            android:text="온라인"
-            android:textSize="12sp"
-            android:textColor="@color/white"/>
-        <Button
-            android:id="@+id/btn_create_offline"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_marginStart="4dp"
-            android:stateListAnimator="@null"
-            android:background="@drawable/bg_round_create_sky_blue"
-            android:text="오프라인"
-            android:textSize="12sp"
-            android:textColor="@color/white"/>
-    </LinearLayout>
-    <EditText
-        android:id="@+id/et_create_place"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:textColor="@color/black"
-        android:layout_marginEnd="20dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="8dp"
-        android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layout_create_checkbox"
-        android:inputType="text"
-        android:gravity="center_horizontal|center_vertical"
-        android:hint="@string/create_place_hint1"
-        android:background="@drawable/bg_round_create_detail"/>
-    <EditText
-        android:id="@+id/et_create_detail"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="50dp"
-        android:hint="@string/create_detail"
-        android:gravity="top"
-        android:textSize="12sp"
-        android:paddingStart="20dp"
-        android:paddingTop="12dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/et_create_place"
-        app:layout_constraintBottom_toTopOf="@id/btn_create_add"
-        android:background="@drawable/bg_round_create_detail"/>
-    <Button
-        android:id="@+id/btn_create_add"
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:text="완료"
-        android:visibility="invisible"
-        android:textSize="16sp"
-        android:textColor="@color/white"
-        android:background="@drawable/bg_confirm_bottom_sheet"
-        android:layout_marginBottom="32dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:context=".ui.study.create.RoundCreateActivity">
+
+        <include
+            android:id="@+id/toolbar_create"
+            layout="@layout/round_appbar"
+            app:clickListener="@{clickListener}" />
+
+        <TextView
+            android:id="@+id/tv_create_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/create_info"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:layout_marginStart="20dp"
+            app:layout_constraintTop_toBottomOf="@id/toolbar_create"
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_create_reset"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:gravity="center_vertical"
+            android:text="시간 초기화"
+            android:textSize="12sp"
+            android:textColor="@color/color_ADA0FF"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            app:layout_constraintTop_toTopOf="@id/tv_create_info"
+            app:layout_constraintBottom_toBottomOf="@id/tv_create_info"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/layout_create_date"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintTop_toBottomOf="@id/tv_create_info"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <Button
+                android:id="@+id/btn_create_start_date"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_round_create_light_grey"
+                android:text="시작 시간"
+                android:stateListAnimator="@null"
+                android:layout_marginEnd="4dp"
+                android:layout_weight="1"
+                android:textSize="12sp"
+                android:textColor="@color/color_82B4FF" />
+
+            <Button
+                android:id="@+id/btn_create_end_date"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginStart="4dp"
+                android:background="@drawable/bg_round_create_light_grey"
+                android:stateListAnimator="@null"
+                android:text="종료 시간"
+                android:textSize="12sp"
+                android:textColor="@color/color_82B4FF" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_round_create_alert"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="시간 초기화 후에 시작 시간 재설정이 가능합니다."
+            android:visibility="gone"
+            android:textColor="#F44336"
+            android:textSize="12sp"
+            android:layout_marginStart="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout_create_date" />
+
+        <LinearLayout
+            android:id="@+id/layout_create_checkbox"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:orientation="horizontal"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@id/tv_round_create_alert"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <Button
+                android:id="@+id/btn_create_online"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginEnd="4dp"
+                android:stateListAnimator="@null"
+                android:background="@drawable/bg_round_create_sky_blue"
+                android:text="온라인"
+                android:textSize="12sp"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/btn_create_offline"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginStart="4dp"
+                android:stateListAnimator="@null"
+                android:background="@drawable/bg_round_create_sky_blue"
+                android:text="오프라인"
+                android:textSize="12sp"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/et_create_place"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:textColor="@color/black"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout_create_checkbox"
+            android:inputType="text"
+            android:gravity="center_horizontal|center_vertical"
+            android:hint="@string/create_place_hint1"
+            android:background="@drawable/bg_round_create_detail" />
+
+        <EditText
+            android:id="@+id/et_create_detail"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="50dp"
+            android:hint="@string/create_detail"
+            android:gravity="top"
+            android:textSize="12sp"
+            android:paddingStart="20dp"
+            android:paddingTop="12dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_create_place"
+            app:layout_constraintBottom_toTopOf="@id/btn_create_add"
+            android:background="@drawable/bg_round_create_detail" />
+
+        <Button
+            android:id="@+id/btn_create_add"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:text="완료"
+            android:visibility="invisible"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:background="@drawable/bg_confirm_bottom_sheet"
+            android:layout_marginBottom="32dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -12,10 +12,10 @@ class InterestingAdapter(private val interestingClickCallback: InterestingCallba
     RecyclerView.Adapter<InterestingAdapter.InterestingViewHolder>() {
 
     private var dataList: List<String>? = null
-    private var interesting1: String = ""
-    private var interesting2: String = ""
+    private var interesting1: Int = 0
+    private var interesting2: Int = 0
 
-    fun setDataList(dataList: ArrayList<String>, interesting1: String, interesting2: String) {
+    fun setDataList(dataList: ArrayList<String>, interesting1: Int, interesting2: Int) {
         this.dataList = dataList
         this.interesting1 = interesting1
         this.interesting2 = interesting2
@@ -36,9 +36,7 @@ class InterestingAdapter(private val interestingClickCallback: InterestingCallba
         dataList?.let {
             holder.binding.data = it[position]
             Log.e("doori", it[position])
-            holder.binding.isSelect =
-                (it[position] == interesting1) || (it[position] == interesting2)
-
+            holder.binding.isSelect = (position > 0) && (position == interesting1 || position == interesting2)
             holder.binding.clInteresting.setOnClickListener {
                 holder.binding.data?.let {
                     interestingClickCallback.onClick(it)

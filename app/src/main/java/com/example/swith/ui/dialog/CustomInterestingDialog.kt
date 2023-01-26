@@ -10,18 +10,26 @@ import android.view.Window
 import android.view.WindowManager
 import com.example.swith.ui.adapter.InterestingAdapter
 
-class CustomInterestingDialog(dataList: ArrayList<String>,interesting1:String,interesting2: String,context: Context, view: View, width: Int = WindowManager.LayoutParams.WRAP_CONTENT, height: Int = WindowManager.LayoutParams.WRAP_CONTENT): Dialog(context) {
+class CustomInterestingDialog(
+    dataList: ArrayList<String>,
+    interesting1: Int,
+    interesting2: Int,
+    context: Context,
+    view: View,
+    width: Int = WindowManager.LayoutParams.WRAP_CONTENT,
+    height: Int = WindowManager.LayoutParams.WRAP_CONTENT,
+) : Dialog(context) {
     private var listener: DialogClickListener? = null
     private var clickConfirm: Boolean = false
     private var select: String = ""
-    private var interesting1: String = ""
-    private var interesting2: String = ""
-    private var dataList:ArrayList<String>? = null
+    private var interesting1: Int = 0
+    private var interesting2: Int = 0
+    private var dataList: ArrayList<String>? = null
     private var interestingAdapter: InterestingAdapter? = null
 
     init {
-        this.interesting1=interesting1
-        this.interesting2=interesting2
+        this.interesting1 = interesting1
+        this.interesting2 = interesting2
 
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         setCanceledOnTouchOutside(false)
@@ -42,7 +50,7 @@ class CustomInterestingDialog(dataList: ArrayList<String>,interesting1:String,in
     }
 
     interface DialogClickListener {
-        fun onSelect(select: String)
+        fun onSelect(idxSelect: Int)
         fun onClose()
     }
 
@@ -50,21 +58,21 @@ class CustomInterestingDialog(dataList: ArrayList<String>,interesting1:String,in
         this.listener = listener
     }
 
-    fun onClose(){
+    fun onClose() {
         dismiss()
     }
 
-    fun setAdapter(){
-        interestingAdapter = InterestingAdapter(object : InterestingAdapter.InterestingCallback{
+    fun setAdapter() {
+        interestingAdapter = InterestingAdapter(object : InterestingAdapter.InterestingCallback {
             override fun onClick(data: String) {
                 select = data
-                listener?.onSelect(select)
+                dataList?.let { listener?.onSelect(it.indexOf(data)) }
                 dismiss()
             }
         })
-        Log.e("doori",dataList.toString())
+        Log.e("doori", dataList.toString())
         dataList.apply {
-            this?.let { interestingAdapter?.setDataList(it, interesting1,interesting2) }
+            this?.let { interestingAdapter?.setDataList(it, interesting1, interesting2) }
         }
     }
 

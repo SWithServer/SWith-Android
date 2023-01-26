@@ -1,23 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
+
         <variable
             name="clickListener"
             type="android.view.View.OnClickListener" />
     </data>
+
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/manage_toolbar_layout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         app:elevation="0dp">
+
         <androidx.appcompat.widget.Toolbar
             android:layout_height="50dp"
             style="@style/toolbar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
                 <ImageButton
                     android:id="@+id/ib_manage_toolbar_back"
                     android:layout_width="40dp"
@@ -28,7 +34,8 @@
                     android:src="@drawable/ic_create_back"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"/>
+                    app:layout_constraintStart_toStartOf="parent" />
+
                 <TextView
                     android:id="@+id/tv_manage_title"
                     android:text="관리자"
@@ -39,12 +46,13 @@
                     android:layout_marginStart="8dp"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/ib_manage_toolbar_back"/>
+                    app:layout_constraintStart_toEndOf="@id/ib_manage_toolbar_back" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    android:background="@color/color_F1F1F1"/>
+                    android:background="@color/color_F1F1F1" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>

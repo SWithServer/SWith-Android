@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Theme.SWith" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Primary brand color. -->
@@ -19,10 +19,12 @@
         <!-- Font and Text Color -->
         <item name="fontFamily">@font/kr_regular</item>
         <item name="android:textColor">@color/black</item>
-<!--        Material Design Color-->
+        <!--        Material Design Color-->
         <item name="bottomSheetDialogTheme">@style/CustomBottomSheet</item>
-        <item name="circularProgressIndicatorStyle">@style/Widget.App.CircularProgressIndicator</item>
+        <item name="circularProgressIndicatorStyle">@style/Widget.App.CircularProgressIndicator
+        </item>
     </style>
+
     <style name="tab_text" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
@@ -32,26 +34,29 @@
         <item name="colorAccent">@color/color_swith</item>
         <item name="colorControlActivated">@color/color_82B4FF</item>
     </style>
+
     <style name="ThemeOverlay.NumberPicker" parent="ThemeOverlay.AppCompat">
         <item name="colorControlNormal">@color/black</item>
         <item name="android:textSize">12sp</item>
     </style>
 
-<!--    CalendarView Style-->
+    <!--    CalendarView Style-->
     <style name="CustomHeader" parent="TextAppearance.MaterialCalendarWidget.Header">
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:textStyle">bold</item>
     </style>
+
     <style name="CustomWeekDay" parent="TextAppearance.MaterialCalendarWidget.WeekDay">
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/black</item>
     </style>
+
     <style name="CustomDate" parent="TextAppearance.MaterialCalendarWidget.Date">
         <item name="android:textSize">13sp</item>
     </style>
 
-<!--    BottomSheet Dialog Style-->
+    <!--    BottomSheet Dialog Style-->
     <style name="CustomBottomSheet" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/BottomSheet</item>
         <item name="android:colorBackground">@color/white</item>
@@ -62,7 +67,7 @@
         <item name="backgroundTint">@android:color/transparent</item>
     </style>
 
-<!--    Circular Indicator Style-->
+    <!--    Circular Indicator Style-->
     <style name="Widget.App.CircularProgressIndicator" parent="Widget.MaterialComponents.CircularProgressIndicator">
         <item name="materialThemeOverlay">@style/ThemeOverlay.App.CircularProgressIndicator</item>
     </style>

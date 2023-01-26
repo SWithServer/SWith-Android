@@ -8,7 +8,12 @@ import android.view.View
 import android.view.Window
 import android.view.WindowManager
 
-class CustomImageDialog(context: Context, view: View, width: Int = WindowManager.LayoutParams.WRAP_CONTENT, height: Int = WindowManager.LayoutParams.WRAP_CONTENT): Dialog(context) {
+class CustomImageDialog(
+    context: Context,
+    view: View,
+    width: Int = WindowManager.LayoutParams.WRAP_CONTENT,
+    height: Int = WindowManager.LayoutParams.WRAP_CONTENT,
+) : Dialog(context) {
     private var listener: DialogClickListener? = null
     private var isClickConfirm: Boolean = false
 
@@ -35,6 +40,7 @@ class CustomImageDialog(context: Context, view: View, width: Int = WindowManager
     fun setClickListener(listener: DialogClickListener?) {
         this.listener = listener
     }
+
     fun onClose() {
         dismiss()
     }
@@ -44,7 +50,8 @@ class CustomImageDialog(context: Context, view: View, width: Int = WindowManager
         listener?.onCamera()
         dismiss()
     }
-    fun onGallery(){
+
+    fun onGallery() {
         isClickConfirm = true
         listener?.onGallery()
         dismiss()

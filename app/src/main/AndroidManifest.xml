@@ -5,8 +5,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:name=".SwithApplication"
         android:allowBackup="false"
@@ -17,11 +18,12 @@
         android:theme="@style/Theme.SWith"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".ui.study.announce.AlertActivity"
+            android:name=".ui.notification.NotificationActivity"
             android:exported="false" />
         <activity
             android:name=".ui.rating.RatingActivity"
             android:exported="false" />
+
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_app" />
@@ -40,6 +42,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
         <activity
             android:name=".ui.manage.ManageRoundActivity"
             android:exported="false" />
@@ -49,16 +52,21 @@
         <activity
             android:name=".ui.manage.ManageRoundModifyActivity"
             android:exported="false" />
-        <activity android:name=".ui.manage.ManageFinishActivity"
-            android:exported="false"/>
-        <activity android:name=".ui.manage.ManageStudyModifyActivity"
-            android:exported="false"/>
-        <activity android:name=".ui.manage.ManageUserActivity"
-            android:exported="false"/>
-        <activity android:name=".ui.manage.ManageUserProfileActivity"
-            android:exported="false"/>
-        <activity android:name=".ui.manage.ManageUserResumeActivity"
-            android:exported="false"/>
+        <activity
+            android:name=".ui.manage.ManageFinishActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.manage.ManageStudyModifyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.manage.ManageUserActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.manage.ManageUserProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.manage.ManageUserResumeActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.study.create.RoundCreateActivity"
             android:exported="false" />
@@ -71,25 +79,23 @@
             android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".ui.SplashActivity"
-            android:exported="true" >
+            android:exported="true">
+
+        </activity>
+        <activity
+            android:name=".ui.login.SnsLoginActivity"
+            android:exported="true"></activity>
+        <activity
+            android:name=".ui.profile.ProfileModifyActivity"
+            android:exported="true"></activity>
+        <activity
+            android:name=".ui.MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".ui.login.SnsLoginActivity"
-            android:exported="true" >
-        </activity>
-        <activity
-            android:name=".ui.profile.ProfileModifyActivity"
-            android:exported="true">
-        </activity>
-        <activity
-            android:name=".ui.MainActivity"
-            android:exported="true">
-
         </activity>
         <activity
             android:name=".ui.study.StudyActivity"
@@ -107,17 +113,18 @@
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
             android:exported="true">
 
-             <intent-filter>
-             <action android:name="android.intent.action.VIEW" />
-             <category android:name="android.intent.category.DEFAULT" />
-             <category android:name="android.intent.category.BROWSABLE" />
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
 
-             <!-- Redirect URI: "kakao${NATIVE_APP_KEY}://oauth" -->
-             <data
-             android:host="oauth"
-             android:scheme="kakao${KAKAO_NATIVE_APP_KEY}" />
-             </intent-filter>
+                <!-- Redirect URI: "kakao${NATIVE_APP_KEY}://oauth" -->
+                <data
+                    android:host="oauth"
+                    android:scheme="kakao${KAKAO_NATIVE_APP_KEY}" />
+            </intent-filter>
         </activity>
     </application>
 

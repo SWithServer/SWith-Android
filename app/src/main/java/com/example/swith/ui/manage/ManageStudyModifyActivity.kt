@@ -1,11 +1,8 @@
-package com.example.swith.ui.manage
-
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.Dialog
-import android.content.ContentUris
 import android.content.Context
 import android.content.Intent
-import android.database.Cursor
 import android.graphics.Color
 import android.graphics.ImageDecoder
 import android.graphics.drawable.ColorDrawable
@@ -24,13 +21,13 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
 import com.example.swith.R
-import com.example.swith.data.StudyDetailResponse
-import com.example.swith.data.StudyGroup
-import com.example.swith.data.StudyImageRes
-import com.example.swith.data.StudyModifyResponse
+import com.example.swith.data.api.RetrofitService
+import com.example.swith.data.api.SwithService
 import com.example.swith.databinding.ActivityManageStudyModifyBinding
-import com.example.swith.repository.RetrofitApi
-import com.example.swith.repository.RetrofitService
+import com.example.swith.domain.entity.StudyDetailResponse
+import com.example.swith.domain.entity.StudyGroup
+import com.example.swith.domain.entity.StudyImageRes
+import com.example.swith.domain.entity.StudyModifyResponse
 import com.example.swith.ui.study.create.SelectPlaceActivity
 import com.example.swith.utils.SharedPrefManager
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -42,9 +39,8 @@ import retrofit2.Response
 import java.io.File
 import java.util.*
 
-
 class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
-    lateinit var binding:ActivityManageStudyModifyBinding
+    lateinit var binding: ActivityManageStudyModifyBinding
     var groupIdx : Long = -1
 
     var title:String=""
@@ -75,13 +71,13 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
     private var year = calendar.get(Calendar.YEAR)
     private var month = calendar.get(Calendar.MONTH)
     private var day = calendar.get(Calendar.DAY_OF_MONTH)
-    lateinit var dialog_ :Dialog
+    lateinit var dialog_ : Dialog
 
     private val GALLERY=1
     private var imageView: ImageView? = null
     var ImgUri : String? ="" // 이미지 uri 받아오는 변수
     var path : String? = "" // 파일로 변환할때 필요한 변수
-    var file=File("")
+    var file= File("")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -397,7 +393,8 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
                             periods_content=etStudyFree.text.toString()}
                     }
 
-                    var studyRequestData= StudyGroup(SharedPrefManager(this@ManageStudyModifyActivity).getLoginData()!!.userIdx,ImgUri,title,meet_idx,frequency_content,periods_content,online_idx,regionIdx1,regionIdx2,interest_idx
+                    var studyRequestData= StudyGroup(
+                        SharedPrefManager(this@ManageStudyModifyActivity).getLoginData()!!.userIdx,ImgUri,title,meet_idx,frequency_content,periods_content,online_idx,regionIdx1,regionIdx2,interest_idx
                         ,topic_content,memberLimit_content,applicationMethod_idx,recruitmentEndDate_,groupStart_,groupEnd_
                         ,attendanceVaildTime_content,group_content)
                     Log.e("summer", "USER DATA = ${studyRequestData.toString()}")
@@ -463,8 +460,9 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
     fun initView(groupIdx : Long)
     {
         Log.e("summer","데이터 set true")
-        val retrofitService = RetrofitService.retrofit.create(RetrofitApi::class.java)
-        retrofitService.getStudyDetail(groupIdx.toLong()).enqueue(object : Callback<StudyDetailResponse> {
+        val retrofitService = RetrofitService.retrofit.create(SwithService::class.java)
+        retrofitService.getStudyDetail(groupIdx.toLong()).enqueue(object :
+            Callback<StudyDetailResponse> {
             override fun onResponse(
                 call: Call<StudyDetailResponse>,
                 response: Response<StudyDetailResponse>
@@ -497,7 +495,7 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
                                     checkWeek.isChecked=true
                                     checkFree.isChecked=false
                                     checkMonth.isChecked=false
-                                   etStudyWeek.setText(result.frequency.toString())
+                                    etStudyWeek.setText(result.frequency.toString())
                                 }
                                 1->{
                                     checkWeek.isChecked=false
@@ -515,7 +513,7 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
                             when(result.online)
                             {
                                 0->{ btnOnline.isChecked= true
-                                btnOffline.isChecked=false
+                                    btnOffline.isChecked=false
                                     layoutCreateRegion.visibility=View.GONE
                                     binding.btnPlusPlace1.background = ContextCompat.getDrawable(this@ManageStudyModifyActivity,R.drawable.bg_create_skyblue)
                                     binding.btnPlusPlace2.background = ContextCompat.getDrawable(this@ManageStudyModifyActivity,R.drawable.bg_create_skyblue)}
@@ -561,7 +559,7 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
                             when(result.applicationMethod)
                             {
                                 0->{btnApplicationFf.isChecked=true
-                                btnApplicationApply.isChecked=false
+                                    btnApplicationApply.isChecked=false
                                     applicationMethod_idx =0
                                 }
                                 1->{btnApplicationFf.isChecked=false
@@ -590,6 +588,7 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == GALLERY)
         {
             if(resultCode == RESULT_OK)
@@ -627,6 +626,7 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    @SuppressLint("Range")
     fun getRealPathFromURI(contentUri: Uri?): String? {
         val proj = arrayOf(MediaStore.Images.Media.DATA)
         val cursor = contentResolver.query(contentUri!!, proj, null, null, null)
@@ -649,35 +649,35 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
         Log.e("업로드 함수","진입")
         if (!(file.name.equals("")))
         {
-        var requestFile =  RequestBody.create("image"?.toMediaTypeOrNull(), file)
-        var body  = MultipartBody.Part.createFormData("image", file.name, requestFile)
-        val retrofitService = RetrofitService.retrofit.create(RetrofitApi::class.java)
-        retrofitService.uploadImg(body).enqueue(object :
-            Callback<StudyImageRes> {
-            override fun onResponse(
-                call: Call<StudyImageRes>,
-                response: Response<StudyImageRes>
-            ) {
-                if (response.isSuccessful) {
-                    Log.e("summer", "성공${response.toString()}")
-                    response.body()?.apply {
-                        Log.e("summer 결과값","${this.imageUrls}")
-                        ImgUri = this.imageUrls[0]
-                        Log.e("Img Uri 값 변경한 부분","${ImgUri}")
-                        studyRequestData.groupImgUri=ImgUri
-                        retrofitModify(studyRequestData)
+            var requestFile =  RequestBody.create("image"?.toMediaTypeOrNull(), file)
+            var body  = MultipartBody.Part.createFormData("image", file.name, requestFile)
+            val retrofitService = RetrofitService.retrofit.create(SwithService::class.java)
+            retrofitService.uploadImg(body).enqueue(object :
+                Callback<StudyImageRes> {
+                override fun onResponse(
+                    call: Call<StudyImageRes>,
+                    response: Response<StudyImageRes>
+                ) {
+                    if (response.isSuccessful) {
+                        Log.e("summer", "성공${response.toString()}")
+                        response.body()?.apply {
+                            Log.e("summer 결과값","${this.imageUrls}")
+                            ImgUri = this.imageUrls[0]
+                            Log.e("Img Uri 값 변경한 부분","${ImgUri}")
+                            studyRequestData.groupImgUri=ImgUri
+                            retrofitModify(studyRequestData)
+                        }
+                    }
+                    else {
+                        Log.e("summer", "전달실패 code = ${response.code()}")
+                        Log.e("summer", "전달실패 msg = ${response.message()}")
                     }
                 }
-                else {
-                    Log.e("summer", "전달실패 code = ${response.code()}")
-                    Log.e("summer", "전달실패 msg = ${response.message()}")
+                override fun onFailure(call: Call<StudyImageRes>, t: Throwable) {
+                    Log.e("summer", "onFailure t = ${t.toString()}")
+                    Log.e("summer", "onFailure msg = ${t.message}")
                 }
-            }
-            override fun onFailure(call: Call<StudyImageRes>, t: Throwable) {
-                Log.e("summer", "onFailure t = ${t.toString()}")
-                Log.e("summer", "onFailure msg = ${t.message}")
-            }
-        })
+            })
         }
         else{
             retrofitModify(studyRequestData)
@@ -702,7 +702,7 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
     fun retrofitModify(studyRequestData: StudyGroup)
     {
         Log.e("StudyReq 최종", "${studyRequestData.toString()}")
-        val retrofitService = RetrofitService.retrofit.create(RetrofitApi::class.java)
+        val retrofitService = RetrofitService.retrofit.create(SwithService::class.java)
         retrofitService.modifyStudy(groupIdx.toLong(),studyRequestData).enqueue(object : Callback <StudyModifyResponse> {
             override fun onResponse(call: Call<StudyModifyResponse>, response: Response<StudyModifyResponse>) {
                 if (response.isSuccessful)
@@ -729,39 +729,39 @@ class ManageStudyModifyActivity : AppCompatActivity(), View.OnClickListener {
         })
     }
     fun setupSinner(){
-            val interest_spinner = binding.spinnerCategory
-            val memberLimit_spinner = binding.spinnerPeople
-            val attendanceVaildTime_spinner = binding.spinnerAttendTime
+        val interest_spinner = binding.spinnerCategory
+        val memberLimit_spinner = binding.spinnerPeople
+        val attendanceVaildTime_spinner = binding.spinnerAttendTime
 
-            interest_spinner.adapter = ArrayAdapter.createFromResource(
-                this.applicationContext,R.array.intersting,R.layout.item_create_spinner
-            ).apply{
-                this.setDropDownViewResource(R.layout.item_search_spinner_dropdown)
-            }
-
-            attendanceVaildTime_spinner.adapter = ArrayAdapter.createFromResource(
-                this.applicationContext,
-                R.array.attendTimeList,
-                R.layout.item_create_spinner
-            ).apply{
-                this.setDropDownViewResource(R.layout.item_search_spinner_dropdown)
-            }
-            memberLimit_spinner.adapter = ArrayAdapter.createFromResource(
-                this.applicationContext,
-                R.array.peopleList,
-                R.layout.item_create_spinner
-            ).apply{
-                this.setDropDownViewResource(R.layout.item_search_spinner_dropdown)
-            }
+        interest_spinner.adapter = ArrayAdapter.createFromResource(
+            this.applicationContext,R.array.intersting,R.layout.item_create_spinner
+        ).apply{
+            this.setDropDownViewResource(R.layout.item_search_spinner_dropdown)
         }
+
+        attendanceVaildTime_spinner.adapter = ArrayAdapter.createFromResource(
+            this.applicationContext,
+            R.array.attendTimeList,
+            R.layout.item_create_spinner
+        ).apply{
+            this.setDropDownViewResource(R.layout.item_search_spinner_dropdown)
+        }
+        memberLimit_spinner.adapter = ArrayAdapter.createFromResource(
+            this.applicationContext,
+            R.array.peopleList,
+            R.layout.item_create_spinner
+        ).apply{
+            this.setDropDownViewResource(R.layout.item_search_spinner_dropdown)
+        }
+    }
 
     fun hideKeyboard(editText: EditText){
-            val  mInputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            mInputMethodManager.hideSoftInputFromWindow(
-                editText.getWindowToken(),
-                0
-            )
-        }
+        val  mInputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        mInputMethodManager.hideSoftInputFromWindow(
+            editText.getWindowToken(),
+            0
+        )
+    }
 
     override fun onClick(view: View?) {
         when(view?.id){

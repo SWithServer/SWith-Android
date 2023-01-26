@@ -1,5 +1,6 @@
 package com.example.swith.ui.manage
 
+import ManageStudyModifyActivity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -11,8 +12,8 @@ import com.example.swith.databinding.ActivityManageBinding
 
 class ManageActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityManageBinding
-    private val groupIdx: Long by lazy{
-        if(intent.hasExtra("groupId")) intent.getLongExtra("groupId", 0)
+    private val groupIdx: Long by lazy {
+        if (intent.hasExtra("groupId")) intent.getLongExtra("groupId", 0)
         else 0
     }
 
@@ -23,30 +24,48 @@ class ManageActivity : AppCompatActivity(), View.OnClickListener {
         initListener()
     }
 
-    private fun initListener(){
+    private fun initListener() {
         binding.clickListener = this
-        with(binding){
-            layoutManageStudy.setOnClickListener { startActivity(Intent(this@ManageActivity,ManageStudyModifyActivity::class.java).apply{
-                putExtra("groupIdx",groupIdx)
-            }) }
+        with(binding) {
+            layoutManageStudy.setOnClickListener {
+                startActivity(Intent(
+                    this@ManageActivity,
+                    ManageStudyModifyActivity::class.java
+                ).apply {
+                    putExtra("groupIdx", groupIdx)
+                })
+            }
             layoutManageRound.setOnClickListener {
                 startActivity(Intent(this@ManageActivity, ManageRoundActivity::class.java).apply {
                     putExtra("groupId", groupIdx)
-            }) }
-            layoutManageAttend.setOnClickListener { startActivity(Intent(this@ManageActivity, ManageAttendActivity::class.java).apply {
-                putExtra("groupId", groupIdx)
-            }) }
-            layoutManageUser.setOnClickListener { startActivity(Intent(this@ManageActivity,ManageUserActivity::class.java).apply{
-                putExtra("groupIdx",groupIdx)
-            }) }
-            layoutManageFinish.setOnClickListener { startActivity(Intent(this@ManageActivity,ManageFinishActivity::class.java).apply{
-                putExtra("groupIdx",groupIdx)
-            })}
+                })
+            }
+            layoutManageAttend.setOnClickListener {
+                startActivity(Intent(this@ManageActivity, ManageAttendActivity::class.java).apply {
+                    putExtra("groupId", groupIdx)
+                })
+            }
+            layoutManageUser.setOnClickListener {
+                startActivity(Intent(
+                    this@ManageActivity,
+                    ManageUserActivity::class.java
+                ).apply {
+                    putExtra("groupIdx", groupIdx)
+                })
+            }
+            layoutManageFinish.setOnClickListener {
+                startActivity(Intent(
+                    this@ManageActivity,
+                    ManageFinishActivity::class.java
+                ).apply {
+                    putExtra("groupIdx", groupIdx)
+                })
+            }
         }
     }
 
     override fun onClick(view: View?) {
-        when(view?.id){
+        when (view?.id) {
             R.id.ib_manage_toolbar_back -> {
                 setResult(RESULT_OK)
                 finish()

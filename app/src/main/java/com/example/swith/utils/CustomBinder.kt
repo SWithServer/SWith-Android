@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.view.View
 import android.view.WindowManager
-import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -31,7 +30,13 @@ class CustomBinder {
         }
 
         @JvmStatic
-        fun showCustomDialog(context: Context, view: View, width: Int = WindowManager.LayoutParams.WRAP_CONTENT, height: Int = WindowManager.LayoutParams.WRAP_CONTENT, listener: CustomDialog.DialogClickListener?): CustomDialog {
+        fun showCustomDialog(
+            context: Context,
+            view: View,
+            width: Int = WindowManager.LayoutParams.WRAP_CONTENT,
+            height: Int = WindowManager.LayoutParams.WRAP_CONTENT,
+            listener: CustomDialog.DialogClickListener?,
+        ): CustomDialog {
             return CustomDialog(context, view, width, height).apply {
                 setClickListener(listener)
                 show()
@@ -39,15 +44,38 @@ class CustomBinder {
         }
 
         @JvmStatic
-        fun showCustomInterestringDialog(arrayList: ArrayList<String>,interesting1: String,interesting2: String,context: Context, view: View, width: Int = WindowManager.LayoutParams.WRAP_CONTENT, height: Int = WindowManager.LayoutParams.WRAP_CONTENT, listener: CustomInterestingDialog.DialogClickListener?): CustomInterestingDialog {
-            return CustomInterestingDialog(arrayList,interesting1,interesting2,context, view, width, height).apply {
+        fun showCustomInterestringDialog(
+            arrayList: ArrayList<String>,
+            interesting1: Int,
+            interesting2: Int,
+            context: Context,
+            view: View,
+            width: Int = WindowManager.LayoutParams.WRAP_CONTENT,
+            height: Int = WindowManager.LayoutParams.WRAP_CONTENT,
+            listener: CustomInterestingDialog.DialogClickListener?,
+        ): CustomInterestingDialog {
+            return CustomInterestingDialog(
+                arrayList,
+                interesting1,
+                interesting2,
+                context,
+                view,
+                width,
+                height
+            ).apply {
                 setClickListener(listener)
                 show()
             }
         }
 
         @JvmStatic
-        fun showCustomImageDialog(context: Context, view: View, width: Int = WindowManager.LayoutParams.WRAP_CONTENT, height: Int = WindowManager.LayoutParams.WRAP_CONTENT, listener: CustomImageDialog.DialogClickListener?): CustomImageDialog {
+        fun showCustomImageDialog(
+            context: Context,
+            view: View,
+            width: Int = WindowManager.LayoutParams.WRAP_CONTENT,
+            height: Int = WindowManager.LayoutParams.WRAP_CONTENT,
+            listener: CustomImageDialog.DialogClickListener?,
+        ): CustomImageDialog {
             return CustomImageDialog(context, view, width, height).apply {
                 setClickListener(listener)
                 show()
@@ -55,8 +83,8 @@ class CustomBinder {
         }
 
         @JvmStatic
-        @BindingAdapter("app:imageUrl","app:placeholder")
-        fun loadImage(imageView: CircleImageView, url: String?, placeholder: Drawable){
+        @BindingAdapter("app:imageUrl", "app:placeholder")
+        fun loadImage(imageView: CircleImageView, url: String?, placeholder: Drawable) {
             Glide.with(imageView.context)
                 .load(url)
                 .placeholder(placeholder)
@@ -67,8 +95,15 @@ class CustomBinder {
         }
 
         @JvmStatic
-        fun showResumemDialog(title:String,context: Context, view: View, width: Int = WindowManager.LayoutParams.WRAP_CONTENT, height: Int = WindowManager.LayoutParams.WRAP_CONTENT, listener: CustomResumeDialog.DialogClickListener?): CustomResumeDialog {
-            return CustomResumeDialog(title,context, view, width, height).apply {
+        fun showResumemDialog(
+            title: String,
+            context: Context,
+            view: View,
+            width: Int = WindowManager.LayoutParams.WRAP_CONTENT,
+            height: Int = WindowManager.LayoutParams.WRAP_CONTENT,
+            listener: CustomResumeDialog.DialogClickListener?,
+        ): CustomResumeDialog {
+            return CustomResumeDialog(title, context, view, width, height).apply {
                 setClickListener(listener)
                 show()
             }

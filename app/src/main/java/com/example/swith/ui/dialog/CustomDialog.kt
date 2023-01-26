@@ -8,7 +8,12 @@ import android.view.View
 import android.view.Window
 import android.view.WindowManager
 
-class CustomDialog(context: Context, view: View, width: Int = WindowManager.LayoutParams.WRAP_CONTENT, height: Int = WindowManager.LayoutParams.WRAP_CONTENT): Dialog(context) {
+class CustomDialog(
+    context: Context,
+    view: View,
+    width: Int = WindowManager.LayoutParams.WRAP_CONTENT,
+    height: Int = WindowManager.LayoutParams.WRAP_CONTENT,
+) : Dialog(context) {
     private var listener: DialogClickListener? = null
     private var isClickConfirm: Boolean = false
 

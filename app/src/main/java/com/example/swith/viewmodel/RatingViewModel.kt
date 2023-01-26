@@ -4,15 +4,16 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.swith.data.repository.rating.RatingRepository
+import com.example.swith.data.repository.rating.RatingRepositoryProvider
+import com.example.swith.domain.entity.ProfileRequest
+import com.example.swith.domain.entity.RatingResponse
 
-import com.example.swith.data.ProfileRequest
-import com.example.swith.data.RatingResponse
-import com.example.swith.repository.rating.RatingRepository
-import com.example.swith.repository.rating.RatingRepositoryProvider
-
-class RatingViewModel:ViewModel() {
+class RatingViewModel : ViewModel() {
     val isLoading: ObservableField<Boolean> = ObservableField<Boolean>()
-    private val mRatingRepository: RatingRepository = RatingRepositoryProvider.provideRatingRepository()
+    private val mRatingRepository: RatingRepository =
+        RatingRepositoryProvider.provideRatingRepository()
+
     init {
         hideLoading()
     }
@@ -25,15 +26,18 @@ class RatingViewModel:ViewModel() {
         isLoading.set(false)
     }
 
-//    fun requestCurrentRating(loginRequest: LoginRequest): LiveData<LoginResponse> {
+    //    fun requestCurrentRating(loginRequest: LoginRequest): LiveData<LoginResponse> {
 //        return mRatingRepository
 //    }
 //
 //    fun getCurrentRating(): LiveData<LoginResponse> {
 //        return mRatingRepository
 //    }
-    fun requestCurrentUserList(groupIdx:String, userIdx:ProfileRequest): LiveData<RatingResponse> {
-        return mRatingRepository.requestCurrentUserList(groupIdx,userIdx)
+    fun requestCurrentUserList(
+        groupIdx: String,
+        userIdx: ProfileRequest,
+    ): LiveData<RatingResponse> {
+        return mRatingRepository.requestCurrentUserList(groupIdx, userIdx)
     }
 
     fun getCurrentUserList(): LiveData<RatingResponse> {

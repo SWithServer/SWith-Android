@@ -8,13 +8,19 @@ import android.view.View
 import android.view.Window
 import android.view.WindowManager
 
-class CustomResumeDialog(title:String,context: Context, view: View, width: Int = WindowManager.LayoutParams.WRAP_CONTENT, height: Int = WindowManager.LayoutParams.WRAP_CONTENT): Dialog(context) {
+class CustomResumeDialog(
+    title: String,
+    context: Context,
+    view: View,
+    width: Int = WindowManager.LayoutParams.WRAP_CONTENT,
+    height: Int = WindowManager.LayoutParams.WRAP_CONTENT,
+) : Dialog(context) {
     private var listener: DialogClickListener? = null
     private var isClickConfirm: Boolean = false
-    private var title: String=""
+    private var title: String = ""
 
     init {
-        this.title=title
+        this.title = title
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         setCanceledOnTouchOutside(false)
         setContentView(view)
@@ -47,7 +53,7 @@ class CustomResumeDialog(title:String,context: Context, view: View, width: Int =
         listener?.onConfirm()
     }
 
-    fun getTitle():String{
+    fun getTitle(): String {
         return title
     }
 }

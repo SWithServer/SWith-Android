@@ -1,10 +1,10 @@
 package com.example.swith.repository.study
 
 import android.util.Log
-import com.example.swith.data.StudyGroup
-import com.example.swith.data.StudyImageRes
-import com.example.swith.data.StudyResponse
-import com.example.swith.repository.RetrofitService.retrofitApi
+import com.example.swith.data.api.RetrofitService.retrofitApi
+import com.example.swith.domain.entity.StudyGroup
+import com.example.swith.domain.entity.StudyImageRes
+import com.example.swith.domain.entity.StudyResponse
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -19,7 +19,7 @@ class StudyCreateDataSource {
     private var groupIdx:Long = -1
     private var imgUri:String?= null
 
-    fun postStudyInfo(studyInfo:StudyGroup) : Long {
+    fun postStudyInfo(studyInfo: StudyGroup) : Long {
         retrofitApi.createStudy(studyInfo).enqueue(object : Callback<StudyResponse> {
             override fun onResponse(call: Call<StudyResponse>, response: Response<StudyResponse>) {
                 response.body()?.apply{

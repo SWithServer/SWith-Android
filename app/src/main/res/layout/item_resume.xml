@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
+
         <variable
             name="resumeData"
-            type="com.example.swith.data.ResumeResult" />
+            type="com.example.swith.domain.entity.ResumeResult" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,7 +24,8 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="15dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/tv_status_detail"
             android:layout_width="wrap_content"
@@ -33,7 +36,8 @@
             android:fontFamily="@font/kr_regular"
             android:textColor="@color/color_003C99"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/tv_status"
             android:layout_width="wrap_content"
@@ -41,7 +45,7 @@
             android:layout_marginTop="24dp"
             android:text="@string/resume_status"
             app:layout_constraintEnd_toStartOf="@id/tv_status_detail"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/iv_location"
@@ -51,7 +55,7 @@
             android:src="@drawable/ic_home_location"
             android:layout_marginTop="16dp"
             app:layout_constraintTop_toBottomOf="@id/tv_title"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/tv_location1"
@@ -64,7 +68,7 @@
             android:textColor="@color/color_1363DF"
             app:layout_constraintTop_toTopOf="@id/iv_location"
             app:layout_constraintBottom_toBottomOf="@id/iv_location"
-            app:layout_constraintStart_toEndOf="@id/iv_location"/>
+            app:layout_constraintStart_toEndOf="@id/iv_location" />
 
         <View
             android:id="@+id/v_location"
@@ -74,7 +78,8 @@
             app:layout_constraintTop_toTopOf="@id/iv_location"
             app:layout_constraintBottom_toBottomOf="@id/iv_location"
             app:layout_constraintStart_toEndOf="@id/tv_location1"
-            android:background="@color/color_F1F1F1"/>
+            android:background="@color/color_F1F1F1" />
+
         <TextView
             android:id="@+id/tv_location2"
             android:layout_width="wrap_content"
@@ -86,7 +91,7 @@
             android:textColor="@color/color_1363DF"
             app:layout_constraintTop_toTopOf="@id/iv_location"
             app:layout_constraintBottom_toBottomOf="@id/iv_location"
-            app:layout_constraintStart_toEndOf="@id/v_location"/>
+            app:layout_constraintStart_toEndOf="@id/v_location" />
 
         <ImageView
             android:id="@+id/iv_calender"
@@ -96,7 +101,7 @@
             android:layout_marginStart="20dp"
             android:src="@drawable/ic_resume_calender"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_location"/>
+            app:layout_constraintTop_toBottomOf="@id/iv_location" />
 
         <TextView
             android:id="@+id/tv_calender"
@@ -108,13 +113,13 @@
             android:textColor="@color/color_1363DF"
             app:layout_constraintTop_toTopOf="@id/iv_calender"
             app:layout_constraintBottom_toBottomOf="@id/iv_calender"
-            app:layout_constraintStart_toEndOf="@id/iv_calender"/>
+            app:layout_constraintStart_toEndOf="@id/iv_calender" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:background="@color/color_F1F1F1"/>
+            android:background="@color/color_F1F1F1" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

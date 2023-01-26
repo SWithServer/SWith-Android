@@ -2,31 +2,37 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
         <variable
             name="clickListener"
             type="android.view.View.OnClickListener" />
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white">
+
         <include
             android:id="@+id/toolbar_select_region"
             layout="@layout/basic_appbar"
-            app:clickListener="@{clickListener}"/>
-    <TextView
-        android:id="@+id/tv_select_place_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="지역을 선택해주세요"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_select_region"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="15dp"
-        android:layout_marginStart="20dp"
-        android:textStyle="bold"/>
+            app:clickListener="@{clickListener}" />
+
+        <TextView
+            android:id="@+id/tv_select_place_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="지역을 선택해주세요"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintTop_toBottomOf="@id/toolbar_select_region"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="20dp"
+            android:textStyle="bold" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -36,101 +42,106 @@
             android:layout_marginBottom="10dp"
             android:background="@color/color_F1F1F1"
             app:layout_constraintTop_toBottomOf="@+id/tv_select_place_title" />
-    <LinearLayout
-        android:id="@+id/layout_place_values"
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:orientation="horizontal"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        app:layout_constraintTop_toBottomOf="@id/tv_select_place_title">
 
-        <TextView
-            android:id="@+id/tv_place_city"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="시/도"
-            android:gravity="center"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginBottom="6dp"
-            android:textColor="@color/color_707070"
-            android:textSize="14sp"/>
-        <View
-            android:layout_width="1dp"
-            android:layout_height="20dp"
-            android:layout_marginTop="6dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginBottom="6dp"
-            android:background="@color/color_F1F1F1" />
-        <TextView
-            android:id="@+id/tv_place_gu"
-            android:layout_width="wrap_content"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="30dp"
-            android:gravity="center"
-            android:text="시/구/군"
-            android:textColor="@color/color_707070"
-            android:textSize="14sp"/>
+        <LinearLayout
+            android:id="@+id/layout_place_values"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintTop_toBottomOf="@id/tv_select_place_title">
 
-        <View
-            android:layout_width="1dp"
-            android:layout_height="20dp"
-            android:layout_marginTop="6dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginBottom="6dp"
-            android:background="@color/color_F1F1F1" />
-        <TextView
-            android:id="@+id/tv_place_dong"
-            android:layout_width="wrap_content"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="구"
-            android:visibility="invisible"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="30dp"
-            android:gravity="center"
-            android:textColor="@color/color_707070"
-            android:textSize="14sp"/>
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/layout_rv"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@id/layout_btns"
-        app:layout_constraintTop_toBottomOf="@id/layout_place_values" >
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_city"
-            tools:listitem="@layout/item_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            >
-        </androidx.recyclerview.widget.RecyclerView>
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_gu"
-            tools:listitem="@layout/item_location"
-            android:visibility="invisible"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            >
-        </androidx.recyclerview.widget.RecyclerView>
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_dong"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            android:textSize="14sp"
-            tools:listitem="@layout/item_location"></androidx.recyclerview.widget.RecyclerView>
-    </LinearLayout>
+            <TextView
+                android:id="@+id/tv_place_city"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="시/도"
+                android:gravity="center"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginBottom="6dp"
+                android:textColor="@color/color_707070"
+                android:textSize="14sp" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="20dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginBottom="6dp"
+                android:background="@color/color_F1F1F1" />
+
+            <TextView
+                android:id="@+id/tv_place_gu"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="30dp"
+                android:gravity="center"
+                android:text="시/구/군"
+                android:textColor="@color/color_707070"
+                android:textSize="14sp" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="20dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginBottom="6dp"
+                android:background="@color/color_F1F1F1" />
+
+            <TextView
+                android:id="@+id/tv_place_dong"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="구"
+                android:visibility="invisible"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="30dp"
+                android:gravity="center"
+                android:textColor="@color/color_707070"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_rv"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@id/layout_btns"
+            app:layout_constraintTop_toBottomOf="@id/layout_place_values">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_city"
+                tools:listitem="@layout/item_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"></androidx.recyclerview.widget.RecyclerView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_gu"
+                tools:listitem="@layout/item_location"
+                android:visibility="invisible"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"></androidx.recyclerview.widget.RecyclerView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_dong"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:textSize="14sp"
+                tools:listitem="@layout/item_location"></androidx.recyclerview.widget.RecyclerView>
+        </LinearLayout>
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_btns"
             android:layout_width="match_parent"
@@ -139,6 +150,7 @@
             android:layout_marginBottom="30dp"
             app:layout_constraintTop_toBottomOf="@id/layout_rv"
             app:layout_constraintBottom_toBottomOf="parent">
+
             <Button
                 android:id="@+id/btn_no"
                 android:layout_width="170dp"
@@ -154,7 +166,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 android:visibility="gone"
-                android:layout_marginStart="20dp"/>
+                android:layout_marginStart="20dp" />
+
             <Button
                 android:id="@+id/btn_yes"
                 android:layout_width="170dp"
@@ -170,9 +183,9 @@
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"/>
+                android:layout_marginBottom="5dp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
