@@ -7,6 +7,9 @@
         <variable
             name="clickListener"
             type="android.view.View.OnClickListener" />
+        <variable
+            name="viewModel"
+            type="com.example.swith.viewmodel.StudyModifyViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -94,6 +97,8 @@
                             android:layout_height="44dp"
                             android:background="@drawable/bg_round_gray"
                             android:textColor="@color/black"
+                            android:hint="@string/study_create_editText"
+                            android:text="@{viewModel.studyLiveData.title}"
                             app:layout_constraintBottom_toBottomOf="parent"
                             android:textSize="12sp"/>
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -250,7 +255,7 @@
                             android:enabled="false"
                             android:textSize="12sp"
                             android:inputType="text"
-                            android:hint="직접 입력해주세요"
+                            android:hint="@string/study_create_editText"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"/>
@@ -310,6 +315,7 @@
                             android:textColor="@color/white"
                             android:gravity="center"
                             android:text="온라인"
+                            android:checked="@{viewModel.getChecked(viewModel.studyLiveData.online)}"
                             android:layout_marginEnd="10dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
@@ -325,6 +331,7 @@
                             android:textColor="@color/white"
                             android:gravity="center"
                             android:text="오프라인"
+                            android:checked="@{!viewModel.getChecked(viewModel.studyLiveData.online)}"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@id/btn_online"
                             app:layout_constraintTop_toTopOf="parent"
@@ -443,6 +450,7 @@
                             app:layout_constraintStart_toStartOf="parent"
                             android:layout_marginStart="20dp"
                             android:backgroundTint="@color/color_82B4FF"
+                            android:selectedItemPosition="@{viewModel.studyLiveData.interest+1}"
                            />
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -487,6 +495,9 @@
                             android:layout_height="44dp"
                             android:background="@drawable/bg_create_white_blue"
                             android:textColor="@color/color_82B4FF"
+                            android:hint="@string/study_create_editText"
+                            android:textColorHint="@color/color_82B4FF"
+                            android:text="@{viewModel.studyLiveData.topic}"
                             app:layout_constraintBottom_toBottomOf="parent"
                             android:textSize="12sp"/>
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -531,7 +542,8 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             android:layout_marginStart="20dp"
-                            android:backgroundTint="@color/color_82B4FF"/>
+                            android:backgroundTint="@color/color_82B4FF"
+                            android:selectedItemPosition="@{(viewModel.studyLiveData.memberLimit)-2}"/>
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
                 <View
@@ -574,6 +586,7 @@
                             android:textColor="@color/white"
                             android:gravity="center"
                             android:text="선착순"
+                            android:checked="@{!viewModel.getChecked(viewModel.studyLiveData.applicationMethod)}"
                             android:layout_marginEnd="10dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
@@ -589,6 +602,7 @@
                             android:textColor="@color/white"
                             android:gravity="center"
                             android:text="지원"
+                            android:checked="@{viewModel.getChecked(viewModel.studyLiveData.applicationMethod)}"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@id/btn_application_ff"
                             app:layout_constraintTop_toTopOf="parent"
@@ -639,7 +653,7 @@
                             android:layout_marginStart="10dp"
                             android:textSize="12sp"
                             android:layout_gravity="center"
-                            android:text="마감 날짜"
+                            android:text="@{viewModel.studyLiveData.recruitmentEndDate}"
                             android:textColor="@color/color_82B4FF" />
                     </LinearLayout>
 
@@ -707,7 +721,7 @@
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toEndOf="@id/iv_study_startDay"
-                                android:text="시작 날짜"
+                                android:text="@{viewModel.studyLiveData.groupStart}"
                                 android:textColor="@color/color_82B4FF"/>
                         </androidx.constraintlayout.widget.ConstraintLayout>
                         <androidx.constraintlayout.widget.ConstraintLayout
@@ -736,7 +750,7 @@
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toEndOf="@id/iv_study_finishDay"
-                                android:text="마감 날짜"
+                                android:text="@{viewModel.studyLiveData.groupEnd}"
                                 android:textColor="@color/color_82B4FF" />
 
 
@@ -784,6 +798,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             android:layout_marginStart="20dp"
+                            android:selectedItemPosition="@{(viewModel.studyLiveData.attendanceValidTime/10)-1}"
                             android:backgroundTint="@color/color_82B4FF"/>
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -808,7 +823,8 @@
                     android:background="@drawable/bg_create_gray"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
-                    android:hint="텍스트 입력" />
+                    android:hint="@string/study_create_editText"
+                    android:text="@{viewModel.studyLiveData.groupContent}"/>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 

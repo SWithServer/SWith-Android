@@ -41,12 +41,11 @@ import retrofit2.Response
 import java.io.File
 import java.util.*
 
-
 class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
     lateinit var binding: ActivityStudyCreateBinding
     private val viewModel : StudyCreateViewModel by viewModels()
-    private val GALLERY=1
-    var file=File("")
+    private val GALLERY = 1
+    private var file=File("")
 
     private lateinit var startTime: Calendar //활동 시작기간
     private var calendar = Calendar.getInstance()
@@ -54,18 +53,8 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
     private var month = calendar.get(Calendar.MONTH)
     private var day = calendar.get(Calendar.DAY_OF_MONTH)
 
-    //val userid = SharedPrefManager(this@StudyCreateActivity).getLoginData()
     private val userIdx = spfManager.getLoginData()?.userIdx
     private var meetIdx = -1
-    private var frequencyContent:Int?=null
-    private var periodsContent:String?=null
-    private var onlineIdx:Int = -1 //오프라인 0, 온라인 1
-
-    // spinner 선택되는 값들 매칭
-    var interestIdx=-1
-    var memberLimitContent=-1
-    var applicationMethodIdx =-1
-    var attendanceValidTimeContent=-1
 
     override fun onClick(view: View?) {
         when (view?.id) {
@@ -104,6 +93,9 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
         //스터디 개설버튼
         with(binding) {
             btnStudyCreate.setOnClickListener {
+                var frequencyContent :Int? = null
+                var periodsContent : String? = null
+                var onlineIdx = if(btnOnline.isChecked) 1 else 0
                     when (meetIdx) {
                         0 -> {
                             if (!etStudyWeek.text.isNullOrBlank())
@@ -118,35 +110,33 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
                                 periodsContent = etStudyFree.text.toString()
                         }
                     }
-
                     var studyRequestData = StudyGroup(
-                        1,
+                        1, //TODO 서버 연결시 adminIdx에 userIdx 넣기
                         null,
                         etStudyTitle.text.toString(),
                         meetIdx,
                         frequencyContent,
                         periodsContent,
                         onlineIdx,
-
                         if (onlineIdx==0) btnPlusPlace1.text.toString() else null,
                         if (onlineIdx==0) btnPlusPlace2.text.toString() else null,
-                        interestIdx,
+                        spinnerCategory.selectedItemPosition+1,
                         etCreateTopic.text.toString(),
-                        memberLimitContent,
-                        applicationMethodIdx,
+                        spinnerPeople.selectedItem.toString().toInt(),
+                        if(btnApplicationApply.isChecked) 1 else 0,
                         tvDeadline.text.toString(),
                         tvStartDay.text.toString(),
                         tvFinishDay.text.toString(),
-                        attendanceValidTimeContent,
+                        spinnerAttendTime.selectedItem.toString().toInt(),
                         etStudyContent.text.toString()
                     )
                     Log.e("summer", "USER DATA = $studyRequestData")
 
                     //Toast Message 설정
                     if (etStudyTitle.text.equals("") || meetIdx == -1 || onlineIdx == -1 ||
-                        interestIdx == -1 || etCreateTopic.text.equals("") ||
+                        spinnerCategory.selectedItemPosition==0 || etCreateTopic.text.equals("") ||
                         tvDeadline.text.equals("+") || tvStartDay.text.equals("+") || tvFinishDay.text.equals("+") ||
-                        attendanceValidTimeContent == -1 || etStudyContent.text.equals("")
+                        etStudyContent.text.equals("")
                     ) {
                         Toast.makeText(
                             this@StudyCreateActivity,
@@ -199,7 +189,6 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
 
     override fun onResume() {
         super.onResume()
-
         with(binding){
         if(getSharedPreferences("result1",0).getString("이름1","").toString() != "") {
             val shPref1 = getSharedPreferences("result1",0)
@@ -481,40 +470,16 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
                }
             }
 
-            //spinner
-            spinnerCategory.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
-                    interestIdx=position+1
-                }
-                override fun onNothingSelected(p0: AdapterView<*>?) {
-                }
-            }
-            spinnerPeople.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
-                    memberLimitContent = "${spinnerPeople.getItemAtPosition(position)}".toInt()
-                }
-                override fun onNothingSelected(p0: AdapterView<*>?) {
-                }
-            }
-            spinnerAttendTime.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
-                    attendanceValidTimeContent = "${spinnerAttendTime.getItemAtPosition(position)}".toInt()
-                }
-                override fun onNothingSelected(p0: AdapterView<*>?) {
-                }
-            }
             btnApplicationApply.setOnCheckedChangeListener { checkbox, isChecked ->
                 if (isChecked) {
                     when (checkbox.id) {
                         R.id.btn_application_ff -> {
                             btnApplicationApply.isChecked = false
                             btnApplicationFf.isChecked = true
-                            applicationMethodIdx = 0 //선착순
                         }
                         R.id.btn_application_apply -> {
                             btnApplicationFf.isChecked = false
                             btnApplicationApply.isChecked = true
-                            applicationMethodIdx = 1 // 지원
                         }
                     }
                 }
@@ -526,12 +491,10 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
                         R.id.btn_application_ff -> {
                             btnApplicationApply.isChecked = false
                             btnApplicationFf.isChecked = true
-                            applicationMethodIdx = 0 //선착순
                         }
                         R.id.btn_application_apply -> {
                             btnApplicationFf.isChecked = false
                             btnApplicationApply.isChecked = true
-                            applicationMethodIdx = 1 // 지원
                         }
                     }
                 }
@@ -548,7 +511,6 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
                                 tvStudyRegion.visibility = View.GONE
                                 layoutCreateRegionBtns.visibility = View.GONE
                                 lineRegion.visibility = View.GONE
-                                onlineIdx = 1
                                 btnPlusPlace1.text="+"
                                 btnPlusPlace2.text="+"
                                 btnPlusPlace1.background = ContextCompat.getDrawable(
@@ -572,7 +534,6 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
                                 tvStudyRegion.visibility = View.VISIBLE
                                 binding.layoutCreateRegionBtns.visibility = View.VISIBLE
                                 lineRegion.visibility = View.VISIBLE
-                                onlineIdx = 0
                             }
                         }
                 }
@@ -610,7 +571,6 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
                             studyWeekTv2.setTextColor(Color.parseColor("#9F9F9F"))
                             etStudyFree.setTextColor(Color.parseColor("#525252"))
                             meetIdx = 2
-                            periodsContent = etStudyFree.text.toString()
                         }
                     }
             }
@@ -622,28 +582,27 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
     }
 
     private fun setUpSpinner(){
-        binding.spinnerCategory.adapter = ArrayAdapter.createFromResource(
-            this.applicationContext,R.array.intersting,R.layout.item_create_spinner
-        ).apply{
-            this.setDropDownViewResource(R.layout.item_create_spinner_dropdown)
+        with(binding){
+            spinnerCategory.adapter = ArrayAdapter.createFromResource(
+                this@StudyCreateActivity.applicationContext,R.array.intersting,R.layout.item_create_spinner
+            ).apply{
+                this.setDropDownViewResource(R.layout.item_create_spinner_dropdown)
+            }
+            spinnerPeople.adapter = ArrayAdapter.createFromResource(
+                this@StudyCreateActivity.applicationContext,
+                R.array.peopleList,
+                R.layout.item_create_spinner
+            ).apply{
+                this.setDropDownViewResource(R.layout.item_create_spinner_dropdown)
+            }
+            spinnerAttendTime.adapter = ArrayAdapter.createFromResource(
+                this@StudyCreateActivity.applicationContext,
+                R.array.attendTimeList,
+                R.layout.item_create_spinner
+            ).apply{
+                this.setDropDownViewResource(R.layout.item_create_spinner_dropdown)
+            }
         }
-        binding.spinnerPeople.adapter = ArrayAdapter.createFromResource(
-            this.applicationContext,
-            R.array.peopleList,
-            R.layout.item_create_spinner
-        ).apply{
-            this.setDropDownViewResource(R.layout.item_create_spinner_dropdown)
-        }
-        binding.spinnerAttendTime.adapter = ArrayAdapter.createFromResource(
-            this.applicationContext,
-            R.array.attendTimeList,
-            R.layout.item_create_spinner
-        ).apply{
-            this.setDropDownViewResource(R.layout.item_create_spinner_dropdown)
-        }
-
-
-
     }
 
     private fun toggleTime(emptyText1: EditText,emptyText2:EditText,textChecked1: TextView?,textChecked2:TextView?,textNChecked1:TextView?,textNChecked2:TextView?,check1:CheckBox,check2:CheckBox){
@@ -663,15 +622,15 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
         val cursor = contentResolver.query(contentUri!!, proj, null, null, null)
         cursor!!.moveToNext()
         val path = cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.DATA))
-        val uri = Uri.fromFile(File(path))
         cursor.close()
         return path
     }
 
     private fun openGallery(){
-        val intent= Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        startActivityForResult(intent,GALLERY)
+        Intent(Intent.ACTION_PICK).apply{
+            type = "image/*"
+            startActivityForResult(this,GALLERY)
+        }
     }
 
     private fun hideKeyboard(editText: EditText){
@@ -681,6 +640,7 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
             0
         )
     }
+
 
     // TODO 서버 연결 후 ViewModel 코드 잘 실행되면 함수 삭제 하기
     private fun uploadImage(file:File,studyRequestData: StudyGroup) {
