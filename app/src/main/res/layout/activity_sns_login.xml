@@ -82,7 +82,7 @@
             android:background="#63494848"
             android:clickable="true"
             android:visibility="visible"
-            app:visibleGone="@{loginViewModel.isLoading()}">
+            android:visibleGone="@{loginViewModel.isLoading()}">
 
             <ProgressBar
                 android:layout_width="wrap_content"

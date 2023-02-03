@@ -18,13 +18,13 @@ class CustomBinder {
 
     companion object {
         @JvmStatic
-        @BindingAdapter("visibleGone")
+        @BindingAdapter("android:visibleGone")
         fun setVisibility(view: View, visible: Boolean) {
             view.visibility = if (visible) View.VISIBLE else View.GONE
         }
 
         @JvmStatic
-        @BindingAdapter("visibleInvisible")
+        @BindingAdapter("android:visibleInvisible")
         fun setVisibility2(view: View, visible: Boolean) {
             view.visibility = if (visible) View.VISIBLE else View.INVISIBLE
         }
@@ -82,8 +82,8 @@ class CustomBinder {
             }
         }
 
-        @JvmStatic
         @BindingAdapter("app:imageUrl", "app:placeholder")
+        @JvmStatic
         fun loadImage(imageView: CircleImageView, url: String?, placeholder: Drawable) {
             Glide.with(imageView.context)
                 .load(url)

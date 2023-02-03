@@ -10,7 +10,7 @@ import retrofit2.http.*
 interface SwithService {
     // 홈화면 정보 받기
     @GET("/groupinfo/home")
-    suspend fun getAllStudy(@Query("userIdx") userIdx: Long): Response<GroupList>
+    suspend fun getAllStudy(@Query("userIdx") userIdx: Long): GroupList
 
     // 회차 화면 정보 받기
     @GET("/groupinfo/session")

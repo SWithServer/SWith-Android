@@ -1,24 +1,21 @@
 package com.example.swith.data.remote.home
 
-import com.example.swith.data.api.RetrofitService.retrofitApi
-import com.example.swith.data.utils.BaseRepository
-import com.example.swith.domain.utils.RemoteErrorEmitter
-import com.example.swith.domain.entity.GroupList
+import com.example.swith.data.api.SwithService
+import com.example.swith.data.di.DispatcherModule.IoDispatcher
+import com.example.swith.domain.entity.Group
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
 
-class HomeRemoteDataSource() : BaseRepository() {
-    suspend fun getAllStudy(
-        errorEmitter: RemoteErrorEmitter,
-        userId: Long
-    ): GroupList? {
-        return safeApiCall(errorEmitter) {
-            retrofitApi.getAllStudy(userId).let {
-                if (it.body()?.isSuccess == true) it.body()
-                else {
-                    errorEmitter.onError(it.body()?.message!!)
-                    null
-                }
-            }
-        }
+class HomeRemoteDataSource @Inject constructor(
+    private val swithService: SwithService,
+    @IoDispatcher dispatcher: CoroutineDispatcher
+) {
+    fun loadHomeData(
+        userIdx: Long
+    ) : Flow<List<Group>> = flow {
+        emit(swithService.getAllStudy(userIdx).group)
     }
 }
 

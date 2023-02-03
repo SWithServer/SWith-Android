@@ -3,13 +3,13 @@ package com.example.swith.ui.home
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.swith.R
 import com.example.swith.databinding.FragmentHomeBinding
@@ -17,10 +17,16 @@ import com.example.swith.domain.entity.Group
 import com.example.swith.ui.adapter.HomeStudyRVAdapter
 import com.example.swith.ui.study.StudyActivity
 import com.example.swith.ui.study.create.StudyCreateActivity
-import com.example.swith.utils.SharedPrefManager
+import com.example.swith.utils.UiText
 import com.example.swith.utils.base.BaseFragment
+import com.example.swith.utils.base.BaseState
 import com.example.swith.viewmodel.HomeViewModel
+import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
     private val viewModel: HomeViewModel by viewModels()
@@ -28,19 +34,54 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //추가
-        setVisiblebar(false, true, "", "")
+        initView()
+        initLauncher()
+        observeViewModel()
+    }
 
+    private fun initLauncher(){
         activityResultLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { it ->
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
                 if (it.resultCode == Activity.RESULT_OK) {
-                    setViewVisibility(isStudyNotExists = true, beforeDataLoad = true)
                     viewModel.loadData()
                 }
             }
+    }
 
-        observeViewModel()
+    private fun observeViewModel() {
+        with(binding){
+            lifecycleScope.launch{
+                repeatOnLifecycle(Lifecycle.State.STARTED){
+                    launch {
+                        viewModel.groupData.collectLatest {
+                            when(it){
+                                is BaseState.Success -> {
+                                    (homeStudyRv.adapter as HomeStudyRVAdapter).setData(it.value)
+                                }
+                                else -> {}
+                            }
+                        }
+                    }
+                    launch {
+                        viewModel.errors.collectLatest {
+                            when(it){
+                                is UiText.DynamicString -> {
+                                    showSnackBar(it.value)
+                                }
+                                else -> showSnackBar(it.asString(requireContext()))
+                            }
+                        }
+                    }
 
+                }
+            }
+        }
+    }
+
+    private fun initView(){
+        binding.homeViewModel = viewModel
+        binding.lifecycleOwner = this
+        setVisiblebar(false, true, "", "")
         binding.homeStudyRv.apply {
             adapter = HomeStudyRVAdapter().apply {
                 setMyItemClickListener(object : HomeStudyRVAdapter.myItemClickListener {
@@ -59,10 +100,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         }
 
         binding.homeStudyAddIv.setOnClickListener {
-            Log.i(
-                "doori",
-                "shared = ${SharedPrefManager(requireActivity()).getLoginData().toString()}"
-            )
             activityResultLauncher.launch(
                 Intent(
                     requireActivity(),
@@ -80,42 +117,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         }
     }
 
-    private fun observeViewModel() {
-        setViewVisibility(isStudyNotExists = true, beforeDataLoad = true)
-        viewModel.loadData()
-
-        viewModel.groupLiveData.observe(viewLifecycleOwner, Observer { data ->
-            // 스터디가 1개 이상 존재하면 스터디 리사이클러 뷰 보여줌
-            data?.group.let { (binding.homeStudyRv.adapter as HomeStudyRVAdapter).setData(data) }
-        })
-
-        viewModel.mutableErrorMessage.observe(viewLifecycleOwner, Observer {
-            Toast.makeText(requireActivity(), it.toString(), Toast.LENGTH_SHORT).show()
-        })
-
-        viewModel.mutableErrorType.observe(viewLifecycleOwner, Observer {
-            Toast.makeText(requireActivity(), "$it 오류", Toast.LENGTH_SHORT).show()
-        })
-
-        viewModel.mutableScreenState.observe(viewLifecycleOwner, Observer {
-            setViewVisibility(viewModel.getEmptyOrNull(), false)
-        })
-    }
-
-    private fun setViewVisibility(isStudyNotExists: Boolean, beforeDataLoad: Boolean) {
-        with(binding) {
-            if (beforeDataLoad) {
-                homeScrollviewSv.visibility = View.GONE
-                homeNoStudyLayout.visibility = View.GONE
-            } else if (isStudyNotExists) {
-                homeScrollviewSv.visibility = View.GONE
-                homeNoStudyLayout.visibility = View.VISIBLE
-                homeCircularIndicator.visibility = View.GONE
-            } else {
-                homeScrollviewSv.visibility = View.VISIBLE
-                homeNoStudyLayout.visibility = View.GONE
-                homeCircularIndicator.visibility = View.GONE
-            }
-        }
+    private fun showSnackBar(message: String){
+        Snackbar.make(binding.homeScrollviewSv, message, Snackbar.LENGTH_SHORT)
+            .setTextColor(resources.getColor(R.color.white, null))
+            .show()
     }
 }

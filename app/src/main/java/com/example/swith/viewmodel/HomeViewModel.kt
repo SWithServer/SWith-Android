@@ -1,44 +1,55 @@
 package com.example.swith.viewmodel
 
-import androidx.lifecycle.LiveData
+import androidx.databinding.ObservableField
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.swith.SwithApplication
-import com.example.swith.data.remote.home.HomeRemoteDataSource
-import com.example.swith.data.repository.home.HomeRepository
-import com.example.swith.domain.entity.GroupList
-import com.example.swith.utils.SingleLiveEvent
-import com.example.swith.utils.base.BaseViewModel
-import com.example.swith.utils.error.ScreenState
-import kotlinx.coroutines.Dispatchers
+import com.example.swith.R
+import com.example.swith.domain.entity.Group
+import com.example.swith.domain.usecase.home.GetHomeDataUseCase
+import com.example.swith.utils.SharedPrefManager
+import com.example.swith.utils.UiText
+import com.example.swith.utils.base.BaseState
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class HomeViewModel() : BaseViewModel() {
-    private val repository: HomeRepository = HomeRepository(HomeRemoteDataSource())
-    private var _groupLiveData = SingleLiveEvent<GroupList>()
+@HiltViewModel
+class HomeViewModel @Inject constructor(
+    private val getHomeDataUseCase: GetHomeDataUseCase,
+    private val sharedPrefManager: SharedPrefManager
+) : ViewModel() {
+    private var _groupData = MutableStateFlow<BaseState<List<Group>>>(BaseState.Loading)
 
-    val groupLiveData: LiveData<GroupList>
-        get() = _groupLiveData
+    val groupData: StateFlow<BaseState<List<Group>>>
+        get() = _groupData
 
-    fun loadData() {
-        val userId: Long =
-            if (SwithApplication.spfManager.getLoginData() != null) SwithApplication.spfManager.getLoginData()?.userIdx!! else 1
-        viewModelScope.launch {
-            val res = repository.getAllStudy(this@HomeViewModel, userId)
-            withContext(Dispatchers.Main) {
-                if (res == null) mutableScreenState.postValue(ScreenState.RENDER)
-                res?.let {
-                    _groupLiveData.value = it
-                    mutableScreenState.postValue(ScreenState.RENDER)
-                }
-            }
-        }
+    private val _errorChannel = Channel<UiText>()
+    val errors = _errorChannel.receiveAsFlow()
+
+    val isLoading : ObservableField<Boolean> = ObservableField(true)
+    val empty : ObservableField<Boolean> = ObservableField(false)
+
+    private val userIdx = sharedPrefManager.getLoginData()?.userIdx ?: 0
+    init {
+        loadData()
     }
 
-
-    fun getEmptyOrNull(): Boolean {
-        return if (_groupLiveData.value == null) true
-        else _groupLiveData.value?.group.isNullOrEmpty()
+    fun loadData() {
+        viewModelScope.launch {
+            getHomeDataUseCase(userIdx)
+                .catch {
+                    _groupData.value = BaseState.Error(it.message)
+                    empty.set(true)
+                    isLoading.set(false)
+                    it.message?.let { t -> _errorChannel.send(UiText.StringResource(R.string.home_error)) }
+                }.collectLatest {
+                    _groupData.value = BaseState.Success(it)
+                    empty.set(it.isNotEmpty())
+                    isLoading.set(false)
+                }
+        }
     }
 
 }

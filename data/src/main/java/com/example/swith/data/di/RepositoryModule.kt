@@ -1,8 +1,10 @@
 package com.example.swith.data.di
 
 import com.example.swith.data.repository.announce.AnnounceRepositoryImpl
+import com.example.swith.data.repository.home.HomeRepositoryImpl
 import com.example.swith.data.repository.profile.ProfileRepositoryImpl
 import com.example.swith.domain.repository.AnnounceRepository
+import com.example.swith.domain.repository.HomeRepository
 import com.example.swith.domain.repository.ProfileRepository
 import dagger.Binds
 import dagger.Module
@@ -20,4 +22,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindProfileRepository(profileRepositoryImpl: ProfileRepositoryImpl) : ProfileRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindHomeRepository(homeRepositoryImpl: HomeRepositoryImpl) : HomeRepository
 }

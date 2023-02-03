@@ -262,7 +262,7 @@
             android:background="#63494848"
             android:clickable="true"
             android:visibility="visible"
-            app:visibleGone="@{profileModifyViewModel.isLoading()}">
+            android:visibleGone="@{profileModifyViewModel.isLoading()}">
 
             <ProgressBar
                 android:layout_width="wrap_content"

@@ -42,6 +42,9 @@
     <string name="login">로그인</string>
     <string name="login_kakao">카카오로 시작하기</string>
 
+    <!-- home-->
+    <string name="home_error">스터디 정보를 불러 오지 못하였습니다.</string>
+
     <!--profile-->
     <string name="profile">프로필</string>
     <string name="profile_admin">프로필 설정</string>

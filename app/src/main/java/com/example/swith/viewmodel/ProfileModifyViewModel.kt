@@ -46,6 +46,10 @@ class ProfileModifyViewModel @Inject constructor(
         isLoading.set(false)
     }
 
+    fun testEdit(){
+        _interest1.value = 3
+    }
+
     fun setInterest(first : Boolean, interestIdx: Int){
         if (first)
             _interest1.value = interestIdx

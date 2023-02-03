@@ -12,7 +12,7 @@ import com.example.swith.domain.entity.Group
 import com.example.swith.domain.entity.GroupList
 
 class HomeStudyRVAdapter : RecyclerView.Adapter<HomeStudyRVAdapter.ViewHolder>() {
-    private var groupList = ArrayList<Group>()
+    private val groupList = mutableListOf<Group>()
     private lateinit var binding: ItemStudyBinding
 
     interface myItemClickListener {
@@ -42,8 +42,9 @@ class HomeStudyRVAdapter : RecyclerView.Adapter<HomeStudyRVAdapter.ViewHolder>()
 
     override fun getItemCount(): Int = groupList.size
 
-    fun setData(newList: GroupList) {
-        groupList = newList.group as ArrayList<Group>
+    fun setData(newList: List<Group>) {
+        groupList.clear()
+        groupList.addAll(newList)
         notifyDataSetChanged()
     }
 
