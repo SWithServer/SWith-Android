@@ -247,7 +247,7 @@ class StudyFindDetailFragment :
         var postApplicationReq = postApplicationReq(UserIdx, applyContent)
         val retrofitService =
             RetrofitService.retrofit.create(com.example.swith.data.api.SwithService::class.java)
-        retrofitService.postApplication(groupIdx!!, applicationMethod, postApplicationReq)
+        retrofitService.postApplication(groupIdx!!, postApplicationReq)
             .enqueue(object : Callback<StudyApplicationResponse> {
                 override fun onResponse(
                     call: Call<StudyApplicationResponse>,

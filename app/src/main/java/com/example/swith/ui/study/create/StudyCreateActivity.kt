@@ -53,7 +53,9 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
     private var month = calendar.get(Calendar.MONTH)
     private var day = calendar.get(Calendar.DAY_OF_MONTH)
 
-    private val userIdx = spfManager.getLoginData()?.userIdx
+    private val userIdx: Long =
+        if (spfManager.getLoginData() != null) spfManager.getLoginData()?.userIdx!! else 1
+
     private var meetIdx = -1
 
     override fun onClick(view: View?) {
@@ -111,7 +113,7 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
                         }
                     }
                     var studyRequestData = StudyGroup(
-                        1, //TODO 서버 연결시 adminIdx에 userIdx 넣기
+                        userIdx,
                         null,
                         etStudyTitle.text.toString(),
                         meetIdx,
@@ -640,76 +642,4 @@ class StudyCreateActivity :AppCompatActivity(),View.OnClickListener {
             0
         )
     }
-
-
-    // TODO 서버 연결 후 ViewModel 코드 잘 실행되면 함수 삭제 하기
-    private fun uploadImage(file:File,studyRequestData: StudyGroup) {
-        Log.e("업로드 함수","진입")
-        if (!(file.name.equals("")))
-        {
-            val requestFile = file.asRequestBody("image".toMediaTypeOrNull())
-            var body  = MultipartBody.Part.createFormData("image", file.name, requestFile)
-            val retrofitService = RetrofitService.retrofit.create(SwithService::class.java)
-            retrofitService.uploadImg(body).enqueue(object :
-                Callback<StudyImageRes> {
-                override fun onResponse(
-                    call: Call<StudyImageRes>,
-                    response: Response<StudyImageRes>
-                ) {
-                    if (response.isSuccessful) {
-                        Log.e("summer", "성공${response.toString()}")
-                        response.body()?.apply {
-                            Log.e("summer 결과값","${this.imageUrls}")
-                            //imgUri = this.imageUrls[0]
-                          //  Log.e("Img Uri 값 변경한 부분","$imgUri")
-                          //  studyRequestData.groupImgUri=imgUri
-                            //postStudy(studyRequestData)
-                        }
-                    }
-                    else {
-                        Log.e("summer", "전달실패 code = ${response.code()}")
-                        Log.e("summer", "전달실패 msg = ${response.message()}")
-                    }
-                }
-                override fun onFailure(call: Call<StudyImageRes>, t: Throwable) {
-                    Log.e("summer", "onFailure t = ${t.toString()}")
-                    Log.e("summer", "onFailure msg = ${t.message}")
-                }
-            })
-        }
-        else
-        {
-            //postStudy(studyRequestData)
-        }
-    }
-    private fun postStudy(studyRequestData: StudyGroup) {
-        Log.e("StudyReq 최종", "${studyRequestData.toString()}")
-        val retrofitService = RetrofitService.retrofit.create(SwithService::class.java)
-        retrofitService.createStudy(studyRequestData).enqueue(object : Callback <StudyResponse> {
-            override fun onResponse(call: Call<StudyResponse>, response: Response<StudyResponse>) {
-                if (response.isSuccessful)
-                {
-                    Log.e("summer", "성공${response.toString()}")
-                    response.body()?.apply{
-                        val studyResp = this as StudyResponse
-                        Log.e("summer","body = $studyResp")
-                    }
-                    setResult(RESULT_OK)
-                    finish()
-                }
-                else
-                {
-                    Log.e("summer", "전달실패 code = ${response.code()}")
-                    Log.e("summer", "전달실패 msg = ${response.message()}")
-                    Toast.makeText(this@StudyCreateActivity,"다시 시도해주세요",Toast.LENGTH_SHORT).show()
-                }
-            }
-            override fun onFailure(call: Call<StudyResponse>, t: Throwable) {
-                Log.e("summer","onFailure t = ${t.toString()}")
-                Log.e("summer","onFailure msg = ${t.message}")
-                Toast.makeText(this@StudyCreateActivity,"다시 시도해주세요",Toast.LENGTH_SHORT).show()
-            }
-        })
-    }
-
 }

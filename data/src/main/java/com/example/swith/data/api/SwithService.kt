@@ -108,10 +108,9 @@ interface SwithService {
     fun getStudyDetail(@Path("groupIdx") groupIdx: Long): Call<StudyDetailResponse>
 
     //스터디 가입신청
-    @POST("/application/apply/{groupIdx}/{applicationMethod}")
+    @POST("/application/apply/{groupIdx}")
     fun postApplication(
         @Path("groupIdx") groupIdx: Long,
-        @Path("applicationMethod") applicationMethod: Int,
         @Body body: postApplicationReq
     ): Call<StudyApplicationResponse>
 

@@ -50,7 +50,7 @@ data class Sort(
     @SerializedName("empty") val empty: Boolean,
 )
 
-data class studyReqest(
+data class StudyFindReq(
     @SerializedName("title") val title: String?,
     @SerializedName("regionIdx") val regionIdx: String?,
     @SerializedName("groupIdx") val groupIdx: Long?,
@@ -58,4 +58,12 @@ data class studyReqest(
     @SerializedName("interest2") val interest2: Int?,
     @SerializedName("sortCond") val sortCond: Int,
     @SerializedName("ClientTime") val ClientTime: LocalDateTime,
+)
+
+data class StudyFindFilter(
+    var title:String?,
+    var regionIdx:String?,
+    var interest1:Int?,
+    var interest2:Int?,
+    var sort:Int
 )
