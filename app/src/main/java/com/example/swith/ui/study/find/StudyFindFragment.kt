@@ -2,7 +2,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
@@ -19,22 +18,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.swith.R
-import com.example.swith.data.api.RetrofitService
-import com.example.swith.data.api.SwithService
 import com.example.swith.databinding.FragmentStudyFindBinding
 import com.example.swith.domain.entity.StudyFindFilter
-import com.example.swith.domain.entity.StudyFindResponse
-import com.example.swith.domain.entity.StudyFindReq
 import com.example.swith.ui.MainActivity
 import com.example.swith.ui.adapter.StudyFindRVAdapter
 import com.example.swith.ui.study.create.SelectPlaceActivity
 import com.example.swith.ui.study.find.StudyFindDetailFragment
 import com.example.swith.utils.base.BaseFragment
 import com.example.swith.viewmodel.StudyFindViewModel
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.time.LocalDateTime
 
 class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.fragment_study_find) {
     private val viewModel : StudyFindViewModel by viewModels()
@@ -64,14 +55,17 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
         initListener()
         setSpinner()
 
+        viewModel.loadData(null,null,null,null,0)
+
         adapter.setItemClickListener(object:StudyFindRVAdapter.OnItemClickListener{
-            override fun onClick(view: View, pos:Int, groupIdx:Long, applicationMethod:Int) {
+            override fun onClick(v: View, pos:Int, groupIdx:Long, applicationMethod:Int) {
                 Log.e("그룹 idx 값","$groupIdx")
                 mainActivity?.goDetailPage(groupIdx,applicationMethod, StudyFindDetailFragment())
             }
         })
 
         viewModel.contentLiveData.observe(viewLifecycleOwner){
+            binding.flLoadingLayout.visibility=View.GONE
             totalCount=it.numberOfElements
             isNext = !(it.last)
             adapter.setData(it.content)
@@ -115,7 +109,7 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
                 }
             }
 
-            etStudySearch.setOnKeyListener { view, code, event ->
+            etStudySearch.setOnKeyListener { _, code, event ->
                 if( (event.action == KeyEvent.ACTION_DOWN) && (code == KeyEvent.KEYCODE_ENTER)
                     && !etStudySearch.text.equals("")){
                     _studyFilter.value?.title = etStudySearch.text.toString()
@@ -171,7 +165,7 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
                 override fun onNothingSelected(p0: AdapterView<*>?) {
                 }
             }
-            spinnerInterest2.setOnTouchListener{ v, event ->
+            spinnerInterest2.setOnTouchListener{ v, _ ->
                 v.performClick()
                 searchFilter = 2
                 false
@@ -203,7 +197,7 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
                 val lastVisibleItem = (layoutManager as LinearLayoutManager)
                     .findLastCompletelyVisibleItemPosition()
 
-                // hasNextPage() -> 다음 페이지가 있고, 마지막으로 보여지는 item이 리스트의 마지막일때 실행문.
+                // hasNextPage() -> 다음 페이지가 있고, 마지막으로 보여지는 item 이 리스트의 마지막일때 실행문.
                 if (hasNextPage()&&lastVisibleItem==adapter.getData().size-1) {
                     Log.e("hasNextPage()","true")
                     val lastGroupIdx = adapter.getData()[adapter.getData().size-1]?.groupIdx!!.toLong()
@@ -245,7 +239,7 @@ class StudyFindFragment() : BaseFragment<FragmentStudyFindBinding>(R.layout.frag
         val mInputMethodManager =
             context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         mInputMethodManager.hideSoftInputFromWindow(
-            editText.getWindowToken(),
+            editText.windowToken,
             0
         )
     }

@@ -3,6 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.study.find.StudyFindDetailFragment">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.swith.viewmodel.StudyFindDetailViewModel" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -45,7 +50,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:text="스터디제목"
+                        android:text="@{viewModel.studyInfo.title}"
                         android:textSize="16sp"
                         android:textColor="@color/black"
                         android:layout_marginBottom="10dp"
@@ -130,7 +135,7 @@
                         app:layout_constraintEnd_toStartOf="@id/tv_study_set_place2"
                         android:layout_marginStart="10dp"
                         android:background="@drawable/bg_search_spinner"
-                        android:text="장소1"
+                        android:text="@{viewModel.studyInfo.regionIdx1}"
                         android:textSize="11sp"
                         android:gravity="center"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -145,7 +150,7 @@
                         android:paddingEnd="20dp"
                         app:layout_constraintStart_toEndOf="@+id/tv_study_set_place1"
                         android:layout_marginStart="10dp"
-                        android:text="장소2"
+                        android:text="@{viewModel.studyInfo.regionIdx2}"
                         android:textSize="11sp"
                         android:gravity="center"
                         android:background="@drawable/bg_search_spinner"
@@ -183,7 +188,7 @@
                         android:layout_height="wrap_content"
                         app:layout_constraintStart_toEndOf="@+id/tv_study_detail"
                         android:layout_marginStart="10dp"
-                        android:text="주제"
+                        android:text="@{viewModel.studyInfo.topic}"
                         android:textSize="11sp"
                         android:gravity="left"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -256,7 +261,7 @@
                         app:layout_constraintStart_toEndOf="@+id/tv_study_playtime"
                         android:layout_marginStart="10dp"
                         android:textSize="11sp"
-                        android:text="날짜"
+                        android:text="활동기간"
                         android:gravity="left"
                         app:layout_constraintBottom_toBottomOf="parent"
                         android:textColor="@color/black"
@@ -291,7 +296,7 @@
                         android:layout_height="wrap_content"
                         app:layout_constraintStart_toEndOf="@+id/tv_study_deadline"
                         android:layout_marginStart="10dp"
-                        android:text="기간"
+                        android:text="@{viewModel.studyInfo.recruitmentEndDate}"
                         android:textSize="11sp"
                         android:gravity="left"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -426,7 +431,7 @@
                         android:layout_marginEnd="20dp"
                         android:textSize="11sp"
                         app:layout_constraintTop_toBottomOf="@+id/layout_study_content_detail"
-                        android:text="스터디 상세정보" />
+                        android:text="@{viewModel.studyInfo.groupContent}" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -459,7 +464,7 @@
             android:layout_height="0dp"
             android:background="@color/white"
             android:clickable="true"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent">
 

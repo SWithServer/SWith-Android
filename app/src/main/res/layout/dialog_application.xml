@@ -2,6 +2,11 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <variable
+            name="dialog"
+            type="com.example.swith.ui.dialog.CustomDialog" />
+    </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -83,6 +88,7 @@
                     android:layout_marginEnd="20dp"
                     android:gravity="center"
                     android:text="제출"
+                    android:onClick="@{() -> dialog.onConfirm()}"
                     android:textColor="@color/white"
                     android:background="@drawable/btn_search_blue_selector"
                     app:layout_constraintEnd_toEndOf="parent"

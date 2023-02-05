@@ -78,6 +78,10 @@
     <string name="study_confirm">제출하시겠습니까?</string>
     <string name="study_create_title">제목을 입력해주세요</string>
 
+    <!--find-->
+    <string name="study_find_search">원하는 스터디를 찾아보세요!</string>
+    <string name="study_find_region">지역선택</string>
+
     <!-- interesting spinner-->
     <string-array name="intersting">
         <item>분류선택</item>
